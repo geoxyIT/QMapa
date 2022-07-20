@@ -1,2 +1,2 @@
-# QMapa
+# QMapa GML 2021
 Wtyczka do wizualizacji mapy zasadniczej z plików GML obejmujących zbiory danych EGiB, GESUT i BDOT500. Wtyczka działa na plikach GML sporządzonych zgodnie z modelami danych 2021, tj. określonymi w rozporządzeniach wydanych w 2021 roku dotyczących baz danych EGiB, GESUT i BDOT500. Prezentacja kartograficzna obiektów na mapie jest realizowana zgodnie ze standardami opublikowanymi w rozporządzeniu Ministra Rozwoju, Pracy i Technologii z dnia 23 lipca 2021 r. w sprawie bazy danych obiektów topograficznych oraz mapy zasadniczej. 
