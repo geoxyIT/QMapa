@@ -77,7 +77,7 @@ class QMapa:
 
         # Declare instance attributes
         self.actions = []
-        self.menu = self.tr(u'&QMapa')
+        self.menu = self.tr(u'&QMapa GML 2021')
         # TODO: We are going to let the user set this up in a future iteration
         self.toolbar = self.iface.addToolBar(u'QMapa')
         self.toolbar.setObjectName(u'QMapa')
@@ -271,7 +271,7 @@ class QMapa:
 
         for action in self.actions:
             self.iface.removePluginMenu(
-                self.tr(u'&QMapa'),
+                self.tr(u'&QMapa GML 2021'),
                 action)
             self.iface.removeToolBarIcon(action)
         '''self.iface.removePluginMenu(

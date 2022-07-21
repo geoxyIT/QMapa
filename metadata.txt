@@ -22,7 +22,7 @@ repository=https://github.com/geoxyIT/QMapa
 hasProcessingProvider=no
 
 changelog=
-	1.0.0
+	1.0.0 2022.07.21
 	-Utworzenie wtyczki QMapa
 
 # Tags are comma separated with spaces allowed
