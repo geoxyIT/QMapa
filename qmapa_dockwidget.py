@@ -74,7 +74,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     def check_version(self):
         try:
-            URL = 'https://raw.githubusercontent.com/g-sherman/Qgis-Plugin-Builder/master/metadata.txt'
+            URL = 'https://github.com/geoxyIT/QMapa/blob/main/metadata.txt'
             local_path = (os.path.join(os.path.dirname(__file__), 'metadata.txt'))
             hub_ver = reg_ver(get_hub_ver(URL))
             local_ver = reg_ver(get_local_ver(local_path))
