@@ -1,0 +1,50 @@
+# This file contains metadata for your plugin.
+
+# This file should be included when you package your plugin.# Mandatory items:
+
+[general]
+name=QMapa GML 2021
+qgisMinimumVersion=3.24
+description=Wtyczka do programu QGIS służąca do wizualizacji mapy zasadniczej z plików GML obejmujących zbiory danych EGiB, GESUT i BDOT500 zgodnie ze standardami opublikowanymi w rozporządzeniu Ministra Rozwoju, Pracy i Technologii z dnia 23 lipca 2021 r. w sprawie bazy danych obiektów topograficznych oraz mapy zasadniczej.
+version=1.0.0
+author=GEOXY sp. z o.o. 
+email=qgis@geoxy.pl
+
+about=Wtyczka do wizualizacji mapy zasadniczej z plików GML obejmujących zbiory danych EGiB, GESUT i BDOT500. Wtyczka działa na plikach GML sporządzonych zgodnie z modelami danych 2021, tj. określonymi w rozporządzeniach wydanych w 2021 roku dotyczących baz danych EGiB, GESUT i BDOT500. Prezentacja kartograficzna obiektów na mapie jest realizowana zgodnie ze standardami opublikowanymi w rozporządzeniu Ministra Rozwoju, Pracy i Technologii z dnia 23 lipca 2021 r. w sprawie bazy danych obiektów topograficznych oraz mapy zasadniczej.
+
+
+tracker=https://github.com/geoxyIT/QMapa/issues
+repository=https://github.com/geoxyIT/QMapa
+# End of mandatory metadata
+
+# Recommended items:
+
+hasProcessingProvider=no
+
+changelog=
+	1.0.0
+	-Utworzenie wtyczki QMapa
+
+# Tags are comma separated with spaces allowed
+tags=gml, bdot, bdot500, egib, egb, gesut, mapa, zasadnicza, geoxy, 2021, import 
+
+homepage=http://www.geoxy.pl/
+category=Plugins
+icon=icons/icon.png
+# experimental flag
+experimental=False
+
+# deprecated flag (applies to the whole plugin, not just a single version)
+deprecated=False
+
+# Since QGIS 3.8, a comma separated list of plugins to be installed
+# (or upgraded) can be specified.
+# Check the documentation for more information.
+# plugin_dependencies=
+
+Category of the plugin: Raster, Vector, Database or Web
+# category=
+
+# If the plugin can run on QGIS Server.
+server=False
+

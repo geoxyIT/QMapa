@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/plugins/qmapa/icons" >
+        <file>icon.png</file>
+        <file>help.png</file>
+        <file>logo_geoxy.png</file>
+    </qresource>
+</RCC>
