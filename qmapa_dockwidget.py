@@ -28,6 +28,7 @@
 
 import os
 from datetime import datetime
+import webbrowser
 
 from qgis.PyQt import QtGui, QtWidgets, uic
 from qgis.PyQt.QtCore import pyqtSignal, pyqtSlot, QVariant
@@ -92,7 +93,12 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         #                                                directory=str(QgsProject.instance().homePath())
         self.leGml.setText(name)
 
-    #@pyqtSlot()
+    @pyqtSlot()
+    def on_pbLogo_clicked(self):
+        """Przycisk wywolania strony po nacisnieciu Logo GEOXY"""
+        webbrowser.open('http://www.geoxy.pl/')
+
+
     def on_pbImport_pressed(self):
         """Zaimportowanie pliku GML z konwersją do GPKG oraz nadaniem grup warstw"""
         if self.leGml.text() != '':

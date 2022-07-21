@@ -275,58 +275,21 @@
            <item row="7" column="0">
             <layout class="QHBoxLayout" name="horizontalLayout_2">
              <item>
-              <spacer name="horizontalSpacer_2">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_2">
-               <property name="maximumSize">
-                <size>
-                 <width>120</width>
-                 <height>27</height>
-                </size>
-               </property>
+              <widget class="QPushButton" name="pbLogo">
                <property name="text">
-                <string notr="true"/>
+                <string/>
                </property>
-               <property name="pixmap">
-                <pixmap>../icons/logo_geoxy.png</pixmap>
+               <property name="icon">
+                <iconset>
+                 <normaloff>../icons/logo_geoxy.png</normaloff>../icons/logo_geoxy.png</iconset>
                </property>
-               <property name="scaledContents">
-                <bool>true</bool>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-               <property name="openExternalLinks">
-                <bool>true</bool>
-               </property>
-               <property name="textInteractionFlags">
-                <set>Qt::LinksAccessibleByMouse</set>
+               <property name="iconSize">
+                <size>
+                 <width>84</width>
+                 <height>19</height>
+                </size>
                </property>
               </widget>
-             </item>
-             <item>
-              <spacer name="horizontalSpacer_3">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
              </item>
             </layout>
            </item>
