@@ -41,6 +41,7 @@ from .src.gml_modify import GmlModify
 from .src.layer_order import set_new_order
 from .src.load_gpkg import load_gpkg
 from .src.qmapa_main import Main
+from .src.scrap_version import *
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), r'ui\qmapa_dockwidget_base.ui'))
@@ -64,9 +65,24 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.cmbStylization.addItems(Main().getStylizations(omit_special=True))
 
 
+        # sprawdzenie wersji programu
+        self.check_version()
+        
     def closeEvent(self, event):
         self.closingPlugin.emit()
         event.accept()
+
+    def check_version(self):
+        try:
+            URL = 'https://raw.githubusercontent.com/g-sherman/Qgis-Plugin-Builder/master/metadata.txt'
+            local_path = (os.path.join(os.path.dirname(__file__), 'metadata.txt'))
+            hub_ver = reg_ver(get_hub_ver(URL))
+            local_ver = reg_ver(get_local_ver(local_path))
+            compare_versions(self.lbVersion , hub_ver, local_ver)
+        except Exception as e:
+            print('Blad sprawdzania aktualnosci wersji')
+            print(e)
+            print('Nawiaz polaczenie z internetem')
 
     @pyqtSlot()
     def on_pbImportPath_clicked(self):
