@@ -172,8 +172,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             # nadanie stylizacji
             current_style = self.cmbStylization.currentText()
             Main().setStyling(self.vec_layers_list, current_style)
-            #powtarza dwa razy - tymczasowe rozwiazanie skarp
-            Main().setStyling(self.vec_layers_list, current_style)
             self.set_labels()
 
     def on_cmbStylization_currentTextChanged(self):
