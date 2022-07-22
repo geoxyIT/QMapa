@@ -86,14 +86,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             print('Nawiaz polaczenie z internetem')
 
     @pyqtSlot()
-    def on_pbImportPath_clicked(self):
-        """QFileDialog do wybierania sciezki pliku GML"""
-        name, ext = QFileDialog.getOpenFileName(self, caption='Wybierz wejściowy plik GML',
-                                                filter='gml (*.gml)')
-        #                                                directory=str(QgsProject.instance().homePath())
-        self.leGml.setText(name)
-
-    @pyqtSlot()
     def on_pbLogo_clicked(self):
         """Przycisk wywolania strony po nacisnieciu Logo GEOXY"""
         webbrowser.open('http://www.geoxy.pl/')
@@ -101,8 +93,11 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     def on_pbImport_pressed(self):
         """Zaimportowanie pliku GML z konwersją do GPKG oraz nadaniem grup warstw"""
-        if self.leGml.text() != '':
-            self.gml_mod = GmlModify(self.leGml.text())
+        name, ext = QFileDialog.getOpenFileName(self, caption='Wybierz wejściowy plik GML',
+                                                filter='gml (*.gml)')
+
+        if name != '':
+            self.gml_mod = GmlModify(name)
             self.gml_mod.run()
             _, path = Main().gml2gpkg(self.gml_mod.output_path)
             load_gpkg(path)
@@ -165,28 +160,34 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             # ustalenie nowej kolejnosci
             set_new_order(order_list_new)
 
-    def on_pbImport_released(self):
+            # nadanie zlaczen
+            self.set_joins(self.vec_layers_list)
 
-        # nadanie zlaczen
-        self.set_joins(self.vec_layers_list)
+            # usuniecie pliku
+            try:
+                os.remove(self.gml_mod.output_path)
+            except:
+                print("Problem z usunieciem pliku modyfikowanego gml")
 
-        # usuniecie pliku
-        try:
-            os.remove(self.gml_mod.output_path)
-        except:
-            print("Problem z usunieciem pliku modyfikowanego gml")
+            # nadanie stylizacji
+            current_style = self.cmbStylization.currentText()
+            Main().setStyling(self.vec_layers_list, current_style)
+            #powtarza dwa razy - tymczasowe rozwiazanie skarp
+            Main().setStyling(self.vec_layers_list, current_style)
+            self.set_labels()
 
-    def on_pbSetStylization_pressed(self):
+    def on_cmbStylization_currentTextChanged(self):
         """ustaw stylizację wybraną w comboboxie"""
+        current_style = self.cmbStylization.currentText()
         # obliczenie kreskowania dla skarp i wstawienie geometrii do atrybutow
         for lay in self.getLayersByName('skarpa'):
-            Main().calculate_hatching(lay, 'skarpa', self.cmbStylization.currentText())
+            Main().calculate_hatching(lay, 'skarpa', current_style)
         for lay in self.getLayersByName('obiekttrwalezwiazany'):
-            Main().calculate_hatching(lay, 'schody', self.cmbStylization.currentText())
+            Main().calculate_hatching(lay, 'schody', current_style)
         for lay in self.getLayersByName('budowle'):
-            Main().calculate_hatching(lay, 'sciana', self.cmbStylization.currentText())
+            Main().calculate_hatching(lay, 'sciana', current_style)
 
-        Main().setStyling(self.getLayers(), self.cmbStylization.currentText())
+        Main().setStyling(self.getLayers(), current_style)
         self.set_labels()
 
     def set_joins(self, vec_layers_list):
@@ -313,6 +314,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 if 'y' not in fields_list:
                     field2 = QgsField('y', QVariant.Double)
                     layer.addExpressionField('$y', field2)
+        iface.mapCanvas().refreshAllLayers()
 
     def on_rbLaAuto_toggled(self):
 

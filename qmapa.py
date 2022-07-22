@@ -181,6 +181,9 @@ class QMapa:
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
 
+        self.tryUnregister()
+
+
         # inizjalizacja funkcji z folderu expressions
         QgsExpression.registerFunction(kreskowanie.kreskowanie)
         QgsExpression.registerFunction(connect_points.connect_points)
@@ -196,6 +199,28 @@ class QMapa:
             parent=self.iface.mainWindow())'''
 
         self.initExpandToolbar()
+
+    def tryUnregister(self):
+        try:
+            QgsExpression.unregisterFunction('kreskowanie')
+        except:
+            pass
+        try:
+            QgsExpression.unregisterFunction('connect_points')
+        except:
+            pass
+        try:
+            QgsExpression.unregisterFunction('get_half_line')
+        except:
+            pass
+        try:
+            QgsExpression.unregisterFunction('skarpy')
+        except:
+            pass
+        try:
+            QgsExpression.unregisterFunction('recalculate_justification')
+        except:
+            pass
 
     def initExpandToolbar(self):
         """Stworzenie rozwijanego toolbuttona"""
@@ -244,13 +269,12 @@ class QMapa:
         """Cleanup necessary items here when plugin dockwidget is closed"""
 
         #print "** CLOSING QMapa"
-
         # usuniecie funkcji expressions po wylaczeniu wtyczki
-        """QgsExpression.unregisterFunction('kreskowanie')
+        '''QgsExpression.unregisterFunction('kreskowanie')
         QgsExpression.unregisterFunction('connect_points')
         QgsExpression.unregisterFunction('get_half_line')
         QgsExpression.unregisterFunction('skarpy')
-        QgsExpression.unregisterFunction('recalculate_justification')"""
+        QgsExpression.unregisterFunction('recalculate_justification')'''
 
         # disconnects
         self.dockwidget.closingPlugin.disconnect(self.onClosePlugin)

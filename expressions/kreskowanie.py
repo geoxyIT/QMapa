@@ -7,6 +7,7 @@ def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle = 90, 
     geometry - geometria polilinii kierunkowej,
     geometry_limit - geometria poligonowa ograniczajaca zasieg,
     spacing - odleglosci w ktorych rysowane beda linie,
+    distance - maksymalna dlugosc rysowanych kresek
     rotate_angle - kat obrotu rysowanych linii wzgledem polilinii kierunkowej w stopniach (90 - prostopadle),
     offset - odleglosc rozpoczecia rysowania,
     multiply - mnozenie dlugosci wynikowych linii (na razie w zakresie 0-1)(gdy jest np 0.5 to linia bedzie miala polowe dlugosci).
