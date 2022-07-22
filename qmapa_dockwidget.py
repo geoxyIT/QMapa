@@ -172,7 +172,17 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             # nadanie stylizacji
             current_style = self.cmbStylization.currentText()
             Main().setStyling(self.vec_layers_list, current_style)
+
             self.set_labels()
+            for lay in self.vec_layers_list:
+                if 'skarpa' in lay.name().lower():
+                    Main().calculate_hatching(lay, 'skarpa', current_style)
+                elif 'obiekttrwalezwiazany' in lay.name().lower():
+                        Main().calculate_hatching(lay, 'schody', current_style)
+                elif 'budowle' in lay.name().lower():
+                        Main().calculate_hatching(lay, 'sciana', current_style)
+
+
 
     def on_cmbStylization_currentTextChanged(self):
         """ustaw stylizację wybraną w comboboxie"""
