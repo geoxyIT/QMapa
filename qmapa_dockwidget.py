@@ -183,7 +183,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                         Main().calculate_hatching(lay, 'sciana', current_style)
 
 
-
     def on_cmbStylization_currentTextChanged(self):
         """ustaw stylizację wybraną w comboboxie"""
         current_style = self.cmbStylization.currentText()
