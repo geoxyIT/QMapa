@@ -560,11 +560,11 @@
         <layer class="GeometryGenerator" enabled="1" locked="0" pass="0">
           <Option type="Map">
             <Option type="QString" name="SymbolType" value="Line"/>
-            <Option type="QString" name="geometryModifier" value="geom_from_wkt( &quot;geometria_kresek&quot; )"/>
+            <Option type="QString" name="geometryModifier" value="geom_from_wkt( &quot;obliczona_geometria_500&quot; )"/>
             <Option type="QString" name="units" value="MapUnit"/>
           </Option>
           <prop k="SymbolType" v="Line"/>
-          <prop k="geometryModifier" v="geom_from_wkt( &quot;geometria_kresek&quot; )"/>
+          <prop k="geometryModifier" v="geom_from_wkt( &quot;obliczona_geometria_500&quot; )"/>
           <prop k="units" v="MapUnit"/>
           <data_defined_properties>
             <Option type="Map">
@@ -1823,7 +1823,7 @@
         </config>
       </editWidget>
     </field>
-    <field name="geometria_kresek" configurationFlags="None">
+    <field name="obliczona_geometria_500" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option/>
@@ -1840,7 +1840,7 @@
     <alias field="startObiekt" index="5" name=""/>
     <alias field="startWersjaObiekt" index="6" name=""/>
     <alias field="rodzajObiektuZwiazanegoZBudynkiem" index="7" name=""/>
-    <alias field="geometria_kresek" index="8" name=""/>
+    <alias field="obliczona_geometria_500" index="8" name=""/>
   </aliases>
   <defaults>
     <default field="fid" expression="" applyOnUpdate="0"/>
@@ -1851,7 +1851,7 @@
     <default field="startObiekt" expression="" applyOnUpdate="0"/>
     <default field="startWersjaObiekt" expression="" applyOnUpdate="0"/>
     <default field="rodzajObiektuZwiazanegoZBudynkiem" expression="" applyOnUpdate="0"/>
-    <default field="geometria_kresek" expression="" applyOnUpdate="0"/>
+    <default field="obliczona_geometria_500" expression="" applyOnUpdate="0"/>
   </defaults>
   <constraints>
     <constraint field="fid" notnull_strength="1" constraints="3" unique_strength="1" exp_strength="0"/>
@@ -1862,7 +1862,7 @@
     <constraint field="startObiekt" notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0"/>
     <constraint field="startWersjaObiekt" notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0"/>
     <constraint field="rodzajObiektuZwiazanegoZBudynkiem" notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0"/>
-    <constraint field="geometria_kresek" notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0"/>
+    <constraint field="obliczona_geometria_500" notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0"/>
   </constraints>
   <constraintExpressions>
     <constraint field="fid" exp="" desc=""/>
@@ -1873,7 +1873,7 @@
     <constraint field="startObiekt" exp="" desc=""/>
     <constraint field="startWersjaObiekt" exp="" desc=""/>
     <constraint field="rodzajObiektuZwiazanegoZBudynkiem" exp="" desc=""/>
-    <constraint field="geometria_kresek" exp="" desc=""/>
+    <constraint field="obliczona_geometria_500" exp="" desc=""/>
   </constraintExpressions>
   <expressionfields/>
   <attributeactions>
@@ -1889,7 +1889,7 @@
       <column width="-1" hidden="0" type="field" name="startObiekt"/>
       <column width="-1" hidden="0" type="field" name="startWersjaObiekt"/>
       <column width="-1" hidden="0" type="field" name="rodzajObiektuZwiazanegoZBudynkiem"/>
-      <column width="-1" hidden="0" type="field" name="geometria_kresek"/>
+      <column width="-1" hidden="0" type="field" name="obliczona_geometria_500"/>
       <column width="-1" hidden="1" type="actions"/>
     </columns>
   </attributetableconfig>
@@ -1923,7 +1923,7 @@ def my_form_open(dialog, layer, feature):
   <editorlayout>generatedlayout</editorlayout>
   <editable>
     <field name="fid" editable="1"/>
-    <field name="geometria_kresek" editable="1"/>
+    <field name="obliczona_geometria_500" editable="1"/>
     <field name="gml_id" editable="1"/>
     <field name="identifier" editable="1"/>
     <field name="koniecObiekt" editable="1"/>
@@ -1937,7 +1937,7 @@ def my_form_open(dialog, layer, feature):
   </editable>
   <labelOnTop>
     <field labelOnTop="0" name="fid"/>
-    <field labelOnTop="0" name="geometria_kresek"/>
+    <field labelOnTop="0" name="obliczona_geometria_500"/>
     <field labelOnTop="0" name="gml_id"/>
     <field labelOnTop="0" name="identifier"/>
     <field labelOnTop="0" name="koniecObiekt"/>
@@ -1951,7 +1951,7 @@ def my_form_open(dialog, layer, feature):
   </labelOnTop>
   <reuseLastValue>
     <field name="fid" reuseLastValue="0"/>
-    <field name="geometria_kresek" reuseLastValue="0"/>
+    <field name="obliczona_geometria_500" reuseLastValue="0"/>
     <field name="gml_id" reuseLastValue="0"/>
     <field name="lokalnyId" reuseLastValue="0"/>
     <field name="przestrzenNazw" reuseLastValue="0"/>

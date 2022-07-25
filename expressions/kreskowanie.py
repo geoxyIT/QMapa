@@ -113,7 +113,9 @@ def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle = 90, 
             indiv_wkt = indiv.asWkt()
             cut_li_exp = QgsExpression("make_line(point_n(geom_from_wkt('"+indiv_wkt+"'),1),geom_from_wkt('"+point_mult_wkt+"'))")
             cut_li = cut_li_exp.evaluate(context)
-            cut_lines.append(cut_li)
+            if cut_li is not None:
+                cut_lines.append(cut_li)
         new_geom = point_mult.collectGeometry(cut_lines)
         
     return new_geom
+

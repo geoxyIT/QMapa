@@ -38,7 +38,7 @@ class Main:
 
 
         if expression is not None and layer.geometryType() == 2:
-            column_name = 'geometria_kresek'
+            column_name = 'obliczona_geometria' + '_' + scale
             # rozpoczecie edycji warstwy
             features = []
             #features = layer.getFeatures()

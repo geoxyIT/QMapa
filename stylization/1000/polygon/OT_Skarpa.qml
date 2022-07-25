@@ -31,11 +31,11 @@
         <layer pass="0" enabled="1" locked="0" class="GeometryGenerator">
           <Option type="Map">
             <Option name="SymbolType" type="QString" value="Line"/>
-            <Option name="geometryModifier" type="QString" value="geom_from_wkt( &quot;geometria_kresek&quot; )"/>
+            <Option name="geometryModifier" type="QString" value="geom_from_wkt( &quot;obliczona_geometria_1000&quot; )"/>
             <Option name="units" type="QString" value="MapUnit"/>
           </Option>
           <prop v="Line" k="SymbolType"/>
-          <prop v="geom_from_wkt( &quot;geometria_kresek&quot; )" k="geometryModifier"/>
+          <prop v="geom_from_wkt( &quot;obliczona_geometria_1000&quot; )" k="geometryModifier"/>
           <prop v="MapUnit" k="units"/>
           <data_defined_properties>
             <Option type="Map">
@@ -143,11 +143,11 @@
         <layer pass="0" enabled="1" locked="0" class="GeometryGenerator">
           <Option type="Map">
             <Option name="SymbolType" type="QString" value="Line"/>
-            <Option name="geometryModifier" type="QString" value="geom_from_wkt( &quot;geometria_kresek&quot; )"/>
+            <Option name="geometryModifier" type="QString" value="geom_from_wkt( &quot;obliczona_geometria_1000&quot; )"/>
             <Option name="units" type="QString" value="MapUnit"/>
           </Option>
           <prop v="Line" k="SymbolType"/>
-          <prop v="geom_from_wkt( &quot;geometria_kresek&quot; )" k="geometryModifier"/>
+          <prop v="geom_from_wkt( &quot;obliczona_geometria_1000&quot; )" k="geometryModifier"/>
           <prop v="MapUnit" k="units"/>
           <data_defined_properties>
             <Option type="Map">
@@ -593,7 +593,7 @@
         </config>
       </editWidget>
     </field>
-    <field name="geometria_kresek" configurationFlags="None">
+    <field name="obliczona_geometria_1000" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option/>
@@ -611,7 +611,7 @@
     <alias name="" field="startWersjaObiekt" index="6"/>
     <alias name="" field="zrodlo" index="7"/>
     <alias name="" field="rodzajSkarpy" index="8"/>
-    <alias name="" field="geometria_kresek" index="9"/>
+    <alias name="" field="obliczona_geometria_1000" index="9"/>
   </aliases>
   <defaults>
     <default applyOnUpdate="0" expression="" field="fid"/>
@@ -623,7 +623,7 @@
     <default applyOnUpdate="0" expression="" field="startWersjaObiekt"/>
     <default applyOnUpdate="0" expression="" field="zrodlo"/>
     <default applyOnUpdate="0" expression="" field="rodzajSkarpy"/>
-    <default applyOnUpdate="0" expression="" field="geometria_kresek"/>
+    <default applyOnUpdate="0" expression="" field="obliczona_geometria_1000"/>
   </defaults>
   <constraints>
     <constraint notnull_strength="1" unique_strength="1" constraints="3" exp_strength="0" field="fid"/>
@@ -635,7 +635,7 @@
     <constraint notnull_strength="0" unique_strength="0" constraints="0" exp_strength="0" field="startWersjaObiekt"/>
     <constraint notnull_strength="0" unique_strength="0" constraints="0" exp_strength="0" field="zrodlo"/>
     <constraint notnull_strength="0" unique_strength="0" constraints="0" exp_strength="0" field="rodzajSkarpy"/>
-    <constraint notnull_strength="0" unique_strength="0" constraints="0" exp_strength="0" field="geometria_kresek"/>
+    <constraint notnull_strength="0" unique_strength="0" constraints="0" exp_strength="0" field="obliczona_geometria_1000"/>
   </constraints>
   <constraintExpressions>
     <constraint field="fid" desc="" exp=""/>
@@ -647,7 +647,7 @@
     <constraint field="startWersjaObiekt" desc="" exp=""/>
     <constraint field="zrodlo" desc="" exp=""/>
     <constraint field="rodzajSkarpy" desc="" exp=""/>
-    <constraint field="geometria_kresek" desc="" exp=""/>
+    <constraint field="obliczona_geometria_1000" desc="" exp=""/>
   </constraintExpressions>
   <expressionfields/>
   <attributeactions>
@@ -664,7 +664,7 @@
       <column name="startWersjaObiekt" width="-1" hidden="0" type="field"/>
       <column name="zrodlo" width="-1" hidden="0" type="field"/>
       <column name="rodzajSkarpy" width="-1" hidden="0" type="field"/>
-      <column name="geometria_kresek" width="-1" hidden="0" type="field"/>
+      <column name="obliczona_geometria_1000" width="-1" hidden="0" type="field"/>
       <column width="-1" hidden="1" type="actions"/>
     </columns>
   </attributetableconfig>
@@ -698,7 +698,7 @@ def my_form_open(dialog, layer, feature):
   <editorlayout>generatedlayout</editorlayout>
   <editable>
     <field name="fid" editable="1"/>
-    <field name="geometria_kresek" editable="1"/>
+    <field name="obliczona_geometria_1000" editable="1"/>
     <field name="gml_id" editable="1"/>
     <field name="lokalnyId" editable="1"/>
     <field name="numerOperatu" editable="1"/>
@@ -711,7 +711,7 @@ def my_form_open(dialog, layer, feature):
   </editable>
   <labelOnTop>
     <field name="fid" labelOnTop="0"/>
-    <field name="geometria_kresek" labelOnTop="0"/>
+    <field name="obliczona_geometria_1000" labelOnTop="0"/>
     <field name="gml_id" labelOnTop="0"/>
     <field name="lokalnyId" labelOnTop="0"/>
     <field name="numerOperatu" labelOnTop="0"/>
@@ -724,7 +724,7 @@ def my_form_open(dialog, layer, feature):
   </labelOnTop>
   <reuseLastValue>
     <field name="fid" reuseLastValue="0"/>
-    <field name="geometria_kresek" reuseLastValue="0"/>
+    <field name="obliczona_geometria_1000" reuseLastValue="0"/>
     <field name="gml_id" reuseLastValue="0"/>
     <field name="lokalnyId" reuseLastValue="0"/>
     <field name="numerOperatu" reuseLastValue="0"/>

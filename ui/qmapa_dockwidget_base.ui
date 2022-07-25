@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>315</width>
-    <height>356</height>
+    <width>212</width>
+    <height>391</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -98,25 +98,12 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>262</width>
-            <height>268</height>
+            <width>180</width>
+            <height>301</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout_5">
-           <item row="7" column="0">
-            <widget class="QLabel" name="lbVersion">
-             <property name="autoFillBackground">
-              <bool>true</bool>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="9" column="0">
+           <item row="10" column="0">
             <spacer name="verticalSpacer">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -131,41 +118,6 @@
               </size>
              </property>
             </spacer>
-           </item>
-           <item row="2" column="0">
-            <widget class="QgsCollapsibleGroupBox" name="mGroupBox_3">
-             <property name="title">
-              <string>Redakcja mapy</string>
-             </property>
-             <property name="collapsed">
-              <bool>false</bool>
-             </property>
-             <property name="saveCollapsedState">
-              <bool>false</bool>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_10">
-              <item row="1" column="0">
-               <widget class="QRadioButton" name="rbLaAuto">
-                <property name="text">
-                 <string>automatyczna</string>
-                </property>
-                <property name="checked">
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0">
-               <widget class="QRadioButton" name="rbLaObKart">
-                <property name="text">
-                 <string>wg prezentacji graficznej GML</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
            </item>
            <item row="1" column="0">
             <widget class="QGroupBox" name="groupBox_2">
@@ -182,7 +134,7 @@
               </size>
              </property>
              <property name="title">
-              <string>Stylizacja dla skali</string>
+              <string>Skala mapy</string>
              </property>
              <layout class="QGridLayout" name="gridLayout_13">
               <property name="leftMargin">
@@ -213,11 +165,52 @@
              </layout>
             </widget>
            </item>
-           <item row="0" column="0">
-            <widget class="QPushButton" name="pbImport">
-             <property name="text">
-              <string>Importuj plik GML</string>
+           <item row="8" column="0">
+            <widget class="QLabel" name="lbVersion">
+             <property name="autoFillBackground">
+              <bool>true</bool>
              </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QgsCollapsibleGroupBox" name="mGroupBox_3">
+             <property name="title">
+              <string>Redakcja mapy</string>
+             </property>
+             <property name="collapsed">
+              <bool>false</bool>
+             </property>
+             <property name="saveCollapsedState">
+              <bool>false</bool>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_10">
+              <item row="1" column="0">
+               <widget class="QRadioButton" name="rbLaAuto">
+                <property name="text">
+                 <string>AUTO</string>
+                </property>
+                <property name="checked">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QRadioButton" name="rbLaObKart">
+                <property name="text">
+                 <string>KARTO</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
            <item row="6" column="0">
@@ -243,6 +236,20 @@
               </widget>
              </item>
             </layout>
+           </item>
+           <item row="0" column="0">
+            <widget class="QPushButton" name="pbImport">
+             <property name="text">
+              <string>Importuj plik GML</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="0">
+            <widget class="QProgressBar" name="progressBar">
+             <property name="value">
+              <number>24</number>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>

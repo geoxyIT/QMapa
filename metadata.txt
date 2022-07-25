@@ -6,7 +6,7 @@
 name=QMapa GML 2021
 qgisMinimumVersion=3.24
 description=Wtyczka do programu QGIS służąca do wizualizacji mapy zasadniczej z plików GML obejmujących zbiory danych EGiB, GESUT i BDOT500 zgodnie ze standardami opublikowanymi w rozporządzeniu Ministra Rozwoju, Pracy i Technologii z dnia 23 lipca 2021 r. w sprawie bazy danych obiektów topograficznych oraz mapy zasadniczej.
-version=1.1.0
+version=1.1.1
 author=GEOXY sp. z o.o. 
 email=qgis@geoxy.pl
 
@@ -22,6 +22,10 @@ repository=https://github.com/geoxyIT/QMapa
 hasProcessingProvider=no
 
 changelog=
+	1.1.1 2022.07.25
+	-Poprawa blednych skarp
+	-Uproszczenie opisow w formatce
+	-Dodanie progressBar przy imporcie
 	1.1.0 2022.07.24
 	-Uproszczenie wtyczki
 	-Poprawa bledu generowania skarp

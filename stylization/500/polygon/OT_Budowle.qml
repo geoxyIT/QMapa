@@ -518,11 +518,11 @@
         <layer locked="0" class="GeometryGenerator" pass="0" enabled="1">
           <Option type="Map">
             <Option name="SymbolType" type="QString" value="Line"/>
-            <Option name="geometryModifier" type="QString" value="geom_from_wkt( &quot;geometria_kresek&quot; )"/>
+            <Option name="geometryModifier" type="QString" value="geom_from_wkt( &quot;obliczona_geometria_500&quot; )"/>
             <Option name="units" type="QString" value="MapUnit"/>
           </Option>
           <prop v="Line" k="SymbolType"/>
-          <prop v="geom_from_wkt( &quot;geometria_kresek&quot; )" k="geometryModifier"/>
+          <prop v="geom_from_wkt( &quot;obliczona_geometria_500&quot; )" k="geometryModifier"/>
           <prop v="MapUnit" k="units"/>
           <data_defined_properties>
             <Option type="Map">
@@ -3255,7 +3255,7 @@
         </config>
       </editWidget>
     </field>
-    <field name="geometria_kresek" configurationFlags="None">
+    <field name="obliczona_geometria_500" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option/>
@@ -3295,7 +3295,7 @@
     <alias index="7" field="zrodlo" name=""/>
     <alias index="8" field="rodzajBudowli" name=""/>
     <alias index="9" field="prezentacja_etykiety" name=""/>
-    <alias index="10" field="geometria_kresek" name=""/>
+    <alias index="10" field="obliczona_geometria_500" name=""/>
     <alias index="11" field="OT_PrezentacjaGraficzna_0_fid" name=""/>
     <alias index="12" field="OT_PrezentacjaGraficzna_0_gml_id" name=""/>
     <alias index="13" field="OT_PrezentacjaGraficzna_0_katObrotu" name=""/>
@@ -3311,7 +3311,7 @@
     <default expression="" applyOnUpdate="0" field="zrodlo"/>
     <default expression="" applyOnUpdate="0" field="rodzajBudowli"/>
     <default expression="" applyOnUpdate="0" field="prezentacja_etykiety"/>
-    <default expression="" applyOnUpdate="0" field="geometria_kresek"/>
+    <default expression="" applyOnUpdate="0" field="obliczona_geometria_500"/>
     <default expression="" applyOnUpdate="0" field="OT_PrezentacjaGraficzna_0_fid"/>
     <default expression="" applyOnUpdate="0" field="OT_PrezentacjaGraficzna_0_gml_id"/>
     <default expression="" applyOnUpdate="0" field="OT_PrezentacjaGraficzna_0_katObrotu"/>
@@ -3327,7 +3327,7 @@
     <constraint notnull_strength="0" constraints="0" field="zrodlo" unique_strength="0" exp_strength="0"/>
     <constraint notnull_strength="0" constraints="0" field="rodzajBudowli" unique_strength="0" exp_strength="0"/>
     <constraint notnull_strength="0" constraints="0" field="prezentacja_etykiety" unique_strength="0" exp_strength="0"/>
-    <constraint notnull_strength="0" constraints="0" field="geometria_kresek" unique_strength="0" exp_strength="0"/>
+    <constraint notnull_strength="0" constraints="0" field="obliczona_geometria_500" unique_strength="0" exp_strength="0"/>
     <constraint notnull_strength="1" constraints="3" field="OT_PrezentacjaGraficzna_0_fid" unique_strength="1" exp_strength="0"/>
     <constraint notnull_strength="0" constraints="0" field="OT_PrezentacjaGraficzna_0_gml_id" unique_strength="0" exp_strength="0"/>
     <constraint notnull_strength="0" constraints="0" field="OT_PrezentacjaGraficzna_0_katObrotu" unique_strength="0" exp_strength="0"/>
@@ -3343,7 +3343,7 @@
     <constraint field="zrodlo" exp="" desc=""/>
     <constraint field="rodzajBudowli" exp="" desc=""/>
     <constraint field="prezentacja_etykiety" exp="" desc=""/>
-    <constraint field="geometria_kresek" exp="" desc=""/>
+    <constraint field="obliczona_geometria_500" exp="" desc=""/>
     <constraint field="OT_PrezentacjaGraficzna_0_fid" exp="" desc=""/>
     <constraint field="OT_PrezentacjaGraficzna_0_gml_id" exp="" desc=""/>
     <constraint field="OT_PrezentacjaGraficzna_0_katObrotu" exp="" desc=""/>
@@ -3364,7 +3364,7 @@
       <column hidden="0" width="-1" name="startWersjaObiekt" type="field"/>
       <column hidden="0" width="-1" name="zrodlo" type="field"/>
       <column hidden="0" width="-1" name="prezentacja_etykiety" type="field"/>
-      <column hidden="0" width="-1" name="geometria_kresek" type="field"/>
+      <column hidden="0" width="-1" name="obliczona_geometria_500" type="field"/>
       <column hidden="0" width="-1" name="OT_PrezentacjaGraficzna_0_fid" type="field"/>
       <column hidden="0" width="-1" name="OT_PrezentacjaGraficzna_0_gml_id" type="field"/>
       <column hidden="0" width="-1" name="OT_PrezentacjaGraficzna_0_katObrotu" type="field"/>
@@ -3404,7 +3404,7 @@ def my_form_open(dialog, layer, feature):
     <field name="OT_PrezentacjaGraficzna_0_gml_id" editable="0"/>
     <field name="OT_PrezentacjaGraficzna_0_katObrotu" editable="0"/>
     <field name="fid" editable="1"/>
-    <field name="geometria_kresek" editable="1"/>
+    <field name="obliczona_geometria_500" editable="1"/>
     <field name="gml_id" editable="1"/>
     <field name="informacjaDodatkowa" editable="1"/>
     <field name="lokalnyId" editable="1"/>
@@ -3422,7 +3422,7 @@ def my_form_open(dialog, layer, feature):
     <field name="OT_PrezentacjaGraficzna_0_gml_id" labelOnTop="0"/>
     <field name="OT_PrezentacjaGraficzna_0_katObrotu" labelOnTop="0"/>
     <field name="fid" labelOnTop="0"/>
-    <field name="geometria_kresek" labelOnTop="0"/>
+    <field name="obliczona_geometria_500" labelOnTop="0"/>
     <field name="gml_id" labelOnTop="0"/>
     <field name="informacjaDodatkowa" labelOnTop="0"/>
     <field name="lokalnyId" labelOnTop="0"/>
@@ -3440,7 +3440,7 @@ def my_form_open(dialog, layer, feature):
     <field reuseLastValue="0" name="OT_PrezentacjaGraficzna_0_gml_id"/>
     <field reuseLastValue="0" name="OT_PrezentacjaGraficzna_0_katObrotu"/>
     <field reuseLastValue="0" name="fid"/>
-    <field reuseLastValue="0" name="geometria_kresek"/>
+    <field reuseLastValue="0" name="obliczona_geometria_500"/>
     <field reuseLastValue="0" name="gml_id"/>
     <field reuseLastValue="0" name="informacjaDodatkowa"/>
     <field reuseLastValue="0" name="lokalnyId"/>

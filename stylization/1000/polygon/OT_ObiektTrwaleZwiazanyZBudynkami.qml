@@ -560,11 +560,11 @@
         <layer pass="0" enabled="1" locked="0" class="GeometryGenerator">
           <Option type="Map">
             <Option name="SymbolType" type="QString" value="Line"/>
-            <Option name="geometryModifier" type="QString" value="geom_from_wkt( &quot;geometria_kresek&quot; )"/>
+            <Option name="geometryModifier" type="QString" value="geom_from_wkt( &quot;obliczona_geometria_1000&quot; )"/>
             <Option name="units" type="QString" value="MapUnit"/>
           </Option>
           <prop v="Line" k="SymbolType"/>
-          <prop v="geom_from_wkt( &quot;geometria_kresek&quot; )" k="geometryModifier"/>
+          <prop v="geom_from_wkt( &quot;obliczona_geometria_1000&quot; )" k="geometryModifier"/>
           <prop v="MapUnit" k="units"/>
           <data_defined_properties>
             <Option type="Map">
@@ -1729,7 +1729,7 @@
         </config>
       </editWidget>
     </field>
-    <field name="geometria_kresek" configurationFlags="None">
+    <field name="obliczona_geometria_1000" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option/>
@@ -1746,7 +1746,7 @@
     <alias name="" field="startObiekt" index="5"/>
     <alias name="" field="startWersjaObiekt" index="6"/>
     <alias name="" field="rodzajObiektuZwiazanegoZBudynkiem" index="7"/>
-    <alias name="" field="geometria_kresek" index="8"/>
+    <alias name="" field="obliczona_geometria_1000" index="8"/>
   </aliases>
   <defaults>
     <default applyOnUpdate="0" expression="" field="fid"/>
@@ -1757,7 +1757,7 @@
     <default applyOnUpdate="0" expression="" field="startObiekt"/>
     <default applyOnUpdate="0" expression="" field="startWersjaObiekt"/>
     <default applyOnUpdate="0" expression="" field="rodzajObiektuZwiazanegoZBudynkiem"/>
-    <default applyOnUpdate="0" expression="" field="geometria_kresek"/>
+    <default applyOnUpdate="0" expression="" field="obliczona_geometria_1000"/>
   </defaults>
   <constraints>
     <constraint notnull_strength="1" unique_strength="1" constraints="3" exp_strength="0" field="fid"/>
@@ -1768,7 +1768,7 @@
     <constraint notnull_strength="0" unique_strength="0" constraints="0" exp_strength="0" field="startObiekt"/>
     <constraint notnull_strength="0" unique_strength="0" constraints="0" exp_strength="0" field="startWersjaObiekt"/>
     <constraint notnull_strength="0" unique_strength="0" constraints="0" exp_strength="0" field="rodzajObiektuZwiazanegoZBudynkiem"/>
-    <constraint notnull_strength="0" unique_strength="0" constraints="0" exp_strength="0" field="geometria_kresek"/>
+    <constraint notnull_strength="0" unique_strength="0" constraints="0" exp_strength="0" field="obliczona_geometria_1000"/>
   </constraints>
   <constraintExpressions>
     <constraint field="fid" desc="" exp=""/>
@@ -1779,7 +1779,7 @@
     <constraint field="startObiekt" desc="" exp=""/>
     <constraint field="startWersjaObiekt" desc="" exp=""/>
     <constraint field="rodzajObiektuZwiazanegoZBudynkiem" desc="" exp=""/>
-    <constraint field="geometria_kresek" desc="" exp=""/>
+    <constraint field="obliczona_geometria_1000" desc="" exp=""/>
   </constraintExpressions>
   <expressionfields/>
   <attributeactions>
@@ -1795,7 +1795,7 @@
       <column name="startObiekt" width="-1" hidden="0" type="field"/>
       <column name="startWersjaObiekt" width="-1" hidden="0" type="field"/>
       <column name="rodzajObiektuZwiazanegoZBudynkiem" width="-1" hidden="0" type="field"/>
-      <column name="geometria_kresek" width="-1" hidden="0" type="field"/>
+      <column name="obliczona_geometria_1000" width="-1" hidden="0" type="field"/>
       <column width="-1" hidden="1" type="actions"/>
     </columns>
   </attributetableconfig>
@@ -1832,7 +1832,7 @@ def my_form_open(dialog, layer, feature):
     <field name="OT_PrezentacjaGraficzna_0_gml_id" editable="0"/>
     <field name="OT_PrezentacjaGraficzna_0_katObrotu" editable="0"/>
     <field name="fid" editable="1"/>
-    <field name="geometria_kresek" editable="1"/>
+    <field name="obliczona_geometria_1000" editable="1"/>
     <field name="gml_id" editable="1"/>
     <field name="informacjaDodatkowa" editable="1"/>
     <field name="lokalnyId" editable="1"/>
@@ -1851,7 +1851,7 @@ def my_form_open(dialog, layer, feature):
     <field name="OT_PrezentacjaGraficzna_0_gml_id" labelOnTop="0"/>
     <field name="OT_PrezentacjaGraficzna_0_katObrotu" labelOnTop="0"/>
     <field name="fid" labelOnTop="0"/>
-    <field name="geometria_kresek" labelOnTop="0"/>
+    <field name="obliczona_geometria_1000" labelOnTop="0"/>
     <field name="gml_id" labelOnTop="0"/>
     <field name="informacjaDodatkowa" labelOnTop="0"/>
     <field name="lokalnyId" labelOnTop="0"/>
@@ -1870,7 +1870,7 @@ def my_form_open(dialog, layer, feature):
     <field name="OT_PrezentacjaGraficzna_0_gml_id" reuseLastValue="0"/>
     <field name="OT_PrezentacjaGraficzna_0_katObrotu" reuseLastValue="0"/>
     <field name="fid" reuseLastValue="0"/>
-    <field name="geometria_kresek" reuseLastValue="0"/>
+    <field name="obliczona_geometria_1000" reuseLastValue="0"/>
     <field name="gml_id" reuseLastValue="0"/>
     <field name="informacjaDodatkowa" reuseLastValue="0"/>
     <field name="lokalnyId" reuseLastValue="0"/>

@@ -68,6 +68,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         # sprawdzenie wersji programu
         self.check_version()
+
+        self.progressBar.hide()
         
     def closeEvent(self, event):
         self.closingPlugin.emit()
@@ -97,10 +99,16 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                                                 filter='gml (*.gml)')
 
         if name != '':
+            self.progressBar.show()
+            self.progressBar.setValue(1)
             self.gml_mod = GmlModify(name)
+            self.progressBar.setValue(10)
             self.gml_mod.run()
+            self.progressBar.setValue(20)
             _, path = Main().gml2gpkg(self.gml_mod.output_path)
+            self.progressBar.setValue(30)
             load_gpkg(path)
+            self.progressBar.setValue(40)
             self.vec_layers_list = Main().create_groups(path)
 
             order_list_new = ['EGB_etykieta',
@@ -159,40 +167,46 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
             # ustalenie nowej kolejnosci
             set_new_order(order_list_new)
+            self.progressBar.setValue(50)
 
             # nadanie zlaczen
             self.set_joins(self.vec_layers_list)
+            self.progressBar.setValue(60)
 
             # usuniecie pliku
             try:
                 os.remove(self.gml_mod.output_path)
             except:
                 print("Problem z usunieciem pliku modyfikowanego gml")
+            self.progressBar.setValue(70)
 
             # nadanie stylizacji
             current_style = self.cmbStylization.currentText()
             Main().setStyling(self.vec_layers_list, current_style)
+            self.progressBar.setValue(80)
 
             self.set_labels()
-            for lay in self.vec_layers_list:
-                if 'skarpa' in lay.name().lower():
-                    Main().calculate_hatching(lay, 'skarpa', current_style)
-                elif 'obiekttrwalezwiazany' in lay.name().lower():
-                        Main().calculate_hatching(lay, 'schody', current_style)
-                elif 'budowle' in lay.name().lower():
-                        Main().calculate_hatching(lay, 'sciana', current_style)
+            self.progressBar.setValue(90)
+            scales = ['500', '1000']
+            # obliczenie kreskowania dla skarp, sciany, schodow i wstawienie geometrii do atrybutow
+            nr = 0
+            for sc in scales:
+                self.progressBar.setValue(90 + int((nr/len(scales))*10))
+                nr += 1
+                for lay in self.vec_layers_list:
+                    if 'skarpa' in lay.name().lower():
+                        Main().calculate_hatching(lay, 'skarpa', sc)
+                    elif 'obiekttrwalezwiazany' in lay.name().lower():
+                            Main().calculate_hatching(lay, 'schody', sc)
+                    elif 'budowle' in lay.name().lower():
+                            Main().calculate_hatching(lay, 'sciana', sc)
+            self.progressBar.setValue(100)
+            self.progressBar.hide()
 
 
     def on_cmbStylization_currentTextChanged(self):
         """ustaw stylizację wybraną w comboboxie"""
         current_style = self.cmbStylization.currentText()
-        # obliczenie kreskowania dla skarp i wstawienie geometrii do atrybutow
-        for lay in self.getLayersByName('skarpa'):
-            Main().calculate_hatching(lay, 'skarpa', current_style)
-        for lay in self.getLayersByName('obiekttrwalezwiazany'):
-            Main().calculate_hatching(lay, 'schody', current_style)
-        for lay in self.getLayersByName('budowle'):
-            Main().calculate_hatching(lay, 'sciana', current_style)
 
         Main().setStyling(self.getLayers(), current_style)
         self.set_labels()
