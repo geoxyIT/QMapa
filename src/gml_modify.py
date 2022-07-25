@@ -88,26 +88,6 @@ class GmlModify:
                                 add_relation_attr.text = iip
                                 add_relation_attr.tail = '\n'
 
-        """for feature_member in self.root:
-            for feature in feature_member:
-                for item in self.relations.items():
-                    iip = item[0]
-                    for values in item[1]:
-                        if feature.attrib['{http://www.opengis.net/gml/3.2}id'] == values:
-                            for dodanie in feature.findall(pref_name + 'idIIP'):
-                                for y in dodanie:
-                                    add_relation_attr = ET.SubElement(y,
-                                                                      pref_name + 'relacja')
-                                    add_relation_attr.text = iip
-                                    add_relation_attr.tail = '\n'"""
-
-        '''import time
-        start_time = time.time()
-        x = 0
-        for feature_member in self.root:
-            x += 1
-        print(x)
-        print("x--- %s seconds ---" % (time.time() - start_time))'''
 
     def label_relations(self, pref_name, pref_tag):
         """Iteracja po pliku, wyciagniecie relacji z etykiet do obiektow, oraz wstawienie w te obiekty
@@ -235,7 +215,8 @@ class GmlModify:
             root.append(child)
 
     def save_gml(self):
-        """Zapis pliku wynikowego gml"""
+        """Zapis pliku wynikowego gml
+        TODO: poprawic sciezki"""
         path, ext = os.path.splitext(self.file_path)
         self.output_path = path + '_mod' + ext
         self.tree.write(self.output_path)
@@ -288,6 +269,6 @@ class GmlModify:
 
 if __name__ == '__main__':
     gml_mod = GmlModify(
-        file_path=r'D:\PROJEKT_QGIS\Konkurs_GUGIK\GML_RELACJE\wyciaganie_relacji_z_gml\edited\Obiekty2021.gml')
+        file_path=r'')
     # cProfile.run('gml_mod.run()')
     gml_mod.run()

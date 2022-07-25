@@ -45,7 +45,7 @@ from .src.qmapa_main import Main
 from .src.scrap_version import *
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
-    os.path.dirname(__file__), r'ui\qmapa_dockwidget_base.ui'))
+    os.path.dirname(__file__), 'ui', 'qmapa_dockwidget_base.ui'))
 
 
 class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):

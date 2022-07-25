@@ -316,7 +316,7 @@ class QMapa:
         if not self.pluginIsActive:
             self.pluginIsActive = True
 
-            #print "** STARTING QMapa"
+            #fpath "** STARTING QMapa"
 
             # dockwidget may not exist if:
             #    first run of plugin
