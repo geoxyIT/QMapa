@@ -26,6 +26,7 @@ changelog=
 	-Poprawa blednych skarp
 	-Uproszczenie opisow w formatce
 	-Dodanie progressBar przy imporcie
+	-Generowanie kreskowania przy imporcie
 	1.1.0 2022.07.24
 	-Uproszczenie wtyczki
 	-Poprawa bledu generowania skarp
