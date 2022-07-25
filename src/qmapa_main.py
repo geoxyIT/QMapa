@@ -73,20 +73,20 @@ class Main:
     def setStyling(self, layers, style_name):
         """ustawianie wybranej stylizacji dla wybranych warstw na mapie, z plików qml"""
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        sty_path = os.path.join(dir_path,'..',r'stylization')
+        sty_path = os.path.join(dir_path,'..','stylization')
         stylization_dir = os.path.join(sty_path, str(style_name))
         for layer in layers:
             if layer.type() == QgsMapLayerType.VectorLayer:
                 if layer.geometryType() == 0:
-                    geom_type = (r'\point')
+                    geom_type = ('point')
                 elif layer.geometryType() == 1:
-                    geom_type = (r'\line')
+                    geom_type = ('line')
                 elif layer.geometryType() == 2:
-                    geom_type = (r'\polygon')
+                    geom_type = ('polygon')
                 else:
                     geom_type = ''
                 try:
-                    style_file_path = os.path.join(stylization_dir+geom_type, layer.name()+ '.gml')
+                    style_file_path = os.path.join(stylization_dir, geom_type, layer.name()+ '.qml')
                     layer.loadNamedStyle(theURI=style_file_path,
                                          loadFromLocalDb=False)
                     layer.triggerRepaint()
