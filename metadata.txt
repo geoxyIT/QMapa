@@ -22,13 +22,14 @@ repository=https://github.com/geoxyIT/QMapa
 hasProcessingProvider=no
 
 changelog=
-	1.1.1 2022.07.25
+	1.1.0 2022.07.26
+	-poprawa skarp w 1000
+	-zmiana skarp i grobli analogicznie do skarp
 	-Poprawa blednych skarp
 	-Uproszczenie opisow w formatce
 	-Dodanie progressBar przy imporcie
 	-Generowanie kreskowania przy imporcie
 	-poprawa sciezek do ui
-	1.1.0 2022.07.24
 	-Uproszczenie wtyczki
 	-Poprawa bledu generowania skarp
 	1.0.0 2022.07.21
