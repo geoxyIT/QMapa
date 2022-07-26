@@ -197,9 +197,11 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                     if 'skarpa' in lay.name().lower():
                         Main().calculate_hatching(lay, 'skarpa', sc)
                     elif 'obiekttrwalezwiazany' in lay.name().lower():
-                            Main().calculate_hatching(lay, 'schody', sc)
+                        Main().calculate_hatching(lay, 'schody', sc)
                     elif 'budowle' in lay.name().lower():
-                            Main().calculate_hatching(lay, 'sciana', sc)
+                        Main().calculate_hatching(lay, 'sciana', sc)
+                    elif 'wody' in lay.name().lower():
+                        Main().calculate_hatching(lay, 'wody', sc)
             self.progressBar.setValue(100)
             self.progressBar.hide()
 

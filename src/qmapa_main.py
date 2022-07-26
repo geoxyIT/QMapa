@@ -16,11 +16,11 @@ class Main:
 
     def calculate_hatching(self, layer, type, scale):
         """funkcja przelicza kreskowanie i wstawia ta geometrie w formacie wkt do atrybutow
-        type: 'skarpa' or 'schody' or 'sciana' """
+        type: 'skarpa' or 'schody' or 'sciana' or 'wody' """
         expression = None
         layer.startEditing()
         layer.commitChanges()
-        if type.lower() == 'skarpa':
+        if type.lower() == 'skarpa' or type.lower() == 'wody':
             if scale == '500':
                 expression = QgsExpression("geom_to_wkt( try(collect_geometries(kreskowanie(skarpy($geometry, geometry(get_feature('OT_poczatekGorySkarpy',  'gml_id' , " + '"gml_id"' +"  )),geometry(get_feature('OT_koniecGorySkarpy',  'gml_id' , " + '"gml_id"' + " )),'top'),buffer($geometry,0.001), $area / ($perimeter/4), 50, 90,0,1),kreskowanie(skarpy($geometry, geometry(get_feature('OT_poczatekGorySkarpy',  'gml_id' , " + '"gml_id"' + "  )),geometry(get_feature('OT_koniecGorySkarpy',  'gml_id' , " + '"gml_id"' + "  )),'top'),buffer($geometry,0.001), $area / ($perimeter/4), 50, 90, $area / ($perimeter/2),0.5))))")
             elif scale == '1000':
@@ -50,6 +50,9 @@ class Main:
                 features = layer.getFeatures()
             elif 'ot_budowle' in layer.name().lower():
                 features = layer.getFeatures(QgsFeatureRequest().setFilterExpression('"rodzajbudowli"=\'n\''))
+            elif 'ot_wody' in layer.name().lower():
+                features = layer.getFeatures(QgsFeatureRequest().setFilterExpression('"rodzajobiektu"=\'w\' or "rodzajobiektu"=\'g\''))
+
 
             if features != []:
                 layer.startEditing()
