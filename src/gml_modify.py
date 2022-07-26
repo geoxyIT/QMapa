@@ -215,10 +215,12 @@ class GmlModify:
             root.append(child)
 
     def save_gml(self):
-        """Zapis pliku wynikowego gml
-        TODO: poprawic sciezki"""
+        """Zapis pliku wynikowego gml"""
         path, ext = os.path.splitext(self.file_path)
-        self.output_path = path + '_mod' + ext
+        path_file_name = os.path.basename(path)
+        path_dirname = os.path.dirname(path)
+        output_file_name =  path_file_name + '_mod' + ext
+        self.output_path = os.path.join(path_dirname, output_file_name)
         self.tree.write(self.output_path)
 
     def run(self):
