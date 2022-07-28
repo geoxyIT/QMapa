@@ -1,0 +1,5 @@
+1. Pobierz plik z wersją z GitHub (wejdz w plik .zip z wersją w folderze "wersja" i kliknij DOWNLOAD).
+2. Otworz program QGIS.
+3. W zakładce wtyczki w menu głównym wejdź w "Zarządzanie wtyczkami...".
+4. Następnie należy wybrać opcję "Instaluj z pliku ZIP" i wskazać sciężkę do pobranego pliku.
+5. Po wyborze ścieżki, końcowym etapem jest włączenie przycisku "Zainstaluj wtyczkę".
