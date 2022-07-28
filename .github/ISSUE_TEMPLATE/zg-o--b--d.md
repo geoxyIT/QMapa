@@ -26,7 +26,7 @@ $ wersja wtyczki QMapa
 
 ## RAPORT Z BŁĘDEM
 ```raport
-# TODO: Wklej treść raportu błędu wygenerowanego przez QGIS
+# TODO: Jeśli otrzymałeś raport z błędem wygenerowanym przez QGIS, wklej go tutaj
 ```
 
 ## ODTWORZENIE BŁĘDU
