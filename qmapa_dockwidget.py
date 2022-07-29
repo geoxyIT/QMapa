@@ -42,7 +42,9 @@ from .src.gml_modify import GmlModify
 from .src.layer_order import set_new_order
 from .src.load_gpkg import load_gpkg
 from .src.qmapa_main import Main
+from .src.config import correct_layers
 from .src.scrap_version import *
+from .src.config import correct_layers
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'ui', 'qmapa_dockwidget_base.ui'))
@@ -111,59 +113,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             self.progressBar.setValue(40)
             self.vec_layers_list = Main().create_groups(path)
 
-            order_list_new = ['EGB_etykieta',
-                              'OT_etykieta',
-                              'GES_etykieta',
-                              'EGB_JednostkaEwidencyjna',
-                              'EGB_ObrebEwidencyjny',
-                              'EGB_DzialkaEwidencyjna',
-                              'EGB_PunktGraniczny',
-                              'EGB_Budynek',
-                              'OT_BudynekNiewykazanyWEGIB',
-                              'EGB_BlokBudynku',
-                              'OT_BlokBudynku',
-                              'EGB_ObiektTrwaleZwiazanyZBudynkiem',
-                              'EGB_poliliniaKierunkowa',
-                              'OT_ObiektTrwaleZwiazanyZBudynkami',
-                              'OT_poliliniaKierunkowa',
-                              'OT_Budowle',
-                              'OT_Ogrodzenia',
-                              'OT_Komunikacja',
-                              'GES_PrzewodWodociagowy',
-                              'GES_UrzadzeniaSiecWodociagowa',
-                              'GES_PrzewodKanalizacyjny',
-                              'GES_UrzadzeniaSiecKanalizacyjna',
-                              'GES_PrzewodElektroenergetyczny',
-                              'GES_UrzadzeniaSiecElektroenergetyczna',
-                              'GES_PrzewodGazowy',
-                              'GES_UrzadzeniaSiecGazowa',
-                              'GES_PrzewodCieplowniczy',
-                              'GES_UrzadzeniaSiecCieplownicza',
-                              'GES_PrzewodTelekomunikacyjny',
-                              'GES_UrzadzeniaSiecTelekomunikacyjna',
-                              'GES_PrzewodSpecjalny',
-                              'GES_UrzadzeniaTechniczneSieciSpecjalnej',
-                              'GES_PrzewodNiezidentyfikowany',
-                              'GES_UrzadzenieNiezidentyfikowane',
-                              'GES_UrzadzeniaTowarzyszczaceLiniowe',
-                              'GES_UrzadzeniaTowarzyszaceLiniowe',
-                              'GES_InneUrzadzeniaTowarzyszace',
-                              'OT_SportIRekreacja',
-                              'OT_ZagospodarowanieTerenu',
-                              'EGB_KonturUzytkuGruntowego',
-                              'EGB_KonturKlasyfikacyjny',
-                              'OT_Wody',
-                              'OT_Rzedna',
-                              'GES_Rzedna',
-                              'OT_Skarpa',
-                              'OT_poczatekGorySkarpy',
-                              'OT_koniecGorySkarpy',
-                              'EGB_PrezentacjaGraficzna',
-                              'EGB_odnosnik',
-                              'OT_PrezentacjaGraficzna',
-                              'OT_odnosnik',
-                              'GES_PrezentacjaGraficzna',
-                              'GES_odnosnik']
+            order_list_new = correct_layers  # lista warstw zgodna z rozpo i w dobrej kolejnosci prezentowania
 
             # ustalenie nowej kolejnosci
             set_new_order(order_list_new)
@@ -209,7 +159,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def on_cmbStylization_currentTextChanged(self):
         """ustaw stylizację wybraną w comboboxie"""
         current_style = self.cmbStylization.currentText()
-
         Main().setStyling(self.getLayers(), current_style)
         self.set_labels()
 
@@ -340,7 +289,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         iface.mapCanvas().refreshAllLayers()
 
     def on_rbLaAuto_toggled(self):
-
         self.set_labels()
 
     def on_rbLaObKart_toggled(self):
@@ -350,7 +298,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         """Ustawienie wyswietlania etykiet"""
         expr_auto = '1'
 
-        layers = QgsProject.instance().mapLayers().values()
+        layers = self.getLayers()
+
         # tylko automatyczne
         if self.rbLaAuto.isChecked() is True:
             for layer in layers:
@@ -426,7 +375,13 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         return sk_layers
 
     def getLayers(self):
-        """pobierz listę warstw do symbolizacji, w zależności od wybranej opcji"""
-        layers = iface.mapCanvas().layers()
+        """pobierz listę warstw do symbolizacji i labelingu
+        --pobieranie warstw w oparciu o warstwy w rozporzadzeniu"""
+        layers = []
+        lays = iface.mapCanvas().layers()
+        for lay in lays:
+            if lay.type() == QgsMapLayerType.VectorLayer and lay.name() in correct_layers:
+                print(lay.name())
+                layers.append(lay)
 
         return layers
