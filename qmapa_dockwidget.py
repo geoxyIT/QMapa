@@ -83,7 +83,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             local_path = (os.path.join(os.path.dirname(__file__), 'metadata.txt'))
             hub_ver = reg_ver(get_hub_ver(URL))
             local_ver = reg_ver(get_local_ver(local_path))
-            compare_versions(self.lbVersion , hub_ver, local_ver)
+            compare_versions(self.lbVersion, hub_ver, local_ver)
         except Exception as e:
             print('Blad sprawdzania aktualnosci wersji')
             print(e)
