@@ -25,7 +25,8 @@ changelog=
 	1.1.1 2022.08.01
 	-Dodanie obslugi bledu przy nieprawidlowym namespace w gml
 	-Poprawa etykietowania przy imporcie
-	-Poprawa etykiet KARTO dla urzadzen liniowych
+	-Poprawa etykiet KARTO dla urzadzen liniowych i towarzyszacych w gesut
+	-Poprawa symbolu dla bariery ochronnej
 	-Dodanie mozliwosci obslugi wtyczki z rastrowym podkladem mapowym
 	-Obsluga etykiet tylko dla warstw z rozporzadzenia
 	-Korekta UI o informowaniu o nieaktualnej wersji wtyczki 
