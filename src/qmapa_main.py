@@ -76,6 +76,7 @@ class Main:
 
     def setStyling(self, layers, style_name):
         """ustawianie wybranej stylizacji dla wybranych warstw na mapie, z plików qml"""
+        layers = self.checkLayers(layers)
         dir_path = os.path.dirname(os.path.realpath(__file__))
         sty_path = os.path.join(dir_path,'..','stylization')
         stylization_dir = os.path.join(sty_path, str(style_name))
@@ -273,3 +274,12 @@ class Main:
         else:
             order = 5
         return order
+
+    def checkLayers(self, layers):
+        ok_layers = []
+        for lay in layers:
+            if lay.type() == QgsMapLayerType.VectorLayer and lay.name() in correct_layers:
+                print(lay.name())
+                ok_layers.append(lay)
+
+        return ok_layers

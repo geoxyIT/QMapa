@@ -112,6 +112,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             load_gpkg(path)
             self.progressBar.setValue(40)
             self.vec_layers_list = Main().create_groups(path)
+            self.vec_layers_list = Main().checkLayers(self.vec_layers_list)
 
             order_list_new = correct_layers  # lista warstw zgodna z rozpo i w dobrej kolejnosci prezentowania
 
@@ -135,7 +136,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             Main().setStyling(self.vec_layers_list, current_style)
             self.progressBar.setValue(80)
 
-            self.set_labels()
+            self.set_labels(self.vec_layers_list)
             self.progressBar.setValue(90)
             scales = ['500', '1000']
             # obliczenie kreskowania dla skarp, sciany, schodow i wstawienie geometrii do atrybutow
@@ -160,7 +161,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         """ustaw stylizację wybraną w comboboxie"""
         current_style = self.cmbStylization.currentText()
         Main().setStyling(self.getLayers(), current_style)
-        self.set_labels()
+        self.set_labels(self.getLayers())
 
     def set_joins(self, vec_layers_list):
         """nadawanie joinow podczas importu pliku"""
@@ -289,16 +290,15 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         iface.mapCanvas().refreshAllLayers()
 
     def on_rbLaAuto_toggled(self):
-        self.set_labels()
+        self.set_labels(self.getLayers())
 
     def on_rbLaObKart_toggled(self):
-        self.set_labels()
+        self.set_labels(self.getLayers())
 
-    def set_labels(self):
+    def set_labels(self, layers):
         """Ustawienie wyswietlania etykiet"""
         expr_auto = '1'
-
-        layers = self.getLayers()
+        layers = Main().checkLayers(layers)
 
         # tylko automatyczne
         if self.rbLaAuto.isChecked() is True:
@@ -377,11 +377,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def getLayers(self):
         """pobierz listę warstw do symbolizacji i labelingu
         --pobieranie warstw w oparciu o warstwy w rozporzadzeniu"""
-        layers = []
         lays = iface.mapCanvas().layers()
-        for lay in lays:
-            if lay.type() == QgsMapLayerType.VectorLayer and lay.name() in correct_layers:
-                print(lay.name())
-                layers.append(lay)
+
+        layers = Main().checkLayers(lays)
 
         return layers
