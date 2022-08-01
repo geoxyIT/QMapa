@@ -4,6 +4,18 @@ import copy
 import re
 import cProfile
 
+class GMLIncorrect(Exception):
+    """Exception raised when gml is incorrect.
+    """
+
+    def __init__(self, namespace_xmlns, message = "\n Unrecognized xmlns in namespace-> \n Podany GML jest nieprawidlowy (niezgodny z modelem danych 2021)"):
+        #message = "\n Incorrect xmlns in namespace \n Podany GML jest nieprawidlowy"
+        self.namespace_xmlns = namespace_xmlns
+        self.message = message
+        super().__init__(self.message)
+
+    def __str__(self):
+        return f'\n{self.namespace_xmlns} -> {self.message}'
 
 class GmlModify:
     """Klasa sluzaca do modyfikacji wejsciowych plikow GML
@@ -120,7 +132,14 @@ class GmlModify:
         pref = pref_name
         list_appending = []
 
+        #sprawdzenie czy gml ma poprawne namespaces
+        try:
+            pref_tag_dict[pref]
+        except:
+            raise GMLIncorrect(pref)
+
         pref_tag = pref_tag_dict[pref]
+
         split_pref_0 = pref + 'geometria'
 
         split_pref_list = []
