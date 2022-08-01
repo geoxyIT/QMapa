@@ -279,7 +279,6 @@ class Main:
         ok_layers = []
         for lay in layers:
             if lay.type() == QgsMapLayerType.VectorLayer and lay.name() in correct_layers:
-                print(lay.name())
                 ok_layers.append(lay)
 
         return ok_layers
