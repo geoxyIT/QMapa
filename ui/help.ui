@@ -203,7 +203,7 @@
        <item row="9" column="1">
         <widget class="QLabel" name="label_23">
          <property name="text">
-          <string>2022.07.29</string>
+          <string>2022.08.01</string>
          </property>
         </widget>
        </item>
