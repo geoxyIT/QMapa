@@ -22,7 +22,7 @@ repository=https://github.com/geoxyIT/QMapa
 hasProcessingProvider=no
 
 changelog=
-	1.1.1 2022.07.29
+	1.1.1 2022.08.01
 	-Poprawa etykiet KARTO dla urzadzen liniowych
 	-Dodanie mozliwosci obslugi wtyczki z rastrowym podkladem mapowym
 	-Obsluga etykiet tylko dla warstw z rozporzadzenia
