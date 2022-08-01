@@ -27,8 +27,8 @@ def compare_versions(label, git_ver, loc_ver):
     """Porownywanie ze soba wersji github i lokalnej"""
     if git_ver > loc_ver:
         print('Twoja wersja jest nieaktualna!')
-        label.setText('Twoja wersja jest nieaktualna! Jeżeli w repozytorium wtyczek nie ma dostępnej aktualizacji,'
-                      ' to wtyczka oczekuje na akceptację przez zespół QGIS.') #wtyczka czeka na weryfikacje w repozytorium QGIS
+        label.setText('Twoja wersja jest nieaktualna! Jeżeli w repozytorium wtyczek nie ma nowszej wersji, '
+                      'to oznacza, że aktualizacja wtyczki oczekuje na akceptację zespołu QGIS.')
         pal = label.palette()
         pal.setColor(QPalette.Window, QColor("#FF0000"))
         pal.setColor(QPalette.WindowText, QColor("#FFFFFF"))
