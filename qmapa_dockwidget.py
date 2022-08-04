@@ -521,8 +521,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         expression_wers_color = "case when try(" + 'koniecObiekt' + ") is not null and " + set_color_Zamk + " then '" + color_Zamk + "' when try(" + 'koniecWersjaObiekt' + ")is not null and try(" + 'koniecObiekt' + ") is null and " + set_color_Arch + " then '" + color_Arch + "' when " + set_color_Akt + " then '" + color_Akt + "' else '0,100,100,255' end"
         expression_wers_show = "case when try(" + 'koniecObiekt' + ") is not null and " + vis_Zamk + " then 1 when try(" + 'koniecWersjaObiekt' + ")is not null and try(" + 'koniecObiekt' + ") is null and " + vis_Arch + " then 1 when " + vis_Akt + " then 1 else 0 end"
-        print(expression_wers_color)
-        print(expression_wers_show)
 
     def wyswStat(self):
         # BezZmian
