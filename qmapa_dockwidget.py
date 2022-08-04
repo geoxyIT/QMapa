@@ -72,6 +72,9 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.check_version()
 
         self.progressBar.hide()
+
+        self.wgWers.hide()
+        self.wgStat.hide()
         
     def closeEvent(self, event):
         self.closingPlugin.emit()
@@ -382,3 +385,206 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         layers = Main().checkLayers(lays)
 
         return layers
+
+    def on_chbWyswWg_stateChanged(self):
+        self.wyswWg()
+
+    def on_cbWysWg_currentTextChanged(self):
+        self.showSelected()
+
+
+    def on_chbShowAkt_stateChanged(self):
+        self.wyswWers()
+    def on_chbShowZamk_stateChanged(self):
+        self.wyswWers()
+    def on_chbShowArch_stateChanged(self):
+        self.wyswWers()
+
+    def on_chbColorAkt_stateChanged(self):
+        self.wyswWers()
+    def on_chbColorZamk_stateChanged(self):
+        self.wyswWers()
+    def on_chbColorArch_stateChanged(self):
+        self.wyswWers()
+
+    def on_colAkt_colorChanged(self):
+        self.wyswWers()
+    def on_colZamk_colorChanged(self):
+        self.wyswWers()
+    def on_colArch_colorChanged(self):
+        self.wyswWers()
+
+
+    def on_chbShowBezZm_stateChanged(self):
+        self.wyswStat()
+    def on_chbShowZmien_stateChanged(self):
+        self.wyswStat()
+    def on_chbShowNowe_stateChanged(self):
+        self.wyswStat()
+    def on_chbShowUsun_stateChanged(self):
+        self.wyswStat()
+
+    def on_chbColorBezZm_stateChanged(self):
+        self.wyswStat()
+    def on_chbColorZmien_stateChanged(self):
+        self.wyswStat()
+    def on_chbColorNowe_stateChanged(self):
+        self.wyswStat()
+    def on_chbColorUsun_stateChanged(self):
+        self.wyswStat()
+
+    def on_colorBezZm_stateChanged(self):
+        self.wyswStat()
+    def on_colorZmien_stateChanged(self):
+        self.wyswStat()
+    def on_colorNowe_stateChanged(self):
+        self.wyswStat()
+    def on_colorUsun_stateChanged(self):
+        self.wyswStat()
+
+
+
+    def wyswWg(self):
+        if self.chbWyswWg.isChecked():
+            self.cbWysWg.setEnabled(True)
+            self.showSelected()
+        else:
+            self.cbWysWg.setEnabled(False)
+            self.wgWers.hide()
+            self.wgStat.hide()
+
+    def showSelected(self):
+        if 'wersj' in self.cbWysWg.currentText():
+            self.wgWers.show()
+            self.wgStat.hide()
+        elif 'status' in self.cbWysWg.currentText():
+            self.wgWers.hide()
+            self.wgStat.show()
+
+    def wyswWers(self):
+        # Aktualne
+        if self.chbShowAkt.isChecked():
+            self.chbColorAkt.setEnabled(True)
+            vis_Akt = 'True'
+            if self.chbColorAkt.isChecked() is True:
+                self.colAkt.setEnabled(True)
+                color_Akt = ','.join([str(x) for x in self.colAkt.color().getRgb()])
+                set_color_Akt = 'True'
+            else:
+                self.colAkt.setEnabled(False)
+                set_color_Akt = 'False'
+                color_Akt = '0'
+        else:
+            set_color_Akt = 'False'
+            vis_Akt = 'False'
+            color_Akt = 'False'
+            self.chbColorAkt.setEnabled(False)
+            self.colAkt.setEnabled(False)
+
+        # Zamkniete
+        if self.chbShowZamk.isChecked():
+            self.chbColorZamk.setEnabled(True)
+            vis_Zamk = 'True'
+            if self.chbColorZamk.isChecked() is True:
+                self.colZamk.setEnabled(True)
+                color_Zamk = ','.join([str(x) for x in self.colZamk.color().getRgb()])
+                set_color_Zamk = 'True'
+            else:
+                self.colZamk.setEnabled(False)
+                set_color_Zamk = 'False'
+                color_Zamk = '0'
+        else:
+            set_color_Zamk = 'False'
+            vis_Zamk = 'False'
+            color_Zamk = '0'
+            self.chbColorZamk.setEnabled(False)
+            self.colZamk.setEnabled(False)
+
+        # Archiwalne
+        if self.chbShowArch.isChecked():
+            self.chbColorArch.setEnabled(True)
+            vis_Arch = 'True'
+            if self.chbColorArch.isChecked() is True:
+                self.colArch.setEnabled(True)
+                color_Arch = ','.join([str(x) for x in self.colArch.color().getRgb()])
+                set_color_Arch = 'True'
+            else:
+                self.colArch.setEnabled(False)
+                set_color_Arch = 'False'
+                color_Arch = '0'
+        else:
+            set_color_Arch = 'False'
+            vis_Arch = 'False'
+            color_Arch = '0'
+            self.chbColorArch.setEnabled(False)
+            self.colArch.setEnabled(False)
+
+        expression_wers_color = "case when try(" + 'koniecObiekt' + ") is not null and " + set_color_Zamk + " then '" + color_Zamk + "' when try(" + 'koniecWersjaObiekt' + ")is not null and try(" + 'koniecObiekt' + ") is null and " + set_color_Arch + " then '" + color_Arch + "' when " + set_color_Akt + " then '" + color_Akt + "' else '0,100,100,255' end"
+        expression_wers_show = "case when try(" + 'koniecObiekt' + ") is not null and " + vis_Zamk + " then 1 when try(" + 'koniecWersjaObiekt' + ")is not null and try(" + 'koniecObiekt' + ") is null and " + vis_Arch + " then 1 when " + vis_Akt + " then 1 else 0 end"
+        print(expression_wers_color)
+        print(expression_wers_show)
+
+    def wyswStat(self):
+        # BezZmian
+        if self.chbShowBezZm.isChecked():
+            self.chbColorBezZm.setEnabled(True)
+            vis_BezZm = 'True'
+            if self.chbColorBezZm.isChecked() is True:
+                self.colBezZm.setEnabled(True)
+                color_BezZm = ','.join([str(x) for x in self.colBezZm.color().getRgb()])
+            else:
+                self.colBezZm.setEnabled(False)
+                color_BezZm = '0'
+        else:
+            vis_BezZm = 'False'
+            color_BezZm = '0'
+            self.chbColorBezZm.setEnabled(False)
+            self.colBezZm.setEnabled(False)
+
+        # Nowe
+        if self.chbShowNowe.isChecked():
+            self.chbColorNowe.setEnabled(True)
+            vis_Nowe = 'True'
+            if self.chbColorNowe.isChecked() is True:
+                self.colNowe.setEnabled(True)
+                color_Nowe = ','.join([str(x) for x in self.colNowe.color().getRgb()])
+            else:
+                self.colNowe.setEnabled(False)
+                color_Nowe = '0'
+        else:
+            vis_Nowe = 'False'
+            color_Nowe = '0'
+            self.chbColorNowe.setEnabled(False)
+            self.colNowe.setEnabled(False)
+
+        # Zmienione
+        if self.chbShowZmien.isChecked():
+            self.chbColorZmien.setEnabled(True)
+            vis_Zmien = 'True'
+            if self.chbColorZmien.isChecked() is True:
+                self.colZmien.setEnabled(True)
+                color_Zmien = ','.join([str(x) for x in self.colZmien.color().getRgb()])
+            else:
+                self.colZmien.setEnabled(False)
+                color_Zmien = '0'
+        else:
+            vis_Zmien = 'False'
+            color_Zmien = '0'
+            self.chbColorZmien.setEnabled(False)
+            self.colZmien.setEnabled(False)
+
+        # Usuniete
+        if self.chbShowUsun.isChecked():
+            self.chbColorUsun.setEnabled(True)
+            vis_Usun = 'True'
+            if self.chbColorUsun.isChecked() is True:
+                self.colUsun.setEnabled(True)
+                color_Usun = ','.join([str(x) for x in self.colUsun.color().getRgb()])
+            else:
+                self.colUsun.setEnabled(False)
+                color_Usun = '0'
+        else:
+            vis_Usun = 'False'
+            color_Usun = '0'
+            self.chbColorUsun.setEnabled(False)
+            self.colUsun.setEnabled(False)
