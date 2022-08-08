@@ -433,13 +433,16 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def on_chbColorUsun_stateChanged(self):
         self.wyswStat()
 
-    def on_colorBezZm_stateChanged(self):
+    def on_colBezZm_colorChanged(self):
         self.wyswStat()
-    def on_colorZmien_stateChanged(self):
+    def on_colZmien_colorChanged(self):
         self.wyswStat()
-    def on_colorNowe_stateChanged(self):
+    def on_colNowe_colorChanged(self):
         self.wyswStat()
-    def on_colorUsun_stateChanged(self):
+    def on_colUsun_colorChanged(self):
+        self.wyswStat()
+
+    def on_dteStat_valueChanged(self):
         self.wyswStat()
 
 
@@ -452,14 +455,17 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             self.cbWysWg.setEnabled(False)
             self.wgWers.hide()
             self.wgStat.hide()
+            print('reset wysw')
 
     def showSelected(self):
         if 'wersj' in self.cbWysWg.currentText():
             self.wgWers.show()
             self.wgStat.hide()
+            self.wyswWers()
         elif 'status' in self.cbWysWg.currentText():
             self.wgWers.hide()
             self.wgStat.show()
+            self.wyswStat()
 
     def wyswWers(self):
         # Aktualne
@@ -522,6 +528,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         expression_wers_color = "case when try(" + 'koniecObiekt' + ") is not null and " + set_color_Zamk + " then '" + color_Zamk + "' when try(" + 'koniecWersjaObiekt' + ")is not null and try(" + 'koniecObiekt' + ") is null and " + set_color_Arch + " then '" + color_Arch + "' when " + set_color_Akt + " then '" + color_Akt + "' else '0,100,100,255' end"
         expression_wers_show = "case when try(" + 'koniecObiekt' + ") is not null and " + vis_Zamk + " then 1 when try(" + 'koniecWersjaObiekt' + ")is not null and try(" + 'koniecObiekt' + ") is null and " + vis_Arch + " then 1 when " + vis_Akt + " then 1 else 0 end"
 
+
     def wyswStat(self):
         # BezZmian
         if self.chbShowBezZm.isChecked():
@@ -529,11 +536,14 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             vis_BezZm = 'True'
             if self.chbColorBezZm.isChecked() is True:
                 self.colBezZm.setEnabled(True)
-                color_BezZm = ','.join([str(x) for x in self.colBezZm.color().getRgb()])
+                color_BezZm = "'" + ','.join([str(x) for x in self.colBezZm.color().getRgb()]) + "'"
+                set_color_BezZm = 'True'
             else:
                 self.colBezZm.setEnabled(False)
+                set_color_BezZm = 'False'
                 color_BezZm = '0'
         else:
+            set_color_BezZm = 'False'
             vis_BezZm = 'False'
             color_BezZm = '0'
             self.chbColorBezZm.setEnabled(False)
@@ -545,11 +555,14 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             vis_Nowe = 'True'
             if self.chbColorNowe.isChecked() is True:
                 self.colNowe.setEnabled(True)
-                color_Nowe = ','.join([str(x) for x in self.colNowe.color().getRgb()])
+                color_Nowe = "'" + ','.join([str(x) for x in self.colNowe.color().getRgb()]) + "'"
+                set_color_Nowe = 'True'
             else:
                 self.colNowe.setEnabled(False)
+                set_color_Nowe = 'False'
                 color_Nowe = '0'
         else:
+            set_color_Nowe = 'False'
             vis_Nowe = 'False'
             color_Nowe = '0'
             self.chbColorNowe.setEnabled(False)
@@ -561,11 +574,14 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             vis_Zmien = 'True'
             if self.chbColorZmien.isChecked() is True:
                 self.colZmien.setEnabled(True)
-                color_Zmien = ','.join([str(x) for x in self.colZmien.color().getRgb()])
+                color_Zmien = "'" + ','.join([str(x) for x in self.colZmien.color().getRgb()]) + "'"
+                set_color_Zmien = 'True'
             else:
                 self.colZmien.setEnabled(False)
+                set_color_Zmien = 'False'
                 color_Zmien = '0'
         else:
+            set_color_Zmien = 'False'
             vis_Zmien = 'False'
             color_Zmien = '0'
             self.chbColorZmien.setEnabled(False)
@@ -577,12 +593,23 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             vis_Usun = 'True'
             if self.chbColorUsun.isChecked() is True:
                 self.colUsun.setEnabled(True)
-                color_Usun = ','.join([str(x) for x in self.colUsun.color().getRgb()])
+                color_Usun = "'" + ','.join([str(x) for x in self.colUsun.color().getRgb()]) + "'"
+                set_color_Usun = 'True'
             else:
                 self.colUsun.setEnabled(False)
+                set_color_Usun = 'False'
                 color_Usun = '0'
         else:
+            set_color_Usun = 'False'
             vis_Usun = 'False'
             color_Usun = '0'
             self.chbColorUsun.setEnabled(False)
             self.colUsun.setEnabled(False)
+
+        date_to_compare = self.dteStat.dateTime().toString("yyyy.MM.dd hh:mm:ss")
+        date_to_compare_q = "'" + date_to_compare + "'"
+        #expr_recognize = case when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL then case when try("startObiekt") = try("startWersjaObiekt") and to_datetime(try("startObiekt")) > to_datetime('2022.08.04 16:34:42') then 'nowe' when try("startObiekt") < to_datetime('2022.08.04 16:34:42') and try("startWersjaObiekt") > to_datetime('2022.08.04 16:34:42') then 'zmienione' when try("startWersjaObiekt") < to_datetime('2022.08.04 16:34:42') then 'bez zmian' end when to_datetime(try("koniecObiekt")) > to_datetime('2022.08.04 16:34:42') then 'usuniete' end
+        #expr_stat = 'case when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") = try("startWersjaObiekt") and to_datetime(try("startObiekt")) > to_datetime('2015.08.04 16:34:42') and True then 'nowe' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") = try("startWersjaObiekt") and to_datetime(try("startObiekt")) > to_datetime('2015.08.04 16:34:42') and True then 'nowe' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") < to_datetime('2015.08.04 16:34:42') and try("startWersjaObiekt") > to_datetime('2022.08.04 16:34:42') and True then 'zmienione' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startWersjaObiekt") < to_datetime('2015.08.04 16:34:42') and True then 'bez zmian' when to_datetime(try("koniecObiekt")) > to_datetime('2015.08.04 16:34:42') and True then 'usuniete' else 'custom_expression' end'
+
+        expr_stat_color = 'case when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") = try("startWersjaObiekt") and to_datetime(try("startObiekt")) > to_datetime('+ date_to_compare_q +') and '+ set_color_Nowe +' then ' + color_Nowe +' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") < to_datetime('+ date_to_compare_q +') and try("startWersjaObiekt") > to_datetime('+ date_to_compare_q +') and '+ set_color_Zmien +' then '+ color_Zmien +' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startWersjaObiekt") < to_datetime('+ date_to_compare_q +') and '+ set_color_BezZm +' then '+ color_BezZm +' when to_datetime(try("koniecObiekt")) > to_datetime('+ date_to_compare_q +') and '+ set_color_Usun +' then '+ color_Usun +' else 1111 end'
+        expr_stat_show = 'case when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") = try("startWersjaObiekt") and to_datetime(try("startObiekt")) > to_datetime('+ date_to_compare_q +') then ' + vis_Nowe +' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") < to_datetime('+ date_to_compare_q +') and try("startWersjaObiekt") > to_datetime('+ date_to_compare_q +') then '+ vis_Zmien +' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startWersjaObiekt") < to_datetime('+ date_to_compare_q +') then '+ vis_BezZm +' when to_datetime(try("koniecObiekt")) > to_datetime('+ date_to_compare_q +') then '+ vis_Usun +' else 1111 end'
