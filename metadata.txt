@@ -5,7 +5,7 @@
 [general]
 name=QMapa GML 2021
 qgisMinimumVersion=3.24
-description=Wtyczka do programu QGIS służąca do wizualizacji mapy zasadniczej z plików GML obejmujących zbiory danych EGiB, GESUT i BDOT500 zgodnie ze standardami opublikowanymi w rozporządzeniu Ministra Rozwoju, Pracy i Technologii z dnia 23 lipca 2021 r. w sprawie bazy danych obiektów topograficznych oraz mapy zasadniczej.
+description=Wizualizacja mapy zasadniczej z plików GML obejmujących zbiory danych EGiB, GESUT i BDOT500.
 version=1.1.1
 author=GEOXY sp. z o.o. 
 email=qgis@geoxy.pl
@@ -22,26 +22,23 @@ repository=https://github.com/geoxyIT/QMapa
 hasProcessingProvider=no
 
 changelog=
+	1.2.0 2022.08.09
+	-
 	1.1.1 2022.08.01
-	-Dodanie obslugi bledu przy nieprawidlowym namespace w gml
-	-Poprawa etykietowania przy imporcie
-	-Poprawa etykiet KARTO dla urzadzen liniowych i towarzyszacych w gesut
-	-Poprawa symbolu dla bariery ochronnej
-	-Dodanie mozliwosci obslugi wtyczki z rastrowym podkladem mapowym
-	-Obsluga etykiet tylko dla warstw z rozporzadzenia
-	-Korekta UI o informowaniu o nieaktualnej wersji wtyczki 
+	-Dodanie obsługi błędu przy wczytywaniu pliku GML niezgodnego z rozporządzeniem 2021.
+	-Poprawa etykietowania podczas wykonywania importu.
+	-Poprawa etykiet KARTO dla urządzeń liniowych i towarzyszących w GESUT.
+	-Poprawa symbolu dla bariery ochronnej.
+	-Uwzględnienie rastrowych podkładów mapowych podczas wizualizacji.
+	-Obsluga etykiet tylko dla warstw zgodnych z rozporządzeniem 2021.
+	-Korekta interfejsu graficznego odnośnie informowania o nieaktualnej wersji wtyczki. 
 	1.1.0 2022.07.26
-	-Poprawa skarp w 1000
-	-Zmiana skarp i grobli analogicznie do skarp
-	-Poprawa blednych skarp
-	-Uproszczenie opisow w formatce
-	-Dodanie progressBar przy imporcie
-	-Generowanie kreskowania przy imporcie
-	-Poprawa sciezek do ui
-	-Uproszczenie wtyczki
-	-Poprawa bledu generowania skarp
+	-Dodanie paska postępu podczas wykonywania importu.
+	-Optymalizacja wyświetlania mapy.
+	-Uproszczenie interfejsu graficznego wtyczki.
+	-Poprawa błędnie generowanych skarp, grobli oraz wałów.
 	1.0.0 2022.07.21
-	-Utworzenie wtyczki QMapa
+	-Utworzenie wtyczki QMapa GML 2021.
 
 # Tags are comma separated with spaces allowed
 tags=gml, bdot, bdot500, egib, egb, gesut, mapa, zasadnicza, geoxy, 2021, import 
