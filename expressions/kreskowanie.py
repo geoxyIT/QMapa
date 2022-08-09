@@ -94,7 +94,8 @@ def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle = 90, 
             step2 = step_exp_2.evaluate(context)
             step = step1.collectGeometry([step1,step2])
             step_cut = step.intersection(parts_geom)
-            new_geom_list.append(step_cut)
+            if step_cut is not None and not step_cut.isEmpty():
+                new_geom_list.append(step_cut)
             spacing_sum += spacing
         prev_residue = part_length - (spacing_sum-spacing)
         
@@ -113,7 +114,7 @@ def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle = 90, 
             indiv_wkt = indiv.asWkt()
             cut_li_exp = QgsExpression("make_line(point_n(geom_from_wkt('"+indiv_wkt+"'),1),geom_from_wkt('"+point_mult_wkt+"'))")
             cut_li = cut_li_exp.evaluate(context)
-            if cut_li is not None:
+            if cut_li is not None and not cut_li.isEmpty():
                 cut_lines.append(cut_li)
         new_geom = point_mult.collectGeometry(cut_lines)
         
