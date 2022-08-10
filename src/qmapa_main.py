@@ -82,10 +82,8 @@ class Main:
                         context.setFeature(feature)
                         outText = expression.evaluate(context)
                         attribute_map.update({feature.id(): {field_index: outText}})
-                    print('iterowanie:', datetime.datetime.now() - start_iter)
                     start_dod = datetime.datetime.now()
                     layer.dataProvider().changeAttributeValues(attribute_map)
-                    print('dodanie:', datetime.datetime.now() - start_dod)
 
     def setStyling(self, layers, style_name):
         """ustawianie wybranej stylizacji dla wybranych warstw na mapie, z plików qml"""

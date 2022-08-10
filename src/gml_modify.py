@@ -130,7 +130,6 @@ class GmlModify:
                 added.tail = '\n'
 
     def extract_all(self, root, pref_name, pref_tag_dict, split_list):
-        start = datetime.datetime.now()
         pref = pref_name
         list_appending = []
 
@@ -234,7 +233,6 @@ class GmlModify:
 
         for child in list_appending:
             root.append(child)
-        print('calosc:', datetime.datetime.now() - start)
 
     def save_gml(self):
         """Zapis pliku wynikowego gml"""
