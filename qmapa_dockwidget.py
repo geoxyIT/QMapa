@@ -104,16 +104,21 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                                                 filter='gml (*.gml)')
 
         if name != '':
+            start_2 = datetime.now()
             self.progressBar.show()
             self.progressBar.setValue(1)
             self.gml_mod = GmlModify(name)
             self.progressBar.setValue(10)
+            print('czas 10%:', datetime.now() - start_2)
             self.gml_mod.run()
             self.progressBar.setValue(20)
+            print('czas 20%:', datetime.now() - start_2)
             _, path = Main().gml2gpkg(self.gml_mod.output_path)
             self.progressBar.setValue(30)
+            print('czas 30%:', datetime.now() - start_2)
             load_gpkg(path)
             self.progressBar.setValue(40)
+            print('czas 40%:', datetime.now() - start_2)
             self.vec_layers_list = Main().create_groups(path)
             self.vec_layers_list = Main().checkLayers(self.vec_layers_list)
 
@@ -122,10 +127,12 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             # ustalenie nowej kolejnosci
             set_new_order(order_list_new)
             self.progressBar.setValue(50)
+            print('czas 50%:', datetime.now() - start_2)
 
             # nadanie zlaczen
             self.set_joins(self.vec_layers_list)
             self.progressBar.setValue(60)
+            print('czas 60%:', datetime.now() - start_2)
 
             # usuniecie pliku
             try:
@@ -133,14 +140,17 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             except:
                 print("Problem z usunieciem pliku modyfikowanego gml")
             self.progressBar.setValue(70)
+            print('czas 70%:', datetime.now() - start_2)
 
             # nadanie stylizacji
             current_style = self.cmbStylization.currentText()
             Main().setStyling(self.vec_layers_list, current_style)
             self.progressBar.setValue(80)
+            print('czas 80%:', datetime.now() - start_2)
 
             self.set_labels(self.vec_layers_list)
             self.progressBar.setValue(90)
+            print('czas 90%:', datetime.now() - start_2)
             scales = ['500', '1000']
             # obliczenie kreskowania dla skarp, sciany, schodow i wstawienie geometrii do atrybutow
             nr = 0
@@ -157,6 +167,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                     elif 'wody' in lay.name().lower():
                         Main().calculate_hatching(lay, 'wody', sc)
             self.progressBar.setValue(100)
+            print('czas 100%:', datetime.now() - start_2)
             self.progressBar.hide()
 
 
@@ -525,9 +536,9 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             self.chbColorArch.setEnabled(False)
             self.colArch.setEnabled(False)
 
-        expression_wers_color = "case when try(" + 'koniecObiekt' + ") is not null and " + set_color_Zamk + " then '" + color_Zamk + "' when try(" + 'koniecWersjaObiekt' + ")is not null and try(" + 'koniecObiekt' + ") is null and " + set_color_Arch + " then '" + color_Arch + "' when " + set_color_Akt + " then '" + color_Akt + "' else '0,100,100,255' end"
-        expression_wers_show = "case when try(" + 'koniecObiekt' + ") is not null and " + vis_Zamk + " then 1 when try(" + 'koniecWersjaObiekt' + ")is not null and try(" + 'koniecObiekt' + ") is null and " + vis_Arch + " then 1 when " + vis_Akt + " then 1 else 0 end"
-
+        expression_wers_color = "case when try(" + 'koniecObiekt' + ") is not null and " + set_color_Zamk + " then '" + color_Zamk + "' when try(" + 'koniecWersjaObiekt' + ")is not null and try(" + 'koniecObiekt' + ") is null and " + set_color_Arch + " then '" + color_Arch + "' when " + set_color_Akt + " then '" + color_Akt + "' else 1111 end"
+        #expression_wers_show = "case when try(" + 'koniecObiekt' + ") is not null and " + vis_Zamk + " then 1 when try(" + 'koniecWersjaObiekt' + ")is not null and try(" + 'koniecObiekt' + ") is null and " + vis_Arch + " then 1 when " + vis_Akt + " then 1 else 0 end"
+        expression_wers_show = "case when (try(" + 'koniecObiekt' + ") is not null and " + vis_Zamk + ") or (try(" + 'koniecWersjaObiekt' + ")is not null and try(" + 'koniecObiekt' + ") is null and " + vis_Arch + ") or (try(" + 'koniecWersjaObiekt' + ")is null and try(" + 'koniecObiekt' + ") is null and " + vis_Akt + ") then 1111 else 0 end"
 
     def wyswStat(self):
         # BezZmian
@@ -612,4 +623,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         #expr_stat = 'case when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") = try("startWersjaObiekt") and to_datetime(try("startObiekt")) > to_datetime('2015.08.04 16:34:42') and True then 'nowe' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") = try("startWersjaObiekt") and to_datetime(try("startObiekt")) > to_datetime('2015.08.04 16:34:42') and True then 'nowe' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") < to_datetime('2015.08.04 16:34:42') and try("startWersjaObiekt") > to_datetime('2022.08.04 16:34:42') and True then 'zmienione' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startWersjaObiekt") < to_datetime('2015.08.04 16:34:42') and True then 'bez zmian' when to_datetime(try("koniecObiekt")) > to_datetime('2015.08.04 16:34:42') and True then 'usuniete' else 'custom_expression' end'
 
         expr_stat_color = 'case when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") = try("startWersjaObiekt") and to_datetime(try("startObiekt")) > to_datetime('+ date_to_compare_q +') and '+ set_color_Nowe +' then ' + color_Nowe +' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") < to_datetime('+ date_to_compare_q +') and try("startWersjaObiekt") > to_datetime('+ date_to_compare_q +') and '+ set_color_Zmien +' then '+ color_Zmien +' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startWersjaObiekt") < to_datetime('+ date_to_compare_q +') and '+ set_color_BezZm +' then '+ color_BezZm +' when to_datetime(try("koniecObiekt")) > to_datetime('+ date_to_compare_q +') and '+ set_color_Usun +' then '+ color_Usun +' else 1111 end'
-        expr_stat_show = 'case when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") = try("startWersjaObiekt") and to_datetime(try("startObiekt")) > to_datetime('+ date_to_compare_q +') then ' + vis_Nowe +' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") < to_datetime('+ date_to_compare_q +') and try("startWersjaObiekt") > to_datetime('+ date_to_compare_q +') then '+ vis_Zmien +' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startWersjaObiekt") < to_datetime('+ date_to_compare_q +') then '+ vis_BezZm +' when to_datetime(try("koniecObiekt")) > to_datetime('+ date_to_compare_q +') then '+ vis_Usun +' else 1111 end'
+        #expr_stat_show = 'case when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") = try("startWersjaObiekt") and to_datetime(try("startObiekt")) > to_datetime('+ date_to_compare_q +') then ' + vis_Nowe +' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") < to_datetime('+ date_to_compare_q +') and try("startWersjaObiekt") > to_datetime('+ date_to_compare_q +') then '+ vis_Zmien +' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startWersjaObiekt") < to_datetime('+ date_to_compare_q +') then '+ vis_BezZm +' when to_datetime(try("koniecObiekt")) > to_datetime('+ date_to_compare_q +') then '+ vis_Usun +' else 1111 end'
+        expr_stat_show = 'case when (try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") = try("startWersjaObiekt") and to_datetime(try("startObiekt")) > to_datetime('+ date_to_compare_q +') and ' + vis_Nowe +') or (try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") < to_datetime('+ date_to_compare_q +') and try("startWersjaObiekt") > to_datetime('+ date_to_compare_q +') and '+ vis_Zmien +') or (try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startWersjaObiekt") < to_datetime('+ date_to_compare_q +') and '+ vis_BezZm +') or (to_datetime(try("koniecObiekt")) > to_datetime('+ date_to_compare_q +') and '+ vis_Usun +') then 111 else 0 end'
+

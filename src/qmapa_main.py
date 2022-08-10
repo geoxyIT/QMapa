@@ -1,3 +1,4 @@
+import datetime
 import os
 
 from qgis.PyQt.QtCore import QVariant
@@ -19,8 +20,6 @@ class Main:
         """funkcja przelicza kreskowanie i wstawia ta geometrie w formacie wkt do atrybutow
         type: 'skarpa' or 'schody' or 'sciana' or 'wody' """
         expression = None
-        layer.startEditing()
-        layer.commitChanges()
         if type.lower() == 'skarpa' or type.lower() == 'wody':
             if scale == '500':
                 expression = QgsExpression("geom_to_wkt( try(collect_geometries(kreskowanie(skarpy($geometry, geometry(get_feature('OT_poczatekGorySkarpy',  'gml_id' , " + '"gml_id"' +"  )),geometry(get_feature('OT_koniecGorySkarpy',  'gml_id' , " + '"gml_id"' + " )),'top'),buffer($geometry,0.001), $area / ($perimeter/4), 50, 90,0,1),kreskowanie(skarpy($geometry, geometry(get_feature('OT_poczatekGorySkarpy',  'gml_id' , " + '"gml_id"' + "  )),geometry(get_feature('OT_koniecGorySkarpy',  'gml_id' , " + '"gml_id"' + "  )),'top'),buffer($geometry,0.001), $area / ($perimeter/4), 50, 90, $area / ($perimeter/2),0.5))))")
@@ -42,37 +41,51 @@ class Main:
             column_name = 'obliczona_geometria' + '_' + scale
             # rozpoczecie edycji warstwy
             features = []
-            #features = layer.getFeatures()
             if 'egb_obiekttrwale' in layer.name().lower():
-                features = layer.getFeatures(QgsFeatureRequest().setFilterExpression('"rodzajobiektuzwiazanegozbudynkiem"=\'s\''))
+                features = layer.getFeatures(
+                    QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajobiektuzwiazanegozbudynkiem', column_name],
+                                                              layer.fields()).setFilterExpression(
+                        '"rodzajobiektuzwiazanegozbudynkiem"=\'s\''))
             elif 'ot_obiekttrwale' in layer.name().lower():
-                features = layer.getFeatures(QgsFeatureRequest().setFilterExpression('"rodzajobiektu"=\'s\''))
+                features = layer.getFeatures(QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajobiektu', column_name],
+                                                                                       layer.fields()).setFilterExpression(
+                    '"rodzajobiektu"=\'s\''))
             elif 'ot_skarpa' in layer.name().lower():
-                features = layer.getFeatures()
+                features = layer.getFeatures(QgsFeatureRequest().setSubsetOfAttributes(['gml_id', column_name],
+                                                                                       layer.fields()))
             elif 'ot_budowle' in layer.name().lower():
-                features = layer.getFeatures(QgsFeatureRequest().setFilterExpression('"rodzajbudowli"=\'n\''))
+                features = layer.getFeatures(QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajbudowli', column_name],
+                                                                                       layer.fields()).setFilterExpression(
+                    '"rodzajbudowli"=\'n\''))
             elif 'ot_wody' in layer.name().lower():
-                features = layer.getFeatures(QgsFeatureRequest().setFilterExpression('"rodzajobiektu"=\'w\' or "rodzajobiektu"=\'g\''))
-
+                features = layer.getFeatures(
+                    QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajobiektu', 'rodzajobiektu', column_name],
+                                                              layer.fields()).setFilterExpression(
+                        '"rodzajobiektu"=\'w\' or "rodzajobiektu"=\'g\''))
 
             if features != []:
-                layer.startEditing()
                 context = QgsExpressionContext()
                 context.appendScopes(QgsExpressionContextUtils.globalProjectLayerScopes(layer))
 
-                if column_name not in layer.fields().names():
-                    variant = QVariant.String
-                    geom_kr_field = QgsField(column_name, variant)
-                    layer.addAttribute(geom_kr_field)
+                field_index = layer.fields().indexFromName(column_name)
+                if field_index == -1:
+                    field = QgsField(column_name, QVariant.String)
+                    layer.dataProvider().addAttributes([field])
+                    layer.updateFields()
 
-                fieldIndex = layer.fields().indexFromName(column_name)
-                for feature in features:
-                    context.setFeature(feature)
-                    outText = expression.evaluate(context)
-                    layer.changeAttributeValue(feature.id(), fieldIndex, outText)
+                field_index = layer.fields().indexFromName(column_name)
+                attribute_map = {}
 
-                # zapisanie zmian
-                layer.commitChanges()
+                if field_index >= 0:
+                    start_iter = datetime.datetime.now()
+                    for feature in features:
+                        context.setFeature(feature)
+                        outText = expression.evaluate(context)
+                        attribute_map.update({feature.id(): {field_index: outText}})
+                    print('iterowanie:', datetime.datetime.now() - start_iter)
+                    start_dod = datetime.datetime.now()
+                    layer.dataProvider().changeAttributeValues(attribute_map)
+                    print('dodanie:', datetime.datetime.now() - start_dod)
 
     def setStyling(self, layers, style_name):
         """ustawianie wybranej stylizacji dla wybranych warstw na mapie, z plików qml"""
