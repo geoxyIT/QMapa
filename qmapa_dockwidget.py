@@ -166,6 +166,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                         Main().calculate_hatching(lay, 'sciana', sc)
                     elif 'wody' in lay.name().lower():
                         Main().calculate_hatching(lay, 'wody', sc)
+                    elif 'ges_rzedna' in lay.name().lower() and sc == '500':
+                        Main().calculate_colors(lay, 'color')
             self.progressBar.setValue(100)
             print('czas 100%:', datetime.now() - start_2)
             self.progressBar.hide()
@@ -303,10 +305,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                     layer.addExpressionField('$y', field2)
         iface.mapCanvas().refreshAllLayers()
 
-    def on_rbLaAuto_toggled(self):
-        self.set_labels(self.getLayers())
-
-    def on_rbLaObKart_toggled(self):
+    def on_cmbReda_currentTextChanged(self):
         self.set_labels(self.getLayers())
 
     def set_labels(self, layers):
@@ -315,7 +314,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         layers = Main().checkLayers(layers)
 
         # tylko automatyczne
-        if self.rbLaAuto.isChecked() is True:
+        if 'auto' in self.cmbReda.currentText().lower():
             for layer in layers:
                 labeling = layer.labeling()
                 if labeling != None:
@@ -346,7 +345,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                                 settings.dataDefinedProperties().property(15).setExpressionString(expr_auto)
                                 settings.dataDefinedProperties().property(15).setActive(True)
         # tylko z prezentacji graficznej
-        elif self.rbLaObKart.isChecked() is True:
+        if 'karto' in self.cmbReda.currentText().lower():
             for layer in layers:
                 labeling = layer.labeling()
                 if labeling != None:
@@ -469,11 +468,11 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             print('reset wysw')
 
     def showSelected(self):
-        if 'wersj' in self.cbWysWg.currentText():
+        if 'wersj' in self.cbWysWg.currentText().lower():
             self.wgWers.show()
             self.wgStat.hide()
             self.wyswWers()
-        elif 'status' in self.cbWysWg.currentText():
+        elif 'zmian' in self.cbWysWg.currentText().lower():
             self.wgWers.hide()
             self.wgStat.show()
             self.wyswStat()
