@@ -141,7 +141,7 @@ class Main:
         attribute_map = {}
         expression = QgsExpression(expr_raw)
         request = QgsFeatureRequest().setFlags(
-            QgsFeatureRequest.NoGeometry).setSubsetOfAttributes(['gml_id'], layer.fields())
+            QgsFeatureRequest.NoGeometry)
         print('czas kolorku 1', datetime.datetime.now() - start)
         features = layer.getFeatures(request)
         print('czas kolorku 2', datetime.datetime.now() - start)

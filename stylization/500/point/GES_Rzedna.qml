@@ -1,48 +1,48 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis hasScaleBasedVisibilityFlag="0" simplifyDrawingHints="0" version="3.24.0-Tisler" styleCategories="AllStyleCategories" simplifyLocal="1" simplifyAlgorithm="0" labelsEnabled="1" simplifyMaxScale="1" maxScale="0" simplifyDrawingTol="1" minScale="100000000" symbologyReferenceScale="-1" readOnly="0">
+<qgis maxScale="0" simplifyDrawingTol="1" hasScaleBasedVisibilityFlag="0" simplifyDrawingHints="0" symbologyReferenceScale="-1" version="3.24.0-Tisler" styleCategories="AllStyleCategories" minScale="100000000" labelsEnabled="1" readOnly="0" simplifyAlgorithm="0" simplifyMaxScale="1" simplifyLocal="1">
   <flags>
     <Identifiable>1</Identifiable>
     <Removable>1</Removable>
     <Searchable>1</Searchable>
     <Private>0</Private>
   </flags>
-  <temporal startField="" accumulate="0" endField="" fixedDuration="0" startExpression="" durationUnit="min" enabled="0" endExpression="" limitMode="0" durationField="" mode="0">
+  <temporal limitMode="0" endField="" startExpression="" durationUnit="min" accumulate="0" enabled="0" mode="0" fixedDuration="0" durationField="" startField="" endExpression="">
     <fixedRange>
       <start></start>
       <end></end>
     </fixedRange>
   </temporal>
-  <renderer-v2 type="singleSymbol" enableorderby="0" referencescale="-1" forceraster="0" symbollevels="0">
+  <renderer-v2 referencescale="-1" symbollevels="0" enableorderby="0" forceraster="0" type="singleSymbol">
     <symbols>
-      <symbol type="marker" name="0" alpha="1" clip_to_extent="1" force_rhr="0">
+      <symbol clip_to_extent="1" name="0" alpha="1" type="marker" force_rhr="0">
         <data_defined_properties>
           <Option type="Map">
-            <Option type="QString" name="name" value=""/>
+            <Option name="name" type="QString" value=""/>
             <Option name="properties"/>
-            <Option type="QString" name="type" value="collection"/>
+            <Option name="type" type="QString" value="collection"/>
           </Option>
         </data_defined_properties>
-        <layer class="SimpleMarker" locked="0" pass="0" enabled="1">
+        <layer locked="0" pass="0" enabled="1" class="SimpleMarker">
           <Option type="Map">
-            <Option type="QString" name="angle" value="0"/>
-            <Option type="QString" name="cap_style" value="round"/>
-            <Option type="QString" name="color" value="0,0,0,255"/>
-            <Option type="QString" name="horizontal_anchor_point" value="1"/>
-            <Option type="QString" name="joinstyle" value="round"/>
-            <Option type="QString" name="name" value="circle"/>
-            <Option type="QString" name="offset" value="0,0"/>
-            <Option type="QString" name="offset_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-            <Option type="QString" name="offset_unit" value="MM"/>
-            <Option type="QString" name="outline_color" value="35,35,35,0"/>
-            <Option type="QString" name="outline_style" value="solid"/>
-            <Option type="QString" name="outline_width" value="0"/>
-            <Option type="QString" name="outline_width_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-            <Option type="QString" name="outline_width_unit" value="MM"/>
-            <Option type="QString" name="scale_method" value="diameter"/>
-            <Option type="QString" name="size" value="0.09"/>
-            <Option type="QString" name="size_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-            <Option type="QString" name="size_unit" value="MapUnit"/>
-            <Option type="QString" name="vertical_anchor_point" value="1"/>
+            <Option name="angle" type="QString" value="0"/>
+            <Option name="cap_style" type="QString" value="round"/>
+            <Option name="color" type="QString" value="0,0,0,255"/>
+            <Option name="horizontal_anchor_point" type="QString" value="1"/>
+            <Option name="joinstyle" type="QString" value="round"/>
+            <Option name="name" type="QString" value="circle"/>
+            <Option name="offset" type="QString" value="0,0"/>
+            <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+            <Option name="offset_unit" type="QString" value="MM"/>
+            <Option name="outline_color" type="QString" value="35,35,35,0"/>
+            <Option name="outline_style" type="QString" value="solid"/>
+            <Option name="outline_width" type="QString" value="0"/>
+            <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+            <Option name="outline_width_unit" type="QString" value="MM"/>
+            <Option name="scale_method" type="QString" value="diameter"/>
+            <Option name="size" type="QString" value="0.09"/>
+            <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+            <Option name="size_unit" type="QString" value="MapUnit"/>
+            <Option name="vertical_anchor_point" type="QString" value="1"/>
           </Option>
           <prop k="angle" v="0"/>
           <prop k="cap_style" v="round"/>
@@ -65,20 +65,20 @@
           <prop k="vertical_anchor_point" v="1"/>
           <data_defined_properties>
             <Option type="Map">
-              <Option type="QString" name="name" value=""/>
-              <Option type="Map" name="properties">
-                <Option type="Map" name="enabled">
-                  <Option type="bool" name="active" value="true"/>
-                  <Option name="val" type="QString" value=""/>
-                  <Option type="int" name="type" value="3"/>
+              <Option name="name" type="QString" value=""/>
+              <Option name="properties" type="Map">
+                <Option name="enabled" type="Map">
+                  <Option name="active" type="bool" value="false"/>
+                  <Option name="expression" type="QString" value=""/>
+                  <Option name="type" type="int" value="3"/>
                 </Option>
-                <Option type="Map" name="fillColor">
-                  <Option type="bool" name="active" value="true"/>
-                  <Option type="QString" name="expression" value="case &#xd;&#xa;when try(&quot;koniecObiekt&quot;) is not null and   3 = 1&#xd;&#xa;then&#xd;&#xa; '0,0,0,255'&#xd;&#xa;when try(&quot;koniecWersjaObiekt&quot;)is not null and try(&quot;koniecObiekt&quot;) is null and   3 = 1&#xd;&#xa;then&#xd;&#xa; '0,0,0,255'&#xd;&#xa;when   3 = 1&#xd;&#xa;then&#xd;&#xa; '0,0,0,255'&#xd;&#xa;else&#xd;&#xa;case &#xd;&#xa;when &#xd;&#xa;try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), ',')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), ',')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), ',')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), ','))&#xd;&#xa;then&#xd;&#xa;'0,0,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodWodociagowy_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecWodociagowa_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecWodociagowa_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecWodociagowa_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'w')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'w')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'w')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'w'))&#xd;&#xa;then&#xd;&#xa;'0,0,255,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodKanalizacyjny_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'k')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'k')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'k')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'k'))&#xd;&#xa;then&#xd;&#xa;'128,51,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodElektroenergetyczny_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecElektroenergetyczna_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'e')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'e')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'e')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'e'))&#xd;&#xa;then&#xd;&#xa;'255,0,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodGazowy_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecGazowa_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecGazowa_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecGazowa_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'g')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'g')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'g')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'g'))&#xd;&#xa;then&#xd;&#xa;'191,191,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodCieplowniczy_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecCieplownicza_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecCieplownicza_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecCieplownicza_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'c')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'c')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'c')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'c'))&#xd;&#xa;then&#xd;&#xa;'210,0,210,255'&#xd;&#xa;when&#xd;&#xa;try((&quot;GES_PrzewodTelekomunikacyjny_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecTelekomunikacyjna_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecTelekomunikacyjna_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 't')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 't')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 't')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 't'))&#xd;&#xa;then&#xd;&#xa;'255,145,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodSpecjalny_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecSpecjalna_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecSpecjalna_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecSpecjalna_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 's')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 's')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 's')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 's'))&#xd;&#xa;then&#xd;&#xa;'0,0,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodNiezidentyfikowany_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecNiezidentyfikowana_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecNiezidentyfikowana_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecNiezidentyfikowana_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'x')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'x')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'x')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'x'))&#xd;&#xa;then&#xd;&#xa;'0,0,0,255'&#xd;&#xa;else&#xd;&#xa;'0,0,0,255'&#xd;&#xa;end&#xd;&#xa;end"/>
-                  <Option type="int" name="type" value="3"/>
+                <Option name="fillColor" type="Map">
+                  <Option name="active" type="bool" value="true"/>
+                  <Option name="expression" type="QString" value="&quot;color&quot;"/>
+                  <Option name="type" type="int" value="3"/>
                 </Option>
               </Option>
-              <Option type="QString" name="type" value="collection"/>
+              <Option name="type" type="QString" value="collection"/>
             </Option>
           </data_defined_properties>
         </layer>
@@ -88,43 +88,43 @@
     <sizescale/>
   </renderer-v2>
   <labeling type="rule-based">
-    <rules key="{992a7fa7-c4c9-4d81-b3d7-5d99090dbc04}">
-      <rule key="{1c4040ef-e073-419e-821e-a9a6e8c0c8e0}" filter=" try(&quot;rzedna&quot;) is not null" description="rzedna">
+    <rules key="{40d7649d-368e-4a18-840d-65ceca156f28}">
+      <rule key="{f171014d-3c43-4a09-9c74-0d2aa873c923}" filter=" try(&quot;rzedna&quot;) is not null" description="rzedna">
         <settings calloutType="simple">
-          <text-style fontSize="1.0417000000000001" blendMode="0" fontWeight="50" fontWordSpacing="0" textOpacity="1" legendString="Aa" fieldName="format_number(&quot;rzedna&quot;,2,'en')" isExpression="1" fontUnderline="0" fontItalic="0" namedStyle="Normal" capitalization="0" fontLetterSpacing="0" textOrientation="horizontal" fontKerning="1" fontSizeUnit="MapUnit" fontStrikeout="0" allowHtml="0" useSubstitutions="0" textColor="0,0,0,255" fontSizeMapUnitScale="3x:0,0,0,0,0,0" previewBkgrdColor="255,255,255,255" multilineHeight="1" fontFamily="Arial">
+          <text-style fontWordSpacing="0" blendMode="0" allowHtml="0" fontSizeUnit="MapUnit" useSubstitutions="0" fontLetterSpacing="0" fontWeight="50" fontSize="1.0417000000000001" legendString="Aa" textOrientation="horizontal" fontSizeMapUnitScale="3x:0,0,0,0,0,0" fontKerning="1" capitalization="0" textColor="0,0,0,255" textOpacity="1" fontUnderline="0" isExpression="1" previewBkgrdColor="255,255,255,255" namedStyle="Normal" fontStrikeout="0" fontItalic="0" multilineHeight="1" fontFamily="Arial" fieldName="format_number(&quot;rzedna&quot;,2,'en')">
             <families/>
-            <text-buffer bufferDraw="0" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferSizeUnits="MM" bufferSize="1" bufferOpacity="1" bufferJoinStyle="128" bufferNoFill="1" bufferColor="255,255,255,255" bufferBlendMode="0"/>
-            <text-mask maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskJoinStyle="128" maskedSymbolLayers="" maskSizeUnits="MM" maskEnabled="0" maskType="0" maskOpacity="1" maskSize="1.5"/>
-            <background shapeSizeUnit="MM" shapeJoinStyle="64" shapeOffsetY="0" shapeRadiiMapUnitScale="3x:0,0,0,0,0,0" shapeSizeY="0" shapeBlendMode="0" shapeOffsetX="0" shapeSizeType="0" shapeRadiiY="0" shapeSizeMapUnitScale="3x:0,0,0,0,0,0" shapeOffsetUnit="MM" shapeBorderWidthMapUnitScale="3x:0,0,0,0,0,0" shapeOpacity="1" shapeSizeX="0" shapeRadiiX="0" shapeType="0" shapeRadiiUnit="MM" shapeRotationType="0" shapeBorderColor="128,128,128,255" shapeDraw="0" shapeBorderWidthUnit="MM" shapeRotation="0" shapeOffsetMapUnitScale="3x:0,0,0,0,0,0" shapeFillColor="255,255,255,255" shapeBorderWidth="0" shapeSVGFile="">
-              <symbol type="marker" name="markerSymbol" alpha="1" clip_to_extent="1" force_rhr="0">
+            <text-buffer bufferDraw="0" bufferSize="1" bufferJoinStyle="128" bufferSizeUnits="MM" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferNoFill="1" bufferColor="255,255,255,255" bufferOpacity="1" bufferBlendMode="0"/>
+            <text-mask maskEnabled="0" maskedSymbolLayers="" maskSizeUnits="MM" maskOpacity="1" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskType="0" maskSize="1.5" maskJoinStyle="128"/>
+            <background shapeRadiiX="0" shapeRadiiY="0" shapeFillColor="255,255,255,255" shapeBlendMode="0" shapeBorderWidthUnit="MM" shapeRadiiUnit="MM" shapeBorderColor="128,128,128,255" shapeJoinStyle="64" shapeRotationType="0" shapeSizeMapUnitScale="3x:0,0,0,0,0,0" shapeOffsetMapUnitScale="3x:0,0,0,0,0,0" shapeSizeX="0" shapeOffsetX="0" shapeOpacity="1" shapeOffsetY="0" shapeSizeUnit="MM" shapeBorderWidthMapUnitScale="3x:0,0,0,0,0,0" shapeBorderWidth="0" shapeDraw="0" shapeSizeType="0" shapeRadiiMapUnitScale="3x:0,0,0,0,0,0" shapeSizeY="0" shapeSVGFile="" shapeRotation="0" shapeOffsetUnit="MM" shapeType="0">
+              <symbol clip_to_extent="1" name="markerSymbol" alpha="1" type="marker" force_rhr="0">
                 <data_defined_properties>
                   <Option type="Map">
-                    <Option type="QString" name="name" value=""/>
+                    <Option name="name" type="QString" value=""/>
                     <Option name="properties"/>
-                    <Option type="QString" name="type" value="collection"/>
+                    <Option name="type" type="QString" value="collection"/>
                   </Option>
                 </data_defined_properties>
-                <layer class="SimpleMarker" locked="0" pass="0" enabled="1">
+                <layer locked="0" pass="0" enabled="1" class="SimpleMarker">
                   <Option type="Map">
-                    <Option type="QString" name="angle" value="0"/>
-                    <Option type="QString" name="cap_style" value="square"/>
-                    <Option type="QString" name="color" value="133,182,111,255"/>
-                    <Option type="QString" name="horizontal_anchor_point" value="1"/>
-                    <Option type="QString" name="joinstyle" value="bevel"/>
-                    <Option type="QString" name="name" value="circle"/>
-                    <Option type="QString" name="offset" value="0,0"/>
-                    <Option type="QString" name="offset_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-                    <Option type="QString" name="offset_unit" value="MM"/>
-                    <Option type="QString" name="outline_color" value="35,35,35,255"/>
-                    <Option type="QString" name="outline_style" value="solid"/>
-                    <Option type="QString" name="outline_width" value="0"/>
-                    <Option type="QString" name="outline_width_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-                    <Option type="QString" name="outline_width_unit" value="MM"/>
-                    <Option type="QString" name="scale_method" value="diameter"/>
-                    <Option type="QString" name="size" value="2"/>
-                    <Option type="QString" name="size_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-                    <Option type="QString" name="size_unit" value="MM"/>
-                    <Option type="QString" name="vertical_anchor_point" value="1"/>
+                    <Option name="angle" type="QString" value="0"/>
+                    <Option name="cap_style" type="QString" value="square"/>
+                    <Option name="color" type="QString" value="133,182,111,255"/>
+                    <Option name="horizontal_anchor_point" type="QString" value="1"/>
+                    <Option name="joinstyle" type="QString" value="bevel"/>
+                    <Option name="name" type="QString" value="circle"/>
+                    <Option name="offset" type="QString" value="0,0"/>
+                    <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+                    <Option name="offset_unit" type="QString" value="MM"/>
+                    <Option name="outline_color" type="QString" value="35,35,35,255"/>
+                    <Option name="outline_style" type="QString" value="solid"/>
+                    <Option name="outline_width" type="QString" value="0"/>
+                    <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+                    <Option name="outline_width_unit" type="QString" value="MM"/>
+                    <Option name="scale_method" type="QString" value="diameter"/>
+                    <Option name="size" type="QString" value="2"/>
+                    <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+                    <Option name="size_unit" type="QString" value="MM"/>
+                    <Option name="vertical_anchor_point" type="QString" value="1"/>
                   </Option>
                   <prop k="angle" v="0"/>
                   <prop k="cap_style" v="square"/>
@@ -147,34 +147,34 @@
                   <prop k="vertical_anchor_point" v="1"/>
                   <data_defined_properties>
                     <Option type="Map">
-                      <Option type="QString" name="name" value=""/>
+                      <Option name="name" type="QString" value=""/>
                       <Option name="properties"/>
-                      <Option type="QString" name="type" value="collection"/>
+                      <Option name="type" type="QString" value="collection"/>
                     </Option>
                   </data_defined_properties>
                 </layer>
               </symbol>
-              <symbol type="fill" name="fillSymbol" alpha="1" clip_to_extent="1" force_rhr="0">
+              <symbol clip_to_extent="1" name="fillSymbol" alpha="1" type="fill" force_rhr="0">
                 <data_defined_properties>
                   <Option type="Map">
-                    <Option type="QString" name="name" value=""/>
+                    <Option name="name" type="QString" value=""/>
                     <Option name="properties"/>
-                    <Option type="QString" name="type" value="collection"/>
+                    <Option name="type" type="QString" value="collection"/>
                   </Option>
                 </data_defined_properties>
-                <layer class="SimpleFill" locked="0" pass="0" enabled="1">
+                <layer locked="0" pass="0" enabled="1" class="SimpleFill">
                   <Option type="Map">
-                    <Option type="QString" name="border_width_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-                    <Option type="QString" name="color" value="255,255,255,255"/>
-                    <Option type="QString" name="joinstyle" value="bevel"/>
-                    <Option type="QString" name="offset" value="0,0"/>
-                    <Option type="QString" name="offset_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-                    <Option type="QString" name="offset_unit" value="MM"/>
-                    <Option type="QString" name="outline_color" value="128,128,128,255"/>
-                    <Option type="QString" name="outline_style" value="no"/>
-                    <Option type="QString" name="outline_width" value="0"/>
-                    <Option type="QString" name="outline_width_unit" value="MM"/>
-                    <Option type="QString" name="style" value="solid"/>
+                    <Option name="border_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+                    <Option name="color" type="QString" value="255,255,255,255"/>
+                    <Option name="joinstyle" type="QString" value="bevel"/>
+                    <Option name="offset" type="QString" value="0,0"/>
+                    <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+                    <Option name="offset_unit" type="QString" value="MM"/>
+                    <Option name="outline_color" type="QString" value="128,128,128,255"/>
+                    <Option name="outline_style" type="QString" value="no"/>
+                    <Option name="outline_width" type="QString" value="0"/>
+                    <Option name="outline_width_unit" type="QString" value="MM"/>
+                    <Option name="style" type="QString" value="solid"/>
                   </Option>
                   <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                   <prop k="color" v="255,255,255,255"/>
@@ -189,138 +189,138 @@
                   <prop k="style" v="solid"/>
                   <data_defined_properties>
                     <Option type="Map">
-                      <Option type="QString" name="name" value=""/>
+                      <Option name="name" type="QString" value=""/>
                       <Option name="properties"/>
-                      <Option type="QString" name="type" value="collection"/>
+                      <Option name="type" type="QString" value="collection"/>
                     </Option>
                   </data_defined_properties>
                 </layer>
               </symbol>
             </background>
-            <shadow shadowRadiusUnit="MM" shadowScale="100" shadowOffsetAngle="135" shadowRadius="1.5" shadowColor="0,0,0,255" shadowUnder="0" shadowOffsetMapUnitScale="3x:0,0,0,0,0,0" shadowDraw="0" shadowOpacity="0.69999999999999996" shadowBlendMode="6" shadowOffsetDist="1" shadowOffsetUnit="MM" shadowRadiusMapUnitScale="3x:0,0,0,0,0,0" shadowRadiusAlphaOnly="0" shadowOffsetGlobal="1"/>
+            <shadow shadowRadiusUnit="MM" shadowOffsetUnit="MM" shadowOffsetGlobal="1" shadowOpacity="0.69999999999999996" shadowBlendMode="6" shadowRadius="1.5" shadowRadiusAlphaOnly="0" shadowDraw="0" shadowUnder="0" shadowOffsetAngle="135" shadowOffsetMapUnitScale="3x:0,0,0,0,0,0" shadowOffsetDist="1" shadowColor="0,0,0,255" shadowRadiusMapUnitScale="3x:0,0,0,0,0,0" shadowScale="100"/>
             <dd_properties>
               <Option type="Map">
-                <Option type="QString" name="name" value=""/>
+                <Option name="name" type="QString" value=""/>
                 <Option name="properties"/>
-                <Option type="QString" name="type" value="collection"/>
+                <Option name="type" type="QString" value="collection"/>
               </Option>
             </dd_properties>
             <substitutions/>
           </text-style>
-          <text-format addDirectionSymbol="0" reverseDirectionSymbol="0" plussign="0" leftDirectionSymbol="&lt;" useMaxLineLengthForAutoWrap="1" placeDirectionSymbol="0" decimals="3" rightDirectionSymbol=">" formatNumbers="0" wrapChar="" autoWrapLength="0" multilineAlign="0"/>
-          <placement placementFlags="9" geometryGenerator="" geometryGeneratorEnabled="0" priority="5" xOffset="0" geometryGeneratorType="PointGeometry" overrunDistance="0" dist="0" preserveRotation="1" quadOffset="2" rotationUnit="AngleDegrees" overrunDistanceMapUnitScale="3x:0,0,0,0,0,0" lineAnchorPercent="0.5" lineAnchorClipping="0" distMapUnitScale="3x:0,0,0,0,0,0" centroidInside="0" layerType="PointGeometry" fitInPolygonOnly="0" repeatDistance="0" centroidWhole="0" rotationAngle="0" overrunDistanceUnit="MM" lineAnchorType="0" repeatDistanceUnits="MM" labelOffsetMapUnitScale="3x:0,0,0,0,0,0" maxCurvedCharAngleIn="25" predefinedPositionOrder="TR,TL,BR,BL,R,L,TSR,BSR" offsetType="0" polygonPlacementFlags="2" maxCurvedCharAngleOut="-25" yOffset="0" distUnits="MM" repeatDistanceMapUnitScale="3x:0,0,0,0,0,0" placement="1" offsetUnits="MM"/>
-          <rendering zIndex="0" obstacleType="1" maxNumLabels="2000" fontMaxPixelSize="10000" obstacle="1" scaleVisibility="0" scaleMin="0" displayAll="1" labelPerPart="0" obstacleFactor="1" drawLabels="1" fontLimitPixelSize="0" mergeLines="0" upsidedownLabels="0" limitNumLabels="0" scaleMax="0" fontMinPixelSize="3" minFeatureSize="0" unplacedVisibility="0"/>
+          <text-format addDirectionSymbol="0" leftDirectionSymbol="&lt;" decimals="3" autoWrapLength="0" multilineAlign="0" plussign="0" rightDirectionSymbol=">" formatNumbers="0" wrapChar="" reverseDirectionSymbol="0" placeDirectionSymbol="0" useMaxLineLengthForAutoWrap="1"/>
+          <placement offsetUnits="MM" rotationUnit="AngleDegrees" polygonPlacementFlags="2" maxCurvedCharAngleOut="-25" predefinedPositionOrder="TR,TL,BR,BL,R,L,TSR,BSR" geometryGeneratorEnabled="0" quadOffset="2" distMapUnitScale="3x:0,0,0,0,0,0" rotationAngle="0" xOffset="0" overrunDistanceUnit="MM" lineAnchorClipping="0" repeatDistanceMapUnitScale="3x:0,0,0,0,0,0" preserveRotation="1" dist="0" labelOffsetMapUnitScale="3x:0,0,0,0,0,0" distUnits="MM" lineAnchorPercent="0.5" geometryGeneratorType="PointGeometry" offsetType="0" yOffset="0" repeatDistanceUnits="MM" repeatDistance="0" fitInPolygonOnly="0" priority="5" geometryGenerator="" centroidWhole="0" overrunDistance="0" placementFlags="9" overrunDistanceMapUnitScale="3x:0,0,0,0,0,0" placement="1" maxCurvedCharAngleIn="25" layerType="PointGeometry" lineAnchorType="0" centroidInside="0"/>
+          <rendering obstacleType="1" upsidedownLabels="0" limitNumLabels="0" fontMinPixelSize="3" scaleVisibility="0" unplacedVisibility="0" labelPerPart="0" scaleMin="0" obstacleFactor="1" scaleMax="0" maxNumLabels="2000" obstacle="1" drawLabels="1" zIndex="0" fontLimitPixelSize="0" displayAll="1" minFeatureSize="0" mergeLines="0" fontMaxPixelSize="10000"/>
           <dd_properties>
             <Option type="Map">
-              <Option type="QString" name="name" value=""/>
-              <Option type="Map" name="properties">
-                <Option type="Map" name="CalloutDraw">
-                  <Option type="bool" name="active" value="false"/>
-                  <Option type="QString" name="expression" value="try( &quot;GES_odnosnik_0_x&quot; ) is not null or try( &quot;GES_odnosnik_0_y&quot; ) is not null"/>
-                  <Option type="int" name="type" value="3"/>
+              <Option name="name" type="QString" value=""/>
+              <Option name="properties" type="Map">
+                <Option name="CalloutDraw" type="Map">
+                  <Option name="active" type="bool" value="false"/>
+                  <Option name="expression" type="QString" value="try( &quot;GES_odnosnik_0_x&quot; ) is not null or try( &quot;GES_odnosnik_0_y&quot; ) is not null"/>
+                  <Option name="type" type="int" value="3"/>
                 </Option>
-                <Option type="Map" name="Color">
-                  <Option type="bool" name="active" value="true"/>
-                  <Option type="QString" name="expression" value="case &#xd;&#xa;when try(&quot;koniecObiekt&quot;) is not null and   3 = 1&#xd;&#xa;then&#xd;&#xa; '0,0,0,255'&#xd;&#xa;when try(&quot;koniecWersjaObiekt&quot;)is not null and try(&quot;koniecObiekt&quot;) is null and   3 = 1&#xd;&#xa;then&#xd;&#xa; '0,0,0,255'&#xd;&#xa;when   3 = 1&#xd;&#xa;then&#xd;&#xa; '0,0,0,255'&#xd;&#xa;else&#xd;&#xa;case &#xd;&#xa;when &#xd;&#xa;try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), ',')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), ',')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), ',')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), ','))&#xd;&#xa;then&#xd;&#xa;'0,0,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodWodociagowy_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecWodociagowa_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecWodociagowa_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecWodociagowa_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'w')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'w')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'w')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'w'))&#xd;&#xa;then&#xd;&#xa;'0,0,255,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodKanalizacyjny_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'k')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'k')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'k')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'k'))&#xd;&#xa;then&#xd;&#xa;'128,51,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodElektroenergetyczny_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecElektroenergetyczna_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'e')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'e')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'e')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'e'))&#xd;&#xa;then&#xd;&#xa;'255,0,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodGazowy_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecGazowa_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecGazowa_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecGazowa_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'g')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'g')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'g')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'g'))&#xd;&#xa;then&#xd;&#xa;'191,191,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodCieplowniczy_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecCieplownicza_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecCieplownicza_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecCieplownicza_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'c')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'c')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'c')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'c'))&#xd;&#xa;then&#xd;&#xa;'210,0,210,255'&#xd;&#xa;when&#xd;&#xa;try((&quot;GES_PrzewodTelekomunikacyjny_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecTelekomunikacyjna_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecTelekomunikacyjna_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 't')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 't')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 't')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 't'))&#xd;&#xa;then&#xd;&#xa;'255,145,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodSpecjalny_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecSpecjalna_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecSpecjalna_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecSpecjalna_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 's')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 's')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 's')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 's'))&#xd;&#xa;then&#xd;&#xa;'0,0,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodNiezidentyfikowany_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecNiezidentyfikowana_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecNiezidentyfikowana_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecNiezidentyfikowana_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'x')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'x')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'x')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'x'))&#xd;&#xa;then&#xd;&#xa;'0,0,0,255'&#xd;&#xa;else&#xd;&#xa;'0,0,0,255'&#xd;&#xa;end&#xd;&#xa;end"/>
-                  <Option type="int" name="type" value="3"/>
+                <Option name="Color" type="Map">
+                  <Option name="active" type="bool" value="true"/>
+                  <Option name="expression" type="QString" value="&quot;color&quot;"/>
+                  <Option name="type" type="int" value="3"/>
                 </Option>
-                <Option type="Map" name="LabelRotation">
-                  <Option type="bool" name="active" value="true"/>
-                  <Option type="QString" name="expression" value="360-degrees(&quot;katObrotu&quot;)"/>
-                  <Option type="int" name="type" value="3"/>
+                <Option name="LabelRotation" type="Map">
+                  <Option name="active" type="bool" value="true"/>
+                  <Option name="expression" type="QString" value="360-degrees(&quot;katObrotu&quot;)"/>
+                  <Option name="type" type="int" value="3"/>
                 </Option>
-                <Option type="Map" name="OffsetQuad">
-                  <Option type="bool" name="active" value="true"/>
-                  <Option type="QString" name="expression" value="recalculate_justification(&quot;justyfikacja&quot;)"/>
-                  <Option type="int" name="type" value="3"/>
+                <Option name="OffsetQuad" type="Map">
+                  <Option name="active" type="bool" value="true"/>
+                  <Option name="expression" type="QString" value="recalculate_justification(&quot;justyfikacja&quot;)"/>
+                  <Option name="type" type="int" value="3"/>
                 </Option>
-                <Option type="Map" name="Show">
-                  <Option type="bool" name="active" value="true"/>
-                  <Option type="QString" name="expression" value="0"/>
-                  <Option type="int" name="type" value="3"/>
+                <Option name="Show" type="Map">
+                  <Option name="active" type="bool" value="true"/>
+                  <Option name="expression" type="QString" value="0"/>
+                  <Option name="type" type="int" value="3"/>
                 </Option>
               </Option>
-              <Option type="QString" name="type" value="collection"/>
+              <Option name="type" type="QString" value="collection"/>
             </Option>
           </dd_properties>
           <callout type="simple">
             <Option type="Map">
-              <Option type="QString" name="anchorPoint" value="pole_of_inaccessibility"/>
-              <Option type="int" name="blendMode" value="0"/>
-              <Option type="Map" name="ddProperties">
-                <Option type="QString" name="name" value=""/>
-                <Option type="Map" name="properties">
-                  <Option type="Map" name="DestinationX">
-                    <Option type="bool" name="active" value="true"/>
-                    <Option type="QString" name="expression" value="&quot;GES_odnosnik_0_x&quot;"/>
-                    <Option type="int" name="type" value="3"/>
+              <Option name="anchorPoint" type="QString" value="pole_of_inaccessibility"/>
+              <Option name="blendMode" type="int" value="0"/>
+              <Option name="ddProperties" type="Map">
+                <Option name="name" type="QString" value=""/>
+                <Option name="properties" type="Map">
+                  <Option name="DestinationX" type="Map">
+                    <Option name="active" type="bool" value="true"/>
+                    <Option name="expression" type="QString" value="&quot;GES_odnosnik_0_x&quot;"/>
+                    <Option name="type" type="int" value="3"/>
                   </Option>
-                  <Option type="Map" name="DestinationY">
-                    <Option type="bool" name="active" value="true"/>
-                    <Option type="QString" name="expression" value="&quot;GES_odnosnik_0_y&quot;"/>
-                    <Option type="int" name="type" value="3"/>
+                  <Option name="DestinationY" type="Map">
+                    <Option name="active" type="bool" value="true"/>
+                    <Option name="expression" type="QString" value="&quot;GES_odnosnik_0_y&quot;"/>
+                    <Option name="type" type="int" value="3"/>
                   </Option>
-                  <Option type="Map" name="LabelAnchorPointPosition">
-                    <Option type="bool" name="active" value="true"/>
-                    <Option type="QString" name="expression" value="Case&#xd;&#xa;When&#xd;&#xa;distance( make_point( &quot;GES_odnosnik_0_x&quot; , &quot;GES_odnosnik_0_y&quot; ), make_point( x_min( get_label_box(x($geometry),y($geometry))), y_min( get_label_box(x($geometry),y($geometry))))) > distance( make_point( &quot;GES_odnosnik_0_x&quot; , &quot;GES_odnosnik_0_y&quot; ), make_point( x_max( get_label_box(x($geometry),y($geometry))), y_min( get_label_box(x($geometry),y($geometry)))))&#xd;&#xa;Then&#xd;&#xa;'BR'&#xd;&#xa;else&#xd;&#xa;'BL'&#xd;&#xa;end"/>
-                    <Option type="int" name="type" value="3"/>
+                  <Option name="LabelAnchorPointPosition" type="Map">
+                    <Option name="active" type="bool" value="true"/>
+                    <Option name="expression" type="QString" value="Case&#xd;&#xa;When&#xd;&#xa;distance( make_point( &quot;GES_odnosnik_0_x&quot; , &quot;GES_odnosnik_0_y&quot; ), make_point( x_min( get_label_box(x($geometry),y($geometry))), y_min( get_label_box(x($geometry),y($geometry))))) > distance( make_point( &quot;GES_odnosnik_0_x&quot; , &quot;GES_odnosnik_0_y&quot; ), make_point( x_max( get_label_box(x($geometry),y($geometry))), y_min( get_label_box(x($geometry),y($geometry)))))&#xd;&#xa;Then&#xd;&#xa;'BR'&#xd;&#xa;else&#xd;&#xa;'BL'&#xd;&#xa;end"/>
+                    <Option name="type" type="int" value="3"/>
                   </Option>
                 </Option>
-                <Option type="QString" name="type" value="collection"/>
+                <Option name="type" type="QString" value="collection"/>
               </Option>
-              <Option type="bool" name="drawToAllParts" value="false"/>
-              <Option type="QString" name="enabled" value="0"/>
-              <Option type="QString" name="labelAnchorPoint" value="point_on_exterior"/>
-              <Option type="QString" name="lineSymbol" value="&lt;symbol type=&quot;line&quot; name=&quot;symbol&quot; alpha=&quot;1&quot; clip_to_extent=&quot;1&quot; force_rhr=&quot;0&quot;>&lt;data_defined_properties>&lt;Option type=&quot;Map&quot;>&lt;Option type=&quot;QString&quot; name=&quot;name&quot; value=&quot;&quot;/>&lt;Option name=&quot;properties&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;type&quot; value=&quot;collection&quot;/>&lt;/Option>&lt;/data_defined_properties>&lt;layer class=&quot;SimpleLine&quot; locked=&quot;0&quot; pass=&quot;0&quot; enabled=&quot;1&quot;>&lt;Option type=&quot;Map&quot;>&lt;Option type=&quot;QString&quot; name=&quot;align_dash_pattern&quot; value=&quot;0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;capstyle&quot; value=&quot;round&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;customdash&quot; value=&quot;5;2&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;customdash_map_unit_scale&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;customdash_unit&quot; value=&quot;MM&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;dash_pattern_offset&quot; value=&quot;0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;dash_pattern_offset_map_unit_scale&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;dash_pattern_offset_unit&quot; value=&quot;MM&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;draw_inside_polygon&quot; value=&quot;0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;joinstyle&quot; value=&quot;round&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;line_color&quot; value=&quot;0,0,0,255&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;line_style&quot; value=&quot;solid&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;line_width&quot; value=&quot;0.09&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;line_width_unit&quot; value=&quot;MapUnit&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;offset&quot; value=&quot;0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;offset_map_unit_scale&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;offset_unit&quot; value=&quot;MM&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;ring_filter&quot; value=&quot;0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;trim_distance_end&quot; value=&quot;0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;trim_distance_end_map_unit_scale&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;trim_distance_end_unit&quot; value=&quot;MM&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;trim_distance_start&quot; value=&quot;0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;trim_distance_start_map_unit_scale&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;trim_distance_start_unit&quot; value=&quot;MM&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;tweak_dash_pattern_on_corners&quot; value=&quot;0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;use_custom_dash&quot; value=&quot;0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;width_map_unit_scale&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;/Option>&lt;prop k=&quot;align_dash_pattern&quot; v=&quot;0&quot;/>&lt;prop k=&quot;capstyle&quot; v=&quot;round&quot;/>&lt;prop k=&quot;customdash&quot; v=&quot;5;2&quot;/>&lt;prop k=&quot;customdash_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;customdash_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;dash_pattern_offset&quot; v=&quot;0&quot;/>&lt;prop k=&quot;dash_pattern_offset_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;dash_pattern_offset_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;draw_inside_polygon&quot; v=&quot;0&quot;/>&lt;prop k=&quot;joinstyle&quot; v=&quot;round&quot;/>&lt;prop k=&quot;line_color&quot; v=&quot;0,0,0,255&quot;/>&lt;prop k=&quot;line_style&quot; v=&quot;solid&quot;/>&lt;prop k=&quot;line_width&quot; v=&quot;0.09&quot;/>&lt;prop k=&quot;line_width_unit&quot; v=&quot;MapUnit&quot;/>&lt;prop k=&quot;offset&quot; v=&quot;0&quot;/>&lt;prop k=&quot;offset_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;offset_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;ring_filter&quot; v=&quot;0&quot;/>&lt;prop k=&quot;trim_distance_end&quot; v=&quot;0&quot;/>&lt;prop k=&quot;trim_distance_end_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;trim_distance_end_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;trim_distance_start&quot; v=&quot;0&quot;/>&lt;prop k=&quot;trim_distance_start_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;trim_distance_start_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;tweak_dash_pattern_on_corners&quot; v=&quot;0&quot;/>&lt;prop k=&quot;use_custom_dash&quot; v=&quot;0&quot;/>&lt;prop k=&quot;width_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;data_defined_properties>&lt;Option type=&quot;Map&quot;>&lt;Option type=&quot;QString&quot; name=&quot;name&quot; value=&quot;&quot;/>&lt;Option type=&quot;Map&quot; name=&quot;properties&quot;>&lt;Option type=&quot;Map&quot; name=&quot;outlineColor&quot;>&lt;Option type=&quot;bool&quot; name=&quot;active&quot; value=&quot;true&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;expression&quot; value=&quot;case &amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodWodociagowy_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecWodociagowa_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecWodociagowa_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecWodociagowa_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'w') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'w') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'w') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'w')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'0,0,255'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodKanalizacyjny_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'k') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'k') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'k') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'k')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'128,51,0'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodElektroenergetyczny_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecElektroenergetyczna_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'e') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'e') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'e') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'e')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'255,0,0'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodGazowy_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecGazowa_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecGazowa_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecGazowa_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'g') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'g') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'g') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'g')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'191,191,0'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodCieplowniczy_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecCieplownicza_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecCieplownicza_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecCieplownicza_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'c') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'c') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'c') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'c')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'210,0,210'&amp;#xd;&amp;#xa;when&amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodTelekomunikacyjny_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecTelekomunikacyjna_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecTelekomunikacyjna_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 't') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 't') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 't') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 't')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'255,145,0'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodSpecjalny_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecSpecjalna_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecSpecjalna_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecSpecjalna_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 's') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 's') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 's') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 's')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'255,255,255'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodNiezidentyfikowany_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecNiezidentyfikowana_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecNiezidentyfikowana_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecNiezidentyfikowana_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'x') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'x') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'x') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'x')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'255,255,255'&amp;#xd;&amp;#xa;else&amp;#xd;&amp;#xa;'255,255,255'&amp;#xd;&amp;#xa;end&quot;/>&lt;Option type=&quot;int&quot; name=&quot;type&quot; value=&quot;3&quot;/>&lt;/Option>&lt;/Option>&lt;Option type=&quot;QString&quot; name=&quot;type&quot; value=&quot;collection&quot;/>&lt;/Option>&lt;/data_defined_properties>&lt;/layer>&lt;/symbol>"/>
-              <Option type="double" name="minLength" value="0"/>
-              <Option type="QString" name="minLengthMapUnitScale" value="3x:0,0,0,0,0,0"/>
-              <Option type="QString" name="minLengthUnit" value="MM"/>
-              <Option type="double" name="offsetFromAnchor" value="0"/>
-              <Option type="QString" name="offsetFromAnchorMapUnitScale" value="3x:0,0,0,0,0,0"/>
-              <Option type="QString" name="offsetFromAnchorUnit" value="MM"/>
-              <Option type="double" name="offsetFromLabel" value="0"/>
-              <Option type="QString" name="offsetFromLabelMapUnitScale" value="3x:0,0,0,0,0,0"/>
-              <Option type="QString" name="offsetFromLabelUnit" value="MM"/>
+              <Option name="drawToAllParts" type="bool" value="false"/>
+              <Option name="enabled" type="QString" value="0"/>
+              <Option name="labelAnchorPoint" type="QString" value="point_on_exterior"/>
+              <Option name="lineSymbol" type="QString" value="&lt;symbol clip_to_extent=&quot;1&quot; name=&quot;symbol&quot; alpha=&quot;1&quot; type=&quot;line&quot; force_rhr=&quot;0&quot;>&lt;data_defined_properties>&lt;Option type=&quot;Map&quot;>&lt;Option name=&quot;name&quot; type=&quot;QString&quot; value=&quot;&quot;/>&lt;Option name=&quot;properties&quot;/>&lt;Option name=&quot;type&quot; type=&quot;QString&quot; value=&quot;collection&quot;/>&lt;/Option>&lt;/data_defined_properties>&lt;layer locked=&quot;0&quot; pass=&quot;0&quot; enabled=&quot;1&quot; class=&quot;SimpleLine&quot;>&lt;Option type=&quot;Map&quot;>&lt;Option name=&quot;align_dash_pattern&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;capstyle&quot; type=&quot;QString&quot; value=&quot;round&quot;/>&lt;Option name=&quot;customdash&quot; type=&quot;QString&quot; value=&quot;5;2&quot;/>&lt;Option name=&quot;customdash_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;customdash_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;dash_pattern_offset&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;dash_pattern_offset_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;dash_pattern_offset_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;draw_inside_polygon&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;joinstyle&quot; type=&quot;QString&quot; value=&quot;round&quot;/>&lt;Option name=&quot;line_color&quot; type=&quot;QString&quot; value=&quot;0,0,0,255&quot;/>&lt;Option name=&quot;line_style&quot; type=&quot;QString&quot; value=&quot;solid&quot;/>&lt;Option name=&quot;line_width&quot; type=&quot;QString&quot; value=&quot;0.09&quot;/>&lt;Option name=&quot;line_width_unit&quot; type=&quot;QString&quot; value=&quot;MapUnit&quot;/>&lt;Option name=&quot;offset&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;offset_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;offset_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;ring_filter&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;trim_distance_end&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;trim_distance_end_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;trim_distance_end_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;trim_distance_start&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;trim_distance_start_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;trim_distance_start_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;tweak_dash_pattern_on_corners&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;use_custom_dash&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;width_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;/Option>&lt;prop k=&quot;align_dash_pattern&quot; v=&quot;0&quot;/>&lt;prop k=&quot;capstyle&quot; v=&quot;round&quot;/>&lt;prop k=&quot;customdash&quot; v=&quot;5;2&quot;/>&lt;prop k=&quot;customdash_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;customdash_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;dash_pattern_offset&quot; v=&quot;0&quot;/>&lt;prop k=&quot;dash_pattern_offset_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;dash_pattern_offset_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;draw_inside_polygon&quot; v=&quot;0&quot;/>&lt;prop k=&quot;joinstyle&quot; v=&quot;round&quot;/>&lt;prop k=&quot;line_color&quot; v=&quot;0,0,0,255&quot;/>&lt;prop k=&quot;line_style&quot; v=&quot;solid&quot;/>&lt;prop k=&quot;line_width&quot; v=&quot;0.09&quot;/>&lt;prop k=&quot;line_width_unit&quot; v=&quot;MapUnit&quot;/>&lt;prop k=&quot;offset&quot; v=&quot;0&quot;/>&lt;prop k=&quot;offset_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;offset_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;ring_filter&quot; v=&quot;0&quot;/>&lt;prop k=&quot;trim_distance_end&quot; v=&quot;0&quot;/>&lt;prop k=&quot;trim_distance_end_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;trim_distance_end_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;trim_distance_start&quot; v=&quot;0&quot;/>&lt;prop k=&quot;trim_distance_start_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;trim_distance_start_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;tweak_dash_pattern_on_corners&quot; v=&quot;0&quot;/>&lt;prop k=&quot;use_custom_dash&quot; v=&quot;0&quot;/>&lt;prop k=&quot;width_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;data_defined_properties>&lt;Option type=&quot;Map&quot;>&lt;Option name=&quot;name&quot; type=&quot;QString&quot; value=&quot;&quot;/>&lt;Option name=&quot;properties&quot; type=&quot;Map&quot;>&lt;Option name=&quot;outlineColor&quot; type=&quot;Map&quot;>&lt;Option name=&quot;active&quot; type=&quot;bool&quot; value=&quot;true&quot;/>&lt;Option name=&quot;expression&quot; type=&quot;QString&quot; value=&quot;case &amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodWodociagowy_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecWodociagowa_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecWodociagowa_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecWodociagowa_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'w') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'w') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'w') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'w')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'0,0,255'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodKanalizacyjny_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'k') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'k') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'k') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'k')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'128,51,0'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodElektroenergetyczny_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecElektroenergetyczna_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'e') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'e') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'e') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'e')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'255,0,0'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodGazowy_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecGazowa_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecGazowa_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecGazowa_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'g') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'g') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'g') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'g')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'191,191,0'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodCieplowniczy_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecCieplownicza_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecCieplownicza_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecCieplownicza_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'c') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'c') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'c') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'c')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'210,0,210'&amp;#xd;&amp;#xa;when&amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodTelekomunikacyjny_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecTelekomunikacyjna_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecTelekomunikacyjna_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 't') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 't') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 't') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 't')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'255,145,0'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodSpecjalny_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecSpecjalna_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecSpecjalna_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecSpecjalna_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 's') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 's') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 's') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 's')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'255,255,255'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodNiezidentyfikowany_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecNiezidentyfikowana_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecNiezidentyfikowana_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecNiezidentyfikowana_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'x') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'x') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'x') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'x')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'255,255,255'&amp;#xd;&amp;#xa;else&amp;#xd;&amp;#xa;'255,255,255'&amp;#xd;&amp;#xa;end&quot;/>&lt;Option name=&quot;type&quot; type=&quot;int&quot; value=&quot;3&quot;/>&lt;/Option>&lt;/Option>&lt;Option name=&quot;type&quot; type=&quot;QString&quot; value=&quot;collection&quot;/>&lt;/Option>&lt;/data_defined_properties>&lt;/layer>&lt;/symbol>"/>
+              <Option name="minLength" type="double" value="0"/>
+              <Option name="minLengthMapUnitScale" type="QString" value="3x:0,0,0,0,0,0"/>
+              <Option name="minLengthUnit" type="QString" value="MM"/>
+              <Option name="offsetFromAnchor" type="double" value="0"/>
+              <Option name="offsetFromAnchorMapUnitScale" type="QString" value="3x:0,0,0,0,0,0"/>
+              <Option name="offsetFromAnchorUnit" type="QString" value="MM"/>
+              <Option name="offsetFromLabel" type="double" value="0"/>
+              <Option name="offsetFromLabelMapUnitScale" type="QString" value="3x:0,0,0,0,0,0"/>
+              <Option name="offsetFromLabelUnit" type="QString" value="MM"/>
             </Option>
           </callout>
         </settings>
       </rule>
-      <rule key="{7d5d6cf3-ec6f-40f5-8d49-e986be54fb18}" filter=" try(&quot;rzednaGory&quot;) is not null or  try(&quot;rzednaDolu&quot;) is not null" description="rzedna">
+      <rule key="{ae68424d-0778-4a50-b15a-cc116839470f}" filter=" try(&quot;rzednaGory&quot;) is not null or  try(&quot;rzednaDolu&quot;) is not null" description="rzedna">
         <settings calloutType="simple">
-          <text-style fontSize="1.0417000000000001" blendMode="0" fontWeight="50" fontWordSpacing="0" textOpacity="1" legendString="Aa" fieldName=" Case&#xd;&#xa; when&#xd;&#xa; try(&quot;rzednaGory&quot;) is not NULL and try(&quot;rzednaDolu&quot;) is not NULL&#xd;&#xa; then&#xd;&#xa; format_number(&quot;rzednaGory&quot;,2,'en') + '\n' + format_number(&quot;rzednaDolu&quot;,2,'en')&#xd;&#xa;  when&#xd;&#xa; try(&quot;rzednaGory&quot;) is not NULL&#xd;&#xa; then&#xd;&#xa;  format_number( &quot;rzednaGory&quot;,2,'en') + '\n'&#xd;&#xa;  when&#xd;&#xa;try(&quot;rzednaDolu&quot;) is not NULL&#xd;&#xa; then&#xd;&#xa;'\n' + format_number( &quot;rzednaDolu&quot;,2,'en')&#xd;&#xa; end" isExpression="1" fontUnderline="0" fontItalic="0" namedStyle="Normal" capitalization="0" fontLetterSpacing="0" textOrientation="horizontal" fontKerning="1" fontSizeUnit="MapUnit" fontStrikeout="0" allowHtml="0" useSubstitutions="0" textColor="0,0,0,255" fontSizeMapUnitScale="3x:0,0,0,0,0,0" previewBkgrdColor="255,255,255,255" multilineHeight="1" fontFamily="Arial">
+          <text-style fontWordSpacing="0" blendMode="0" allowHtml="0" fontSizeUnit="MapUnit" useSubstitutions="0" fontLetterSpacing="0" fontWeight="50" fontSize="1.0417000000000001" legendString="Aa" textOrientation="horizontal" fontSizeMapUnitScale="3x:0,0,0,0,0,0" fontKerning="1" capitalization="0" textColor="0,0,0,255" textOpacity="1" fontUnderline="0" isExpression="1" previewBkgrdColor="255,255,255,255" namedStyle="Normal" fontStrikeout="0" fontItalic="0" multilineHeight="1" fontFamily="Arial" fieldName=" Case&#xd;&#xa; when&#xd;&#xa; try(&quot;rzednaGory&quot;) is not NULL and try(&quot;rzednaDolu&quot;) is not NULL&#xd;&#xa; then&#xd;&#xa; format_number(&quot;rzednaGory&quot;,2,'en') + '\n' + format_number(&quot;rzednaDolu&quot;,2,'en')&#xd;&#xa;  when&#xd;&#xa; try(&quot;rzednaGory&quot;) is not NULL&#xd;&#xa; then&#xd;&#xa;  format_number( &quot;rzednaGory&quot;,2,'en') + '\n'&#xd;&#xa;  when&#xd;&#xa;try(&quot;rzednaDolu&quot;) is not NULL&#xd;&#xa; then&#xd;&#xa;'\n' + format_number( &quot;rzednaDolu&quot;,2,'en')&#xd;&#xa; end">
             <families/>
-            <text-buffer bufferDraw="0" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferSizeUnits="MM" bufferSize="1" bufferOpacity="1" bufferJoinStyle="128" bufferNoFill="1" bufferColor="255,255,255,255" bufferBlendMode="0"/>
-            <text-mask maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskJoinStyle="128" maskedSymbolLayers="" maskSizeUnits="MM" maskEnabled="0" maskType="0" maskOpacity="1" maskSize="1.5"/>
-            <background shapeSizeUnit="MM" shapeJoinStyle="64" shapeOffsetY="0" shapeRadiiMapUnitScale="3x:0,0,0,0,0,0" shapeSizeY="0" shapeBlendMode="0" shapeOffsetX="0" shapeSizeType="0" shapeRadiiY="0" shapeSizeMapUnitScale="3x:0,0,0,0,0,0" shapeOffsetUnit="MM" shapeBorderWidthMapUnitScale="3x:0,0,0,0,0,0" shapeOpacity="1" shapeSizeX="0" shapeRadiiX="0" shapeType="0" shapeRadiiUnit="MM" shapeRotationType="0" shapeBorderColor="128,128,128,255" shapeDraw="1" shapeBorderWidthUnit="MM" shapeRotation="0" shapeOffsetMapUnitScale="3x:0,0,0,0,0,0" shapeFillColor="255,255,255,255" shapeBorderWidth="0" shapeSVGFile="">
-              <symbol type="marker" name="markerSymbol" alpha="1" clip_to_extent="1" force_rhr="0">
+            <text-buffer bufferDraw="0" bufferSize="1" bufferJoinStyle="128" bufferSizeUnits="MM" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferNoFill="1" bufferColor="255,255,255,255" bufferOpacity="1" bufferBlendMode="0"/>
+            <text-mask maskEnabled="0" maskedSymbolLayers="" maskSizeUnits="MM" maskOpacity="1" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskType="0" maskSize="1.5" maskJoinStyle="128"/>
+            <background shapeRadiiX="0" shapeRadiiY="0" shapeFillColor="255,255,255,255" shapeBlendMode="0" shapeBorderWidthUnit="MM" shapeRadiiUnit="MM" shapeBorderColor="128,128,128,255" shapeJoinStyle="64" shapeRotationType="0" shapeSizeMapUnitScale="3x:0,0,0,0,0,0" shapeOffsetMapUnitScale="3x:0,0,0,0,0,0" shapeSizeX="0" shapeOffsetX="0" shapeOpacity="1" shapeOffsetY="0" shapeSizeUnit="MM" shapeBorderWidthMapUnitScale="3x:0,0,0,0,0,0" shapeBorderWidth="0" shapeDraw="1" shapeSizeType="0" shapeRadiiMapUnitScale="3x:0,0,0,0,0,0" shapeSizeY="0" shapeSVGFile="" shapeRotation="0" shapeOffsetUnit="MM" shapeType="0">
+              <symbol clip_to_extent="1" name="markerSymbol" alpha="1" type="marker" force_rhr="0">
                 <data_defined_properties>
                   <Option type="Map">
-                    <Option type="QString" name="name" value=""/>
+                    <Option name="name" type="QString" value=""/>
                     <Option name="properties"/>
-                    <Option type="QString" name="type" value="collection"/>
+                    <Option name="type" type="QString" value="collection"/>
                   </Option>
                 </data_defined_properties>
-                <layer class="SimpleMarker" locked="0" pass="0" enabled="1">
+                <layer locked="0" pass="0" enabled="1" class="SimpleMarker">
                   <Option type="Map">
-                    <Option type="QString" name="angle" value="0"/>
-                    <Option type="QString" name="cap_style" value="square"/>
-                    <Option type="QString" name="color" value="133,182,111,255"/>
-                    <Option type="QString" name="horizontal_anchor_point" value="1"/>
-                    <Option type="QString" name="joinstyle" value="bevel"/>
-                    <Option type="QString" name="name" value="circle"/>
-                    <Option type="QString" name="offset" value="0,0"/>
-                    <Option type="QString" name="offset_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-                    <Option type="QString" name="offset_unit" value="MM"/>
-                    <Option type="QString" name="outline_color" value="35,35,35,255"/>
-                    <Option type="QString" name="outline_style" value="solid"/>
-                    <Option type="QString" name="outline_width" value="0"/>
-                    <Option type="QString" name="outline_width_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-                    <Option type="QString" name="outline_width_unit" value="MM"/>
-                    <Option type="QString" name="scale_method" value="diameter"/>
-                    <Option type="QString" name="size" value="2"/>
-                    <Option type="QString" name="size_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-                    <Option type="QString" name="size_unit" value="MM"/>
-                    <Option type="QString" name="vertical_anchor_point" value="1"/>
+                    <Option name="angle" type="QString" value="0"/>
+                    <Option name="cap_style" type="QString" value="square"/>
+                    <Option name="color" type="QString" value="133,182,111,255"/>
+                    <Option name="horizontal_anchor_point" type="QString" value="1"/>
+                    <Option name="joinstyle" type="QString" value="bevel"/>
+                    <Option name="name" type="QString" value="circle"/>
+                    <Option name="offset" type="QString" value="0,0"/>
+                    <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+                    <Option name="offset_unit" type="QString" value="MM"/>
+                    <Option name="outline_color" type="QString" value="35,35,35,255"/>
+                    <Option name="outline_style" type="QString" value="solid"/>
+                    <Option name="outline_width" type="QString" value="0"/>
+                    <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+                    <Option name="outline_width_unit" type="QString" value="MM"/>
+                    <Option name="scale_method" type="QString" value="diameter"/>
+                    <Option name="size" type="QString" value="2"/>
+                    <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+                    <Option name="size_unit" type="QString" value="MM"/>
+                    <Option name="vertical_anchor_point" type="QString" value="1"/>
                   </Option>
                   <prop k="angle" v="0"/>
                   <prop k="cap_style" v="square"/>
@@ -343,38 +343,38 @@
                   <prop k="vertical_anchor_point" v="1"/>
                   <data_defined_properties>
                     <Option type="Map">
-                      <Option type="QString" name="name" value=""/>
+                      <Option name="name" type="QString" value=""/>
                       <Option name="properties"/>
-                      <Option type="QString" name="type" value="collection"/>
+                      <Option name="type" type="QString" value="collection"/>
                     </Option>
                   </data_defined_properties>
                 </layer>
               </symbol>
-              <symbol type="fill" name="fillSymbol" alpha="1" clip_to_extent="1" force_rhr="0">
+              <symbol clip_to_extent="1" name="fillSymbol" alpha="1" type="fill" force_rhr="0">
                 <data_defined_properties>
                   <Option type="Map">
-                    <Option type="QString" name="name" value=""/>
+                    <Option name="name" type="QString" value=""/>
                     <Option name="properties"/>
-                    <Option type="QString" name="type" value="collection"/>
+                    <Option name="type" type="QString" value="collection"/>
                   </Option>
                 </data_defined_properties>
-                <layer class="LinePatternFill" locked="0" pass="0" enabled="1">
+                <layer locked="0" pass="0" enabled="1" class="LinePatternFill">
                   <Option type="Map">
-                    <Option type="QString" name="angle" value="0"/>
-                    <Option type="QString" name="clip_mode" value="before_render"/>
-                    <Option type="QString" name="color" value="0,0,0,255"/>
-                    <Option type="QString" name="coordinate_reference" value="viewport"/>
-                    <Option type="QString" name="distance" value="10"/>
-                    <Option type="QString" name="distance_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-                    <Option type="QString" name="distance_unit" value="MapUnit"/>
-                    <Option type="QString" name="line_width" value="0.09"/>
-                    <Option type="QString" name="line_width_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-                    <Option type="QString" name="line_width_unit" value="MapUnit"/>
-                    <Option type="QString" name="offset" value="-0.09"/>
-                    <Option type="QString" name="offset_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-                    <Option type="QString" name="offset_unit" value="MapUnit"/>
-                    <Option type="QString" name="outline_width_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-                    <Option type="QString" name="outline_width_unit" value="MM"/>
+                    <Option name="angle" type="QString" value="0"/>
+                    <Option name="clip_mode" type="QString" value="before_render"/>
+                    <Option name="color" type="QString" value="0,0,0,255"/>
+                    <Option name="coordinate_reference" type="QString" value="viewport"/>
+                    <Option name="distance" type="QString" value="10"/>
+                    <Option name="distance_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+                    <Option name="distance_unit" type="QString" value="MapUnit"/>
+                    <Option name="line_width" type="QString" value="0.09"/>
+                    <Option name="line_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+                    <Option name="line_width_unit" type="QString" value="MapUnit"/>
+                    <Option name="offset" type="QString" value="-0.09"/>
+                    <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+                    <Option name="offset_unit" type="QString" value="MapUnit"/>
+                    <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+                    <Option name="outline_width_unit" type="QString" value="MM"/>
                   </Option>
                   <prop k="angle" v="0"/>
                   <prop k="clip_mode" v="before_render"/>
@@ -393,48 +393,48 @@
                   <prop k="outline_width_unit" v="MM"/>
                   <data_defined_properties>
                     <Option type="Map">
-                      <Option type="QString" name="name" value=""/>
+                      <Option name="name" type="QString" value=""/>
                       <Option name="properties"/>
-                      <Option type="QString" name="type" value="collection"/>
+                      <Option name="type" type="QString" value="collection"/>
                     </Option>
                   </data_defined_properties>
-                  <symbol type="line" name="@fillSymbol@0" alpha="1" clip_to_extent="1" force_rhr="0">
+                  <symbol clip_to_extent="1" name="@fillSymbol@0" alpha="1" type="line" force_rhr="0">
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option type="QString" name="name" value=""/>
+                        <Option name="name" type="QString" value=""/>
                         <Option name="properties"/>
-                        <Option type="QString" name="type" value="collection"/>
+                        <Option name="type" type="QString" value="collection"/>
                       </Option>
                     </data_defined_properties>
-                    <layer class="SimpleLine" locked="0" pass="0" enabled="1">
+                    <layer locked="0" pass="0" enabled="1" class="SimpleLine">
                       <Option type="Map">
-                        <Option type="QString" name="align_dash_pattern" value="0"/>
-                        <Option type="QString" name="capstyle" value="round"/>
-                        <Option type="QString" name="customdash" value="5;2"/>
-                        <Option type="QString" name="customdash_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-                        <Option type="QString" name="customdash_unit" value="MM"/>
-                        <Option type="QString" name="dash_pattern_offset" value="0"/>
-                        <Option type="QString" name="dash_pattern_offset_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-                        <Option type="QString" name="dash_pattern_offset_unit" value="MM"/>
-                        <Option type="QString" name="draw_inside_polygon" value="0"/>
-                        <Option type="QString" name="joinstyle" value="round"/>
-                        <Option type="QString" name="line_color" value="0,0,0,255"/>
-                        <Option type="QString" name="line_style" value="solid"/>
-                        <Option type="QString" name="line_width" value="0.09"/>
-                        <Option type="QString" name="line_width_unit" value="MapUnit"/>
-                        <Option type="QString" name="offset" value="0"/>
-                        <Option type="QString" name="offset_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-                        <Option type="QString" name="offset_unit" value="MM"/>
-                        <Option type="QString" name="ring_filter" value="0"/>
-                        <Option type="QString" name="trim_distance_end" value="0"/>
-                        <Option type="QString" name="trim_distance_end_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-                        <Option type="QString" name="trim_distance_end_unit" value="MM"/>
-                        <Option type="QString" name="trim_distance_start" value="0"/>
-                        <Option type="QString" name="trim_distance_start_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-                        <Option type="QString" name="trim_distance_start_unit" value="MM"/>
-                        <Option type="QString" name="tweak_dash_pattern_on_corners" value="0"/>
-                        <Option type="QString" name="use_custom_dash" value="0"/>
-                        <Option type="QString" name="width_map_unit_scale" value="3x:0,0,0,0,0,0"/>
+                        <Option name="align_dash_pattern" type="QString" value="0"/>
+                        <Option name="capstyle" type="QString" value="round"/>
+                        <Option name="customdash" type="QString" value="5;2"/>
+                        <Option name="customdash_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+                        <Option name="customdash_unit" type="QString" value="MM"/>
+                        <Option name="dash_pattern_offset" type="QString" value="0"/>
+                        <Option name="dash_pattern_offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+                        <Option name="dash_pattern_offset_unit" type="QString" value="MM"/>
+                        <Option name="draw_inside_polygon" type="QString" value="0"/>
+                        <Option name="joinstyle" type="QString" value="round"/>
+                        <Option name="line_color" type="QString" value="0,0,0,255"/>
+                        <Option name="line_style" type="QString" value="solid"/>
+                        <Option name="line_width" type="QString" value="0.09"/>
+                        <Option name="line_width_unit" type="QString" value="MapUnit"/>
+                        <Option name="offset" type="QString" value="0"/>
+                        <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+                        <Option name="offset_unit" type="QString" value="MM"/>
+                        <Option name="ring_filter" type="QString" value="0"/>
+                        <Option name="trim_distance_end" type="QString" value="0"/>
+                        <Option name="trim_distance_end_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+                        <Option name="trim_distance_end_unit" type="QString" value="MM"/>
+                        <Option name="trim_distance_start" type="QString" value="0"/>
+                        <Option name="trim_distance_start_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+                        <Option name="trim_distance_start_unit" type="QString" value="MM"/>
+                        <Option name="tweak_dash_pattern_on_corners" type="QString" value="0"/>
+                        <Option name="use_custom_dash" type="QString" value="0"/>
+                        <Option name="width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
                       </Option>
                       <prop k="align_dash_pattern" v="0"/>
                       <prop k="capstyle" v="round"/>
@@ -465,15 +465,15 @@
                       <prop k="width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                       <data_defined_properties>
                         <Option type="Map">
-                          <Option type="QString" name="name" value=""/>
-                          <Option type="Map" name="properties">
-                            <Option type="Map" name="outlineColor">
-                              <Option type="bool" name="active" value="true"/>
-                              <Option type="QString" name="expression" value="case &#xd;&#xa;when try(&quot;koniecObiekt&quot;) is not null and   3 = 1&#xd;&#xa;then&#xd;&#xa; '0,0,0,255'&#xd;&#xa;when try(&quot;koniecWersjaObiekt&quot;)is not null and try(&quot;koniecObiekt&quot;) is null and   3 = 1&#xd;&#xa;then&#xd;&#xa; '0,0,0,255'&#xd;&#xa;when   3 = 1&#xd;&#xa;then&#xd;&#xa; '0,0,0,255'&#xd;&#xa;else&#xd;&#xa;case &#xd;&#xa;when &#xd;&#xa;try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), ',')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), ',')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), ',')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), ','))&#xd;&#xa;then&#xd;&#xa;'0,0,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodWodociagowy_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecWodociagowa_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecWodociagowa_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecWodociagowa_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'w')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'w')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'w')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'w'))&#xd;&#xa;then&#xd;&#xa;'0,0,255,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodKanalizacyjny_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'k')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'k')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'k')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'k'))&#xd;&#xa;then&#xd;&#xa;'128,51,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodElektroenergetyczny_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecElektroenergetyczna_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'e')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'e')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'e')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'e'))&#xd;&#xa;then&#xd;&#xa;'255,0,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodGazowy_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecGazowa_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecGazowa_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecGazowa_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'g')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'g')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'g')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'g'))&#xd;&#xa;then&#xd;&#xa;'191,191,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodCieplowniczy_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecCieplownicza_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecCieplownicza_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecCieplownicza_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'c')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'c')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'c')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'c'))&#xd;&#xa;then&#xd;&#xa;'210,0,210,255'&#xd;&#xa;when&#xd;&#xa;try((&quot;GES_PrzewodTelekomunikacyjny_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecTelekomunikacyjna_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecTelekomunikacyjna_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 't')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 't')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 't')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 't'))&#xd;&#xa;then&#xd;&#xa;'255,145,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodSpecjalny_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecSpecjalna_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecSpecjalna_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecSpecjalna_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 's')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 's')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 's')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 's'))&#xd;&#xa;then&#xd;&#xa;'0,0,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodNiezidentyfikowany_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecNiezidentyfikowana_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecNiezidentyfikowana_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecNiezidentyfikowana_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'x')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'x')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'x')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'x'))&#xd;&#xa;then&#xd;&#xa;'0,0,0,255'&#xd;&#xa;else&#xd;&#xa;'0,0,0,255'&#xd;&#xa;end&#xd;&#xa;end"/>
-                              <Option type="int" name="type" value="3"/>
+                          <Option name="name" type="QString" value=""/>
+                          <Option name="properties" type="Map">
+                            <Option name="outlineColor" type="Map">
+                              <Option name="active" type="bool" value="true"/>
+                              <Option name="expression" type="QString" value="&quot;color&quot;"/>
+                              <Option name="type" type="int" value="3"/>
                             </Option>
                           </Option>
-                          <Option type="QString" name="type" value="collection"/>
+                          <Option name="type" type="QString" value="collection"/>
                         </Option>
                       </data_defined_properties>
                     </layer>
@@ -481,90 +481,90 @@
                 </layer>
               </symbol>
             </background>
-            <shadow shadowRadiusUnit="MM" shadowScale="100" shadowOffsetAngle="135" shadowRadius="1.5" shadowColor="0,0,0,255" shadowUnder="0" shadowOffsetMapUnitScale="3x:0,0,0,0,0,0" shadowDraw="0" shadowOpacity="0.69999999999999996" shadowBlendMode="6" shadowOffsetDist="1" shadowOffsetUnit="MM" shadowRadiusMapUnitScale="3x:0,0,0,0,0,0" shadowRadiusAlphaOnly="0" shadowOffsetGlobal="1"/>
+            <shadow shadowRadiusUnit="MM" shadowOffsetUnit="MM" shadowOffsetGlobal="1" shadowOpacity="0.69999999999999996" shadowBlendMode="6" shadowRadius="1.5" shadowRadiusAlphaOnly="0" shadowDraw="0" shadowUnder="0" shadowOffsetAngle="135" shadowOffsetMapUnitScale="3x:0,0,0,0,0,0" shadowOffsetDist="1" shadowColor="0,0,0,255" shadowRadiusMapUnitScale="3x:0,0,0,0,0,0" shadowScale="100"/>
             <dd_properties>
               <Option type="Map">
-                <Option type="QString" name="name" value=""/>
+                <Option name="name" type="QString" value=""/>
                 <Option name="properties"/>
-                <Option type="QString" name="type" value="collection"/>
+                <Option name="type" type="QString" value="collection"/>
               </Option>
             </dd_properties>
             <substitutions/>
           </text-style>
-          <text-format addDirectionSymbol="0" reverseDirectionSymbol="0" plussign="0" leftDirectionSymbol="&lt;" useMaxLineLengthForAutoWrap="1" placeDirectionSymbol="0" decimals="3" rightDirectionSymbol=">" formatNumbers="0" wrapChar="" autoWrapLength="0" multilineAlign="0"/>
-          <placement placementFlags="9" geometryGenerator="" geometryGeneratorEnabled="0" priority="5" xOffset="0" geometryGeneratorType="PointGeometry" overrunDistance="0" dist="0" preserveRotation="1" quadOffset="5" rotationUnit="AngleDegrees" overrunDistanceMapUnitScale="3x:0,0,0,0,0,0" lineAnchorPercent="0.5" lineAnchorClipping="0" distMapUnitScale="3x:0,0,0,0,0,0" centroidInside="0" layerType="PointGeometry" fitInPolygonOnly="0" repeatDistance="0" centroidWhole="0" rotationAngle="0" overrunDistanceUnit="MM" lineAnchorType="0" repeatDistanceUnits="MM" labelOffsetMapUnitScale="3x:0,0,0,0,0,0" maxCurvedCharAngleIn="25" predefinedPositionOrder="TR,TL,BR,BL,R,L,TSR,BSR" offsetType="0" polygonPlacementFlags="2" maxCurvedCharAngleOut="-25" yOffset="0" distUnits="MM" repeatDistanceMapUnitScale="3x:0,0,0,0,0,0" placement="1" offsetUnits="MM"/>
-          <rendering zIndex="0" obstacleType="1" maxNumLabels="2000" fontMaxPixelSize="10000" obstacle="1" scaleVisibility="0" scaleMin="0" displayAll="1" labelPerPart="0" obstacleFactor="1" drawLabels="1" fontLimitPixelSize="0" mergeLines="0" upsidedownLabels="0" limitNumLabels="0" scaleMax="0" fontMinPixelSize="3" minFeatureSize="0" unplacedVisibility="0"/>
+          <text-format addDirectionSymbol="0" leftDirectionSymbol="&lt;" decimals="3" autoWrapLength="0" multilineAlign="0" plussign="0" rightDirectionSymbol=">" formatNumbers="0" wrapChar="" reverseDirectionSymbol="0" placeDirectionSymbol="0" useMaxLineLengthForAutoWrap="1"/>
+          <placement offsetUnits="MM" rotationUnit="AngleDegrees" polygonPlacementFlags="2" maxCurvedCharAngleOut="-25" predefinedPositionOrder="TR,TL,BR,BL,R,L,TSR,BSR" geometryGeneratorEnabled="0" quadOffset="5" distMapUnitScale="3x:0,0,0,0,0,0" rotationAngle="0" xOffset="0" overrunDistanceUnit="MM" lineAnchorClipping="0" repeatDistanceMapUnitScale="3x:0,0,0,0,0,0" preserveRotation="1" dist="0" labelOffsetMapUnitScale="3x:0,0,0,0,0,0" distUnits="MM" lineAnchorPercent="0.5" geometryGeneratorType="PointGeometry" offsetType="0" yOffset="0" repeatDistanceUnits="MM" repeatDistance="0" fitInPolygonOnly="0" priority="5" geometryGenerator="" centroidWhole="0" overrunDistance="0" placementFlags="9" overrunDistanceMapUnitScale="3x:0,0,0,0,0,0" placement="1" maxCurvedCharAngleIn="25" layerType="PointGeometry" lineAnchorType="0" centroidInside="0"/>
+          <rendering obstacleType="1" upsidedownLabels="0" limitNumLabels="0" fontMinPixelSize="3" scaleVisibility="0" unplacedVisibility="0" labelPerPart="0" scaleMin="0" obstacleFactor="1" scaleMax="0" maxNumLabels="2000" obstacle="1" drawLabels="1" zIndex="0" fontLimitPixelSize="0" displayAll="1" minFeatureSize="0" mergeLines="0" fontMaxPixelSize="10000"/>
           <dd_properties>
             <Option type="Map">
-              <Option type="QString" name="name" value=""/>
-              <Option type="Map" name="properties">
-                <Option type="Map" name="CalloutDraw">
-                  <Option type="bool" name="active" value="false"/>
-                  <Option type="QString" name="expression" value="try( &quot;GES_odnosnik_0_x&quot; ) is not null or try( &quot;GES_odnosnik_0_y&quot; ) is not null"/>
-                  <Option type="int" name="type" value="3"/>
+              <Option name="name" type="QString" value=""/>
+              <Option name="properties" type="Map">
+                <Option name="CalloutDraw" type="Map">
+                  <Option name="active" type="bool" value="false"/>
+                  <Option name="expression" type="QString" value="try( &quot;GES_odnosnik_0_x&quot; ) is not null or try( &quot;GES_odnosnik_0_y&quot; ) is not null"/>
+                  <Option name="type" type="int" value="3"/>
                 </Option>
-                <Option type="Map" name="Color">
-                  <Option type="bool" name="active" value="true"/>
-                  <Option type="QString" name="expression" value="case &#xd;&#xa;when try(&quot;koniecObiekt&quot;) is not null and   3 = 1&#xd;&#xa;then&#xd;&#xa; '0,0,0,255'&#xd;&#xa;when try(&quot;koniecWersjaObiekt&quot;)is not null and try(&quot;koniecObiekt&quot;) is null and   3 = 1&#xd;&#xa;then&#xd;&#xa; '0,0,0,255'&#xd;&#xa;when   3 = 1&#xd;&#xa;then&#xd;&#xa; '0,0,0,255'&#xd;&#xa;else&#xd;&#xa;case &#xd;&#xa;when &#xd;&#xa;try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), ',')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), ',')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), ',')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), ','))&#xd;&#xa;then&#xd;&#xa;'0,0,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodWodociagowy_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecWodociagowa_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecWodociagowa_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecWodociagowa_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'w')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'w')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'w')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'w'))&#xd;&#xa;then&#xd;&#xa;'0,0,255,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodKanalizacyjny_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'k')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'k')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'k')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'k'))&#xd;&#xa;then&#xd;&#xa;'128,51,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodElektroenergetyczny_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecElektroenergetyczna_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'e')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'e')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'e')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'e'))&#xd;&#xa;then&#xd;&#xa;'255,0,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodGazowy_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecGazowa_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecGazowa_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecGazowa_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'g')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'g')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'g')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'g'))&#xd;&#xa;then&#xd;&#xa;'191,191,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodCieplowniczy_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecCieplownicza_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecCieplownicza_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecCieplownicza_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'c')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'c')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'c')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'c'))&#xd;&#xa;then&#xd;&#xa;'210,0,210,255'&#xd;&#xa;when&#xd;&#xa;try((&quot;GES_PrzewodTelekomunikacyjny_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecTelekomunikacyjna_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecTelekomunikacyjna_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 't')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 't')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 't')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 't'))&#xd;&#xa;then&#xd;&#xa;'255,145,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodSpecjalny_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecSpecjalna_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecSpecjalna_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecSpecjalna_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 's')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 's')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 's')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 's'))&#xd;&#xa;then&#xd;&#xa;'0,0,0,255'&#xd;&#xa;when &#xd;&#xa;try((&quot;GES_PrzewodNiezidentyfikowany_1_zrodlo&quot;)) is not null or try((&quot;GES_UrzadzeniaSiecNiezidentyfikowana_0_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecNiezidentyfikowana_1_zrodlo&quot;) is not null) or try((&quot;GES_UrzadzeniaSiecNiezidentyfikowana_2_zrodlo&quot;) is not null) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&quot;,''), 'x')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&quot;,''), 'x')) or try(array_contains( string_to_array(&quot;GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&quot;,''), 'x')) or try(array_contains( string_to_array(&quot;GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&quot;,''), 'x'))&#xd;&#xa;then&#xd;&#xa;'0,0,0,255'&#xd;&#xa;else&#xd;&#xa;'0,0,0,255'&#xd;&#xa;end&#xd;&#xa;end"/>
-                  <Option type="int" name="type" value="3"/>
+                <Option name="Color" type="Map">
+                  <Option name="active" type="bool" value="true"/>
+                  <Option name="expression" type="QString" value="&quot;color&quot;"/>
+                  <Option name="type" type="int" value="3"/>
                 </Option>
-                <Option type="Map" name="LabelRotation">
-                  <Option type="bool" name="active" value="true"/>
-                  <Option type="QString" name="expression" value="360-degrees(&quot;katObrotu&quot;)"/>
-                  <Option type="int" name="type" value="3"/>
+                <Option name="LabelRotation" type="Map">
+                  <Option name="active" type="bool" value="true"/>
+                  <Option name="expression" type="QString" value="360-degrees(&quot;katObrotu&quot;)"/>
+                  <Option name="type" type="int" value="3"/>
                 </Option>
-                <Option type="Map" name="OffsetQuad">
-                  <Option type="bool" name="active" value="true"/>
-                  <Option type="QString" name="expression" value="recalculate_justification(&quot;justyfikacja&quot;)"/>
-                  <Option type="int" name="type" value="3"/>
+                <Option name="OffsetQuad" type="Map">
+                  <Option name="active" type="bool" value="true"/>
+                  <Option name="expression" type="QString" value="recalculate_justification(&quot;justyfikacja&quot;)"/>
+                  <Option name="type" type="int" value="3"/>
                 </Option>
-                <Option type="Map" name="Show">
-                  <Option type="bool" name="active" value="true"/>
-                  <Option type="QString" name="expression" value="0"/>
-                  <Option type="int" name="type" value="3"/>
+                <Option name="Show" type="Map">
+                  <Option name="active" type="bool" value="true"/>
+                  <Option name="expression" type="QString" value="0"/>
+                  <Option name="type" type="int" value="3"/>
                 </Option>
               </Option>
-              <Option type="QString" name="type" value="collection"/>
+              <Option name="type" type="QString" value="collection"/>
             </Option>
           </dd_properties>
           <callout type="simple">
             <Option type="Map">
-              <Option type="QString" name="anchorPoint" value="pole_of_inaccessibility"/>
-              <Option type="int" name="blendMode" value="0"/>
-              <Option type="Map" name="ddProperties">
-                <Option type="QString" name="name" value=""/>
-                <Option type="Map" name="properties">
-                  <Option type="Map" name="DestinationX">
-                    <Option type="bool" name="active" value="true"/>
-                    <Option type="QString" name="expression" value="&quot;GES_odnosnik_0_x&quot;"/>
-                    <Option type="int" name="type" value="3"/>
+              <Option name="anchorPoint" type="QString" value="pole_of_inaccessibility"/>
+              <Option name="blendMode" type="int" value="0"/>
+              <Option name="ddProperties" type="Map">
+                <Option name="name" type="QString" value=""/>
+                <Option name="properties" type="Map">
+                  <Option name="DestinationX" type="Map">
+                    <Option name="active" type="bool" value="true"/>
+                    <Option name="expression" type="QString" value="&quot;GES_odnosnik_0_x&quot;"/>
+                    <Option name="type" type="int" value="3"/>
                   </Option>
-                  <Option type="Map" name="DestinationY">
-                    <Option type="bool" name="active" value="true"/>
-                    <Option type="QString" name="expression" value="&quot;GES_odnosnik_0_y&quot;"/>
-                    <Option type="int" name="type" value="3"/>
+                  <Option name="DestinationY" type="Map">
+                    <Option name="active" type="bool" value="true"/>
+                    <Option name="expression" type="QString" value="&quot;GES_odnosnik_0_y&quot;"/>
+                    <Option name="type" type="int" value="3"/>
                   </Option>
-                  <Option type="Map" name="LabelAnchorPointPosition">
-                    <Option type="bool" name="active" value="true"/>
-                    <Option type="QString" name="expression" value="Case&#xd;&#xa;When&#xd;&#xa;distance( make_point( &quot;GES_odnosnik_0_x&quot; , &quot;GES_odnosnik_0_y&quot; ), make_point( x_min( get_label_box(x($geometry),y($geometry))), y_min( get_label_box(x($geometry),y($geometry))))) > distance( make_point( &quot;GES_odnosnik_0_x&quot; , &quot;GES_odnosnik_0_y&quot; ), make_point( x_max( get_label_box(x($geometry),y($geometry))), y_min( get_label_box(x($geometry),y($geometry)))))&#xd;&#xa;Then&#xd;&#xa;'BR'&#xd;&#xa;else&#xd;&#xa;'BL'&#xd;&#xa;end"/>
-                    <Option type="int" name="type" value="3"/>
+                  <Option name="LabelAnchorPointPosition" type="Map">
+                    <Option name="active" type="bool" value="true"/>
+                    <Option name="expression" type="QString" value="Case&#xd;&#xa;When&#xd;&#xa;distance( make_point( &quot;GES_odnosnik_0_x&quot; , &quot;GES_odnosnik_0_y&quot; ), make_point( x_min( get_label_box(x($geometry),y($geometry))), y_min( get_label_box(x($geometry),y($geometry))))) > distance( make_point( &quot;GES_odnosnik_0_x&quot; , &quot;GES_odnosnik_0_y&quot; ), make_point( x_max( get_label_box(x($geometry),y($geometry))), y_min( get_label_box(x($geometry),y($geometry)))))&#xd;&#xa;Then&#xd;&#xa;'BR'&#xd;&#xa;else&#xd;&#xa;'BL'&#xd;&#xa;end"/>
+                    <Option name="type" type="int" value="3"/>
                   </Option>
                 </Option>
-                <Option type="QString" name="type" value="collection"/>
+                <Option name="type" type="QString" value="collection"/>
               </Option>
-              <Option type="bool" name="drawToAllParts" value="false"/>
-              <Option type="QString" name="enabled" value="0"/>
-              <Option type="QString" name="labelAnchorPoint" value="point_on_exterior"/>
-              <Option type="QString" name="lineSymbol" value="&lt;symbol type=&quot;line&quot; name=&quot;symbol&quot; alpha=&quot;1&quot; clip_to_extent=&quot;1&quot; force_rhr=&quot;0&quot;>&lt;data_defined_properties>&lt;Option type=&quot;Map&quot;>&lt;Option type=&quot;QString&quot; name=&quot;name&quot; value=&quot;&quot;/>&lt;Option name=&quot;properties&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;type&quot; value=&quot;collection&quot;/>&lt;/Option>&lt;/data_defined_properties>&lt;layer class=&quot;SimpleLine&quot; locked=&quot;0&quot; pass=&quot;0&quot; enabled=&quot;1&quot;>&lt;Option type=&quot;Map&quot;>&lt;Option type=&quot;QString&quot; name=&quot;align_dash_pattern&quot; value=&quot;0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;capstyle&quot; value=&quot;round&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;customdash&quot; value=&quot;5;2&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;customdash_map_unit_scale&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;customdash_unit&quot; value=&quot;MM&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;dash_pattern_offset&quot; value=&quot;0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;dash_pattern_offset_map_unit_scale&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;dash_pattern_offset_unit&quot; value=&quot;MM&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;draw_inside_polygon&quot; value=&quot;0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;joinstyle&quot; value=&quot;round&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;line_color&quot; value=&quot;0,0,0,255&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;line_style&quot; value=&quot;solid&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;line_width&quot; value=&quot;0.09&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;line_width_unit&quot; value=&quot;MapUnit&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;offset&quot; value=&quot;0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;offset_map_unit_scale&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;offset_unit&quot; value=&quot;MM&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;ring_filter&quot; value=&quot;0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;trim_distance_end&quot; value=&quot;0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;trim_distance_end_map_unit_scale&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;trim_distance_end_unit&quot; value=&quot;MM&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;trim_distance_start&quot; value=&quot;0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;trim_distance_start_map_unit_scale&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;trim_distance_start_unit&quot; value=&quot;MM&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;tweak_dash_pattern_on_corners&quot; value=&quot;0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;use_custom_dash&quot; value=&quot;0&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;width_map_unit_scale&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;/Option>&lt;prop k=&quot;align_dash_pattern&quot; v=&quot;0&quot;/>&lt;prop k=&quot;capstyle&quot; v=&quot;round&quot;/>&lt;prop k=&quot;customdash&quot; v=&quot;5;2&quot;/>&lt;prop k=&quot;customdash_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;customdash_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;dash_pattern_offset&quot; v=&quot;0&quot;/>&lt;prop k=&quot;dash_pattern_offset_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;dash_pattern_offset_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;draw_inside_polygon&quot; v=&quot;0&quot;/>&lt;prop k=&quot;joinstyle&quot; v=&quot;round&quot;/>&lt;prop k=&quot;line_color&quot; v=&quot;0,0,0,255&quot;/>&lt;prop k=&quot;line_style&quot; v=&quot;solid&quot;/>&lt;prop k=&quot;line_width&quot; v=&quot;0.09&quot;/>&lt;prop k=&quot;line_width_unit&quot; v=&quot;MapUnit&quot;/>&lt;prop k=&quot;offset&quot; v=&quot;0&quot;/>&lt;prop k=&quot;offset_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;offset_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;ring_filter&quot; v=&quot;0&quot;/>&lt;prop k=&quot;trim_distance_end&quot; v=&quot;0&quot;/>&lt;prop k=&quot;trim_distance_end_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;trim_distance_end_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;trim_distance_start&quot; v=&quot;0&quot;/>&lt;prop k=&quot;trim_distance_start_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;trim_distance_start_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;tweak_dash_pattern_on_corners&quot; v=&quot;0&quot;/>&lt;prop k=&quot;use_custom_dash&quot; v=&quot;0&quot;/>&lt;prop k=&quot;width_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;data_defined_properties>&lt;Option type=&quot;Map&quot;>&lt;Option type=&quot;QString&quot; name=&quot;name&quot; value=&quot;&quot;/>&lt;Option type=&quot;Map&quot; name=&quot;properties&quot;>&lt;Option type=&quot;Map&quot; name=&quot;outlineColor&quot;>&lt;Option type=&quot;bool&quot; name=&quot;active&quot; value=&quot;true&quot;/>&lt;Option type=&quot;QString&quot; name=&quot;expression&quot; value=&quot;case &amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodWodociagowy_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecWodociagowa_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecWodociagowa_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecWodociagowa_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'w') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'w') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'w') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'w')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'0,0,255'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodKanalizacyjny_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'k') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'k') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'k') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'k')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'128,51,0'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodElektroenergetyczny_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecElektroenergetyczna_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'e') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'e') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'e') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'e')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'255,0,0'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodGazowy_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecGazowa_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecGazowa_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecGazowa_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'g') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'g') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'g') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'g')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'191,191,0'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodCieplowniczy_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecCieplownicza_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecCieplownicza_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecCieplownicza_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'c') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'c') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'c') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'c')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'210,0,210'&amp;#xd;&amp;#xa;when&amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodTelekomunikacyjny_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecTelekomunikacyjna_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecTelekomunikacyjna_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 't') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 't') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 't') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 't')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'255,145,0'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodSpecjalny_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecSpecjalna_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecSpecjalna_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecSpecjalna_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 's') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 's') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 's') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 's')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'255,255,255'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodNiezidentyfikowany_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecNiezidentyfikowana_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecNiezidentyfikowana_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecNiezidentyfikowana_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'x') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'x') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'x') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'x')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'255,255,255'&amp;#xd;&amp;#xa;else&amp;#xd;&amp;#xa;'255,255,255'&amp;#xd;&amp;#xa;end&quot;/>&lt;Option type=&quot;int&quot; name=&quot;type&quot; value=&quot;3&quot;/>&lt;/Option>&lt;/Option>&lt;Option type=&quot;QString&quot; name=&quot;type&quot; value=&quot;collection&quot;/>&lt;/Option>&lt;/data_defined_properties>&lt;/layer>&lt;/symbol>"/>
-              <Option type="double" name="minLength" value="0"/>
-              <Option type="QString" name="minLengthMapUnitScale" value="3x:0,0,0,0,0,0"/>
-              <Option type="QString" name="minLengthUnit" value="MM"/>
-              <Option type="double" name="offsetFromAnchor" value="0"/>
-              <Option type="QString" name="offsetFromAnchorMapUnitScale" value="3x:0,0,0,0,0,0"/>
-              <Option type="QString" name="offsetFromAnchorUnit" value="MM"/>
-              <Option type="double" name="offsetFromLabel" value="0"/>
-              <Option type="QString" name="offsetFromLabelMapUnitScale" value="3x:0,0,0,0,0,0"/>
-              <Option type="QString" name="offsetFromLabelUnit" value="MM"/>
+              <Option name="drawToAllParts" type="bool" value="false"/>
+              <Option name="enabled" type="QString" value="0"/>
+              <Option name="labelAnchorPoint" type="QString" value="point_on_exterior"/>
+              <Option name="lineSymbol" type="QString" value="&lt;symbol clip_to_extent=&quot;1&quot; name=&quot;symbol&quot; alpha=&quot;1&quot; type=&quot;line&quot; force_rhr=&quot;0&quot;>&lt;data_defined_properties>&lt;Option type=&quot;Map&quot;>&lt;Option name=&quot;name&quot; type=&quot;QString&quot; value=&quot;&quot;/>&lt;Option name=&quot;properties&quot;/>&lt;Option name=&quot;type&quot; type=&quot;QString&quot; value=&quot;collection&quot;/>&lt;/Option>&lt;/data_defined_properties>&lt;layer locked=&quot;0&quot; pass=&quot;0&quot; enabled=&quot;1&quot; class=&quot;SimpleLine&quot;>&lt;Option type=&quot;Map&quot;>&lt;Option name=&quot;align_dash_pattern&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;capstyle&quot; type=&quot;QString&quot; value=&quot;round&quot;/>&lt;Option name=&quot;customdash&quot; type=&quot;QString&quot; value=&quot;5;2&quot;/>&lt;Option name=&quot;customdash_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;customdash_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;dash_pattern_offset&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;dash_pattern_offset_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;dash_pattern_offset_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;draw_inside_polygon&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;joinstyle&quot; type=&quot;QString&quot; value=&quot;round&quot;/>&lt;Option name=&quot;line_color&quot; type=&quot;QString&quot; value=&quot;0,0,0,255&quot;/>&lt;Option name=&quot;line_style&quot; type=&quot;QString&quot; value=&quot;solid&quot;/>&lt;Option name=&quot;line_width&quot; type=&quot;QString&quot; value=&quot;0.09&quot;/>&lt;Option name=&quot;line_width_unit&quot; type=&quot;QString&quot; value=&quot;MapUnit&quot;/>&lt;Option name=&quot;offset&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;offset_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;offset_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;ring_filter&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;trim_distance_end&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;trim_distance_end_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;trim_distance_end_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;trim_distance_start&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;trim_distance_start_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;trim_distance_start_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;tweak_dash_pattern_on_corners&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;use_custom_dash&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;width_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;/Option>&lt;prop k=&quot;align_dash_pattern&quot; v=&quot;0&quot;/>&lt;prop k=&quot;capstyle&quot; v=&quot;round&quot;/>&lt;prop k=&quot;customdash&quot; v=&quot;5;2&quot;/>&lt;prop k=&quot;customdash_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;customdash_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;dash_pattern_offset&quot; v=&quot;0&quot;/>&lt;prop k=&quot;dash_pattern_offset_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;dash_pattern_offset_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;draw_inside_polygon&quot; v=&quot;0&quot;/>&lt;prop k=&quot;joinstyle&quot; v=&quot;round&quot;/>&lt;prop k=&quot;line_color&quot; v=&quot;0,0,0,255&quot;/>&lt;prop k=&quot;line_style&quot; v=&quot;solid&quot;/>&lt;prop k=&quot;line_width&quot; v=&quot;0.09&quot;/>&lt;prop k=&quot;line_width_unit&quot; v=&quot;MapUnit&quot;/>&lt;prop k=&quot;offset&quot; v=&quot;0&quot;/>&lt;prop k=&quot;offset_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;offset_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;ring_filter&quot; v=&quot;0&quot;/>&lt;prop k=&quot;trim_distance_end&quot; v=&quot;0&quot;/>&lt;prop k=&quot;trim_distance_end_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;trim_distance_end_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;trim_distance_start&quot; v=&quot;0&quot;/>&lt;prop k=&quot;trim_distance_start_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;trim_distance_start_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;tweak_dash_pattern_on_corners&quot; v=&quot;0&quot;/>&lt;prop k=&quot;use_custom_dash&quot; v=&quot;0&quot;/>&lt;prop k=&quot;width_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;data_defined_properties>&lt;Option type=&quot;Map&quot;>&lt;Option name=&quot;name&quot; type=&quot;QString&quot; value=&quot;&quot;/>&lt;Option name=&quot;properties&quot; type=&quot;Map&quot;>&lt;Option name=&quot;outlineColor&quot; type=&quot;Map&quot;>&lt;Option name=&quot;active&quot; type=&quot;bool&quot; value=&quot;true&quot;/>&lt;Option name=&quot;expression&quot; type=&quot;QString&quot; value=&quot;case &amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodWodociagowy_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecWodociagowa_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecWodociagowa_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecWodociagowa_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'w') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'w') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'w') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'w')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'0,0,255'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodKanalizacyjny_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'k') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'k') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'k') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'k')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'128,51,0'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodElektroenergetyczny_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecElektroenergetyczna_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'e') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'e') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'e') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'e')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'255,0,0'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodGazowy_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecGazowa_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecGazowa_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecGazowa_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'g') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'g') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'g') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'g')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'191,191,0'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodCieplowniczy_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecCieplownicza_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecCieplownicza_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecCieplownicza_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'c') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'c') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'c') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'c')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'210,0,210'&amp;#xd;&amp;#xa;when&amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodTelekomunikacyjny_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecTelekomunikacyjna_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecTelekomunikacyjna_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 't') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 't') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 't') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 't')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'255,145,0'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodSpecjalny_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecSpecjalna_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecSpecjalna_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecSpecjalna_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 's') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 's') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 's') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 's')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'255,255,255'&amp;#xd;&amp;#xa;when &amp;#xd;&amp;#xa;try((&amp;quot;GES_Rzedna_0_GES_PrzewodNiezidentyfikowany_1_zrodlo&amp;quot;)) is not null or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecNiezidentyfikowana_0_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecNiezidentyfikowana_1_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaSiecNiezidentyfikowana_2_zrodlo&amp;quot;) is not null) or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci&amp;quot;) = 'x') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci&amp;quot;) = 'x') or try((&amp;quot;GES_Rzedna_0_GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci&amp;quot;) = 'x') or try((&amp;quot;GES_Rzedna_0_GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci&amp;quot;) = 'x')&amp;#xd;&amp;#xa;then&amp;#xd;&amp;#xa;'255,255,255'&amp;#xd;&amp;#xa;else&amp;#xd;&amp;#xa;'255,255,255'&amp;#xd;&amp;#xa;end&quot;/>&lt;Option name=&quot;type&quot; type=&quot;int&quot; value=&quot;3&quot;/>&lt;/Option>&lt;/Option>&lt;Option name=&quot;type&quot; type=&quot;QString&quot; value=&quot;collection&quot;/>&lt;/Option>&lt;/data_defined_properties>&lt;/layer>&lt;/symbol>"/>
+              <Option name="minLength" type="double" value="0"/>
+              <Option name="minLengthMapUnitScale" type="QString" value="3x:0,0,0,0,0,0"/>
+              <Option name="minLengthUnit" type="QString" value="MM"/>
+              <Option name="offsetFromAnchor" type="double" value="0"/>
+              <Option name="offsetFromAnchorMapUnitScale" type="QString" value="3x:0,0,0,0,0,0"/>
+              <Option name="offsetFromAnchorUnit" type="QString" value="MM"/>
+              <Option name="offsetFromLabel" type="double" value="0"/>
+              <Option name="offsetFromLabelMapUnitScale" type="QString" value="3x:0,0,0,0,0,0"/>
+              <Option name="offsetFromLabelUnit" type="QString" value="MM"/>
             </Option>
           </callout>
         </settings>
@@ -573,59 +573,59 @@
   </labeling>
   <customproperties>
     <Option type="Map">
-      <Option type="List" name="dualview/previewExpressions">
+      <Option name="dualview/previewExpressions" type="List">
         <Option type="QString" value="&quot;gml_id&quot;"/>
       </Option>
-      <Option type="int" name="embeddedWidgets/count" value="0"/>
-      <Option type="invalid" name="variableNames"/>
-      <Option type="invalid" name="variableValues"/>
+      <Option name="embeddedWidgets/count" type="int" value="0"/>
+      <Option name="variableNames"/>
+      <Option name="variableValues"/>
     </Option>
   </customproperties>
   <blendMode>0</blendMode>
   <featureBlendMode>0</featureBlendMode>
   <layerOpacity>1</layerOpacity>
   <SingleCategoryDiagramRenderer diagramType="Histogram" attributeLegend="1">
-    <DiagramCategory scaleBasedVisibility="0" rotationOffset="270" lineSizeType="MM" enabled="0" spacingUnit="MM" penAlpha="255" opacity="1" spacing="5" backgroundColor="#ffffff" height="15" sizeType="MM" width="15" penWidth="0" minScaleDenominator="0" maxScaleDenominator="1e+08" showAxis="1" sizeScale="3x:0,0,0,0,0,0" backgroundAlpha="255" labelPlacementMethod="XHeight" scaleDependency="Area" direction="0" spacingUnitScale="3x:0,0,0,0,0,0" barWidth="5" diagramOrientation="Up" minimumSize="0" lineSizeScale="3x:0,0,0,0,0,0" penColor="#000000">
+    <DiagramCategory enabled="0" scaleBasedVisibility="0" labelPlacementMethod="XHeight" maxScaleDenominator="1e+08" barWidth="5" backgroundColor="#ffffff" scaleDependency="Area" spacing="5" diagramOrientation="Up" direction="0" sizeScale="3x:0,0,0,0,0,0" showAxis="1" backgroundAlpha="255" opacity="1" penAlpha="255" lineSizeScale="3x:0,0,0,0,0,0" spacingUnitScale="3x:0,0,0,0,0,0" penColor="#000000" minScaleDenominator="0" height="15" penWidth="0" minimumSize="0" spacingUnit="MM" width="15" sizeType="MM" rotationOffset="270" lineSizeType="MM">
       <fontProperties style="" description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0"/>
-      <attribute label="" field="" color="#000000"/>
+      <attribute color="#000000" field="" label=""/>
       <axisSymbol>
-        <symbol type="line" name="" alpha="1" clip_to_extent="1" force_rhr="0">
+        <symbol clip_to_extent="1" name="" alpha="1" type="line" force_rhr="0">
           <data_defined_properties>
             <Option type="Map">
-              <Option type="QString" name="name" value=""/>
+              <Option name="name" type="QString" value=""/>
               <Option name="properties"/>
-              <Option type="QString" name="type" value="collection"/>
+              <Option name="type" type="QString" value="collection"/>
             </Option>
           </data_defined_properties>
-          <layer class="SimpleLine" locked="0" pass="0" enabled="1">
+          <layer locked="0" pass="0" enabled="1" class="SimpleLine">
             <Option type="Map">
-              <Option type="QString" name="align_dash_pattern" value="0"/>
-              <Option type="QString" name="capstyle" value="square"/>
-              <Option type="QString" name="customdash" value="5;2"/>
-              <Option type="QString" name="customdash_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-              <Option type="QString" name="customdash_unit" value="MM"/>
-              <Option type="QString" name="dash_pattern_offset" value="0"/>
-              <Option type="QString" name="dash_pattern_offset_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-              <Option type="QString" name="dash_pattern_offset_unit" value="MM"/>
-              <Option type="QString" name="draw_inside_polygon" value="0"/>
-              <Option type="QString" name="joinstyle" value="bevel"/>
-              <Option type="QString" name="line_color" value="35,35,35,255"/>
-              <Option type="QString" name="line_style" value="solid"/>
-              <Option type="QString" name="line_width" value="0.26"/>
-              <Option type="QString" name="line_width_unit" value="MM"/>
-              <Option type="QString" name="offset" value="0"/>
-              <Option type="QString" name="offset_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-              <Option type="QString" name="offset_unit" value="MM"/>
-              <Option type="QString" name="ring_filter" value="0"/>
-              <Option type="QString" name="trim_distance_end" value="0"/>
-              <Option type="QString" name="trim_distance_end_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-              <Option type="QString" name="trim_distance_end_unit" value="MM"/>
-              <Option type="QString" name="trim_distance_start" value="0"/>
-              <Option type="QString" name="trim_distance_start_map_unit_scale" value="3x:0,0,0,0,0,0"/>
-              <Option type="QString" name="trim_distance_start_unit" value="MM"/>
-              <Option type="QString" name="tweak_dash_pattern_on_corners" value="0"/>
-              <Option type="QString" name="use_custom_dash" value="0"/>
-              <Option type="QString" name="width_map_unit_scale" value="3x:0,0,0,0,0,0"/>
+              <Option name="align_dash_pattern" type="QString" value="0"/>
+              <Option name="capstyle" type="QString" value="square"/>
+              <Option name="customdash" type="QString" value="5;2"/>
+              <Option name="customdash_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+              <Option name="customdash_unit" type="QString" value="MM"/>
+              <Option name="dash_pattern_offset" type="QString" value="0"/>
+              <Option name="dash_pattern_offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+              <Option name="dash_pattern_offset_unit" type="QString" value="MM"/>
+              <Option name="draw_inside_polygon" type="QString" value="0"/>
+              <Option name="joinstyle" type="QString" value="bevel"/>
+              <Option name="line_color" type="QString" value="35,35,35,255"/>
+              <Option name="line_style" type="QString" value="solid"/>
+              <Option name="line_width" type="QString" value="0.26"/>
+              <Option name="line_width_unit" type="QString" value="MM"/>
+              <Option name="offset" type="QString" value="0"/>
+              <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+              <Option name="offset_unit" type="QString" value="MM"/>
+              <Option name="ring_filter" type="QString" value="0"/>
+              <Option name="trim_distance_end" type="QString" value="0"/>
+              <Option name="trim_distance_end_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+              <Option name="trim_distance_end_unit" type="QString" value="MM"/>
+              <Option name="trim_distance_start" type="QString" value="0"/>
+              <Option name="trim_distance_start_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+              <Option name="trim_distance_start_unit" type="QString" value="MM"/>
+              <Option name="tweak_dash_pattern_on_corners" type="QString" value="0"/>
+              <Option name="use_custom_dash" type="QString" value="0"/>
+              <Option name="width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
             </Option>
             <prop k="align_dash_pattern" v="0"/>
             <prop k="capstyle" v="square"/>
@@ -656,9 +656,9 @@
             <prop k="width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
             <data_defined_properties>
               <Option type="Map">
-                <Option type="QString" name="name" value=""/>
+                <Option name="name" type="QString" value=""/>
                 <Option name="properties"/>
-                <Option type="QString" name="type" value="collection"/>
+                <Option name="type" type="QString" value="collection"/>
               </Option>
             </data_defined_properties>
           </layer>
@@ -666,12 +666,12 @@
       </axisSymbol>
     </DiagramCategory>
   </SingleCategoryDiagramRenderer>
-  <DiagramLayerSettings obstacle="0" linePlacementFlags="18" priority="0" showAll="1" placement="0" zIndex="0" dist="0">
+  <DiagramLayerSettings showAll="1" placement="0" linePlacementFlags="18" priority="0" zIndex="0" obstacle="0" dist="0">
     <properties>
       <Option type="Map">
-        <Option type="QString" name="name" value=""/>
+        <Option name="name" type="QString" value=""/>
         <Option name="properties"/>
-        <Option type="QString" name="type" value="collection"/>
+        <Option name="type" type="QString" value="collection"/>
       </Option>
     </properties>
   </DiagramLayerSettings>
@@ -679,273 +679,210 @@
     <activeChecks/>
     <checkConfiguration/>
   </geometryOptions>
-  <legend type="default-vector" showLabelLegend="0"/>
+  <legend showLabelLegend="0" type="default-vector"/>
   <referencedLayers/>
   <fieldConfiguration>
-    <field configurationFlags="None" name="fid">
+    <field name="fid" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option type="Map">
-            <Option type="bool" name="IsMultiline" value="false"/>
-            <Option type="bool" name="UseHtml" value="false"/>
+            <Option name="IsMultiline" type="bool" value="false"/>
+            <Option name="UseHtml" type="bool" value="false"/>
           </Option>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="gml_id">
-      <editWidget type="">
+    <field name="gml_id" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="lokalnyId">
-      <editWidget type="">
+    <field name="lokalnyId" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="przestrzenNazw">
-      <editWidget type="">
+    <field name="przestrzenNazw" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="wersjaId">
-      <editWidget type="">
+    <field name="wersjaId" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="relacja">
-      <editWidget type="">
+    <field name="relacja" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="startObiekt">
-      <editWidget type="">
+    <field name="startObiekt" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="startWersjaObiekt">
-      <editWidget type="">
+    <field name="startWersjaObiekt" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="zrodlo">
-      <editWidget type="">
+    <field name="zrodlo" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="numerOperatu">
-      <editWidget type="">
+    <field name="numerOperatu" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="rzednaGory">
-      <editWidget type="">
+    <field name="rzednaGory" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="rzednaDolu">
-      <editWidget type="">
+    <field name="rzednaDolu" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="prezentacja_etykiety">
-      <editWidget type="">
+    <field name="prezentacja_etykiety" configurationFlags="None">
+      <editWidget type="Range">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="rzedna">
-      <editWidget type="">
+    <field name="rzedna" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci">
-      <editWidget type="">
+    <field name="color" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="GES_PrzewodCieplowniczy_1_zrodlo">
-      <editWidget type="">
+    <field name="GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="GES_PrzewodElektroenergetyczny_1_zrodlo">
-      <editWidget type="">
+    <field name="GES_PrzewodElektroenergetyczny_1_zrodlo" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="GES_PrzewodGazowy_1_zrodlo">
-      <editWidget type="">
+    <field name="GES_PrzewodGazowy_1_zrodlo" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="GES_PrzewodSpecjalny_1_zrodlo">
-      <editWidget type="">
+    <field name="GES_PrzewodKanalizacyjny_1_zrodlo" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="GES_PrzewodKanalizacyjny_1_zrodlo">
-      <editWidget type="">
+    <field name="GES_PrzewodTelekomunikacyjny_1_zrodlo" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="GES_PrzewodTelekomunikacyjny_1_zrodlo">
-      <editWidget type="">
+    <field name="GES_PrzewodWodociagowy_1_zrodlo" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="GES_PrzewodWodociagowy_1_zrodlo">
-      <editWidget type="">
+    <field name="GES_UrzadzeniaSiecWodociagowa_0_zrodlo" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="GES_PrzewodNiezidentyfikowany_1_zrodlo">
-      <editWidget type="">
+    <field name="GES_UrzadzeniaSiecGazowa_0_zrodlo" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo">
-      <editWidget type="">
+    <field name="GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="GES_UrzadzenieNiezidentyfikowane_0_zrodlo">
-      <editWidget type="">
+    <field name="GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="GES_UrzadzeniaTechniczneSieciSpecjalnej_0_zrodlo">
-      <editWidget type="">
+    <field name="GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="GES_UrzadzeniaSiecCieplownicza_0_zrodlo">
-      <editWidget type="">
+    <field name="GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci">
-      <editWidget type="">
+    <field name="GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field configurationFlags="None" name="GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field configurationFlags="None" name="GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field configurationFlags="None" name="GES_UrzadzeniaSiecWodociagowa_0_zrodlo">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field configurationFlags="None" name="GES_UrzadzeniaSiecWodociagowa_2_zrodlo">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field configurationFlags="None" name="GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field configurationFlags="None" name="GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field configurationFlags="None" name="GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field configurationFlags="None" name="GES_UrzadzeniaSiecGazowa_2_zrodlo">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field configurationFlags="None" name="GES_UrzadzeniaSiecGazowa_0_zrodlo">
-      <editWidget type="">
+    <field name="GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
@@ -953,200 +890,165 @@
     </field>
   </fieldConfiguration>
   <aliases>
-    <alias field="fid" name="" index="0"/>
-    <alias field="gml_id" name="" index="1"/>
-    <alias field="lokalnyId" name="" index="2"/>
-    <alias field="przestrzenNazw" name="" index="3"/>
-    <alias field="wersjaId" name="" index="4"/>
-    <alias field="relacja" name="" index="5"/>
-    <alias field="startObiekt" name="" index="6"/>
-    <alias field="startWersjaObiekt" name="" index="7"/>
-    <alias field="zrodlo" name="" index="8"/>
-    <alias field="numerOperatu" name="" index="9"/>
-    <alias field="rzednaGory" name="" index="10"/>
-    <alias field="rzednaDolu" name="" index="11"/>
-    <alias field="prezentacja_etykiety" name="" index="12"/>
-    <alias field="rzedna" name="" index="13"/>
-    <alias field="GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci" name="" index="14"/>
-    <alias field="GES_PrzewodCieplowniczy_1_zrodlo" name="" index="15"/>
-    <alias field="GES_PrzewodElektroenergetyczny_1_zrodlo" name="" index="16"/>
-    <alias field="GES_PrzewodGazowy_1_zrodlo" name="" index="17"/>
-    <alias field="GES_PrzewodSpecjalny_1_zrodlo" name="" index="18"/>
-    <alias field="GES_PrzewodKanalizacyjny_1_zrodlo" name="" index="19"/>
-    <alias field="GES_PrzewodTelekomunikacyjny_1_zrodlo" name="" index="20"/>
-    <alias field="GES_PrzewodWodociagowy_1_zrodlo" name="" index="21"/>
-    <alias field="GES_PrzewodNiezidentyfikowany_1_zrodlo" name="" index="22"/>
-    <alias field="GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo" name="" index="23"/>
-    <alias field="GES_UrzadzenieNiezidentyfikowane_0_zrodlo" name="" index="24"/>
-    <alias field="GES_UrzadzeniaTechniczneSieciSpecjalnej_0_zrodlo" name="" index="25"/>
-    <alias field="GES_UrzadzeniaSiecCieplownicza_0_zrodlo" name="" index="26"/>
-    <alias field="GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci" name="" index="27"/>
-    <alias field="GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci" name="" index="28"/>
-    <alias field="GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo" name="" index="29"/>
-    <alias field="GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo" name="" index="30"/>
-    <alias field="GES_UrzadzeniaSiecWodociagowa_0_zrodlo" name="" index="31"/>
-    <alias field="GES_UrzadzeniaSiecWodociagowa_2_zrodlo" name="" index="32"/>
-    <alias field="GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo" name="" index="33"/>
-    <alias field="GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo" name="" index="34"/>
-    <alias field="GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo" name="" index="35"/>
-    <alias field="GES_UrzadzeniaSiecGazowa_2_zrodlo" name="" index="36"/>
-    <alias field="GES_UrzadzeniaSiecGazowa_0_zrodlo" name="" index="37"/>
+    <alias name="" field="fid" index="0"/>
+    <alias name="" field="gml_id" index="1"/>
+    <alias name="" field="lokalnyId" index="2"/>
+    <alias name="" field="przestrzenNazw" index="3"/>
+    <alias name="" field="wersjaId" index="4"/>
+    <alias name="" field="relacja" index="5"/>
+    <alias name="" field="startObiekt" index="6"/>
+    <alias name="" field="startWersjaObiekt" index="7"/>
+    <alias name="" field="zrodlo" index="8"/>
+    <alias name="" field="numerOperatu" index="9"/>
+    <alias name="" field="rzednaGory" index="10"/>
+    <alias name="" field="rzednaDolu" index="11"/>
+    <alias name="" field="prezentacja_etykiety" index="12"/>
+    <alias name="" field="rzedna" index="13"/>
+    <alias name="" field="color" index="14"/>
+    <alias name="" field="GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci" index="15"/>
+    <alias name="" field="GES_PrzewodElektroenergetyczny_1_zrodlo" index="16"/>
+    <alias name="" field="GES_PrzewodGazowy_1_zrodlo" index="17"/>
+    <alias name="" field="GES_PrzewodKanalizacyjny_1_zrodlo" index="18"/>
+    <alias name="" field="GES_PrzewodTelekomunikacyjny_1_zrodlo" index="19"/>
+    <alias name="" field="GES_PrzewodWodociagowy_1_zrodlo" index="20"/>
+    <alias name="" field="GES_UrzadzeniaSiecWodociagowa_0_zrodlo" index="21"/>
+    <alias name="" field="GES_UrzadzeniaSiecGazowa_0_zrodlo" index="22"/>
+    <alias name="" field="GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci" index="23"/>
+    <alias name="" field="GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci" index="24"/>
+    <alias name="" field="GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo" index="25"/>
+    <alias name="" field="GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo" index="26"/>
+    <alias name="" field="GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo" index="27"/>
+    <alias name="" field="GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo" index="28"/>
   </aliases>
   <defaults>
-    <default expression="" field="fid" applyOnUpdate="0"/>
-    <default expression="" field="gml_id" applyOnUpdate="0"/>
-    <default expression="" field="lokalnyId" applyOnUpdate="0"/>
-    <default expression="" field="przestrzenNazw" applyOnUpdate="0"/>
-    <default expression="" field="wersjaId" applyOnUpdate="0"/>
-    <default expression="" field="relacja" applyOnUpdate="0"/>
-    <default expression="" field="startObiekt" applyOnUpdate="0"/>
-    <default expression="" field="startWersjaObiekt" applyOnUpdate="0"/>
-    <default expression="" field="zrodlo" applyOnUpdate="0"/>
-    <default expression="" field="numerOperatu" applyOnUpdate="0"/>
-    <default expression="" field="rzednaGory" applyOnUpdate="0"/>
-    <default expression="" field="rzednaDolu" applyOnUpdate="0"/>
-    <default expression="" field="prezentacja_etykiety" applyOnUpdate="0"/>
-    <default expression="" field="rzedna" applyOnUpdate="0"/>
-    <default expression="" field="GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci" applyOnUpdate="0"/>
-    <default expression="" field="GES_PrzewodCieplowniczy_1_zrodlo" applyOnUpdate="0"/>
-    <default expression="" field="GES_PrzewodElektroenergetyczny_1_zrodlo" applyOnUpdate="0"/>
-    <default expression="" field="GES_PrzewodGazowy_1_zrodlo" applyOnUpdate="0"/>
-    <default expression="" field="GES_PrzewodSpecjalny_1_zrodlo" applyOnUpdate="0"/>
-    <default expression="" field="GES_PrzewodKanalizacyjny_1_zrodlo" applyOnUpdate="0"/>
-    <default expression="" field="GES_PrzewodTelekomunikacyjny_1_zrodlo" applyOnUpdate="0"/>
-    <default expression="" field="GES_PrzewodWodociagowy_1_zrodlo" applyOnUpdate="0"/>
-    <default expression="" field="GES_PrzewodNiezidentyfikowany_1_zrodlo" applyOnUpdate="0"/>
-    <default expression="" field="GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo" applyOnUpdate="0"/>
-    <default expression="" field="GES_UrzadzenieNiezidentyfikowane_0_zrodlo" applyOnUpdate="0"/>
-    <default expression="" field="GES_UrzadzeniaTechniczneSieciSpecjalnej_0_zrodlo" applyOnUpdate="0"/>
-    <default expression="" field="GES_UrzadzeniaSiecCieplownicza_0_zrodlo" applyOnUpdate="0"/>
-    <default expression="" field="GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci" applyOnUpdate="0"/>
-    <default expression="" field="GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci" applyOnUpdate="0"/>
-    <default expression="" field="GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo" applyOnUpdate="0"/>
-    <default expression="" field="GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo" applyOnUpdate="0"/>
-    <default expression="" field="GES_UrzadzeniaSiecWodociagowa_0_zrodlo" applyOnUpdate="0"/>
-    <default expression="" field="GES_UrzadzeniaSiecWodociagowa_2_zrodlo" applyOnUpdate="0"/>
-    <default expression="" field="GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo" applyOnUpdate="0"/>
-    <default expression="" field="GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo" applyOnUpdate="0"/>
-    <default expression="" field="GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo" applyOnUpdate="0"/>
-    <default expression="" field="GES_UrzadzeniaSiecGazowa_2_zrodlo" applyOnUpdate="0"/>
-    <default expression="" field="GES_UrzadzeniaSiecGazowa_0_zrodlo" applyOnUpdate="0"/>
+    <default expression="" applyOnUpdate="0" field="fid"/>
+    <default expression="" applyOnUpdate="0" field="gml_id"/>
+    <default expression="" applyOnUpdate="0" field="lokalnyId"/>
+    <default expression="" applyOnUpdate="0" field="przestrzenNazw"/>
+    <default expression="" applyOnUpdate="0" field="wersjaId"/>
+    <default expression="" applyOnUpdate="0" field="relacja"/>
+    <default expression="" applyOnUpdate="0" field="startObiekt"/>
+    <default expression="" applyOnUpdate="0" field="startWersjaObiekt"/>
+    <default expression="" applyOnUpdate="0" field="zrodlo"/>
+    <default expression="" applyOnUpdate="0" field="numerOperatu"/>
+    <default expression="" applyOnUpdate="0" field="rzednaGory"/>
+    <default expression="" applyOnUpdate="0" field="rzednaDolu"/>
+    <default expression="" applyOnUpdate="0" field="prezentacja_etykiety"/>
+    <default expression="" applyOnUpdate="0" field="rzedna"/>
+    <default expression="" applyOnUpdate="0" field="color"/>
+    <default expression="" applyOnUpdate="0" field="GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci"/>
+    <default expression="" applyOnUpdate="0" field="GES_PrzewodElektroenergetyczny_1_zrodlo"/>
+    <default expression="" applyOnUpdate="0" field="GES_PrzewodGazowy_1_zrodlo"/>
+    <default expression="" applyOnUpdate="0" field="GES_PrzewodKanalizacyjny_1_zrodlo"/>
+    <default expression="" applyOnUpdate="0" field="GES_PrzewodTelekomunikacyjny_1_zrodlo"/>
+    <default expression="" applyOnUpdate="0" field="GES_PrzewodWodociagowy_1_zrodlo"/>
+    <default expression="" applyOnUpdate="0" field="GES_UrzadzeniaSiecWodociagowa_0_zrodlo"/>
+    <default expression="" applyOnUpdate="0" field="GES_UrzadzeniaSiecGazowa_0_zrodlo"/>
+    <default expression="" applyOnUpdate="0" field="GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci"/>
+    <default expression="" applyOnUpdate="0" field="GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci"/>
+    <default expression="" applyOnUpdate="0" field="GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo"/>
+    <default expression="" applyOnUpdate="0" field="GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo"/>
+    <default expression="" applyOnUpdate="0" field="GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo"/>
+    <default expression="" applyOnUpdate="0" field="GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo"/>
   </defaults>
   <constraints>
-    <constraint notnull_strength="1" field="fid" unique_strength="1" constraints="3" exp_strength="0"/>
-    <constraint notnull_strength="0" field="gml_id" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="lokalnyId" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="przestrzenNazw" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="wersjaId" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="relacja" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="startObiekt" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="startWersjaObiekt" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="zrodlo" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="numerOperatu" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="rzednaGory" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="rzednaDolu" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="prezentacja_etykiety" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="rzedna" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_PrzewodCieplowniczy_1_zrodlo" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_PrzewodElektroenergetyczny_1_zrodlo" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_PrzewodGazowy_1_zrodlo" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_PrzewodSpecjalny_1_zrodlo" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_PrzewodKanalizacyjny_1_zrodlo" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_PrzewodTelekomunikacyjny_1_zrodlo" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_PrzewodWodociagowy_1_zrodlo" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_PrzewodNiezidentyfikowany_1_zrodlo" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_UrzadzenieNiezidentyfikowane_0_zrodlo" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_UrzadzeniaTechniczneSieciSpecjalnej_0_zrodlo" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_UrzadzeniaSiecCieplownicza_0_zrodlo" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_UrzadzeniaSiecWodociagowa_0_zrodlo" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_UrzadzeniaSiecWodociagowa_2_zrodlo" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_UrzadzeniaSiecGazowa_2_zrodlo" unique_strength="0" constraints="0" exp_strength="0"/>
-    <constraint notnull_strength="0" field="GES_UrzadzeniaSiecGazowa_0_zrodlo" unique_strength="0" constraints="0" exp_strength="0"/>
+    <constraint unique_strength="1" constraints="3" exp_strength="0" field="fid" notnull_strength="1"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="gml_id" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="lokalnyId" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="przestrzenNazw" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="wersjaId" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="relacja" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="startObiekt" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="startWersjaObiekt" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="zrodlo" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="numerOperatu" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="rzednaGory" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="rzednaDolu" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="prezentacja_etykiety" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="rzedna" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="color" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="GES_PrzewodElektroenergetyczny_1_zrodlo" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="GES_PrzewodGazowy_1_zrodlo" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="GES_PrzewodKanalizacyjny_1_zrodlo" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="GES_PrzewodTelekomunikacyjny_1_zrodlo" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="GES_PrzewodWodociagowy_1_zrodlo" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="GES_UrzadzeniaSiecWodociagowa_0_zrodlo" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="GES_UrzadzeniaSiecGazowa_0_zrodlo" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo" notnull_strength="0"/>
+    <constraint unique_strength="0" constraints="0" exp_strength="0" field="GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo" notnull_strength="0"/>
   </constraints>
   <constraintExpressions>
-    <constraint field="fid" desc="" exp=""/>
-    <constraint field="gml_id" desc="" exp=""/>
-    <constraint field="lokalnyId" desc="" exp=""/>
-    <constraint field="przestrzenNazw" desc="" exp=""/>
-    <constraint field="wersjaId" desc="" exp=""/>
-    <constraint field="relacja" desc="" exp=""/>
-    <constraint field="startObiekt" desc="" exp=""/>
-    <constraint field="startWersjaObiekt" desc="" exp=""/>
-    <constraint field="zrodlo" desc="" exp=""/>
-    <constraint field="numerOperatu" desc="" exp=""/>
-    <constraint field="rzednaGory" desc="" exp=""/>
-    <constraint field="rzednaDolu" desc="" exp=""/>
-    <constraint field="prezentacja_etykiety" desc="" exp=""/>
-    <constraint field="rzedna" desc="" exp=""/>
-    <constraint field="GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci" desc="" exp=""/>
-    <constraint field="GES_PrzewodCieplowniczy_1_zrodlo" desc="" exp=""/>
-    <constraint field="GES_PrzewodElektroenergetyczny_1_zrodlo" desc="" exp=""/>
-    <constraint field="GES_PrzewodGazowy_1_zrodlo" desc="" exp=""/>
-    <constraint field="GES_PrzewodSpecjalny_1_zrodlo" desc="" exp=""/>
-    <constraint field="GES_PrzewodKanalizacyjny_1_zrodlo" desc="" exp=""/>
-    <constraint field="GES_PrzewodTelekomunikacyjny_1_zrodlo" desc="" exp=""/>
-    <constraint field="GES_PrzewodWodociagowy_1_zrodlo" desc="" exp=""/>
-    <constraint field="GES_PrzewodNiezidentyfikowany_1_zrodlo" desc="" exp=""/>
-    <constraint field="GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo" desc="" exp=""/>
-    <constraint field="GES_UrzadzenieNiezidentyfikowane_0_zrodlo" desc="" exp=""/>
-    <constraint field="GES_UrzadzeniaTechniczneSieciSpecjalnej_0_zrodlo" desc="" exp=""/>
-    <constraint field="GES_UrzadzeniaSiecCieplownicza_0_zrodlo" desc="" exp=""/>
-    <constraint field="GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci" desc="" exp=""/>
-    <constraint field="GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci" desc="" exp=""/>
-    <constraint field="GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo" desc="" exp=""/>
-    <constraint field="GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo" desc="" exp=""/>
-    <constraint field="GES_UrzadzeniaSiecWodociagowa_0_zrodlo" desc="" exp=""/>
-    <constraint field="GES_UrzadzeniaSiecWodociagowa_2_zrodlo" desc="" exp=""/>
-    <constraint field="GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo" desc="" exp=""/>
-    <constraint field="GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo" desc="" exp=""/>
-    <constraint field="GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo" desc="" exp=""/>
-    <constraint field="GES_UrzadzeniaSiecGazowa_2_zrodlo" desc="" exp=""/>
-    <constraint field="GES_UrzadzeniaSiecGazowa_0_zrodlo" desc="" exp=""/>
+    <constraint desc="" exp="" field="fid"/>
+    <constraint desc="" exp="" field="gml_id"/>
+    <constraint desc="" exp="" field="lokalnyId"/>
+    <constraint desc="" exp="" field="przestrzenNazw"/>
+    <constraint desc="" exp="" field="wersjaId"/>
+    <constraint desc="" exp="" field="relacja"/>
+    <constraint desc="" exp="" field="startObiekt"/>
+    <constraint desc="" exp="" field="startWersjaObiekt"/>
+    <constraint desc="" exp="" field="zrodlo"/>
+    <constraint desc="" exp="" field="numerOperatu"/>
+    <constraint desc="" exp="" field="rzednaGory"/>
+    <constraint desc="" exp="" field="rzednaDolu"/>
+    <constraint desc="" exp="" field="prezentacja_etykiety"/>
+    <constraint desc="" exp="" field="rzedna"/>
+    <constraint desc="" exp="" field="color"/>
+    <constraint desc="" exp="" field="GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci"/>
+    <constraint desc="" exp="" field="GES_PrzewodElektroenergetyczny_1_zrodlo"/>
+    <constraint desc="" exp="" field="GES_PrzewodGazowy_1_zrodlo"/>
+    <constraint desc="" exp="" field="GES_PrzewodKanalizacyjny_1_zrodlo"/>
+    <constraint desc="" exp="" field="GES_PrzewodTelekomunikacyjny_1_zrodlo"/>
+    <constraint desc="" exp="" field="GES_PrzewodWodociagowy_1_zrodlo"/>
+    <constraint desc="" exp="" field="GES_UrzadzeniaSiecWodociagowa_0_zrodlo"/>
+    <constraint desc="" exp="" field="GES_UrzadzeniaSiecGazowa_0_zrodlo"/>
+    <constraint desc="" exp="" field="GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci"/>
+    <constraint desc="" exp="" field="GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci"/>
+    <constraint desc="" exp="" field="GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo"/>
+    <constraint desc="" exp="" field="GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo"/>
+    <constraint desc="" exp="" field="GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo"/>
+    <constraint desc="" exp="" field="GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo"/>
   </constraintExpressions>
   <expressionfields/>
   <attributeactions>
     <defaultAction key="Canvas" value="{00000000-0000-0000-0000-000000000000}"/>
   </attributeactions>
-  <attributetableconfig sortExpression="&quot;rzedna&quot;" sortOrder="0" actionWidgetStyle="dropDown">
+  <attributetableconfig actionWidgetStyle="dropDown" sortOrder="0" sortExpression="&quot;rzedna&quot;">
     <columns>
-      <column type="field" hidden="0" name="fid" width="-1"/>
-      <column type="field" hidden="0" name="gml_id" width="182"/>
-      <column type="field" hidden="0" name="lokalnyId" width="129"/>
-      <column type="field" hidden="0" name="przestrzenNazw" width="178"/>
-      <column type="field" hidden="0" name="wersjaId" width="-1"/>
-      <column type="field" hidden="0" name="relacja" width="330"/>
-      <column type="field" hidden="0" name="startObiekt" width="-1"/>
-      <column type="field" hidden="0" name="startWersjaObiekt" width="-1"/>
-      <column type="field" hidden="0" name="zrodlo" width="-1"/>
-      <column type="field" hidden="0" name="rzednaGory" width="-1"/>
-      <column type="field" hidden="0" name="rzednaDolu" width="-1"/>
-      <column type="field" hidden="0" name="rzedna" width="-1"/>
-      <column type="field" hidden="0" name="GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci" width="341"/>
-      <column type="field" hidden="0" name="GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci" width="-1"/>
-      <column type="field" hidden="0" name="GES_PrzewodElektroenergetyczny_1_zrodlo" width="-1"/>
-      <column type="field" hidden="0" name="GES_PrzewodGazowy_1_zrodlo" width="-1"/>
-      <column type="field" hidden="0" name="GES_PrzewodKanalizacyjny_1_zrodlo" width="-1"/>
-      <column type="field" hidden="0" name="GES_PrzewodTelekomunikacyjny_1_zrodlo" width="-1"/>
-      <column type="field" hidden="0" name="GES_PrzewodWodociagowy_1_zrodlo" width="-1"/>
-      <column type="field" hidden="0" name="GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci" width="-1"/>
-      <column type="field" hidden="0" name="GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo" width="-1"/>
-      <column type="field" hidden="0" name="GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo" width="-1"/>
-      <column type="field" hidden="0" name="GES_UrzadzeniaSiecGazowa_0_zrodlo" width="-1"/>
-      <column type="field" hidden="0" name="GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo" width="-1"/>
-      <column type="field" hidden="0" name="GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo" width="-1"/>
-      <column type="field" hidden="0" name="GES_UrzadzeniaSiecWodociagowa_0_zrodlo" width="-1"/>
-      <column type="field" hidden="0" name="numerOperatu" width="-1"/>
-      <column type="field" hidden="0" name="prezentacja_etykiety" width="-1"/>
-      <column type="actions" hidden="1" width="-1"/>
+      <column name="fid" type="field" width="-1" hidden="0"/>
+      <column name="gml_id" type="field" width="182" hidden="0"/>
+      <column name="lokalnyId" type="field" width="129" hidden="0"/>
+      <column name="przestrzenNazw" type="field" width="178" hidden="0"/>
+      <column name="wersjaId" type="field" width="-1" hidden="0"/>
+      <column name="relacja" type="field" width="330" hidden="0"/>
+      <column name="startObiekt" type="field" width="-1" hidden="0"/>
+      <column name="startWersjaObiekt" type="field" width="-1" hidden="0"/>
+      <column name="zrodlo" type="field" width="-1" hidden="0"/>
+      <column name="rzednaGory" type="field" width="-1" hidden="0"/>
+      <column name="rzednaDolu" type="field" width="-1" hidden="0"/>
+      <column name="rzedna" type="field" width="-1" hidden="0"/>
+      <column name="GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci" type="field" width="341" hidden="0"/>
+      <column name="GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci" type="field" width="-1" hidden="0"/>
+      <column name="GES_PrzewodElektroenergetyczny_1_zrodlo" type="field" width="-1" hidden="0"/>
+      <column name="GES_PrzewodGazowy_1_zrodlo" type="field" width="-1" hidden="0"/>
+      <column name="GES_PrzewodKanalizacyjny_1_zrodlo" type="field" width="-1" hidden="0"/>
+      <column name="GES_PrzewodTelekomunikacyjny_1_zrodlo" type="field" width="-1" hidden="0"/>
+      <column name="GES_PrzewodWodociagowy_1_zrodlo" type="field" width="-1" hidden="0"/>
+      <column name="GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci" type="field" width="-1" hidden="0"/>
+      <column name="GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo" type="field" width="-1" hidden="0"/>
+      <column name="GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo" type="field" width="-1" hidden="0"/>
+      <column name="GES_UrzadzeniaSiecGazowa_0_zrodlo" type="field" width="-1" hidden="0"/>
+      <column name="GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo" type="field" width="-1" hidden="0"/>
+      <column name="GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo" type="field" width="-1" hidden="0"/>
+      <column name="GES_UrzadzeniaSiecWodociagowa_0_zrodlo" type="field" width="-1" hidden="0"/>
+      <column name="numerOperatu" type="field" width="-1" hidden="0"/>
+      <column name="prezentacja_etykiety" type="field" width="-1" hidden="0"/>
+      <column name="color" type="field" width="-1" hidden="0"/>
+      <column type="actions" width="-1" hidden="1"/>
     </columns>
   </attributetableconfig>
   <conditionalstyles>
@@ -1178,120 +1080,120 @@ def my_form_open(dialog, layer, feature):
   <featformsuppress>0</featformsuppress>
   <editorlayout>generatedlayout</editorlayout>
   <attributeEditorForm>
-    <attributeEditorField name="fid" showLabel="1" index="0"/>
-    <attributeEditorField name="fid" showLabel="1" index="0"/>
-    <attributeEditorField name="relacja" showLabel="1" index="5"/>
-    <attributeEditorField name="lokalnyId" showLabel="1" index="2"/>
-    <attributeEditorField name="wersjaId" showLabel="1" index="4"/>
-    <attributeEditorField name="startObiekt" showLabel="1" index="6"/>
-    <attributeEditorField name="rzednaDolu" showLabel="1" index="11"/>
-    <attributeEditorField name="rzednaGory" showLabel="1" index="10"/>
-    <attributeEditorField name="numerOperatu" showLabel="1" index="9"/>
-    <attributeEditorField name="rzedna" showLabel="1" index="13"/>
-    <attributeEditorField name="startWersjaObiekt" showLabel="1" index="7"/>
-    <attributeEditorField name="zrodlo" showLabel="1" index="8"/>
-    <attributeEditorField name="przestrzenNazw" showLabel="1" index="3"/>
-    <attributeEditorField name="gml_id" showLabel="1" index="1"/>
-    <attributeEditorRelation relation="" label="" relationWidgetTypeId="relation_editor" name="" nmRelationId="" forceSuppressFormPopup="0" showLabel="1">
+    <attributeEditorField showLabel="1" name="fid" index="0"/>
+    <attributeEditorField showLabel="1" name="fid" index="0"/>
+    <attributeEditorField showLabel="1" name="relacja" index="5"/>
+    <attributeEditorField showLabel="1" name="lokalnyId" index="2"/>
+    <attributeEditorField showLabel="1" name="wersjaId" index="4"/>
+    <attributeEditorField showLabel="1" name="startObiekt" index="6"/>
+    <attributeEditorField showLabel="1" name="rzednaDolu" index="11"/>
+    <attributeEditorField showLabel="1" name="rzednaGory" index="10"/>
+    <attributeEditorField showLabel="1" name="numerOperatu" index="9"/>
+    <attributeEditorField showLabel="1" name="rzedna" index="13"/>
+    <attributeEditorField showLabel="1" name="startWersjaObiekt" index="7"/>
+    <attributeEditorField showLabel="1" name="zrodlo" index="8"/>
+    <attributeEditorField showLabel="1" name="przestrzenNazw" index="3"/>
+    <attributeEditorField showLabel="1" name="gml_id" index="1"/>
+    <attributeEditorRelation relationWidgetTypeId="relation_editor" nmRelationId="" showLabel="1" name="" relation="" forceSuppressFormPopup="0" label="">
       <editor_configuration type="Map">
-        <Option type="QString" name="buttons" value="AllButtons"/>
-        <Option type="bool" name="show_first_feature" value="true"/>
+        <Option name="buttons" type="QString" value="AllButtons"/>
+        <Option name="show_first_feature" type="bool" value="true"/>
       </editor_configuration>
     </attributeEditorRelation>
-    <attributeEditorRelation relation="" label="" relationWidgetTypeId="relation_editor" name="" nmRelationId="" forceSuppressFormPopup="0" showLabel="1">
+    <attributeEditorRelation relationWidgetTypeId="relation_editor" nmRelationId="" showLabel="1" name="" relation="" forceSuppressFormPopup="0" label="">
       <editor_configuration type="Map">
-        <Option type="QString" name="buttons" value="AllButtons"/>
-        <Option type="bool" name="show_first_feature" value="true"/>
+        <Option name="buttons" type="QString" value="AllButtons"/>
+        <Option name="show_first_feature" type="bool" value="true"/>
       </editor_configuration>
     </attributeEditorRelation>
-    <attributeEditorRelation relation="" label="" relationWidgetTypeId="relation_editor" name="" nmRelationId="" forceSuppressFormPopup="0" showLabel="1">
+    <attributeEditorRelation relationWidgetTypeId="relation_editor" nmRelationId="" showLabel="1" name="" relation="" forceSuppressFormPopup="0" label="">
       <editor_configuration type="Map">
-        <Option type="QString" name="buttons" value="AllButtons"/>
-        <Option type="bool" name="show_first_feature" value="true"/>
+        <Option name="buttons" type="QString" value="AllButtons"/>
+        <Option name="show_first_feature" type="bool" value="true"/>
       </editor_configuration>
     </attributeEditorRelation>
-    <attributeEditorRelation relation="" label="" relationWidgetTypeId="relation_editor" name="" nmRelationId="" forceSuppressFormPopup="0" showLabel="1">
+    <attributeEditorRelation relationWidgetTypeId="relation_editor" nmRelationId="" showLabel="1" name="" relation="" forceSuppressFormPopup="0" label="">
       <editor_configuration type="Map">
-        <Option type="QString" name="buttons" value="AllButtons"/>
-        <Option type="bool" name="show_first_feature" value="true"/>
+        <Option name="buttons" type="QString" value="AllButtons"/>
+        <Option name="show_first_feature" type="bool" value="true"/>
       </editor_configuration>
     </attributeEditorRelation>
-    <attributeEditorRelation relation="" label="" relationWidgetTypeId="relation_editor" name="" nmRelationId="" forceSuppressFormPopup="0" showLabel="1">
+    <attributeEditorRelation relationWidgetTypeId="relation_editor" nmRelationId="" showLabel="1" name="" relation="" forceSuppressFormPopup="0" label="">
       <editor_configuration type="Map">
-        <Option type="QString" name="buttons" value="AllButtons"/>
-        <Option type="bool" name="show_first_feature" value="true"/>
+        <Option name="buttons" type="QString" value="AllButtons"/>
+        <Option name="show_first_feature" type="bool" value="true"/>
       </editor_configuration>
     </attributeEditorRelation>
-    <attributeEditorRelation relation="" label="" relationWidgetTypeId="relation_editor" name="" nmRelationId="" forceSuppressFormPopup="0" showLabel="1">
+    <attributeEditorRelation relationWidgetTypeId="relation_editor" nmRelationId="" showLabel="1" name="" relation="" forceSuppressFormPopup="0" label="">
       <editor_configuration type="Map">
-        <Option type="QString" name="buttons" value="AllButtons"/>
-        <Option type="bool" name="show_first_feature" value="true"/>
+        <Option name="buttons" type="QString" value="AllButtons"/>
+        <Option name="show_first_feature" type="bool" value="true"/>
       </editor_configuration>
     </attributeEditorRelation>
-    <attributeEditorRelation relation="" label="" relationWidgetTypeId="relation_editor" name="" nmRelationId="" forceSuppressFormPopup="0" showLabel="1">
+    <attributeEditorRelation relationWidgetTypeId="relation_editor" nmRelationId="" showLabel="1" name="" relation="" forceSuppressFormPopup="0" label="">
       <editor_configuration type="Map">
-        <Option type="QString" name="buttons" value="AllButtons"/>
-        <Option type="bool" name="show_first_feature" value="true"/>
+        <Option name="buttons" type="QString" value="AllButtons"/>
+        <Option name="show_first_feature" type="bool" value="true"/>
       </editor_configuration>
     </attributeEditorRelation>
-    <attributeEditorRelation relation="" label="" relationWidgetTypeId="relation_editor" name="" nmRelationId="" forceSuppressFormPopup="0" showLabel="1">
+    <attributeEditorRelation relationWidgetTypeId="relation_editor" nmRelationId="" showLabel="1" name="" relation="" forceSuppressFormPopup="0" label="">
       <editor_configuration type="Map">
-        <Option type="QString" name="buttons" value="AllButtons"/>
-        <Option type="bool" name="show_first_feature" value="true"/>
+        <Option name="buttons" type="QString" value="AllButtons"/>
+        <Option name="show_first_feature" type="bool" value="true"/>
       </editor_configuration>
     </attributeEditorRelation>
-    <attributeEditorRelation relation="" label="" relationWidgetTypeId="relation_editor" name="" nmRelationId="" forceSuppressFormPopup="0" showLabel="1">
+    <attributeEditorRelation relationWidgetTypeId="relation_editor" nmRelationId="" showLabel="1" name="" relation="" forceSuppressFormPopup="0" label="">
       <editor_configuration type="Map">
-        <Option type="QString" name="buttons" value="AllButtons"/>
-        <Option type="bool" name="show_first_feature" value="true"/>
+        <Option name="buttons" type="QString" value="AllButtons"/>
+        <Option name="show_first_feature" type="bool" value="true"/>
       </editor_configuration>
     </attributeEditorRelation>
-    <attributeEditorRelation relation="" label="" relationWidgetTypeId="relation_editor" name="" nmRelationId="" forceSuppressFormPopup="0" showLabel="1">
+    <attributeEditorRelation relationWidgetTypeId="relation_editor" nmRelationId="" showLabel="1" name="" relation="" forceSuppressFormPopup="0" label="">
       <editor_configuration type="Map">
-        <Option type="QString" name="buttons" value="AllButtons"/>
-        <Option type="bool" name="show_first_feature" value="true"/>
+        <Option name="buttons" type="QString" value="AllButtons"/>
+        <Option name="show_first_feature" type="bool" value="true"/>
       </editor_configuration>
     </attributeEditorRelation>
-    <attributeEditorRelation relation="" label="" relationWidgetTypeId="relation_editor" name="" nmRelationId="" forceSuppressFormPopup="0" showLabel="1">
+    <attributeEditorRelation relationWidgetTypeId="relation_editor" nmRelationId="" showLabel="1" name="" relation="" forceSuppressFormPopup="0" label="">
       <editor_configuration type="Map">
-        <Option type="QString" name="buttons" value="AllButtons"/>
-        <Option type="bool" name="show_first_feature" value="true"/>
+        <Option name="buttons" type="QString" value="AllButtons"/>
+        <Option name="show_first_feature" type="bool" value="true"/>
       </editor_configuration>
     </attributeEditorRelation>
-    <attributeEditorRelation relation="" label="" relationWidgetTypeId="relation_editor" name="" nmRelationId="" forceSuppressFormPopup="0" showLabel="1">
+    <attributeEditorRelation relationWidgetTypeId="relation_editor" nmRelationId="" showLabel="1" name="" relation="" forceSuppressFormPopup="0" label="">
       <editor_configuration type="Map">
-        <Option type="QString" name="buttons" value="AllButtons"/>
-        <Option type="bool" name="show_first_feature" value="true"/>
+        <Option name="buttons" type="QString" value="AllButtons"/>
+        <Option name="show_first_feature" type="bool" value="true"/>
       </editor_configuration>
     </attributeEditorRelation>
-    <attributeEditorRelation relation="" label="" relationWidgetTypeId="relation_editor" name="" nmRelationId="" forceSuppressFormPopup="0" showLabel="1">
+    <attributeEditorRelation relationWidgetTypeId="relation_editor" nmRelationId="" showLabel="1" name="" relation="" forceSuppressFormPopup="0" label="">
       <editor_configuration type="Map">
-        <Option type="QString" name="buttons" value="AllButtons"/>
-        <Option type="bool" name="show_first_feature" value="true"/>
+        <Option name="buttons" type="QString" value="AllButtons"/>
+        <Option name="show_first_feature" type="bool" value="true"/>
       </editor_configuration>
     </attributeEditorRelation>
-    <attributeEditorRelation relation="" label="" relationWidgetTypeId="relation_editor" name="" nmRelationId="" forceSuppressFormPopup="0" showLabel="1">
+    <attributeEditorRelation relationWidgetTypeId="relation_editor" nmRelationId="" showLabel="1" name="" relation="" forceSuppressFormPopup="0" label="">
       <editor_configuration type="Map">
-        <Option type="QString" name="buttons" value="AllButtons"/>
-        <Option type="bool" name="show_first_feature" value="true"/>
+        <Option name="buttons" type="QString" value="AllButtons"/>
+        <Option name="show_first_feature" type="bool" value="true"/>
       </editor_configuration>
     </attributeEditorRelation>
-    <attributeEditorRelation relation="" label="" relationWidgetTypeId="relation_editor" name="" nmRelationId="" forceSuppressFormPopup="0" showLabel="1">
+    <attributeEditorRelation relationWidgetTypeId="relation_editor" nmRelationId="" showLabel="1" name="" relation="" forceSuppressFormPopup="0" label="">
       <editor_configuration type="Map">
-        <Option type="QString" name="buttons" value="AllButtons"/>
-        <Option type="bool" name="show_first_feature" value="true"/>
+        <Option name="buttons" type="QString" value="AllButtons"/>
+        <Option name="show_first_feature" type="bool" value="true"/>
       </editor_configuration>
     </attributeEditorRelation>
-    <attributeEditorRelation relation="" label="" relationWidgetTypeId="relation_editor" name="" nmRelationId="" forceSuppressFormPopup="0" showLabel="1">
+    <attributeEditorRelation relationWidgetTypeId="relation_editor" nmRelationId="" showLabel="1" name="" relation="" forceSuppressFormPopup="0" label="">
       <editor_configuration type="Map">
-        <Option type="QString" name="buttons" value="AllButtons"/>
-        <Option type="bool" name="show_first_feature" value="true"/>
+        <Option name="buttons" type="QString" value="AllButtons"/>
+        <Option name="show_first_feature" type="bool" value="true"/>
       </editor_configuration>
     </attributeEditorRelation>
-    <attributeEditorRelation relation="" label="" relationWidgetTypeId="relation_editor" name="" nmRelationId="" forceSuppressFormPopup="0" showLabel="1">
+    <attributeEditorRelation relationWidgetTypeId="relation_editor" nmRelationId="" showLabel="1" name="" relation="" forceSuppressFormPopup="0" label="">
       <editor_configuration type="Map">
-        <Option type="QString" name="buttons" value="AllButtons"/>
-        <Option type="bool" name="show_first_feature" value="true"/>
+        <Option name="buttons" type="QString" value="AllButtons"/>
+        <Option name="show_first_feature" type="bool" value="true"/>
       </editor_configuration>
     </attributeEditorRelation>
   </attributeEditorForm>
@@ -1326,6 +1228,7 @@ def my_form_open(dialog, layer, feature):
     <field name="GES_UrzadzeniaTechniczneSieciSpecjalnej_2_zrodlo" editable="0"/>
     <field name="GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci" editable="0"/>
     <field name="GES_UrzadzenieNiezidentyfikowane_0_zrodlo" editable="0"/>
+    <field name="color" editable="1"/>
     <field name="fid" editable="1"/>
     <field name="gml_id" editable="1"/>
     <field name="lokalnyId" editable="1"/>
@@ -1372,6 +1275,7 @@ def my_form_open(dialog, layer, feature):
     <field labelOnTop="0" name="GES_UrzadzeniaTechniczneSieciSpecjalnej_2_zrodlo"/>
     <field labelOnTop="0" name="GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci"/>
     <field labelOnTop="0" name="GES_UrzadzenieNiezidentyfikowane_0_zrodlo"/>
+    <field labelOnTop="0" name="color"/>
     <field labelOnTop="0" name="fid"/>
     <field labelOnTop="0" name="gml_id"/>
     <field labelOnTop="0" name="lokalnyId"/>
@@ -1418,6 +1322,7 @@ def my_form_open(dialog, layer, feature):
     <field name="GES_UrzadzeniaTechniczneSieciSpecjalnej_2_zrodlo" reuseLastValue="0"/>
     <field name="GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci" reuseLastValue="0"/>
     <field name="GES_UrzadzenieNiezidentyfikowane_0_zrodlo" reuseLastValue="0"/>
+    <field name="color" reuseLastValue="0"/>
     <field name="fid" reuseLastValue="0"/>
     <field name="gml_id" reuseLastValue="0"/>
     <field name="lokalnyId" reuseLastValue="0"/>
@@ -1437,104 +1342,104 @@ def my_form_open(dialog, layer, feature):
   <widgets>
     <widget name="GES_Rzedna_InneUrzadzeniaTowarzyszace_0">
       <config type="Map">
-        <Option type="bool" name="force-suppress-popup" value="false"/>
-        <Option type="QString" name="nm-rel" value=""/>
+        <Option name="force-suppress-popup" type="bool" value="false"/>
+        <Option name="nm-rel" type="QString" value=""/>
       </config>
     </widget>
     <widget name="GES_Rzedna_InneUrzadzeniaTowarzyszace_1">
       <config type="Map">
-        <Option type="bool" name="force-suppress-popup" value="false"/>
-        <Option type="QString" name="nm-rel" value=""/>
+        <Option name="force-suppress-popup" type="bool" value="false"/>
+        <Option name="nm-rel" type="QString" value=""/>
       </config>
     </widget>
     <widget name="GES_Rzedna_InneUrzadzeniaTowarzyszace_2">
       <config type="Map">
-        <Option type="bool" name="force-suppress-popup" value="false"/>
-        <Option type="QString" name="nm-rel" value=""/>
+        <Option name="force-suppress-popup" type="bool" value="false"/>
+        <Option name="nm-rel" type="QString" value=""/>
       </config>
     </widget>
     <widget name="GES_Rzedna_PrzewodElektroenergetyczny_1">
       <config type="Map">
-        <Option type="bool" name="force-suppress-popup" value="false"/>
-        <Option type="QString" name="nm-rel" value=""/>
+        <Option name="force-suppress-popup" type="bool" value="false"/>
+        <Option name="nm-rel" type="QString" value=""/>
       </config>
     </widget>
     <widget name="GES_Rzedna_PrzewodGazowy_1">
       <config type="Map">
-        <Option type="bool" name="force-suppress-popup" value="false"/>
-        <Option type="QString" name="nm-rel" value=""/>
+        <Option name="force-suppress-popup" type="bool" value="false"/>
+        <Option name="nm-rel" type="QString" value=""/>
       </config>
     </widget>
     <widget name="GES_Rzedna_PrzewodKanalizacyjny_1">
       <config type="Map">
-        <Option type="bool" name="force-suppress-popup" value="false"/>
-        <Option type="QString" name="nm-rel" value=""/>
+        <Option name="force-suppress-popup" type="bool" value="false"/>
+        <Option name="nm-rel" type="QString" value=""/>
       </config>
     </widget>
     <widget name="GES_Rzedna_PrzewodTelekomunikacyjny_1">
       <config type="Map">
-        <Option type="bool" name="force-suppress-popup" value="false"/>
-        <Option type="QString" name="nm-rel" value=""/>
+        <Option name="force-suppress-popup" type="bool" value="false"/>
+        <Option name="nm-rel" type="QString" value=""/>
       </config>
     </widget>
     <widget name="GES_Rzedna_PrzewodWodociagowy_1">
       <config type="Map">
-        <Option type="bool" name="force-suppress-popup" value="false"/>
-        <Option type="QString" name="nm-rel" value=""/>
+        <Option name="force-suppress-popup" type="bool" value="false"/>
+        <Option name="nm-rel" type="QString" value=""/>
       </config>
     </widget>
     <widget name="GES_Rzedna_UrzadzeniaSiecElektroenergetyczna_0">
       <config type="Map">
-        <Option type="bool" name="force-suppress-popup" value="false"/>
-        <Option type="QString" name="nm-rel" value=""/>
+        <Option name="force-suppress-popup" type="bool" value="false"/>
+        <Option name="nm-rel" type="QString" value=""/>
       </config>
     </widget>
     <widget name="GES_Rzedna_UrzadzeniaSiecElektroenergetyczna_1">
       <config type="Map">
-        <Option type="bool" name="force-suppress-popup" value="false"/>
-        <Option type="QString" name="nm-rel" value=""/>
+        <Option name="force-suppress-popup" type="bool" value="false"/>
+        <Option name="nm-rel" type="QString" value=""/>
       </config>
     </widget>
     <widget name="GES_Rzedna_UrzadzeniaSiecElektroenergetyczna_2">
       <config type="Map">
-        <Option type="bool" name="force-suppress-popup" value="false"/>
-        <Option type="QString" name="nm-rel" value=""/>
+        <Option name="force-suppress-popup" type="bool" value="false"/>
+        <Option name="nm-rel" type="QString" value=""/>
       </config>
     </widget>
     <widget name="GES_Rzedna_UrzadzeniaSiecGazowa_0">
       <config type="Map">
-        <Option type="bool" name="force-suppress-popup" value="false"/>
-        <Option type="QString" name="nm-rel" value=""/>
+        <Option name="force-suppress-popup" type="bool" value="false"/>
+        <Option name="nm-rel" type="QString" value=""/>
       </config>
     </widget>
     <widget name="GES_Rzedna_UrzadzeniaSiecKanalizacyjna_0">
       <config type="Map">
-        <Option type="bool" name="force-suppress-popup" value="false"/>
-        <Option type="QString" name="nm-rel" value=""/>
+        <Option name="force-suppress-popup" type="bool" value="false"/>
+        <Option name="nm-rel" type="QString" value=""/>
       </config>
     </widget>
     <widget name="GES_Rzedna_UrzadzeniaSiecKanalizacyjna_1">
       <config type="Map">
-        <Option type="bool" name="force-suppress-popup" value="false"/>
-        <Option type="QString" name="nm-rel" value=""/>
+        <Option name="force-suppress-popup" type="bool" value="false"/>
+        <Option name="nm-rel" type="QString" value=""/>
       </config>
     </widget>
     <widget name="GES_Rzedna_UrzadzeniaSiecKanalizacyjna_2">
       <config type="Map">
-        <Option type="bool" name="force-suppress-popup" value="false"/>
-        <Option type="QString" name="nm-rel" value=""/>
+        <Option name="force-suppress-popup" type="bool" value="false"/>
+        <Option name="nm-rel" type="QString" value=""/>
       </config>
     </widget>
     <widget name="GES_Rzedna_UrzadzeniaSiecWodociagowa_0">
       <config type="Map">
-        <Option type="bool" name="force-suppress-popup" value="false"/>
-        <Option type="QString" name="nm-rel" value=""/>
+        <Option name="force-suppress-popup" type="bool" value="false"/>
+        <Option name="nm-rel" type="QString" value=""/>
       </config>
     </widget>
     <widget name="GES_Rzedna_UrzadzeniaTowarzyszczaceLiniowe_1">
       <config type="Map">
-        <Option type="bool" name="force-suppress-popup" value="false"/>
-        <Option type="QString" name="nm-rel" value=""/>
+        <Option name="force-suppress-popup" type="bool" value="false"/>
+        <Option name="nm-rel" type="QString" value=""/>
       </config>
     </widget>
   </widgets>
