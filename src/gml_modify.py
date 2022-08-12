@@ -82,6 +82,9 @@ class GmlModify:
                         relation_list = []
                     # print(feature)
                     value = next(v for (k, v) in relacja.attrib.items() if 'href' in k)
+                    # usuniecie # gdy jest w relacji
+                    if value.startswith('#'):
+                        value = value[1:]
                     relation_list.append(value)
                     # print(lista_relacji)
                     self.relations[lokalny_iip] = relation_list
@@ -124,6 +127,9 @@ class GmlModify:
             for child in val.findall(child_id):
                 tag = child.tag
                 value = next(v for (k, v) in child.attrib.items() if 'href' in k)
+                # usuniecie # gdy jest w relacji
+                if value.startswith('#'):
+                    value = value[1:]
                 val.remove(child)
                 added = ET.SubElement(val, tag)
                 added.text = value
