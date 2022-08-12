@@ -52,6 +52,8 @@ class ExpressYourself:
         if (symbol.color().getRgb() != white_color.getRgb() and
                 symbol.color().alpha() != 0):
             self.create_property(symbol, 3, self.color_expression)  # PropertyFillColor
+        if (symbol.strokeColor().getRgb() != white_color.getRgb() and
+                symbol.strokeColor().alpha() != 0):
             self.create_property(symbol, 4, self.color_expression)  # PropertyStrokeColor
         self.create_property(symbol, 44, self.enable_expression)  # enable symbol layer
 
@@ -68,8 +70,6 @@ class ExpressYourself:
         callouts = settings.callout()
         symbols = callouts.lineSymbol().symbolLayers()
         for symb in symbols:
-            #if (symb.color().getRgb() != white_color.getRgb() and
-                    #symb.color().alpha() != 0):
             # wywolanie funkcji z nadaniem wlasciwosci
             self.symbol_properties(symb)
 
@@ -78,9 +78,7 @@ class ExpressYourself:
         background = settings.format().background()
         symbols = background.fillSymbol().symbolLayers()
         for symb in symbols:
-            #if (symb.color().getRgb() != white_color.getRgb() and
-                    #symb.color().alpha() != 0):
-                # wywolanie funkcji z nadaniem wlasciwosci
+            # wywolanie funkcji z nadaniem wlasciwosci
             self.symbol_properties(symb)
 
             if symb.subSymbol():
@@ -157,17 +155,15 @@ class ExpressYourself:
                         # jezeli jest to warstwa etykieta
                         # zmien dla niej expression w locie
                         if 'etykieta' in layer.name():
-                            #print('warstwa: ', layer.name())
-                            #print('filtr: ', label.filterExpression())
+                            # print('warstwa: ', layer.name())
+                            # print('filtr: ', label.filterExpression())
                             filter_exp = label.filterExpression()  # tu wyciagac wartosci
                             try:
-                                #print('1')
                                 filter_prefix = self.extract_prefix(filter_exp)
-                                #print('prefix: ', filter_prefix)
                                 new_color_expression = self.change_label_expression(expression=self.color_expression,
-                                                                                prefix=filter_prefix)
+                                                                                    prefix=filter_prefix)
                                 new_enable_expression = self.change_label_expression(expression=self.enable_expression,
-                                                                                   prefix=filter_prefix)
+                                                                                     prefix=filter_prefix)
                                 self.color_expression = new_color_expression
                                 self.enable_expression = new_enable_expression
                             except:
@@ -195,7 +191,7 @@ class ExpressYourself:
             # odswiezenie layer tree
             iface.layerTreeView().refreshLayerSymbology(layer.id())
 
-# DODAC WARUNEK DLA LABELEK I SYMBOLI Z WHITE I BLANK
+    # DODAC WARUNEK DLA LABELEK I SYMBOLI Z WHITE I BLANK
 
     def change_label_expression(self, expression, prefix):
         """Zmiana wyrazenia dla etykiet  - dodanie przedrostka w kolumnach startobiekt, koniecobiekt..."""
@@ -209,7 +205,6 @@ class ExpressYourself:
         """Metoda do wyciagania nazwy warstwy z filtra"""
         text = text.lower()
         idx = [m.start() for m in re.finditer('"', text)]
-        to_cut = text[idx[0]+1:idx[1]]
+        to_cut = text[idx[0] + 1:idx[1]]
         to_cut = '_'.join(to_cut.split('_')[0:3])
-        # print('warstwa: ', to_cut)
         return to_cut
