@@ -1,3 +1,5 @@
+import re
+
 from qgis.utils import iface
 from qgis.PyQt.QtGui import QColor
 
@@ -7,7 +9,9 @@ white_color = QColor(255, 255, 255, 255)
 class ExpressYourself:
     def __init__(self, color_expression, enable_expression):
         self.color_expression = color_expression
+        self.temp_color_expression = color_expression
         self.enable_expression = enable_expression
+        self.temp_enable_expression = enable_expression
 
     '''def create_property(expression: str):
         """Utworzenie wlasciwosci dla symboli"""
@@ -91,23 +95,27 @@ class ExpressYourself:
                         # print('single', layer.name())
                         symbols = layer.renderer().symbol().symbolLayers()
                         for symb in symbols:
-                            # wyrazenia
-                            self.symbol_properties(symb)
+                            if (symb.color().getRgb() != white_color.getRgb() and
+                                    symb.color().alpha() != 0):
+                                # wyrazenia
+                                self.symbol_properties(symb)
 
                     # nadanie wyrazen dla warstw, ktore sa oparte na regulach
                     elif renderer.type() == 'RuleRenderer':
                         for child in layer.renderer().rootRule().children():
-                            for symb in child.symbols():
-                                layer_symbs = symb.symbolLayers()
-                                for layer_symb in layer_symbs:
-                                    # wyrazenia
-                                    self.symbol_properties(layer_symb)
+                            for symbol_list in child.symbols():
+                                symbols = symbol_list.symbolLayers()
+                                for symb in symbols:
+                                    if (symb.color().getRgb() != white_color.getRgb() and
+                                            symb.color().alpha() != 0):
+                                        # wyrazenia
+                                        self.symbol_properties(symb)
 
-                                    # wejscie w marker line, hashed line, geometry generator...
-                                    if layer_symb.subSymbol():
-                                        sub_symbols = layer_symb.subSymbol().symbolLayers()
-                                        # rekurencja po zagniezdzonych symbolach
-                                        self.symbol_recursion(sub_symbols)
+                                        # wejscie w marker line, hashed line, geometry generator...
+                                        if symb.subSymbol():
+                                            sub_symbols = symb.subSymbol().symbolLayers()
+                                            # rekurencja po zagniezdzonych symbolach
+                                            self.symbol_recursion(sub_symbols)
 
                     else:
                         # inny rodzaj symbolu
@@ -146,6 +154,25 @@ class ExpressYourself:
                     for label in root.children():
                         settings = label.settings()
 
+                        # jezeli jest to warstwa etykieta
+                        # zmien dla niej expression w locie
+                        if 'etykieta' in layer.name():
+                            #print('warstwa: ', layer.name())
+                            #print('filtr: ', label.filterExpression())
+                            filter_exp = label.filterExpression()  # tu wyciagac wartosci
+                            try:
+                                #print('1')
+                                filter_prefix = self.extract_prefix(filter_exp)
+                                #print('prefix: ', filter_prefix)
+                                new_color_expression = self.change_label_expression(expression=self.color_expression,
+                                                                                prefix=filter_prefix)
+                                new_enable_expression = self.change_label_expression(expression=self.enable_expression,
+                                                                                   prefix=filter_prefix)
+                                self.color_expression = new_color_expression
+                                self.enable_expression = new_enable_expression
+                            except:
+                                pass
+
                         # wyrazenia
                         self.label_properties(settings)
                         # nadanie wyrazen
@@ -157,9 +184,32 @@ class ExpressYourself:
                         # nadanie wyrazen dla tla etykiet
                         self.set_background(settings)
 
+                        # powrot do pierownych wyrazen
+                        self.color_expression = self.temp_color_expression
+                        self.enable_expression = self.temp_enable_expression
+
                 else:
                     # inny symbol???
                     print('LABEL - inny rodzaj symbolu')
                     pass
             # odswiezenie layer tree
             iface.layerTreeView().refreshLayerSymbology(layer.id())
+
+# DODAC WARUNEK DLA LABELEK I SYMBOLI Z WHITE I BLANK
+
+    def change_label_expression(self, expression, prefix):
+        """Zmiana wyrazenia dla etykiet  - dodanie przedrostka w kolumnach startobiekt, koniecobiekt..."""
+        val_to_replace = ['koniecWersjaObiekt', 'koniecObiekt', 'startObiekt', 'startWersjaObiekt']
+        for val in val_to_replace:
+            with_prefix = '_'.join([prefix, val])
+            expression = expression.replace(val, with_prefix)
+        return expression
+
+    def extract_prefix(self, text):
+        """Metoda do wyciagania nazwy warstwy z filtra"""
+        text = text.lower()
+        idx = [m.start() for m in re.finditer('"', text)]
+        to_cut = text[idx[0]+1:idx[1]]
+        to_cut = '_'.join(to_cut.split('_')[0:3])
+        # print('warstwa: ', to_cut)
+        return to_cut
