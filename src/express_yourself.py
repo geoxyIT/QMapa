@@ -49,13 +49,17 @@ class ExpressYourself:
 
     def symbol_properties(self, symbol):
         """Tworzenie wlasciwosci ktore zostana nadane dla symboli"""
-        self.create_property(symbol, 3, self.color_expression)  # PropertyFillColor
-        self.create_property(symbol, 4, self.color_expression)  # PropertyStrokeColor
+        if (symbol.color().getRgb() != white_color.getRgb() and
+                symbol.color().alpha() != 0):
+            self.create_property(symbol, 3, self.color_expression)  # PropertyFillColor
+            self.create_property(symbol, 4, self.color_expression)  # PropertyStrokeColor
         self.create_property(symbol, 44, self.enable_expression)  # enable symbol layer
 
     def label_properties(self, label_settings):
         """Tworzenie wlasciwosci dla etykiet"""
-        self.create_property(label_settings, 4, self.color_expression)
+        if (label_settings.format().color().getRgb() != white_color.getRgb() and
+                label_settings.format().color().alpha() != 0):
+            self.create_property(label_settings, 4, self.color_expression)
         self.create_property(label_settings, 15, self.enable_expression)
 
     def set_callouts(self, settings):
@@ -64,20 +68,20 @@ class ExpressYourself:
         callouts = settings.callout()
         symbols = callouts.lineSymbol().symbolLayers()
         for symb in symbols:
-            if (symb.color().getRgb() != white_color.getRgb() and
-                    symb.color().alpha() != 0):
-                # wywolanie funkcji z nadaniem wlasciwosci
-                self.symbol_properties(symb)
+            #if (symb.color().getRgb() != white_color.getRgb() and
+                    #symb.color().alpha() != 0):
+            # wywolanie funkcji z nadaniem wlasciwosci
+            self.symbol_properties(symb)
 
     def set_background(self, settings):
         # BACKGROUND
         background = settings.format().background()
         symbols = background.fillSymbol().symbolLayers()
         for symb in symbols:
-            if (symb.color().getRgb() != white_color.getRgb() and
-                    symb.color().alpha() != 0):
+            #if (symb.color().getRgb() != white_color.getRgb() and
+                    #symb.color().alpha() != 0):
                 # wywolanie funkcji z nadaniem wlasciwosci
-                self.symbol_properties(symb)
+            self.symbol_properties(symb)
 
             if symb.subSymbol():
                 sub_symbols = symb.subSymbol().symbolLayers()
@@ -95,10 +99,8 @@ class ExpressYourself:
                         # print('single', layer.name())
                         symbols = layer.renderer().symbol().symbolLayers()
                         for symb in symbols:
-                            if (symb.color().getRgb() != white_color.getRgb() and
-                                    symb.color().alpha() != 0):
-                                # wyrazenia
-                                self.symbol_properties(symb)
+                            # wyrazenia
+                            self.symbol_properties(symb)
 
                     # nadanie wyrazen dla warstw, ktore sa oparte na regulach
                     elif renderer.type() == 'RuleRenderer':
@@ -106,16 +108,14 @@ class ExpressYourself:
                             for symbol_list in child.symbols():
                                 symbols = symbol_list.symbolLayers()
                                 for symb in symbols:
-                                    if (symb.color().getRgb() != white_color.getRgb() and
-                                            symb.color().alpha() != 0):
-                                        # wyrazenia
-                                        self.symbol_properties(symb)
+                                    # wyrazenia
+                                    self.symbol_properties(symb)
 
-                                        # wejscie w marker line, hashed line, geometry generator...
-                                        if symb.subSymbol():
-                                            sub_symbols = symb.subSymbol().symbolLayers()
-                                            # rekurencja po zagniezdzonych symbolach
-                                            self.symbol_recursion(sub_symbols)
+                                    # wejscie w marker line, hashed line, geometry generator...
+                                    if symb.subSymbol():
+                                        sub_symbols = symb.subSymbol().symbolLayers()
+                                        # rekurencja po zagniezdzonych symbolach
+                                        self.symbol_recursion(sub_symbols)
 
                     else:
                         # inny rodzaj symbolu
