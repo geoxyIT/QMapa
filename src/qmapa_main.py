@@ -86,9 +86,6 @@ class Main:
                     layer.dataProvider().changeAttributeValues(attribute_map)
 
     def calculate_colors(self, layer, column_name):
-        context = QgsExpressionContext()
-        context.appendScopes(QgsExpressionContextUtils.globalProjectLayerScopes(layer))
-
         expr_raw = ("case "
                           " when "
                           "try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci,''), ',')) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci,''), ',')) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci,''), ',')) or try(array_contains( string_to_array(GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci,''), ','))"
@@ -136,6 +133,9 @@ class Main:
             field = QgsField(column_name, QVariant.String)
             layer.dataProvider().addAttributes([field])
             layer.updateFields()
+
+        context = QgsExpressionContext()
+        context.appendScopes(QgsExpressionContextUtils.globalProjectLayerScopes(layer))
 
         cum_sum_index = layer.fields().indexFromName(column_name)
         attribute_map = {}

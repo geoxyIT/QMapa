@@ -151,8 +151,9 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             self.set_labels(self.vec_layers_list)
             self.progressBar.setValue(90)
             print('czas 90%:', datetime.now() - start_2)
-            scales = ['500', '1000']
+
             # obliczenie kreskowania dla skarp, sciany, schodow i wstawienie geometrii do atrybutow
+            scales = ['500', '1000']
             nr = 0
             for sc in scales:
                 self.progressBar.setValue(90 + int((nr/len(scales))*10))
