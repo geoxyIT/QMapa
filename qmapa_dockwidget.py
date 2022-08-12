@@ -45,6 +45,7 @@ from .src.qmapa_main import Main
 from .src.config import correct_layers
 from .src.scrap_version import *
 from .src.config import correct_layers
+from .src.express_yourself import ExpressYourself
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'ui', 'qmapa_dockwidget_base.ui'))
@@ -75,6 +76,9 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         self.wgWers.hide()
         self.wgStat.hide()
+
+        self.signal_of_import = False
+
         
     def closeEvent(self, event):
         self.closingPlugin.emit()
@@ -102,7 +106,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         """Zaimportowanie pliku GML z konwersją do GPKG oraz nadaniem grup warstw"""
         name, ext = QFileDialog.getOpenFileName(self, caption='Wybierz wejściowy plik GML',
                                                 filter='gml (*.gml)')
-
+        self.signal_of_import = True
         if name != '':
             start_2 = datetime.now()
             self.progressBar.show()
@@ -149,6 +153,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             print('czas 80%:', datetime.now() - start_2)
 
             self.set_labels(self.vec_layers_list)
+            self.wyswWg()  # sprawdzenie i nadanie wyswietlania wersji, statusu
             self.progressBar.setValue(90)
             print('czas 90%:', datetime.now() - start_2)
 
@@ -172,6 +177,9 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             self.progressBar.setValue(100)
             print('czas 100%:', datetime.now() - start_2)
             self.progressBar.hide()
+
+            self.signal_of_import = False
+
 
 
     def on_cmbStylization_currentTextChanged(self):
@@ -456,7 +464,11 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def on_dteStat_valueChanged(self):
         self.wyswStat()
 
-
+    def back_to_qml_symb(self):
+        """Wczytanie stylizacji QML"""
+        current_style = self.cmbStylization.currentText()
+        Main().setStyling(self.getLayers(), current_style)
+        self.set_labels(self.getLayers())
 
     def wyswWg(self):
         if self.chbWyswWg.isChecked():
@@ -467,6 +479,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             self.wgWers.hide()
             self.wgStat.hide()
             print('reset wysw')
+            # powrot do pierwotnej stylizacji z QML
+            self.back_to_qml_symb()
 
     def showSelected(self):
         if 'wersj' in self.cbWysWg.currentText().lower():
@@ -477,6 +491,17 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             self.wgWers.hide()
             self.wgStat.show()
             self.wyswStat()
+
+    def list_or_canvas(self, signal_of_import):
+        """Zaleznie od sygnalu, pobierane sa warstwy albo z listy warstw wektorowych
+            albo z metody getLayers. Ma to za zadanie pozyskac odpowiednie warstwy podczas
+            importu. Aby zostala nadana symbolizacja wg. statusu czy tez wersji.
+        """
+        if signal_of_import is True:
+            layers = self.vec_layers_list
+        else:
+            layers = self.getLayers()
+        return layers
 
     def wyswWers(self):
         # Aktualne
@@ -539,6 +564,13 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         expression_wers_color = "case when try(" + 'koniecObiekt' + ") is not null and " + set_color_Zamk + " then '" + color_Zamk + "' when try(" + 'koniecWersjaObiekt' + ")is not null and try(" + 'koniecObiekt' + ") is null and " + set_color_Arch + " then '" + color_Arch + "' when " + set_color_Akt + " then '" + color_Akt + "' else 1111 end"
         #expression_wers_show = "case when try(" + 'koniecObiekt' + ") is not null and " + vis_Zamk + " then 1 when try(" + 'koniecWersjaObiekt' + ")is not null and try(" + 'koniecObiekt' + ") is null and " + vis_Arch + " then 1 when " + vis_Akt + " then 1 else 0 end"
         expression_wers_show = "case when (try(" + 'koniecObiekt' + ") is not null and " + vis_Zamk + ") or (try(" + 'koniecWersjaObiekt' + ")is not null and try(" + 'koniecObiekt' + ") is null and " + vis_Arch + ") or (try(" + 'koniecWersjaObiekt' + ")is null and try(" + 'koniecObiekt' + ") is null and " + vis_Akt + ") then 1111 else 0 end"
+
+        # powrot do pierwotnej stylizacji z QML
+        self.back_to_qml_symb()
+        # ustawienie nowych wyrazen odpowiadajacych za wersje
+        expression = ExpressYourself(expression_wers_color, expression_wers_show)
+        expression.set_symbol_expression(self.list_or_canvas(self.signal_of_import))
+        expression.set_label_expression(self.list_or_canvas(self.signal_of_import))
 
     def wyswStat(self):
         # BezZmian
@@ -626,3 +658,10 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         #expr_stat_show = 'case when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") = try("startWersjaObiekt") and to_datetime(try("startObiekt")) > to_datetime('+ date_to_compare_q +') then ' + vis_Nowe +' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") < to_datetime('+ date_to_compare_q +') and try("startWersjaObiekt") > to_datetime('+ date_to_compare_q +') then '+ vis_Zmien +' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startWersjaObiekt") < to_datetime('+ date_to_compare_q +') then '+ vis_BezZm +' when to_datetime(try("koniecObiekt")) > to_datetime('+ date_to_compare_q +') then '+ vis_Usun +' else 1111 end'
         expr_stat_show = 'case when (try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") = try("startWersjaObiekt") and to_datetime(try("startObiekt")) > to_datetime('+ date_to_compare_q +') and ' + vis_Nowe +') or (try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") < to_datetime('+ date_to_compare_q +') and try("startWersjaObiekt") > to_datetime('+ date_to_compare_q +') and '+ vis_Zmien +') or (try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startWersjaObiekt") < to_datetime('+ date_to_compare_q +') and '+ vis_BezZm +') or (to_datetime(try("koniecObiekt")) > to_datetime('+ date_to_compare_q +') and '+ vis_Usun +') then 111 else 0 end'
 
+        # powrot do pierwotnej stylizacji z QML
+        self.back_to_qml_symb()
+
+        # dodanie wyrazenia odpowiadajacego za status
+        expression = ExpressYourself(expr_stat_color, expr_stat_show)
+        expression.set_symbol_expression(self.list_or_canvas(self.signal_of_import))
+        expression.set_label_expression(self.list_or_canvas(self.signal_of_import))
