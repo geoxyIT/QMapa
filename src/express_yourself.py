@@ -27,9 +27,7 @@ class ExpressYourself:
         while len(sub_symbols) > 0:
             temp = []
             for symb in sub_symbols:
-                if (symb.color().getRgb() != white_color.getRgb() and
-                        symb.color().alpha() != 0):
-                    self.symbol_properties(symb)
+                self.symbol_properties(symb)
                 if symb.subSymbol():
                     temp += symb.subSymbol().symbolLayers()
                 sub_symbols = temp
