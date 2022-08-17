@@ -22,9 +22,11 @@ class Main:
         expression = None
         if type.lower() == 'skarpa' or type.lower() == 'wody':
             if scale == '500':
-                expression = QgsExpression("geom_to_wkt( try(collect_geometries(kreskowanie(skarpy($geometry, geometry(get_feature('OT_poczatekGorySkarpy',  'gml_id' , " + '"gml_id"' +"  )),geometry(get_feature('OT_koniecGorySkarpy',  'gml_id' , " + '"gml_id"' + " )),'top'),buffer($geometry,0.001), $area / ($perimeter/4), 50, 90,0,1),kreskowanie(skarpy($geometry, geometry(get_feature('OT_poczatekGorySkarpy',  'gml_id' , " + '"gml_id"' + "  )),geometry(get_feature('OT_koniecGorySkarpy',  'gml_id' , " + '"gml_id"' + "  )),'top'),buffer($geometry,0.001), $area / ($perimeter/4), 50, 90, $area / ($perimeter/2),0.5))))")
+                #expression = QgsExpression("geom_to_wkt( try(collect_geometries(kreskowanie(skarpy($geometry, geometry(get_feature('OT_poczatekGorySkarpy',  'gml_id' , " + '"gml_id"' +"  )),geometry(get_feature('OT_koniecGorySkarpy',  'gml_id' , " + '"gml_id"' + " )),'top'),buffer($geometry,0.001), $area / ($perimeter/4), 50, 90,0,1),kreskowanie(skarpy($geometry, geometry(get_feature('OT_poczatekGorySkarpy',  'gml_id' , " + '"gml_id"' + "  )),geometry(get_feature('OT_koniecGorySkarpy',  'gml_id' , " + '"gml_id"' + "  )),'top'),buffer($geometry,0.001), $area / ($perimeter/4), 50, 90, $area / ($perimeter/2),0.5))))")
+                expression = QgsExpression("geom_to_wkt( try(collect_geometries(kreskowanie(skarpy($geometry,  aggregate('OT_poczatekGorySkarpy', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('OT_koniecGorySkarpy', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'),buffer($geometry,0.001), $area / ($perimeter/4), 50, 90,0,1),kreskowanie(skarpy($geometry,  aggregate('OT_poczatekGorySkarpy', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('OT_koniecGorySkarpy', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'),buffer($geometry,0.001), $area / ($perimeter/4), 50, 90, $area / ($perimeter/2),0.5))))")
+                print(expression)
             elif scale == '1000':
-                expression = QgsExpression("geom_to_wkt( try(collect_geometries(kreskowanie(skarpy($geometry, geometry(get_feature('OT_poczatekGorySkarpy',  'gml_id' , " + '"gml_id"' +"  )),geometry(get_feature('OT_koniecGorySkarpy',  'gml_id' , " + '"gml_id"' + " )),'top'),buffer($geometry,0.001), ($area / ($perimeter/8))*0.75, 50, 90,0,1),kreskowanie(skarpy($geometry, geometry(get_feature('OT_poczatekGorySkarpy',  'gml_id' , " + '"gml_id"' + "  )),geometry(get_feature('OT_koniecGorySkarpy',  'gml_id' , " + '"gml_id"' + "  )),'top'),buffer($geometry,0.001), ($area / ($perimeter/8))*0.75, 50, 90, ($area / ($perimeter/4))*0.75,0.5))))")
+                expression = QgsExpression("geom_to_wkt( try(collect_geometries(kreskowanie(skarpy($geometry,  aggregate('OT_poczatekGorySkarpy', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('OT_koniecGorySkarpy', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'),buffer($geometry,0.001), ($area / ($perimeter/8))*0.75, 50, 90,0,1),kreskowanie(skarpy($geometry,  aggregate('OT_poczatekGorySkarpy', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('OT_koniecGorySkarpy', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'),buffer($geometry,0.001), ($area / ($perimeter/8))*0.75, 50, 90, ($area / ($perimeter/4))*0.75,0.5))))")
         elif type.lower() == 'schody':
             if scale == '500':
                 expression = QgsExpression("geom_to_wkt(kreskowanie( geometry(get_feature( 'EGB_poliliniaKierunkowa',  'gml_id' ,  " + ''"gml_id"'' + ")), $geometry, 0.5, 100, 90, 0, 1))")
@@ -62,6 +64,7 @@ class Main:
                     QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajobiektu', 'rodzajobiektu', column_name],
                                                               layer.fields()).setFilterExpression(
                         '"rodzajobiektu"=\'w\' or "rodzajobiektu"=\'g\''))
+
 
             if features != []:
                 context = QgsExpressionContext()
