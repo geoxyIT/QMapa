@@ -7,7 +7,7 @@ white_color = QColor(255, 255, 255, 255)
 
 
 class ExpressYourself:
-    def __init__(self, color_expression, enable_expression):
+    def __init__(self, color_expression = '', enable_expression = ''):
         self.color_expression = color_expression
         self.temp_color_expression = color_expression
         self.enable_expression = enable_expression
@@ -39,7 +39,10 @@ class ExpressYourself:
 
         current_exp = settings.dataDefinedProperties().property(property_key).expressionString()
         if len(current_exp) == 0:
-            new_expression = expression
+            if expression == '1111':
+                new_expression = expression.replace('1111', ""''"")
+            else:
+                new_expression = expression
         else:
             new_expression = expression.replace('1111', current_exp)
         settings.dataDefinedProperties().property(property_key).setExpressionString(new_expression)
@@ -126,7 +129,7 @@ class ExpressYourself:
             # odswiezenie layer tree
             iface.layerTreeView().refreshLayerSymbology(layer.id())
 
-    def set_label_expression(self, layers):
+    def set_label_expression(self, layers, set_colors = True):
         """Nadanie wyrazenia etykietom na warstwie"""
         for layer in layers:
             labeling = layer.labeling()
@@ -134,16 +137,26 @@ class ExpressYourself:
                 if labeling.type() == 'simple':
                     settings = labeling.settings()
 
-                    # wyrazenia
-                    self.label_properties(settings)
-                    # nadanie wyrazen
-                    labeling.setSettings(settings)
+                    if set_colors:
+                        self.enable_expression = 'case when @Auto then ' + self.enable_expression + ' end'
 
-                    # nadanie wyrazen dla odnosnikow
-                    self.set_callouts(settings)
+                        # wyrazenia
+                        self.label_properties(settings)
+                        # nadanie wyrazen
+                        labeling.setSettings(settings)
 
-                    # nadanie wyrazen dla tla etykiet
-                    self.set_background(settings)
+                        # nadanie wyrazen dla odnosnikow
+                        self.set_callouts(settings)
+
+                        # nadanie wyrazen dla tla etykiet
+                        self.set_background(settings)
+
+                        self.enable_expression = self.temp_enable_expression
+                    else:
+                        self.enable_expression = '@Auto'
+                        self.create_property(settings, 15, self.enable_expression)
+                        labeling.setSettings(settings)
+
 
                 elif labeling.type() == 'rule-based':
                     root = labeling.rootRule()
@@ -157,30 +170,45 @@ class ExpressYourself:
                             # print('filtr: ', label.filterExpression())
                             filter_exp = label.filterExpression()  # tu wyciagac wartosci
                             try:
-                                filter_prefix = self.extract_prefix(filter_exp)
-                                new_color_expression = self.change_label_expression(expression=self.color_expression,
-                                                                                    prefix=filter_prefix)
-                                new_enable_expression = self.change_label_expression(expression=self.enable_expression,
-                                                                                     prefix=filter_prefix)
-                                self.color_expression = new_color_expression
-                                self.enable_expression = new_enable_expression
+                                if set_colors:
+                                    filter_prefix = self.extract_prefix(filter_exp)
+                                    new_color_expression = self.change_label_expression(expression=self.color_expression,
+                                                                                        prefix=filter_prefix)
+                                    new_enable_expression = self.change_label_expression(expression=self.enable_expression,
+                                                                                         prefix=filter_prefix)
+                                    self.color_expression = new_color_expression
+                                    self.enable_expression = new_enable_expression
+
+                                    self.enable_expression = 'case when @Karto then ' + self.enable_expression + ' else 0 end'
+                                else:
+                                    self.enable_expression = '@Karto'
+
                             except:
                                 pass
+                        else:
+                            if set_colors:
+                                self.enable_expression = 'case when @Auto then ' + self.enable_expression + ' else 0 end'
+                            else:
+                                self.enable_expression = '@Auto'
+                        if set_colors:
+                            # wyrazenia
+                            self.label_properties(settings)
+                            # nadanie wyrazen
+                            labeling.setSettings(settings)
 
-                        # wyrazenia
-                        self.label_properties(settings)
-                        # nadanie wyrazen
-                        labeling.setSettings(settings)
+                            # nadanie wyrazen dla odnosnikow
+                            self.set_callouts(settings)
 
-                        # nadanie wyrazen dla odnosnikow
-                        self.set_callouts(settings)
+                            # nadanie wyrazen dla tla etykiet
+                            self.set_background(settings)
 
-                        # nadanie wyrazen dla tla etykiet
-                        self.set_background(settings)
+                            # powrot do pierownych wyrazen
+                            self.color_expression = self.temp_color_expression
+                            self.enable_expression = self.temp_enable_expression
 
-                        # powrot do pierownych wyrazen
-                        self.color_expression = self.temp_color_expression
-                        self.enable_expression = self.temp_enable_expression
+                        else:
+                            self.create_property(settings, 15, self.enable_expression)
+                            labeling.setSettings(settings)
 
                 else:
                     # inny symbol???

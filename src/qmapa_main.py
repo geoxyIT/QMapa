@@ -10,23 +10,53 @@ from osgeo import ogr
 from osgeo_utils.samples import ogr2ogr
 
 from .config import correct_layers
+from .express_yourself import ExpressYourself
 
 class Main:
     def __init__(self):
         self.current_dir = os.path.dirname(os.path.realpath(__file__))
 
+    def add_obligatory_fields(self, layer):
+        obligatory_fields = ['startObiekt', 'startWersjaObiekt', 'koniecWersjaObiekt', 'koniecObiekt']
 
-    def calculate_hatching(self, layer, type, scale):
+        for field_name in obligatory_fields:
+            field_index = layer.fields().indexFromName(field_name)
+            if field_index == -1:
+                field = QgsField(field_name, QVariant.DateTime)
+                layer.startEditing()
+                layer.addAttribute(field)
+                #layer.updateFields()
+                layer.commitChanges()
+            '''else:
+                pass
+                layer.dataProvider().fields().field(field_index).setType(QVariant.DateTime)
+                print('blebleblebleblebleb', layer.dataProvider().fields().field(field_index).setType(QVariant.DateTime))
+                layer.updateFields()'''
+
+
+    def calculate_hatching(self, layer, type, scale, ids):
         """funkcja przelicza kreskowanie i wstawia ta geometrie w formacie wkt do atrybutow
         type: 'skarpa' or 'schody' or 'sciana' or 'wody' """
         expression = None
         if type.lower() == 'skarpa' or type.lower() == 'wody':
+            pocz = ids[0]
+            kon = ids[1]
             if scale == '500':
                 #expression = QgsExpression("geom_to_wkt( try(collect_geometries(kreskowanie(skarpy($geometry, geometry(get_feature('OT_poczatekGorySkarpy',  'gml_id' , " + '"gml_id"' +"  )),geometry(get_feature('OT_koniecGorySkarpy',  'gml_id' , " + '"gml_id"' + " )),'top'),buffer($geometry,0.001), $area / ($perimeter/4), 50, 90,0,1),kreskowanie(skarpy($geometry, geometry(get_feature('OT_poczatekGorySkarpy',  'gml_id' , " + '"gml_id"' + "  )),geometry(get_feature('OT_koniecGorySkarpy',  'gml_id' , " + '"gml_id"' + "  )),'top'),buffer($geometry,0.001), $area / ($perimeter/4), 50, 90, $area / ($perimeter/2),0.5))))")
-                expression = QgsExpression("geom_to_wkt( try(collect_geometries(kreskowanie(skarpy($geometry,  aggregate('OT_poczatekGorySkarpy', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('OT_koniecGorySkarpy', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'),buffer($geometry,0.001), $area / ($perimeter/4), 50, 90,0,1),kreskowanie(skarpy($geometry,  aggregate('OT_poczatekGorySkarpy', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('OT_koniecGorySkarpy', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'),buffer($geometry,0.001), $area / ($perimeter/4), 50, 90, $area / ($perimeter/2),0.5))))")
-                print(expression)
+                #expression = QgsExpression("geom_to_wkt( try(collect_geometries(kreskowanie(skarpy($geometry,  aggregate('OT_poczatekGorySkarpy', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('OT_koniecGorySkarpy', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'),buffer($geometry,0.001), $area / ($perimeter/2), 50, 90,0,1),kreskowanie(skarpy($geometry,  aggregate('OT_poczatekGorySkarpy', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('OT_koniecGorySkarpy', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'),buffer($geometry,0.001), $area / ($perimeter/2), 50, 90, $area / ($perimeter),0.5))))")
+                #expression = QgsExpression("with_variable('dol_skarpy', skarpy($geometry,  aggregate('OT_poczatekGorySkarpy', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('OT_koniecGorySkarpy', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'), geom_to_wkt( try(collect_geometries(kreskowanie(@dol_skarpy, buffer($geometry,0.001), $area / (length(@dol_skarpy)), 50, 90,0,1),kreskowanie(@dol_skarpy,buffer($geometry,0.001), $area / (length(@dol_skarpy)), 50, 90, $area / (length(@dol_skarpy)*2),0.5)))))")
+                #expression = QgsExpression("with_variable('dol_skarpy', skarpy($geometry,  aggregate('" + pocz + "', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('" + kon + "', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'), geom_to_wkt( try(collect_geometries(kreskowanie(@dol_skarpy, buffer($geometry,0.001), $area / (length(@dol_skarpy)), 50, 90,0,1),kreskowanie(@dol_skarpy,buffer($geometry,0.001), $area / (length(@dol_skarpy)), 50, 90, $area / (length(@dol_skarpy)*2),0.5)))))")
+                expression = QgsExpression("with_variable('gora_skarpy', skarpy($geometry,  aggregate('" + pocz + "', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('" + kon + "', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'), geom_to_wkt( try(collect_geometries(kreskowanie(@gora_skarpy, buffer($geometry,0.001), $area / (length(@gora_skarpy)), 50, 90,0,1),kreskowanie(@gora_skarpy,buffer($geometry,0.001), $area / (length(@gora_skarpy)), 50, 90, $area / (length(@gora_skarpy)*2),0.5)))))")
+                #print(expression)
+                #expression = QgsExpression(str(pocz + kon))
             elif scale == '1000':
-                expression = QgsExpression("geom_to_wkt( try(collect_geometries(kreskowanie(skarpy($geometry,  aggregate('OT_poczatekGorySkarpy', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('OT_koniecGorySkarpy', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'),buffer($geometry,0.001), ($area / ($perimeter/8))*0.75, 50, 90,0,1),kreskowanie(skarpy($geometry,  aggregate('OT_poczatekGorySkarpy', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('OT_koniecGorySkarpy', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'),buffer($geometry,0.001), ($area / ($perimeter/8))*0.75, 50, 90, ($area / ($perimeter/4))*0.75,0.5))))")
+                #expression = QgsExpression("geom_to_wkt( try(collect_geometries(kreskowanie(skarpy($geometry,  aggregate('OT_poczatekGorySkarpy', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('OT_koniecGorySkarpy', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'),buffer($geometry,0.001), ($area / ($perimeter/8))*0.75, 50, 90,0,1),kreskowanie(skarpy($geometry,  aggregate('OT_poczatekGorySkarpy', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('OT_koniecGorySkarpy', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'),buffer($geometry,0.001), ($area / ($perimeter/8))*0.75, 50, 90, ($area / ($perimeter/4))*0.75,0.5))))")
+                #expression = QgsExpression("with_variable('dol_skarpy', skarpy($geometry,  aggregate('OT_poczatekGorySkarpy', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('OT_koniecGorySkarpy', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'), geom_to_wkt( try(collect_geometries(kreskowanie(@dol_skarpy, buffer($geometry,0.001), ($area / (length(@dol_skarpy)/2))*0.75, 50, 90,0,1),kreskowanie(@dol_skarpy,buffer($geometry,0.001), ($area / (length(@dol_skarpy)/2))*0.75, 50, 90, ($area / (length(@dol_skarpy)))*0.75,0.5)))))")
+                #expression = QgsExpression("with_variable('gora_skarpy', skarpy($geometry,  aggregate('OT_poczatekGorySkarpy', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('OT_koniecGorySkarpy', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'), geom_to_wkt( try(collect_geometries(kreskowanie(@gora_skarpy, buffer($geometry,0.001), ($area / (length(@gora_skarpy)/2))*0.75, 50, 90,0,1),kreskowanie(@gora_skarpy,buffer($geometry,0.001), ($area / (length(@gora_skarpy)/2))*0.75, 50, 90, ($area / (length(@gora_skarpy)))*0.75,0.5)))))")
+                expression = QgsExpression("with_variable('gora_skarpy', skarpy($geometry,  aggregate('" + pocz + "', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('" + kon + "', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'), geom_to_wkt( try(collect_geometries(kreskowanie(@gora_skarpy, buffer($geometry,0.001), ($area / (length(@gora_skarpy)/2))*0.75, 50, 90,0,1),kreskowanie(@gora_skarpy,buffer($geometry,0.001), ($area / (length(@gora_skarpy)/2))*0.75, 50, 90, ($area / (length(@gora_skarpy)))*0.75,0.5)))))")
+                #expression = QgsExpression(str(pocz + kon))
+
+
         elif type.lower() == 'schody':
             if scale == '500':
                 expression = QgsExpression("geom_to_wkt(kreskowanie( geometry(get_feature( 'EGB_poliliniaKierunkowa',  'gml_id' ,  " + ''"gml_id"'' + ")), $geometry, 0.5, 100, 90, 0, 1))")

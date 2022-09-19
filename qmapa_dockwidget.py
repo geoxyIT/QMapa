@@ -31,7 +31,7 @@ from datetime import datetime
 import webbrowser
 
 from qgis.PyQt import QtGui, QtWidgets, uic
-from qgis.PyQt.QtCore import pyqtSignal, pyqtSlot, QVariant
+from qgis.PyQt.QtCore import pyqtSignal, pyqtSlot, QVariant, QDateTime
 from qgis.PyQt.QtWidgets import QFileDialog
 from qgis.utils import iface
 from qgis.core import *
@@ -63,6 +63,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         # self.<objectname>, and you can use autoconnect slots - see
         # http://doc.qt.io/qt-5/designer-using-a-ui-file.html
         # #widgets-and-dialogs-with-auto-connect
+        self.signal_of_import = False
         self.setupUi(self)
 
         self.current_dir = os.path.dirname(os.path.realpath(__file__))
@@ -77,9 +78,27 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.wgWers.hide()
         self.wgStat.hide()
 
-        self.signal_of_import = False
+        self.rel_times = 0
 
-        
+        self.set_red_labels()
+
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Akt',
+                                                     [0, 0, 0])
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Zamk',
+                                                     [0, 0, 0])
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Arch',
+                                                     [0, 0, 0])
+
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'BezZm',
+                                                     [0, 0, 0])
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Nowe',
+                                                     [0, 0, 0])
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Zmien',
+                                                     [0, 0, 0])
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Usun',
+                                                     [0, 0, 0])
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'DateCompare', QDateTime(2999, 12, 31, 0, 0))
+
     def closeEvent(self, event):
         self.closingPlugin.emit()
         event.accept()
@@ -148,11 +167,12 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
             # nadanie stylizacji
             current_style = self.cmbStylization.currentText()
-            Main().setStyling(self.vec_layers_list, current_style)
+            #Main().setStyling(self.vec_layers_list, current_style)
+            self.back_to_qml_symb()
             self.progressBar.setValue(80)
             print('czas 80%:', datetime.now() - start_2)
 
-            self.set_labels(self.vec_layers_list)
+            #self.set_labels(self.vec_layers_list)
             self.wyswWg()  # sprawdzenie i nadanie wyswietlania wersji, statusu
             self.progressBar.setValue(90)
             print('czas 90%:', datetime.now() - start_2)
@@ -160,20 +180,36 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             # obliczenie kreskowania dla skarp, sciany, schodow i wstawienie geometrii do atrybutow
             scales = ['500', '1000']
             nr = 0
+
+            start_point_layer_id = 'pocz'
+            end_point_layer_id = 'kon'
+            polyline_layer_id = 'poli'
+            for ll in self.vec_layers_list:
+                if 'poczatekgoryskarpy' in ll.name().lower():
+                    start_point_layer_id = ll.id()
+                elif 'koniecgoryskarpy' in ll.name().lower():
+                    end_point_layer_id = ll.id()
+                elif 'poliliniakierunkowa' in ll.name().lower():
+                    polyline_layer_id =  ll.id()
+
             for sc in scales:
                 self.progressBar.setValue(90 + int((nr/len(scales))*10))
                 nr += 1
                 for lay in self.vec_layers_list:
                     if 'skarpa' in lay.name().lower():
-                        Main().calculate_hatching(lay, 'skarpa', sc)
+                        Main().calculate_hatching(lay, 'skarpa', sc, [start_point_layer_id, end_point_layer_id])
                     elif 'obiekttrwalezwiazany' in lay.name().lower():
-                        Main().calculate_hatching(lay, 'schody', sc)
+                        Main().calculate_hatching(lay, 'schody', sc, polyline_layer_id)
                     elif 'budowle' in lay.name().lower():
-                        Main().calculate_hatching(lay, 'sciana', sc)
+                        Main().calculate_hatching(lay, 'sciana', sc, polyline_layer_id)
                     elif 'wody' in lay.name().lower():
-                        Main().calculate_hatching(lay, 'wody', sc)
-                    elif 'ges_rzedna' in lay.name().lower() and sc == '500':
-                        Main().calculate_colors(lay, 'color')
+                        Main().calculate_hatching(lay, 'wody', sc, [start_point_layer_id, end_point_layer_id])
+                    if sc == '500':
+                        if 'ges_rzedna' in lay.name().lower() and sc == '500':
+                            Main().calculate_colors(lay, 'color')
+
+                    if 'etykieta' not in lay.name().lower() and sc == '1000':
+                        Main().add_obligatory_fields(lay)
             self.progressBar.setValue(100)
             print('czas 100%:', datetime.now() - start_2)
             self.progressBar.hide()
@@ -184,9 +220,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     def on_cmbStylization_currentTextChanged(self):
         """ustaw stylizację wybraną w comboboxie"""
-        current_style = self.cmbStylization.currentText()
-        Main().setStyling(self.getLayers(), current_style)
-        self.set_labels(self.getLayers())
+        self.back_to_qml_symb()
 
     def set_joins(self, vec_layers_list):
         """nadawanie joinow podczas importu pliku"""
@@ -285,7 +319,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                         QgsProject.instance().addMapLayer(layer)
                         QgsProject.instance().addMapLayer(layer_joining)
                         joinObject = QgsVectorLayerJoinInfo()
-                        joinObject.setJoinFieldNamesBlockList(['prezentacja_etykiety'])
+                        joinObject.setJoinFieldNamesBlockList(['prezentacja_etykiety', 'fid', 'przestrzenNazw', 'wersjaId', 'numerOperatu', 'wladajacy'])
                         joinObject.setCascadedDelete(False)
                         joinObject.setDynamicFormEnabled(False)
                         joinObject.setEditable(False)
@@ -316,9 +350,26 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         iface.mapCanvas().refreshAllLayers()
 
     def on_cmbReda_currentTextChanged(self):
-        self.set_labels(self.getLayers())
+        #self.set_labels(self.getLayers())
+        self.set_red_labels()
 
-    def set_labels(self, layers):
+    def set_red_labels(self):
+        if 'auto' in self.cmbReda.currentText().lower():
+            auto = 1
+            karto = 0
+        elif 'karto' in self.cmbReda.currentText().lower():
+            auto = 0
+            karto = 1
+        else:
+            auto = 0
+            karto = 0
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Auto', auto)
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Karto', karto)
+
+        iface.mapCanvas().refreshAllLayers()
+
+
+    '''def set_labels(self, layers):
         """Ustawienie wyswietlania etykiet"""
         expr_auto = '1'
         layers = Main().checkLayers(layers)
@@ -387,7 +438,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                                 settings = label.settings()
                                 settings.dataDefinedProperties().property(15).setExpressionString('0')
                                 settings.dataDefinedProperties().property(15).setActive(True)
-        iface.mapCanvas().refreshAllLayers()
+        iface.mapCanvas().refreshAllLayers()'''
 
     def getLayersByName(self, name):
         layers = self.getLayers()
@@ -468,14 +519,31 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def back_to_qml_symb(self):
         """Wczytanie stylizacji QML"""
         current_style = self.cmbStylization.currentText()
-        Main().setStyling(self.getLayers(), current_style)
-        self.set_labels(self.getLayers())
+        Main().setStyling(self.list_or_canvas(self.signal_of_import), current_style)
+        expression = ExpressYourself('', '')
+        expression.set_label_expression(self.list_or_canvas(self.signal_of_import), False)
+        #self.set_labels(self.getLayers())
 
     def wyswWg(self):
         if self.chbWyswWg.isChecked():
             self.cbWysWg.setEnabled(True)
             self.showSelected()
+
+            expr_stat_color = 'case when @BezZm[1] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startWersjaObiekt" < (@DateCompare) then @BezZm[2] when @Zmien[1] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startObiekt" < (@DateCompare) and "startWersjaObiekt" > (@DateCompare) then @Zmien[2] when @Nowe[1] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startObiekt" = "startWersjaObiekt" and ("startObiekt") > (@DateCompare) then @Nowe[2] when @Usun[1] and ("koniecObiekt") > (@DateCompare) then @Usun[2] else 1111 end'
+            expr_wers_color = 'case when @Zamk[1] and "koniecObiekt" is not null then @Zamk[2] when @Arch[1] and "koniecWersjaObiekt" is not null and "koniecObiekt" is null then @Arch[2] when @Akt[1] then @Akt[2] else 1111 end'
+            expr_color = 'case when @WyswWg = ' + "'zmiany'" + ' then ' + expr_stat_color + ' when @WyswWg = ' + "'wersje'" + ' then ' + expr_wers_color + ' end'
+
+            expr_wers_show = 'case when (@Zamk[0] and "koniecObiekt" is not null) or (@Arch[0] and "koniecWersjaObiekt" is not null and "koniecObiekt" is null) or (@Akt[0] and "koniecWersjaObiekt" is null and "koniecObiekt" is null) then 1111 else 0 end'
+            expr_stat_show = 'case when (@BezZm[0] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startWersjaObiekt" < (@DateCompare)) or (@Nowe[0] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startObiekt" = "startWersjaObiekt" and ("startObiekt") > (@DateCompare)) or (@Zmien[0] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startObiekt" < (@DateCompare) and "startWersjaObiekt" > (@DateCompare)) or (@Usun[0] and ("koniecObiekt") > (@DateCompare)) then 1111 else 0 end'
+
+            expr_show = 'case when @WyswWg = ' + "'zmiany'" + ' then ' + expr_stat_show + ' when @WyswWg = ' + "'wersje'" + ' then ' + expr_wers_show + ' end'
+
+            expression = ExpressYourself(expr_color, expr_show)
+            expression.set_symbol_expression(self.list_or_canvas(self.signal_of_import))
+            expression.set_label_expression(self.list_or_canvas(self.signal_of_import))
+
         else:
+            QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'WyswWg', '0')
             self.cbWysWg.setEnabled(False)
             self.wgWers.hide()
             self.wgStat.hide()
@@ -485,13 +553,35 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     def showSelected(self):
         if 'wersj' in self.cbWysWg.currentText().lower():
+            QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'WyswWg', self.cbWysWg.currentText().lower())
             self.wgWers.show()
             self.wgStat.hide()
             self.wyswWers()
         elif 'zmian' in self.cbWysWg.currentText().lower():
+            QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'WyswWg', self.cbWysWg.currentText().lower())
             self.wgWers.hide()
             self.wgStat.show()
             self.wyswStat()
+
+        '''if self.rel_times < 4:
+            self.rel_times += 1
+            # powrot do pierwotnej stylizacji z QML
+            self.back_to_qml_symb()
+            # ustawienie nowych wyrazen odpowiadajacych za wersje
+
+            expr_stat_color = 'case when @BezZm[1] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startWersjaObiekt" < (@DateCompare) then @BezZm[2] when @Zmien[1] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startObiekt" < (@DateCompare) and "startWersjaObiekt" > (@DateCompare) then @Zmien[2] when @Nowe[1] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startObiekt" = "startWersjaObiekt" and ("startObiekt") > (@DateCompare) then @Nowe[2] when @Usun[1] and ("koniecObiekt") > (@DateCompare) then @Usun[2] else 1111 end'
+            expr_wers_color = 'case when @Zamk[1] and "koniecObiekt" is not null then @Zamk[2] when @Arch[1] and "koniecWersjaObiekt" is not null and "koniecObiekt" is null then @Arch[2] when @Akt[1] then @Akt[2] else 1111 end'
+            expr_color = 'case when @WyswWg = ' + "'zmiany'" + ' then ' + expr_stat_color + ' when @WyswWg = ' + "'wersje'" + ' then ' + expr_wers_color + ' end'
+
+            expr_wers_show = 'case when (@Zamk[0] and "koniecObiekt" is not null) or (@Arch[0] and "koniecWersjaObiekt" is not null and "koniecObiekt" is null) or (@Akt[0] and "koniecWersjaObiekt" is null and "koniecObiekt" is null) then 1111 else 0 end'
+            expr_stat_show = 'case when (@BezZm[0] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startWersjaObiekt" < (@DateCompare)) or (@Nowe[0] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startObiekt" = "startWersjaObiekt" and ("startObiekt") > (@DateCompare)) or (@Zmien[0] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startObiekt" < (@DateCompare) and "startWersjaObiekt" > (@DateCompare)) or (@Usun[0] and ("koniecObiekt") > (@DateCompare)) then 1111 else 0 end'
+
+            expr_show = 'case when @WyswWg = ' + "'zmiany'" + ' then ' + expr_stat_show + ' when @WyswWg = ' + "'wersje'" + ' then ' + expr_wers_show + ' end'
+
+            expression = ExpressYourself(expr_color, expr_show)
+            expression.set_symbol_expression(self.list_or_canvas(self.signal_of_import))
+            expression.set_label_expression(self.list_or_canvas(self.signal_of_import))'''
+
 
     def list_or_canvas(self, signal_of_import):
         """Zaleznie od sygnalu, pobierane sa warstwy albo z listy warstw wektorowych
@@ -508,163 +598,158 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         # Aktualne
         if self.chbShowAkt.isChecked():
             self.chbColorAkt.setEnabled(True)
-            vis_Akt = 'True'
+            vis_Akt = True
             if self.chbColorAkt.isChecked() is True:
                 self.colAkt.setEnabled(True)
                 color_Akt = ','.join([str(x) for x in self.colAkt.color().getRgb()])
-                set_color_Akt = 'True'
+                set_color_Akt = True
             else:
                 self.colAkt.setEnabled(False)
-                set_color_Akt = 'False'
-                color_Akt = '0'
+                set_color_Akt = False
+                color_Akt = 0
         else:
-            set_color_Akt = 'False'
-            vis_Akt = 'False'
-            color_Akt = 'False'
+            set_color_Akt = False
+            vis_Akt = False
+            color_Akt = False
             self.chbColorAkt.setEnabled(False)
             self.colAkt.setEnabled(False)
 
         # Zamkniete
         if self.chbShowZamk.isChecked():
             self.chbColorZamk.setEnabled(True)
-            vis_Zamk = 'True'
+            vis_Zamk = True
             if self.chbColorZamk.isChecked() is True:
                 self.colZamk.setEnabled(True)
                 color_Zamk = ','.join([str(x) for x in self.colZamk.color().getRgb()])
-                set_color_Zamk = 'True'
+                set_color_Zamk = True
             else:
                 self.colZamk.setEnabled(False)
-                set_color_Zamk = 'False'
-                color_Zamk = '0'
+                set_color_Zamk = False
+                color_Zamk = 0
         else:
-            set_color_Zamk = 'False'
-            vis_Zamk = 'False'
-            color_Zamk = '0'
+            set_color_Zamk = False
+            vis_Zamk = False
+            color_Zamk = 0
             self.chbColorZamk.setEnabled(False)
             self.colZamk.setEnabled(False)
 
         # Archiwalne
         if self.chbShowArch.isChecked():
             self.chbColorArch.setEnabled(True)
-            vis_Arch = 'True'
+            vis_Arch = True
             if self.chbColorArch.isChecked() is True:
                 self.colArch.setEnabled(True)
                 color_Arch = ','.join([str(x) for x in self.colArch.color().getRgb()])
-                set_color_Arch = 'True'
+                set_color_Arch = True
             else:
                 self.colArch.setEnabled(False)
-                set_color_Arch = 'False'
-                color_Arch = '0'
+                set_color_Arch = False
+                color_Arch = 0
         else:
-            set_color_Arch = 'False'
-            vis_Arch = 'False'
-            color_Arch = '0'
+            set_color_Arch = False
+            vis_Arch = False
+            color_Arch = 0
             self.chbColorArch.setEnabled(False)
             self.colArch.setEnabled(False)
 
-        expression_wers_color = "case when try(" + 'koniecObiekt' + ") is not null and " + set_color_Zamk + " then '" + color_Zamk + "' when try(" + 'koniecWersjaObiekt' + ")is not null and try(" + 'koniecObiekt' + ") is null and " + set_color_Arch + " then '" + color_Arch + "' when " + set_color_Akt + " then '" + color_Akt + "' else 1111 end"
-        #expression_wers_show = "case when try(" + 'koniecObiekt' + ") is not null and " + vis_Zamk + " then 1 when try(" + 'koniecWersjaObiekt' + ")is not null and try(" + 'koniecObiekt' + ") is null and " + vis_Arch + " then 1 when " + vis_Akt + " then 1 else 0 end"
-        expression_wers_show = "case when (try(" + 'koniecObiekt' + ") is not null and " + vis_Zamk + ") or (try(" + 'koniecWersjaObiekt' + ")is not null and try(" + 'koniecObiekt' + ") is null and " + vis_Arch + ") or (try(" + 'koniecWersjaObiekt' + ")is null and try(" + 'koniecObiekt' + ") is null and " + vis_Akt + ") then 1111 else 0 end"
-
-        # powrot do pierwotnej stylizacji z QML
-        self.back_to_qml_symb()
-        # ustawienie nowych wyrazen odpowiadajacych za wersje
-        expression = ExpressYourself(expression_wers_color, expression_wers_show)
-        expression.set_symbol_expression(self.list_or_canvas(self.signal_of_import))
-        expression.set_label_expression(self.list_or_canvas(self.signal_of_import))
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Akt',
+                                                     [vis_Akt, set_color_Akt, color_Akt])
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Zamk',
+                                                     [vis_Zamk, set_color_Zamk, color_Zamk])
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Arch',
+                                                     [vis_Arch, set_color_Arch, color_Arch])
+        iface.mapCanvas().refreshAllLayers()
 
     def wyswStat(self):
         # BezZmian
         if self.chbShowBezZm.isChecked():
             self.chbColorBezZm.setEnabled(True)
-            vis_BezZm = 'True'
+            vis_BezZm = True
             if self.chbColorBezZm.isChecked() is True:
                 self.colBezZm.setEnabled(True)
-                color_BezZm = "'" + ','.join([str(x) for x in self.colBezZm.color().getRgb()]) + "'"
-                set_color_BezZm = 'True'
+                #color_BezZm = "'" + ','.join([str(x) for x in self.colBezZm.color().getRgb()]) + "'"
+                color_BezZm = ','.join([str(x) for x in self.colBezZm.color().getRgb()])
+                set_color_BezZm = True
             else:
                 self.colBezZm.setEnabled(False)
-                set_color_BezZm = 'False'
-                color_BezZm = '0'
+                set_color_BezZm = False
+                color_BezZm = 0
         else:
-            set_color_BezZm = 'False'
-            vis_BezZm = 'False'
-            color_BezZm = '0'
+            set_color_BezZm = False
+            vis_BezZm = False
+            color_BezZm = 0
             self.chbColorBezZm.setEnabled(False)
             self.colBezZm.setEnabled(False)
 
         # Nowe
         if self.chbShowNowe.isChecked():
             self.chbColorNowe.setEnabled(True)
-            vis_Nowe = 'True'
+            vis_Nowe = True
             if self.chbColorNowe.isChecked() is True:
                 self.colNowe.setEnabled(True)
-                color_Nowe = "'" + ','.join([str(x) for x in self.colNowe.color().getRgb()]) + "'"
-                set_color_Nowe = 'True'
+                #color_Nowe = "'" + ','.join([str(x) for x in self.colNowe.color().getRgb()]) + "'"
+                color_Nowe = ','.join([str(x) for x in self.colNowe.color().getRgb()])
+                set_color_Nowe = True
             else:
                 self.colNowe.setEnabled(False)
-                set_color_Nowe = 'False'
-                color_Nowe = '0'
+                set_color_Nowe = False
+                color_Nowe = 0
         else:
-            set_color_Nowe = 'False'
-            vis_Nowe = 'False'
-            color_Nowe = '0'
+            set_color_Nowe = False
+            vis_Nowe = False
+            color_Nowe = 0
             self.chbColorNowe.setEnabled(False)
             self.colNowe.setEnabled(False)
 
         # Zmienione
         if self.chbShowZmien.isChecked():
             self.chbColorZmien.setEnabled(True)
-            vis_Zmien = 'True'
+            vis_Zmien = True
             if self.chbColorZmien.isChecked() is True:
                 self.colZmien.setEnabled(True)
-                color_Zmien = "'" + ','.join([str(x) for x in self.colZmien.color().getRgb()]) + "'"
-                set_color_Zmien = 'True'
+                #color_Zmien = "'" + ','.join([str(x) for x in self.colZmien.color().getRgb()]) + "'"
+                color_Zmien = ','.join([str(x) for x in self.colZmien.color().getRgb()])
+                set_color_Zmien = True
             else:
                 self.colZmien.setEnabled(False)
-                set_color_Zmien = 'False'
-                color_Zmien = '0'
+                set_color_Zmien = False
+                color_Zmien = 0
         else:
-            set_color_Zmien = 'False'
-            vis_Zmien = 'False'
-            color_Zmien = '0'
+            set_color_Zmien = False
+            vis_Zmien = False
+            color_Zmien = 0
             self.chbColorZmien.setEnabled(False)
             self.colZmien.setEnabled(False)
 
         # Usuniete
         if self.chbShowUsun.isChecked():
             self.chbColorUsun.setEnabled(True)
-            vis_Usun = 'True'
+            vis_Usun = True
             if self.chbColorUsun.isChecked() is True:
                 self.colUsun.setEnabled(True)
-                color_Usun = "'" + ','.join([str(x) for x in self.colUsun.color().getRgb()]) + "'"
-                set_color_Usun = 'True'
+                #color_Usun = "'" + ','.join([str(x) for x in self.colUsun.color().getRgb()]) + "'"
+                color_Usun = ','.join([str(x) for x in self.colUsun.color().getRgb()])
+                set_color_Usun = True
             else:
                 self.colUsun.setEnabled(False)
-                set_color_Usun = 'False'
-                color_Usun = '0'
+                set_color_Usun = False
+                color_Usun = 0
         else:
-            set_color_Usun = 'False'
-            vis_Usun = 'False'
-            color_Usun = '0'
+            set_color_Usun = False
+            vis_Usun = False
+            color_Usun = 0
             self.chbColorUsun.setEnabled(False)
             self.colUsun.setEnabled(False)
 
         date_to_compare = self.dteStat.dateTime().toString("yyyy.MM.dd hh:mm:ss")
-        date_to_compare_q = "'" + date_to_compare + "'"
-        #expr_recognize = case when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL then case when try("startObiekt") = try("startWersjaObiekt") and to_datetime(try("startObiekt")) > to_datetime('2022.08.04 16:34:42') then 'nowe' when try("startObiekt") < to_datetime('2022.08.04 16:34:42') and try("startWersjaObiekt") > to_datetime('2022.08.04 16:34:42') then 'zmienione' when try("startWersjaObiekt") < to_datetime('2022.08.04 16:34:42') then 'bez zmian' end when to_datetime(try("koniecObiekt")) > to_datetime('2022.08.04 16:34:42') then 'usuniete' end
-        #expr_stat = 'case when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") = try("startWersjaObiekt") and to_datetime(try("startObiekt")) > to_datetime('2015.08.04 16:34:42') and True then 'nowe' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") = try("startWersjaObiekt") and to_datetime(try("startObiekt")) > to_datetime('2015.08.04 16:34:42') and True then 'nowe' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") < to_datetime('2015.08.04 16:34:42') and try("startWersjaObiekt") > to_datetime('2022.08.04 16:34:42') and True then 'zmienione' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startWersjaObiekt") < to_datetime('2015.08.04 16:34:42') and True then 'bez zmian' when to_datetime(try("koniecObiekt")) > to_datetime('2015.08.04 16:34:42') and True then 'usuniete' else 'custom_expression' end'
+        date_to_compare = self.dteStat.dateTime()
+        #print(type(date_to_compare))
 
-        expr_stat_color = 'case when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startWersjaObiekt") < to_datetime('+ date_to_compare_q +') and '+ set_color_BezZm +' then '+ color_BezZm + ' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") < to_datetime('+ date_to_compare_q +') and try("startWersjaObiekt") > to_datetime('+ date_to_compare_q +') and '+ set_color_Zmien +' then '+ color_Zmien +' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") = try("startWersjaObiekt") and to_datetime(try("startObiekt")) > to_datetime(' + date_to_compare_q + ') and ' + set_color_Nowe + ' then ' + color_Nowe +' when to_datetime(try("koniecObiekt")) > to_datetime('+ date_to_compare_q +') and '+ set_color_Usun +' then '+ color_Usun +' else 1111 end'
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'BezZm', [vis_BezZm, set_color_BezZm, color_BezZm])
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Nowe', [vis_Nowe, set_color_Nowe, color_Nowe])
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Zmien', [vis_Zmien, set_color_Zmien, color_Zmien])
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Usun', [vis_Usun, set_color_Usun, color_Usun])
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'DateCompare', date_to_compare)
 
-        #expr_stat_color = 'case when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") = try("startWersjaObiekt") and to_datetime(try("startObiekt")) > to_datetime('+ date_to_compare_q +') and '+ set_color_Nowe +' then ' + color_Nowe +' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") < to_datetime('+ date_to_compare_q +') and try("startWersjaObiekt") > to_datetime('+ date_to_compare_q +') and '+ set_color_Zmien +' then '+ color_Zmien +' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startWersjaObiekt") < to_datetime('+ date_to_compare_q +') and '+ set_color_BezZm +' then '+ color_BezZm +' when to_datetime(try("koniecObiekt")) > to_datetime('+ date_to_compare_q +') and '+ set_color_Usun +' then '+ color_Usun +' else 1111 end'
-        #expr_stat_show = 'case when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") = try("startWersjaObiekt") and to_datetime(try("startObiekt")) > to_datetime('+ date_to_compare_q +') then ' + vis_Nowe +' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") < to_datetime('+ date_to_compare_q +') and try("startWersjaObiekt") > to_datetime('+ date_to_compare_q +') then '+ vis_Zmien +' when try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startWersjaObiekt") < to_datetime('+ date_to_compare_q +') then '+ vis_BezZm +' when to_datetime(try("koniecObiekt")) > to_datetime('+ date_to_compare_q +') then '+ vis_Usun +' else 1111 end'
-        expr_stat_show = 'case when (try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") = try("startWersjaObiekt") and to_datetime(try("startObiekt")) > to_datetime('+ date_to_compare_q +') and ' + vis_Nowe +') or (try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startObiekt") < to_datetime('+ date_to_compare_q +') and try("startWersjaObiekt") > to_datetime('+ date_to_compare_q +') and '+ vis_Zmien +') or (try("koniecWersjaObiekt") is NULL and try("koniecObiekt") is NULL and try("startWersjaObiekt") < to_datetime('+ date_to_compare_q +') and '+ vis_BezZm +') or (to_datetime(try("koniecObiekt")) > to_datetime('+ date_to_compare_q +') and '+ vis_Usun +') then 1111 else 0 end'
+        iface.mapCanvas().refreshAllLayers()
 
-        # powrot do pierwotnej stylizacji z QML
-        self.back_to_qml_symb()
-
-        # dodanie wyrazenia odpowiadajacego za status
-        expression = ExpressYourself(expr_stat_color, expr_stat_show)
-        expression.set_symbol_expression(self.list_or_canvas(self.signal_of_import))
-        expression.set_label_expression(self.list_or_canvas(self.signal_of_import))

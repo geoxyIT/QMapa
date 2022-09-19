@@ -4,6 +4,7 @@ import copy
 import re
 import cProfile
 import datetime
+from .config import correct_layers
 
 class GMLIncorrect(Exception):
     """Exception raised when gml is incorrect.
@@ -27,6 +28,10 @@ class GmlModify:
     wyciaganie wieloetykiet z pojedynczych plikow prezentacji graficznej"""
 
     def __init__(self, file_path):
+        #podane tagi sa rozpoznawane jako zgodne z rozporzadzeniem, slownik mowi dodatkowo jaki przedrostek dopisywac gdy wystapi dany tag (np dopisze OT_ do poczatekGorySkarpy)
+        self.pref_tag_dict = {'{ewidencjaGruntowIBudynkow:1.0}': 'EGB_', '{bazaDanychObiektowTopograficznych500:1.0}': 'OT_',
+                         '{geodezyjnaEwidencjaSieciUzbrojeniaTerenu:1.0}': 'GES_'}
+
         # sciezka do pliku gml
         self.file_path = file_path
         self.file = open(file_path, 'r')
@@ -47,12 +52,21 @@ class GmlModify:
         text = file.read()
         namespaces_list = re.findall('xmlns:(.*?)=(".*?")', text)
 
+        self.pref_name_list = []
+        self.gml_namespace_val = "http://www.opengis.net/gml/3.2"
         for namespace in namespaces_list:
             name = namespace[0]
             val = namespace[1].replace('"','')
-            if name == 'gml': self.gml_namespace_val = val
-            if name == 'ges' or name == 'ot' or name == 'egb':
-                self.pref_name = f"{{{val}}}"
+            #if name == 'gml': self.gml_namespace_val = val
+            #if name == 'ges' or name == 'ot' or name == 'egb':
+            """if val == "bazaDanychObiektowTopograficznych500:1.0" or val == "geodezyjnaEwidencjaSieciUzbrojeniaTerenu:1.0" or val == "ewidencjaGruntowIBudynkow:1.0":
+                self.pr_name = f"{{{val}}}"
+                #print('PREFFFFFFFFFFFFFF ',self.pr_name)
+                self.pref_name_list.append(self.pr_name)"""
+            #if val == "bazaDanychObiektowTopograficznych500:1.0":
+            self.pr_name = f"{{{val}}}"
+            # print('PREFFFFFFFFFFFFFF ',self.pr_name)
+            self.pref_name_list.append(self.pr_name)
             ET.register_namespace(name, val)
 
 
@@ -141,21 +155,25 @@ class GmlModify:
 
         #sprawdzenie czy gml ma poprawne namespaces
         try:
-            pref_tag_dict[pref]
+            pref_tag = pref_tag_dict[pref]
         except:
-            raise GMLIncorrect(pref)
-
-        pref_tag = pref_tag_dict[pref]
+            pref_tag = '_'
+            #raise GMLIncorrect(pref)
 
         split_pref_0 = pref + 'geometria'
 
         split_pref_list = []
         for spl in split_list:
             split_pref_list.append(pref + spl)
+        #print(split_pref_list)
 
         # wyjatek dla prezentacji graficznej - dodawanie pustej geometrii gdy nie ma zadnej
         for main_child in root:
+            #print('tag', main_child[0].tag)
             prezentacje = main_child.findall(pref + 'PrezentacjaGraficzna')
+            #print(main_child[0].tag)
+            '''for ch in main_child:
+                print(ch.tag, ch.attrib)'''
             for feat in prezentacje:
                 feat.tag = pref + pref_tag + 'PrezentacjaGraficzna'
                 geometry = ET.SubElement(feat, split_pref_0)
@@ -246,52 +264,64 @@ class GmlModify:
         path_file_name = os.path.basename(path)
         path_dirname = os.path.dirname(path)
         output_file_name =  path_file_name + '_mod' + ext
+        out_gpkg = path_file_name + '_mod' + '.gpkg'
+        unique_add = 1
+        while os.path.exists(os.path.join(path_dirname, output_file_name)) or os.path.exists(os.path.join(path_dirname, out_gpkg)):
+            #print('exist')
+            output_file_name = path_file_name + '_mod' + ' (' + str(unique_add) + ')' + ext
+            out_gpkg = path_file_name + '_mod' + ' (' + str(unique_add) + ')' + '.gpkg'
+            unique_add += 1
         self.output_path = os.path.join(path_dirname, output_file_name)
         self.tree.write(self.output_path)
+
+    def check_is_correct(self, root, pref_name_list, tag_dict):
+        for main_child in root:
+            m_ch_tag = main_child[0].tag
+            for pref_name in pref_name_list:
+                if m_ch_tag.startswith(pref_name):
+                    class_name = pref_name.join(m_ch_tag.split(pref_name)[1:])
+                    if pref_name not in tag_dict or class_name not in correct_layers:
+                        main_child[0].tag =pref_name + 'NIEZGODNE_' + class_name
 
     def run(self):
         self.extract_namespaces(file=self.file)
 
         #pref_list = ['{ewidencjaGruntowIBudynkow:1.0}', '{bazaDanychObiektowTopograficznych500:1.0}',
                      #'{geodezyjnaEwidencjaSieciUzbrojeniaTerenu:1.0}']
-        pref_tag_dict = {'{ewidencjaGruntowIBudynkow:1.0}': 'EGB_', '{bazaDanychObiektowTopograficznych500:1.0}': 'OT_',
-                         '{geodezyjnaEwidencjaSieciUzbrojeniaTerenu:1.0}': 'GES_'}
+
         split_list = ['poliliniaKierunkowa', 'poczatekGorySkarpy', 'koniecGorySkarpy', 'etykieta']
 
+        for pref_name in self.pref_name_list:
+            # relacja dla obiekt przedstawiany
+            self.attr_to_text(pref_name + 'PrezentacjaGraficzna',
+                              pref_name + 'obiektPrzedstawiany')
 
-        # relacja dla obiekt przedstawiany
-        self.attr_to_text(self.pref_name + 'PrezentacjaGraficzna',
-                          self.pref_name + 'obiektPrzedstawiany')
+            self.get_relations(pref_name)
 
-        self.get_relations(self.pref_name)
+            """if pref_name == '{bazaDanychObiektowTopograficznych500:1.0}':
+                self.iterate_and_add(pref_name, pref_name + "OT_Rzedna")
+            elif pref_name == '{geodezyjnaEwidencjaSieciUzbrojeniaTerenu:1.0}':
+                self.iterate_and_add(pref_name, pref_name + "GES_Rzedna")"""
 
+            for nm in ["OT_Rzedna", "GES_Rzedna"]:
+                self.iterate_and_add(pref_name, pref_name + nm)
 
+            '''# cProfiler
+            if self.pref_name == '{bazaDanychObiektowTopograficznych500:1.0}':
+                cProfile.runctx('self.iterate_and_add(self.pref_name, self.pref_name+"OT_Rzedna")', globals(),locals())
+            elif self.pref_name == '{geodezyjnaEwidencjaSieciUzbrojeniaTerenu:1.0}':
+                cProfile.runctx('self.iterate_and_add(self.pref_name, self.pref_name+"GES_Rzedna")', globals(),locals())'''
 
-        if self.pref_name == '{bazaDanychObiektowTopograficznych500:1.0}':
-            self.iterate_and_add(self.pref_name, self.pref_name + "OT_Rzedna")
-        elif self.pref_name == '{geodezyjnaEwidencjaSieciUzbrojeniaTerenu:1.0}':
-            self.iterate_and_add(self.pref_name, self.pref_name + "GES_Rzedna")
+            self.extract_all(self.root, pref_name, self.pref_tag_dict, split_list)
 
-        '''# cProfiler
-        if self.pref_name == '{bazaDanychObiektowTopograficznych500:1.0}':
-            cProfile.runctx('self.iterate_and_add(self.pref_name, self.pref_name+"OT_Rzedna")', globals(),locals())
-        elif self.pref_name == '{geodezyjnaEwidencjaSieciUzbrojeniaTerenu:1.0}':
-            cProfile.runctx('self.iterate_and_add(self.pref_name, self.pref_name+"GES_Rzedna")', globals(),locals())'''
+            """if pref_name in self.pref_tag_dict:
+                pref_tag = self.pref_tag_dict[pref_name]
+                self.label_relations(pref_name, pref_tag)
+            else:
+                pref_tag = ''
+                self.label_relations(pref_name, pref_tag)"""
 
-
-
-        self.extract_all(self.root, self.pref_name, pref_tag_dict, split_list)
-        if self.pref_name == '{bazaDanychObiektowTopograficznych500:1.0}':
-            pref_tag = pref_tag_dict[self.pref_name]
-            self.label_relations(self.pref_name, pref_tag)
-        elif self.pref_name == '{geodezyjnaEwidencjaSieciUzbrojeniaTerenu:1.0}':
-            pref_tag = pref_tag_dict[self.pref_name]
-            self.label_relations(self.pref_name, pref_tag)
-        elif self.pref_name == '{ewidencjaGruntowIBudynkow:1.0}':
-            pref_tag = pref_tag_dict[self.pref_name]
-            self.label_relations(self.pref_name, pref_tag)
-
-
+        self.check_is_correct(self.root, self.pref_name_list, self.pref_tag_dict)
         self.save_gml()
 
 

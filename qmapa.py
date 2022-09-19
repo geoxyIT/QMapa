@@ -54,6 +54,7 @@ class QMapa:
             application at run time.
         :type iface: QgsInterface
         """
+
         # Save reference to the QGIS interface
         self.iface = iface
 
@@ -312,6 +313,14 @@ class QMapa:
 
     def run(self):
         """Run method that loads and starts the plugin"""
+        self.tryUnregister()
+
+        # inizjalizacja funkcji z folderu expressions
+        QgsExpression.registerFunction(kreskowanie.kreskowanie)
+        QgsExpression.registerFunction(connect_points.connect_points)
+        QgsExpression.registerFunction(get_half_line.get_half_line)
+        QgsExpression.registerFunction(skarpy.skarpy)
+        QgsExpression.registerFunction(recalculate_justification.recalculate_justification)
 
         if not self.pluginIsActive:
             self.pluginIsActive = True
