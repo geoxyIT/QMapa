@@ -32,7 +32,7 @@ from qgis.core import QgsExpression
 from qgis.utils import iface, qgsfunction
 
 # Import expressions
-from .expressions import connect_points, get_half_line, kreskowanie, skarpy, recalculate_justification
+from .expressions import connect_points, get_half_line, kreskowanie, skarpy, recalculate_justification, pokaz_wersje, kolor_wersji
 
 # Initialize Qt resources from file resources.py
 from .src.resources import *
@@ -191,6 +191,10 @@ class QMapa:
         QgsExpression.registerFunction(get_half_line.get_half_line)
         QgsExpression.registerFunction(skarpy.skarpy)
         QgsExpression.registerFunction(recalculate_justification.recalculate_justification)
+        QgsExpression.registerFunction(pokaz_wersje.pokaz_wersje)
+        QgsExpression.registerFunction(kolor_wersji.kolor_wersji)
+
+
 
         icon_path = ':/plugins/qmapa/icons/icon.png'
         '''self.add_action(
@@ -220,6 +224,14 @@ class QMapa:
             pass
         try:
             QgsExpression.unregisterFunction('recalculate_justification')
+        except:
+            pass
+        try:
+            QgsExpression.unregisterFunction('pokaz_wersje')
+        except:
+            pass
+        try:
+            QgsExpression.unregisterFunction('kolor_wersji')
         except:
             pass
 
@@ -321,6 +333,8 @@ class QMapa:
         QgsExpression.registerFunction(get_half_line.get_half_line)
         QgsExpression.registerFunction(skarpy.skarpy)
         QgsExpression.registerFunction(recalculate_justification.recalculate_justification)
+        QgsExpression.registerFunction(pokaz_wersje.pokaz_wersje)
+        QgsExpression.registerFunction(kolor_wersji.kolor_wersji)
 
         if not self.pluginIsActive:
             self.pluginIsActive = True

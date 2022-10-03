@@ -329,28 +329,34 @@ class Main:
 
         order_list = list(mygen(order_list))
 
-        type_groups_dict = {}
-
         #rozpoznanie z jakiej bazy pochodzi warstwa zeby przyporzadkowac ja do wlasciwej grupy
-        for layy in layers_with_type:
-            layname = layy[1].name()
+        def sort_by_base_type (layers_list):
+            type_groups_dict = {}
+            for layy in layers_with_type:
+                layname = layy[1].name()
 
-            if layname.startswith('EGB_'):
-                base_name = 'EGiB'
-            elif layname.startswith('GES_'):
-                base_name =  'GESUT'
-            elif layname.startswith('OT_'):
-                base_name = 'BDOT500'
-            elif layname.startswith('_NIEZGODNE_'):
-                base_name = 'NIEZGODNE: ' + layname.split('_')[2]
-            else:
-                base_name = 'NIE WIADOMO CO TO'
+                if layname.startswith('EGB_'):
+                    base_name = 'EGiB'
+                elif layname.startswith('GES_'):
+                    base_name =  'GESUT'
+                elif layname.startswith('OT_'):
+                    base_name = 'BDOT500'
+                elif layname.startswith('_NIEZGODNE_'):
+                    base_name = 'NIEZGODNE: ' + layname.split('_')[2]
+                else:
+                    base_name = 'NIE WIADOMO CO TO'
 
-            if base_name in type_groups_dict:
-                type_groups_dict[base_name].append(layy)
-                pass
-            else:
-                type_groups_dict[base_name] = [layy]
+                if base_name in type_groups_dict:
+                    type_groups_dict[base_name].append(layy)
+                    pass
+                else:
+                    type_groups_dict[base_name] = [layy]
+            return type_groups_dict
+
+        type_groups_dict = sort_by_base_type(layers_with_type)
+        type_groups_dict_table = sort_by_base_type(table_layers_list)
+
+
 
         root = QgsProject.instance().layerTreeRoot()
         main_group = QgsLayerTreeGroup(str(main_group_name))
