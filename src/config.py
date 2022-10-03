@@ -57,3 +57,4 @@ correct_layers = ['EGB_etykieta',
                           'OT_odnosnik',
                           'GES_PrezentacjaGraficzna',
                           'GES_odnosnik']
+

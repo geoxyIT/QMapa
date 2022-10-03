@@ -1,21 +1,21 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis maxScale="0" hasScaleBasedVisibilityFlag="0" readOnly="0" version="3.24.0-Tisler" simplifyLocal="1" styleCategories="AllStyleCategories" simplifyAlgorithm="0" simplifyMaxScale="1" labelsEnabled="0" simplifyDrawingTol="1" minScale="100000000" simplifyDrawingHints="0" symbologyReferenceScale="-1">
+<qgis simplifyMaxScale="1" version="3.24.2-Tisler" maxScale="0" simplifyLocal="1" symbologyReferenceScale="-1" simplifyAlgorithm="0" hasScaleBasedVisibilityFlag="0" simplifyDrawingHints="0" styleCategories="AllStyleCategories" labelsEnabled="0" readOnly="0" minScale="100000000" simplifyDrawingTol="1">
   <flags>
     <Identifiable>1</Identifiable>
     <Removable>1</Removable>
     <Searchable>1</Searchable>
     <Private>0</Private>
   </flags>
-  <temporal endField="" startExpression="" mode="0" enabled="0" accumulate="0" limitMode="0" endExpression="" durationUnit="min" startField="" fixedDuration="0" durationField="">
+  <temporal startField="" limitMode="0" endExpression="" fixedDuration="0" endField="" accumulate="0" mode="0" durationField="" enabled="0" durationUnit="min" startExpression="">
     <fixedRange>
       <start></start>
       <end></end>
     </fixedRange>
   </temporal>
-  <renderer-v2 forceraster="0" enableorderby="0" type="nullSymbol" referencescale="-1" symbollevels="0"/>
+  <renderer-v2 forceraster="0" referencescale="-1" type="nullSymbol" enableorderby="0" symbollevels="0"/>
   <customproperties>
     <Option type="Map">
-      <Option name="embeddedWidgets/count" type="int" value="0"/>
+      <Option name="embeddedWidgets/count" value="0" type="int"/>
       <Option name="variableNames" type="invalid"/>
       <Option name="variableValues" type="invalid"/>
     </Option>
@@ -24,80 +24,80 @@
   <featureBlendMode>0</featureBlendMode>
   <layerOpacity>1</layerOpacity>
   <SingleCategoryDiagramRenderer diagramType="Histogram" attributeLegend="1">
-    <DiagramCategory penColor="#000000" rotationOffset="270" lineSizeType="MM" enabled="0" sizeType="MM" opacity="1" spacing="5" penWidth="0" diagramOrientation="Up" barWidth="5" direction="0" width="15" maxScaleDenominator="1e+08" spacingUnit="MM" labelPlacementMethod="XHeight" scaleDependency="Area" backgroundColor="#ffffff" backgroundAlpha="255" sizeScale="3x:0,0,0,0,0,0" lineSizeScale="3x:0,0,0,0,0,0" penAlpha="255" minimumSize="0" height="15" minScaleDenominator="0" spacingUnitScale="3x:0,0,0,0,0,0" showAxis="1" scaleBasedVisibility="0">
+    <DiagramCategory scaleBasedVisibility="0" direction="0" spacing="5" lineSizeScale="3x:0,0,0,0,0,0" opacity="1" diagramOrientation="Up" minScaleDenominator="0" height="15" backgroundAlpha="255" width="15" maxScaleDenominator="1e+08" minimumSize="0" lineSizeType="MM" spacingUnitScale="3x:0,0,0,0,0,0" penAlpha="255" penColor="#000000" showAxis="1" labelPlacementMethod="XHeight" rotationOffset="270" enabled="0" spacingUnit="MM" sizeType="MM" backgroundColor="#ffffff" barWidth="5" sizeScale="3x:0,0,0,0,0,0" scaleDependency="Area" penWidth="0">
       <fontProperties description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0" style=""/>
-      <attribute label="" field="" color="#000000"/>
+      <attribute color="#000000" field="" label=""/>
       <axisSymbol>
-        <symbol name="" type="line" force_rhr="0" clip_to_extent="1" alpha="1">
+        <symbol alpha="1" clip_to_extent="1" name="" force_rhr="0" type="line">
           <data_defined_properties>
             <Option type="Map">
-              <Option name="name" type="QString" value=""/>
+              <Option name="name" value="" type="QString"/>
               <Option name="properties"/>
-              <Option name="type" type="QString" value="collection"/>
+              <Option name="type" value="collection" type="QString"/>
             </Option>
           </data_defined_properties>
-          <layer class="SimpleLine" pass="0" enabled="1" locked="0">
+          <layer pass="0" class="SimpleLine" enabled="1" locked="0">
             <Option type="Map">
-              <Option name="align_dash_pattern" type="QString" value="0"/>
-              <Option name="capstyle" type="QString" value="square"/>
-              <Option name="customdash" type="QString" value="5;2"/>
-              <Option name="customdash_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
-              <Option name="customdash_unit" type="QString" value="MM"/>
-              <Option name="dash_pattern_offset" type="QString" value="0"/>
-              <Option name="dash_pattern_offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
-              <Option name="dash_pattern_offset_unit" type="QString" value="MM"/>
-              <Option name="draw_inside_polygon" type="QString" value="0"/>
-              <Option name="joinstyle" type="QString" value="bevel"/>
-              <Option name="line_color" type="QString" value="0,0,0,255"/>
-              <Option name="line_style" type="QString" value="solid"/>
-              <Option name="line_width" type="QString" value="0.26"/>
-              <Option name="line_width_unit" type="QString" value="MM"/>
-              <Option name="offset" type="QString" value="0"/>
-              <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
-              <Option name="offset_unit" type="QString" value="MM"/>
-              <Option name="ring_filter" type="QString" value="0"/>
-              <Option name="trim_distance_end" type="QString" value="0"/>
-              <Option name="trim_distance_end_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
-              <Option name="trim_distance_end_unit" type="QString" value="MM"/>
-              <Option name="trim_distance_start" type="QString" value="0"/>
-              <Option name="trim_distance_start_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
-              <Option name="trim_distance_start_unit" type="QString" value="MM"/>
-              <Option name="tweak_dash_pattern_on_corners" type="QString" value="0"/>
-              <Option name="use_custom_dash" type="QString" value="0"/>
-              <Option name="width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+              <Option name="align_dash_pattern" value="0" type="QString"/>
+              <Option name="capstyle" value="square" type="QString"/>
+              <Option name="customdash" value="5;2" type="QString"/>
+              <Option name="customdash_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+              <Option name="customdash_unit" value="MM" type="QString"/>
+              <Option name="dash_pattern_offset" value="0" type="QString"/>
+              <Option name="dash_pattern_offset_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+              <Option name="dash_pattern_offset_unit" value="MM" type="QString"/>
+              <Option name="draw_inside_polygon" value="0" type="QString"/>
+              <Option name="joinstyle" value="bevel" type="QString"/>
+              <Option name="line_color" value="0,0,0,255" type="QString"/>
+              <Option name="line_style" value="solid" type="QString"/>
+              <Option name="line_width" value="0.26" type="QString"/>
+              <Option name="line_width_unit" value="MM" type="QString"/>
+              <Option name="offset" value="0" type="QString"/>
+              <Option name="offset_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+              <Option name="offset_unit" value="MM" type="QString"/>
+              <Option name="ring_filter" value="0" type="QString"/>
+              <Option name="trim_distance_end" value="0" type="QString"/>
+              <Option name="trim_distance_end_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+              <Option name="trim_distance_end_unit" value="MM" type="QString"/>
+              <Option name="trim_distance_start" value="0" type="QString"/>
+              <Option name="trim_distance_start_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
+              <Option name="trim_distance_start_unit" value="MM" type="QString"/>
+              <Option name="tweak_dash_pattern_on_corners" value="0" type="QString"/>
+              <Option name="use_custom_dash" value="0" type="QString"/>
+              <Option name="width_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
             </Option>
-            <prop k="align_dash_pattern" v="0"/>
-            <prop k="capstyle" v="square"/>
-            <prop k="customdash" v="5;2"/>
-            <prop k="customdash_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-            <prop k="customdash_unit" v="MM"/>
-            <prop k="dash_pattern_offset" v="0"/>
-            <prop k="dash_pattern_offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-            <prop k="dash_pattern_offset_unit" v="MM"/>
-            <prop k="draw_inside_polygon" v="0"/>
-            <prop k="joinstyle" v="bevel"/>
-            <prop k="line_color" v="0,0,0,255"/>
-            <prop k="line_style" v="solid"/>
-            <prop k="line_width" v="0.26"/>
-            <prop k="line_width_unit" v="MM"/>
-            <prop k="offset" v="0"/>
-            <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-            <prop k="offset_unit" v="MM"/>
-            <prop k="ring_filter" v="0"/>
-            <prop k="trim_distance_end" v="0"/>
-            <prop k="trim_distance_end_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-            <prop k="trim_distance_end_unit" v="MM"/>
-            <prop k="trim_distance_start" v="0"/>
-            <prop k="trim_distance_start_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-            <prop k="trim_distance_start_unit" v="MM"/>
-            <prop k="tweak_dash_pattern_on_corners" v="0"/>
-            <prop k="use_custom_dash" v="0"/>
-            <prop k="width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+            <prop v="0" k="align_dash_pattern"/>
+            <prop v="square" k="capstyle"/>
+            <prop v="5;2" k="customdash"/>
+            <prop v="3x:0,0,0,0,0,0" k="customdash_map_unit_scale"/>
+            <prop v="MM" k="customdash_unit"/>
+            <prop v="0" k="dash_pattern_offset"/>
+            <prop v="3x:0,0,0,0,0,0" k="dash_pattern_offset_map_unit_scale"/>
+            <prop v="MM" k="dash_pattern_offset_unit"/>
+            <prop v="0" k="draw_inside_polygon"/>
+            <prop v="bevel" k="joinstyle"/>
+            <prop v="0,0,0,255" k="line_color"/>
+            <prop v="solid" k="line_style"/>
+            <prop v="0.26" k="line_width"/>
+            <prop v="MM" k="line_width_unit"/>
+            <prop v="0" k="offset"/>
+            <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
+            <prop v="MM" k="offset_unit"/>
+            <prop v="0" k="ring_filter"/>
+            <prop v="0" k="trim_distance_end"/>
+            <prop v="3x:0,0,0,0,0,0" k="trim_distance_end_map_unit_scale"/>
+            <prop v="MM" k="trim_distance_end_unit"/>
+            <prop v="0" k="trim_distance_start"/>
+            <prop v="3x:0,0,0,0,0,0" k="trim_distance_start_map_unit_scale"/>
+            <prop v="MM" k="trim_distance_start_unit"/>
+            <prop v="0" k="tweak_dash_pattern_on_corners"/>
+            <prop v="0" k="use_custom_dash"/>
+            <prop v="3x:0,0,0,0,0,0" k="width_map_unit_scale"/>
             <data_defined_properties>
               <Option type="Map">
-                <Option name="name" type="QString" value=""/>
+                <Option name="name" value="" type="QString"/>
                 <Option name="properties"/>
-                <Option name="type" type="QString" value="collection"/>
+                <Option name="type" value="collection" type="QString"/>
               </Option>
             </data_defined_properties>
           </layer>
@@ -105,12 +105,12 @@
       </axisSymbol>
     </DiagramCategory>
   </SingleCategoryDiagramRenderer>
-  <DiagramLayerSettings linePlacementFlags="18" showAll="1" priority="0" obstacle="0" placement="0" zIndex="0" dist="0">
+  <DiagramLayerSettings priority="0" showAll="1" placement="0" zIndex="0" dist="0" linePlacementFlags="18" obstacle="0">
     <properties>
       <Option type="Map">
-        <Option name="name" type="QString" value=""/>
+        <Option name="name" value="" type="QString"/>
         <Option name="properties"/>
-        <Option name="type" type="QString" value="collection"/>
+        <Option name="type" value="collection" type="QString"/>
       </Option>
     </properties>
   </DiagramLayerSettings>
@@ -118,156 +118,30 @@
     <activeChecks/>
     <checkConfiguration/>
   </geometryOptions>
-  <legend showLabelLegend="0" type="default-vector"/>
+  <legend type="default-vector" showLabelLegend="0"/>
   <referencedLayers/>
-  <fieldConfiguration>
-    <field name="fid" configurationFlags="None">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="gml_id" configurationFlags="None">
-      <editWidget type="TextEdit">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="lokalnyId" configurationFlags="None">
-      <editWidget type="TextEdit">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="przestrzenNazw" configurationFlags="None">
-      <editWidget type="TextEdit">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="wersjaId" configurationFlags="None">
-      <editWidget type="TextEdit">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="startObiekt" configurationFlags="None">
-      <editWidget type="TextEdit">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="startWersjaObiekt" configurationFlags="None">
-      <editWidget type="TextEdit">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="zrodlo" configurationFlags="None">
-      <editWidget type="TextEdit">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="numerOperatu" configurationFlags="None">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="rodzajSkarpy" configurationFlags="None">
-      <editWidget type="TextEdit">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="informacjaDodatkowa" configurationFlags="None">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-  </fieldConfiguration>
-  <aliases>
-    <alias name="" index="0" field="fid"/>
-    <alias name="" index="1" field="gml_id"/>
-    <alias name="" index="2" field="lokalnyId"/>
-    <alias name="" index="3" field="przestrzenNazw"/>
-    <alias name="" index="4" field="wersjaId"/>
-    <alias name="" index="5" field="startObiekt"/>
-    <alias name="" index="6" field="startWersjaObiekt"/>
-    <alias name="" index="7" field="zrodlo"/>
-    <alias name="" index="8" field="numerOperatu"/>
-    <alias name="" index="9" field="rodzajSkarpy"/>
-    <alias name="" index="10" field="informacjaDodatkowa"/>
-  </aliases>
-  <defaults>
-    <default expression="" applyOnUpdate="0" field="fid"/>
-    <default expression="" applyOnUpdate="0" field="gml_id"/>
-    <default expression="" applyOnUpdate="0" field="lokalnyId"/>
-    <default expression="" applyOnUpdate="0" field="przestrzenNazw"/>
-    <default expression="" applyOnUpdate="0" field="wersjaId"/>
-    <default expression="" applyOnUpdate="0" field="startObiekt"/>
-    <default expression="" applyOnUpdate="0" field="startWersjaObiekt"/>
-    <default expression="" applyOnUpdate="0" field="zrodlo"/>
-    <default expression="" applyOnUpdate="0" field="numerOperatu"/>
-    <default expression="" applyOnUpdate="0" field="rodzajSkarpy"/>
-    <default expression="" applyOnUpdate="0" field="informacjaDodatkowa"/>
-  </defaults>
-  <constraints>
-    <constraint constraints="3" unique_strength="1" exp_strength="0" field="fid" notnull_strength="1"/>
-    <constraint constraints="1" unique_strength="0" exp_strength="0" field="gml_id" notnull_strength="1"/>
-    <constraint constraints="0" unique_strength="0" exp_strength="0" field="lokalnyId" notnull_strength="0"/>
-    <constraint constraints="0" unique_strength="0" exp_strength="0" field="przestrzenNazw" notnull_strength="0"/>
-    <constraint constraints="0" unique_strength="0" exp_strength="0" field="wersjaId" notnull_strength="0"/>
-    <constraint constraints="0" unique_strength="0" exp_strength="0" field="startObiekt" notnull_strength="0"/>
-    <constraint constraints="0" unique_strength="0" exp_strength="0" field="startWersjaObiekt" notnull_strength="0"/>
-    <constraint constraints="0" unique_strength="0" exp_strength="0" field="zrodlo" notnull_strength="0"/>
-    <constraint constraints="0" unique_strength="0" exp_strength="0" field="numerOperatu" notnull_strength="0"/>
-    <constraint constraints="0" unique_strength="0" exp_strength="0" field="rodzajSkarpy" notnull_strength="0"/>
-    <constraint constraints="0" unique_strength="0" exp_strength="0" field="informacjaDodatkowa" notnull_strength="0"/>
-  </constraints>
-  <constraintExpressions>
-    <constraint exp="" desc="" field="fid"/>
-    <constraint exp="" desc="" field="gml_id"/>
-    <constraint exp="" desc="" field="lokalnyId"/>
-    <constraint exp="" desc="" field="przestrzenNazw"/>
-    <constraint exp="" desc="" field="wersjaId"/>
-    <constraint exp="" desc="" field="startObiekt"/>
-    <constraint exp="" desc="" field="startWersjaObiekt"/>
-    <constraint exp="" desc="" field="zrodlo"/>
-    <constraint exp="" desc="" field="numerOperatu"/>
-    <constraint exp="" desc="" field="rodzajSkarpy"/>
-    <constraint exp="" desc="" field="informacjaDodatkowa"/>
-  </constraintExpressions>
+  <fieldConfiguration/>
+  <aliases/>
+  <defaults/>
+  <constraints/>
+  <constraintExpressions/>
   <expressionfields/>
   <attributeactions>
     <defaultAction key="Canvas" value="{00000000-0000-0000-0000-000000000000}"/>
   </attributeactions>
-  <attributetableconfig actionWidgetStyle="dropDown" sortExpression="" sortOrder="0">
+  <attributetableconfig sortOrder="0" sortExpression="" actionWidgetStyle="dropDown">
     <columns>
-      <column width="-1" name="gml_id" type="field" hidden="0"/>
-      <column width="-1" name="lokalnyId" type="field" hidden="0"/>
-      <column width="-1" name="przestrzenNazw" type="field" hidden="0"/>
-      <column width="-1" name="wersjaId" type="field" hidden="0"/>
-      <column width="-1" name="startObiekt" type="field" hidden="0"/>
-      <column width="-1" name="startWersjaObiekt" type="field" hidden="0"/>
-      <column width="-1" name="zrodlo" type="field" hidden="0"/>
-      <column width="-1" name="geometria" type="field" hidden="0"/>
-      <column width="-1" name="rodzajSkarpy" type="field" hidden="0"/>
-      <column width="-1" name="koniecGorySkarpy" type="field" hidden="0"/>
-      <column width="-1" type="actions" hidden="1"/>
+      <column name="gml_id" type="field" hidden="0" width="-1"/>
+      <column name="lokalnyId" type="field" hidden="0" width="-1"/>
+      <column name="przestrzenNazw" type="field" hidden="0" width="-1"/>
+      <column name="wersjaId" type="field" hidden="0" width="-1"/>
+      <column name="startObiekt" type="field" hidden="0" width="-1"/>
+      <column name="startWersjaObiekt" type="field" hidden="0" width="-1"/>
+      <column name="zrodlo" type="field" hidden="0" width="-1"/>
+      <column name="geometria" type="field" hidden="0" width="-1"/>
+      <column name="rodzajSkarpy" type="field" hidden="0" width="-1"/>
+      <column name="koniecGorySkarpy" type="field" hidden="0" width="-1"/>
+      <column type="actions" hidden="1" width="-1"/>
     </columns>
   </attributetableconfig>
   <conditionalstyles>
@@ -323,16 +197,16 @@ def my_form_open(dialog, layer, feature):
     <field name="zrodlo" labelOnTop="0"/>
   </labelOnTop>
   <reuseLastValue>
-    <field name="geometria" reuseLastValue="0"/>
-    <field name="gml_id" reuseLastValue="0"/>
-    <field name="koniecGorySkarpy" reuseLastValue="0"/>
-    <field name="lokalnyId" reuseLastValue="0"/>
-    <field name="przestrzenNazw" reuseLastValue="0"/>
-    <field name="rodzajSkarpy" reuseLastValue="0"/>
-    <field name="startObiekt" reuseLastValue="0"/>
-    <field name="startWersjaObiekt" reuseLastValue="0"/>
-    <field name="wersjaId" reuseLastValue="0"/>
-    <field name="zrodlo" reuseLastValue="0"/>
+    <field reuseLastValue="0" name="geometria"/>
+    <field reuseLastValue="0" name="gml_id"/>
+    <field reuseLastValue="0" name="koniecGorySkarpy"/>
+    <field reuseLastValue="0" name="lokalnyId"/>
+    <field reuseLastValue="0" name="przestrzenNazw"/>
+    <field reuseLastValue="0" name="rodzajSkarpy"/>
+    <field reuseLastValue="0" name="startObiekt"/>
+    <field reuseLastValue="0" name="startWersjaObiekt"/>
+    <field reuseLastValue="0" name="wersjaId"/>
+    <field reuseLastValue="0" name="zrodlo"/>
   </reuseLastValue>
   <dataDefinedFieldProperties/>
   <widgets/>

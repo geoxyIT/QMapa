@@ -53,6 +53,7 @@ class GmlModify:
         namespaces_list = re.findall('xmlns:(.*?)=(".*?")', text)
 
         self.pref_name_list = []
+        self.namespaces_dict = {}
         self.gml_namespace_val = "http://www.opengis.net/gml/3.2"
         for namespace in namespaces_list:
             name = namespace[0]
@@ -67,7 +68,10 @@ class GmlModify:
             self.pr_name = f"{{{val}}}"
             # print('PREFFFFFFFFFFFFFF ',self.pr_name)
             self.pref_name_list.append(self.pr_name)
+
             ET.register_namespace(name, val)
+            self.namespaces_dict[val] = name
+        print(self.namespaces_dict)
 
 
     def get_relations(self, pref_name):
@@ -281,7 +285,12 @@ class GmlModify:
                 if m_ch_tag.startswith(pref_name):
                     class_name = pref_name.join(m_ch_tag.split(pref_name)[1:])
                     if pref_name not in tag_dict or class_name not in correct_layers:
-                        main_child[0].tag =pref_name + 'NIEZGODNE_' + class_name
+                        if pref_name[1:-1] in self.namespaces_dict:
+                            name_of_base = self.namespaces_dict[pref_name[1:-1]]
+                        else:
+                            name_of_base = 'NotRecognized'
+                        main_child[0].tag = pref_name + '_NIEZGODNE_' + name_of_base + '_' + class_name
+
 
     def run(self):
         self.extract_namespaces(file=self.file)

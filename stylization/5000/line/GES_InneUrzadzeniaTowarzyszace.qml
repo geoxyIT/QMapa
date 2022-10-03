@@ -1,20 +1,20 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis simplifyLocal="1" maxScale="0" simplifyAlgorithm="0" version="3.24.0-Tisler" symbologyReferenceScale="-1" readOnly="0" styleCategories="AllStyleCategories" simplifyDrawingHints="1" minScale="100000000" simplifyDrawingTol="1" labelsEnabled="0" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="0">
+<qgis simplifyMaxScale="1" version="3.24.2-Tisler" maxScale="0" simplifyLocal="1" symbologyReferenceScale="-1" simplifyAlgorithm="0" hasScaleBasedVisibilityFlag="0" simplifyDrawingHints="1" styleCategories="AllStyleCategories" labelsEnabled="0" readOnly="0" minScale="100000000" simplifyDrawingTol="1">
   <flags>
     <Identifiable>1</Identifiable>
     <Removable>1</Removable>
     <Searchable>1</Searchable>
     <Private>0</Private>
   </flags>
-  <temporal limitMode="0" startField="" endExpression="" fixedDuration="0" endField="" startExpression="" accumulate="0" enabled="0" durationField="" mode="0" durationUnit="min">
+  <temporal startField="" limitMode="0" endExpression="" fixedDuration="0" endField="" accumulate="0" mode="0" durationField="" enabled="0" durationUnit="min" startExpression="">
     <fixedRange>
       <start></start>
       <end></end>
     </fixedRange>
   </temporal>
-  <renderer-v2 enableorderby="0" forceraster="0" type="singleSymbol" symbollevels="0" referencescale="-1">
+  <renderer-v2 forceraster="0" referencescale="-1" type="singleSymbol" enableorderby="0" symbollevels="0">
     <symbols>
-      <symbol name="0" force_rhr="0" alpha="1" type="line" clip_to_extent="1">
+      <symbol alpha="1" clip_to_extent="1" name="0" force_rhr="0" type="line">
         <data_defined_properties>
           <Option type="Map">
             <Option name="name" value="" type="QString"/>
@@ -22,7 +22,7 @@
             <Option name="type" value="collection" type="QString"/>
           </Option>
         </data_defined_properties>
-        <layer locked="0" pass="0" class="SimpleLine" enabled="1">
+        <layer pass="0" class="SimpleLine" enabled="1" locked="0">
           <Option type="Map">
             <Option name="align_dash_pattern" value="0" type="QString"/>
             <Option name="capstyle" value="square" type="QString"/>
@@ -52,33 +52,33 @@
             <Option name="use_custom_dash" value="0" type="QString"/>
             <Option name="width_map_unit_scale" value="3x:0,0,0,0,0,0" type="QString"/>
           </Option>
-          <prop k="align_dash_pattern" v="0"/>
-          <prop k="capstyle" v="square"/>
-          <prop k="customdash" v="5;2"/>
-          <prop k="customdash_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-          <prop k="customdash_unit" v="MM"/>
-          <prop k="dash_pattern_offset" v="0"/>
-          <prop k="dash_pattern_offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-          <prop k="dash_pattern_offset_unit" v="MM"/>
-          <prop k="draw_inside_polygon" v="0"/>
-          <prop k="joinstyle" v="bevel"/>
-          <prop k="line_color" v="114,155,111,255"/>
-          <prop k="line_style" v="solid"/>
-          <prop k="line_width" v="0.26"/>
-          <prop k="line_width_unit" v="MM"/>
-          <prop k="offset" v="0"/>
-          <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-          <prop k="offset_unit" v="MM"/>
-          <prop k="ring_filter" v="0"/>
-          <prop k="trim_distance_end" v="0"/>
-          <prop k="trim_distance_end_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-          <prop k="trim_distance_end_unit" v="MM"/>
-          <prop k="trim_distance_start" v="0"/>
-          <prop k="trim_distance_start_map_unit_scale" v="3x:0,0,0,0,0,0"/>
-          <prop k="trim_distance_start_unit" v="MM"/>
-          <prop k="tweak_dash_pattern_on_corners" v="0"/>
-          <prop k="use_custom_dash" v="0"/>
-          <prop k="width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop v="0" k="align_dash_pattern"/>
+          <prop v="square" k="capstyle"/>
+          <prop v="5;2" k="customdash"/>
+          <prop v="3x:0,0,0,0,0,0" k="customdash_map_unit_scale"/>
+          <prop v="MM" k="customdash_unit"/>
+          <prop v="0" k="dash_pattern_offset"/>
+          <prop v="3x:0,0,0,0,0,0" k="dash_pattern_offset_map_unit_scale"/>
+          <prop v="MM" k="dash_pattern_offset_unit"/>
+          <prop v="0" k="draw_inside_polygon"/>
+          <prop v="bevel" k="joinstyle"/>
+          <prop v="114,155,111,255" k="line_color"/>
+          <prop v="solid" k="line_style"/>
+          <prop v="0.26" k="line_width"/>
+          <prop v="MM" k="line_width_unit"/>
+          <prop v="0" k="offset"/>
+          <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
+          <prop v="MM" k="offset_unit"/>
+          <prop v="0" k="ring_filter"/>
+          <prop v="0" k="trim_distance_end"/>
+          <prop v="3x:0,0,0,0,0,0" k="trim_distance_end_map_unit_scale"/>
+          <prop v="MM" k="trim_distance_end_unit"/>
+          <prop v="0" k="trim_distance_start"/>
+          <prop v="3x:0,0,0,0,0,0" k="trim_distance_start_map_unit_scale"/>
+          <prop v="MM" k="trim_distance_start_unit"/>
+          <prop v="0" k="tweak_dash_pattern_on_corners"/>
+          <prop v="0" k="use_custom_dash"/>
+          <prop v="3x:0,0,0,0,0,0" k="width_map_unit_scale"/>
           <data_defined_properties>
             <Option type="Map">
               <Option name="name" value="" type="QString"/>
@@ -98,192 +98,22 @@
   <blendMode>0</blendMode>
   <featureBlendMode>0</featureBlendMode>
   <layerOpacity>1</layerOpacity>
-  <geometryOptions removeDuplicateNodes="0" geometryPrecision="0">
+  <geometryOptions geometryPrecision="0" removeDuplicateNodes="0">
     <activeChecks type="StringList">
       <Option value="" type="QString"/>
     </activeChecks>
     <checkConfiguration/>
   </geometryOptions>
-  <legend showLabelLegend="0" type="default-vector"/>
+  <legend type="default-vector" showLabelLegend="0"/>
   <referencedLayers/>
-  <fieldConfiguration>
-    <field name="fid" configurationFlags="None">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="gml_id" configurationFlags="None">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="lokalnyId" configurationFlags="None">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="przestrzenNazw" configurationFlags="None">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="wersjaId" configurationFlags="None">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="startObiekt" configurationFlags="None">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="startWersjaObiekt" configurationFlags="None">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="zrodlo" configurationFlags="None">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="status" configurationFlags="None">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="eksploatacja" configurationFlags="None">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="rodzajUrzadzenia" configurationFlags="None">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="rodzajSieci" configurationFlags="None">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="wladajacy" configurationFlags="None">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="informacjaDodatkowa" configurationFlags="None">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="ksztaltUrzadzenia" configurationFlags="None">
-      <editWidget type="">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-  </fieldConfiguration>
-  <aliases>
-    <alias name="" field="fid" index="0"/>
-    <alias name="" field="gml_id" index="1"/>
-    <alias name="" field="lokalnyId" index="2"/>
-    <alias name="" field="przestrzenNazw" index="3"/>
-    <alias name="" field="wersjaId" index="4"/>
-    <alias name="" field="startObiekt" index="5"/>
-    <alias name="" field="startWersjaObiekt" index="6"/>
-    <alias name="" field="zrodlo" index="7"/>
-    <alias name="" field="status" index="8"/>
-    <alias name="" field="eksploatacja" index="9"/>
-    <alias name="" field="rodzajUrzadzenia" index="10"/>
-    <alias name="" field="rodzajSieci" index="11"/>
-    <alias name="" field="wladajacy" index="12"/>
-    <alias name="" field="informacjaDodatkowa" index="13"/>
-    <alias name="" field="ksztaltUrzadzenia" index="14"/>
-  </aliases>
-  <defaults>
-    <default expression="" field="fid" applyOnUpdate="0"/>
-    <default expression="" field="gml_id" applyOnUpdate="0"/>
-    <default expression="" field="lokalnyId" applyOnUpdate="0"/>
-    <default expression="" field="przestrzenNazw" applyOnUpdate="0"/>
-    <default expression="" field="wersjaId" applyOnUpdate="0"/>
-    <default expression="" field="startObiekt" applyOnUpdate="0"/>
-    <default expression="" field="startWersjaObiekt" applyOnUpdate="0"/>
-    <default expression="" field="zrodlo" applyOnUpdate="0"/>
-    <default expression="" field="status" applyOnUpdate="0"/>
-    <default expression="" field="eksploatacja" applyOnUpdate="0"/>
-    <default expression="" field="rodzajUrzadzenia" applyOnUpdate="0"/>
-    <default expression="" field="rodzajSieci" applyOnUpdate="0"/>
-    <default expression="" field="wladajacy" applyOnUpdate="0"/>
-    <default expression="" field="informacjaDodatkowa" applyOnUpdate="0"/>
-    <default expression="" field="ksztaltUrzadzenia" applyOnUpdate="0"/>
-  </defaults>
-  <constraints>
-    <constraint constraints="3" field="fid" exp_strength="0" notnull_strength="1" unique_strength="1"/>
-    <constraint constraints="0" field="gml_id" exp_strength="0" notnull_strength="0" unique_strength="0"/>
-    <constraint constraints="0" field="lokalnyId" exp_strength="0" notnull_strength="0" unique_strength="0"/>
-    <constraint constraints="0" field="przestrzenNazw" exp_strength="0" notnull_strength="0" unique_strength="0"/>
-    <constraint constraints="0" field="wersjaId" exp_strength="0" notnull_strength="0" unique_strength="0"/>
-    <constraint constraints="0" field="startObiekt" exp_strength="0" notnull_strength="0" unique_strength="0"/>
-    <constraint constraints="0" field="startWersjaObiekt" exp_strength="0" notnull_strength="0" unique_strength="0"/>
-    <constraint constraints="0" field="zrodlo" exp_strength="0" notnull_strength="0" unique_strength="0"/>
-    <constraint constraints="0" field="status" exp_strength="0" notnull_strength="0" unique_strength="0"/>
-    <constraint constraints="0" field="eksploatacja" exp_strength="0" notnull_strength="0" unique_strength="0"/>
-    <constraint constraints="0" field="rodzajUrzadzenia" exp_strength="0" notnull_strength="0" unique_strength="0"/>
-    <constraint constraints="0" field="rodzajSieci" exp_strength="0" notnull_strength="0" unique_strength="0"/>
-    <constraint constraints="0" field="wladajacy" exp_strength="0" notnull_strength="0" unique_strength="0"/>
-    <constraint constraints="0" field="informacjaDodatkowa" exp_strength="0" notnull_strength="0" unique_strength="0"/>
-    <constraint constraints="0" field="ksztaltUrzadzenia" exp_strength="0" notnull_strength="0" unique_strength="0"/>
-  </constraints>
-  <constraintExpressions>
-    <constraint field="fid" exp="" desc=""/>
-    <constraint field="gml_id" exp="" desc=""/>
-    <constraint field="lokalnyId" exp="" desc=""/>
-    <constraint field="przestrzenNazw" exp="" desc=""/>
-    <constraint field="wersjaId" exp="" desc=""/>
-    <constraint field="startObiekt" exp="" desc=""/>
-    <constraint field="startWersjaObiekt" exp="" desc=""/>
-    <constraint field="zrodlo" exp="" desc=""/>
-    <constraint field="status" exp="" desc=""/>
-    <constraint field="eksploatacja" exp="" desc=""/>
-    <constraint field="rodzajUrzadzenia" exp="" desc=""/>
-    <constraint field="rodzajSieci" exp="" desc=""/>
-    <constraint field="wladajacy" exp="" desc=""/>
-    <constraint field="informacjaDodatkowa" exp="" desc=""/>
-    <constraint field="ksztaltUrzadzenia" exp="" desc=""/>
-  </constraintExpressions>
+  <fieldConfiguration/>
+  <aliases/>
+  <defaults/>
+  <constraints/>
+  <constraintExpressions/>
   <expressionfields/>
   <attributeactions/>
-  <attributetableconfig actionWidgetStyle="dropDown" sortOrder="0" sortExpression="">
+  <attributetableconfig sortOrder="0" sortExpression="" actionWidgetStyle="dropDown">
     <columns/>
   </attributetableconfig>
   <conditionalstyles>

@@ -329,34 +329,68 @@ class Main:
 
         order_list = list(mygen(order_list))
 
-        # posortowanie listy warstw z typami na podstawie listy z kolejnoscia oraz jej nadmienienie
-        for idx, layer in enumerate(layers_with_type):
-            if layer[0] in order_list:
-                index = order_list.index(layer[0])
-                layers_with_type[idx].append(index)
+        type_groups_dict = {}
+
+        #rozpoznanie z jakiej bazy pochodzi warstwa zeby przyporzadkowac ja do wlasciwej grupy
+        for layy in layers_with_type:
+            layname = layy[1].name()
+
+            if layname.startswith('EGB_'):
+                base_name = 'EGiB'
+            elif layname.startswith('GES_'):
+                base_name =  'GESUT'
+            elif layname.startswith('OT_'):
+                base_name = 'BDOT500'
+            elif layname.startswith('_NIEZGODNE_'):
+                base_name = 'NIEZGODNE: ' + layname.split('_')[2]
             else:
-                layers_with_type[idx].append(out_list_index+1)
+                base_name = 'NIE WIADOMO CO TO'
 
-        layers_with_type.sort(key=lambda x: x[2])  # posortowanie
+            if base_name in type_groups_dict:
+                type_groups_dict[base_name].append(layy)
+                pass
+            else:
+                type_groups_dict[base_name] = [layy]
 
-        # utworzenie roota
         root = QgsProject.instance().layerTreeRoot()
-
-        # utworzenie grupy glownej
         main_group = QgsLayerTreeGroup(str(main_group_name))
-
-        # dodanie grupy do roota
         root.addChildNode(main_group)
 
+        for group_name, group_layers_with_type in type_groups_dict.items():
+            print('nazwa grupy', group_name)
+            main_group.insertGroup(1, group_name)
+            specified_group = main_group.findGroup(group_name)
+            print(specified_group)
 
-        # wstawianie z geometria do grupy z zachowaniem kolejnosci
-        for idx, layer in enumerate(layers_with_type):
-            # zmiana koncowek nazw warstw z 0 1 2 na puste
-            if layer[1].sourceName()[-1].isdigit():
-                replaced_name = layer[1].sourceName().replace(layer[1].sourceName()[-2:], '')
-                layer[1].setName(replaced_name)
-            main_group.insertChildNode(idx, QgsLayerTreeLayer(layer[1]))
-            root.removeLayer(layer[1])
+            # posortowanie listy warstw z typami na podstawie listy z kolejnoscia oraz jej nadmienienie
+            for idx, layer in enumerate(group_layers_with_type):
+                if layer[0] in order_list:
+                    index = order_list.index(layer[0])
+                    group_layers_with_type[idx].append(index)
+                else:
+                    group_layers_with_type[idx].append(out_list_index+1)
+
+            group_layers_with_type.sort(key=lambda x: x[2])  # posortowanie
+
+
+            # utworzenie roota
+            #root = QgsProject.instance().layerTreeRoot()
+
+            # utworzenie grupy glownej
+            #specified_group = QgsLayerTreeGroup(str(main_group_name))
+
+            # dodanie grupy do roota
+            #root.addChildNode(specified_group)
+
+
+            # wstawianie z geometria do grupy z zachowaniem kolejnosci
+            for idx, layer in enumerate(group_layers_with_type):
+                # zmiana koncowek nazw warstw z 0 1 2 na puste
+                if layer[1].sourceName()[-1].isdigit():
+                    replaced_name = layer[1].sourceName().replace(layer[1].sourceName()[-2:], '')
+                    layer[1].setName(replaced_name)
+                specified_group.insertChildNode(idx, QgsLayerTreeLayer(layer[1]))
+                root.removeLayer(layer[1])
 
         # wstawienie tabelarycznych do grupy
         main_group.insertGroup(-1, 'Warstwy Tekstowe')  # dodanie grupy na koncu

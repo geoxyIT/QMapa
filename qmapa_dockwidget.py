@@ -75,29 +75,26 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         self.progressBar.hide()
 
-        self.wgWers.hide()
-        self.wgStat.hide()
 
         self.rel_times = 0
 
         self.set_red_labels()
 
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Akt',
+
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Pierwsze',
                                                      [0, 0, 0])
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Zamk',
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Modyfikowane',
                                                      [0, 0, 0])
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Arch',
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Archiwalne',
+                                                     [0, 0, 0])
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Zamkniete',
+                                                     [0, 0, 0])
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Wczesniejsze',
                                                      [0, 0, 0])
 
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'BezZm',
-                                                     [0, 0, 0])
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Nowe',
-                                                     [0, 0, 0])
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Zmien',
-                                                     [0, 0, 0])
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Usun',
-                                                     [0, 0, 0])
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'DateCompare', QDateTime(2999, 12, 31, 0, 0))
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'DateCompare', 0)
+
+        iface.mapCanvas().refreshAllLayers()
 
     def closeEvent(self, event):
         self.closingPlugin.emit()
@@ -173,7 +170,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             print('czas 80%:', datetime.now() - start_2)
 
             #self.set_labels(self.vec_layers_list)
-            self.wyswWg()  # sprawdzenie i nadanie wyswietlania wersji, statusu
+            '''self.wyswWg()  # sprawdzenie i nadanie wyswietlania wersji, statusu'''
+            self.disp_wers(self.gbShowWers.isChecked()) #sprawdzenie i nadanie wyswietlania wersji
             self.progressBar.setValue(90)
             print('czas 90%:', datetime.now() - start_2)
 
@@ -369,76 +367,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         iface.mapCanvas().refreshAllLayers()
 
 
-    '''def set_labels(self, layers):
-        """Ustawienie wyswietlania etykiet"""
-        expr_auto = '1'
-        layers = Main().checkLayers(layers)
-
-        # tylko automatyczne
-        if 'auto' in self.cmbReda.currentText().lower():
-            for layer in layers:
-                labeling = layer.labeling()
-                if labeling != None:
-                    if labeling.type() == 'simple':
-                        if 'etykieta' in layer.name():
-                            settings = labeling.settings()
-                            settings.dataDefinedProperties().property(15).setExpressionString('0')
-                            settings.dataDefinedProperties().property(15).setActive(True)
-                            labeling.setSettings(settings)
-                            layer.setLabeling(labeling)
-                        else:
-                            settings = labeling.settings()
-                            settings.dataDefinedProperties().property(15).setExpressionString(expr_auto)
-                            settings.dataDefinedProperties().property(15).setActive(True)
-                            labeling.setSettings(settings)
-                            layer.setLabeling(labeling)
-                    elif labeling.type() == 'rule-based':
-                        if 'etykieta' in layer.name():
-                            root = labeling.rootRule()
-                            for label in root.children():
-                                settings = label.settings()
-                                settings.dataDefinedProperties().property(15).setExpressionString('0')
-                                settings.dataDefinedProperties().property(15).setActive(True)
-                        else:
-                            root = labeling.rootRule()
-                            for label in root.children():
-                                settings = label.settings()
-                                settings.dataDefinedProperties().property(15).setExpressionString(expr_auto)
-                                settings.dataDefinedProperties().property(15).setActive(True)
-        # tylko z prezentacji graficznej
-        if 'karto' in self.cmbReda.currentText().lower():
-            for layer in layers:
-                labeling = layer.labeling()
-                if labeling != None:
-                    if labeling.type() == 'simple':
-                        if 'etykieta' in layer.name():
-                            settings = labeling.settings()
-                            settings.dataDefinedProperties().property(15).setExpressionString('1')
-                            settings.dataDefinedProperties().property(15).setActive(True)
-                            labeling.setSettings(settings)
-                            layer.setLabeling(labeling)
-                        else:
-                            settings = labeling.settings()
-                            settings.dataDefinedProperties().property(15).setExpressionString('0')
-                            settings.dataDefinedProperties().property(15).setActive(True)
-                            labeling.setSettings(settings)
-                            layer.setLabeling(labeling)
-                    elif labeling.type() == 'rule-based':
-                        if 'etykieta' in layer.name():
-                            root = labeling.rootRule()
-                            for label in root.children():
-                                pref_name = ('_'.join(label.description().split('_')[0:3]))
-                                settings = label.settings()
-                                settings.dataDefinedProperties().property(15).setExpressionString(
-                                    expr_auto.replace('"koniec', '"' + pref_name + '_' + 'koniec'))
-                                settings.dataDefinedProperties().property(15).setActive(True)
-                        else:
-                            root = labeling.rootRule()
-                            for label in root.children():
-                                settings = label.settings()
-                                settings.dataDefinedProperties().property(15).setExpressionString('0')
-                                settings.dataDefinedProperties().property(15).setActive(True)
-        iface.mapCanvas().refreshAllLayers()'''
 
     def getLayersByName(self, name):
         layers = self.getLayers()
@@ -457,64 +385,60 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         return layers
 
-    def on_chbWyswWg_stateChanged(self):
-        self.wyswWg()
 
-    def on_cbWysWg_currentTextChanged(self):
-        self.showSelected()
+    def on_chbShowPierwsze_stateChanged(self):
+        self.disp_settings()
+    def on_chbShowModyfikowane_stateChanged(self):
+        self.disp_settings()
+    def on_chbShowArchiwalne_stateChanged(self):
+        self.disp_settings()
+    def on_chbShowZamkniete_stateChanged(self):
+        self.disp_settings()
+    def on_chbShowWczesniejsze_stateChanged(self):
+        self.disp_settings()
 
+    def on_chbColorPierwsze_stateChanged(self):
+        self.disp_settings()
+    def on_chbColorModyfikowane_stateChanged(self):
+        self.disp_settings()
+    def on_chbColorArchiwalne_stateChanged(self):
+        self.disp_settings()
+    def on_chbColorZamkniete_stateChanged(self):
+        self.disp_settings()
+    def on_chbColorWczesniejsze_stateChanged(self):
+        self.disp_settings()
 
-    def on_chbShowAkt_stateChanged(self):
-        self.wyswWers()
-    def on_chbShowZamk_stateChanged(self):
-        self.wyswWers()
-    def on_chbShowArch_stateChanged(self):
-        self.wyswWers()
+    def on_colPierwsze_stateChanged(self):
+        self.disp_settings()
+    def on_colModyfikowane_stateChanged(self):
+        self.disp_settings()
+    def on_colArchiwalne_stateChanged(self):
+        self.disp_settings()
+    def on_colZamkniete_stateChanged(self):
+        self.disp_settings()
+    def on_colWczesniejsze_stateChanged(self):
+        self.disp_settings()
 
-    def on_chbColorAkt_stateChanged(self):
-        self.wyswWers()
-    def on_chbColorZamk_stateChanged(self):
-        self.wyswWers()
-    def on_chbColorArch_stateChanged(self):
-        self.wyswWers()
+    def on_colPierwsze_colorChanged(self):
+        self.disp_settings()
+    def on_colModyfikowane_colorChanged(self):
+        self.disp_settings()
+    def on_colArchiwalne_colorChanged(self):
+        self.disp_settings()
+    def on_colZamkniete_colorChanged(self):
+        self.disp_settings()
+    def on_colWczesniejsze_colorChanged(self):
+        self.disp_settings()
 
-    def on_colAkt_colorChanged(self):
-        self.wyswWers()
-    def on_colZamk_colorChanged(self):
-        self.wyswWers()
-    def on_colArch_colorChanged(self):
-        self.wyswWers()
+    def on_chbZnacznik_stateChanged(self):
+        self.disp_settings()
 
+    def on_dteZnacznik_valueChanged(self):
+        self.disp_settings()
 
-    def on_chbShowBezZm_stateChanged(self):
-        self.wyswStat()
-    def on_chbShowZmien_stateChanged(self):
-        self.wyswStat()
-    def on_chbShowNowe_stateChanged(self):
-        self.wyswStat()
-    def on_chbShowUsun_stateChanged(self):
-        self.wyswStat()
+    def on_gbShowWers_toggled(self, on):
+        self.disp_wers(on)
 
-    def on_chbColorBezZm_stateChanged(self):
-        self.wyswStat()
-    def on_chbColorZmien_stateChanged(self):
-        self.wyswStat()
-    def on_chbColorNowe_stateChanged(self):
-        self.wyswStat()
-    def on_chbColorUsun_stateChanged(self):
-        self.wyswStat()
-
-    def on_colBezZm_colorChanged(self):
-        self.wyswStat()
-    def on_colZmien_colorChanged(self):
-        self.wyswStat()
-    def on_colNowe_colorChanged(self):
-        self.wyswStat()
-    def on_colUsun_colorChanged(self):
-        self.wyswStat()
-
-    def on_dteStat_valueChanged(self):
-        self.wyswStat()
 
     def back_to_qml_symb(self):
         """Wczytanie stylizacji QML"""
@@ -524,63 +448,26 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         expression.set_label_expression(self.list_or_canvas(self.signal_of_import), False)
         #self.set_labels(self.getLayers())
 
-    def wyswWg(self):
-        if self.chbWyswWg.isChecked():
-            self.cbWysWg.setEnabled(True)
-            self.showSelected()
+    def disp_wers(self, on):
+        if on:
+            self.disp_settings()
+            #expr_color = "kolor_wersji(@DateCompare, @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(startObiekt, ''),concat(startWersjaObiekt, ''),concat(koniecObiekt, ''),concat(koniecWersjaObiekt, ''))"
+            expr_show = " with_variable( 'show', pokaz_wersje(@DateCompare, @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(" + '"startObiekt"' + ", ''),concat(" + '"startWersjaObiekt"' + ", ''),concat(" + '"koniecObiekt"' + ", ''),concat(" + '"koniecWersjaObiekt"' + ", '')),  if( var('show') != 'default', var('show'), 1111))"
+            #expr_color = "kolor_wersji(@DateCompare, @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(" + '"startObiekt"' + ", ''),concat(" + '"startWersjaObiekt"' + ", ''),concat(" + '"koniecObiekt"' + ", ''),concat(" + '"koniecWersjaObiekt"' + ", ''))"
+            expr_color = " with_variable( 'color', kolor_wersji(@DateCompare, @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(" + '"startObiekt"' + ", ''),concat(" + '"startWersjaObiekt"' + ", ''),concat(" + '"koniecObiekt"' + ", ''),concat(" + '"koniecWersjaObiekt"' + ", '')),  if( var('color'), var('color'), 1111))"
 
-            expr_stat_color = 'case when @BezZm[1] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startWersjaObiekt" < (@DateCompare) then @BezZm[2] when @Zmien[1] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startObiekt" < (@DateCompare) and "startWersjaObiekt" > (@DateCompare) then @Zmien[2] when @Nowe[1] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startObiekt" = "startWersjaObiekt" and ("startObiekt") > (@DateCompare) then @Nowe[2] when @Usun[1] and ("koniecObiekt") > (@DateCompare) then @Usun[2] else 1111 end'
-            expr_wers_color = 'case when @Zamk[1] and "koniecObiekt" is not null then @Zamk[2] when @Arch[1] and "koniecWersjaObiekt" is not null and "koniecObiekt" is null then @Arch[2] when @Akt[1] then @Akt[2] else 1111 end'
-            expr_color = 'case when @WyswWg = ' + "'zmiany'" + ' then ' + expr_stat_color + ' when @WyswWg = ' + "'wersje'" + ' then ' + expr_wers_color + ' end'
+            #expr_show = " with_variable( 'show', pokaz_wersje(@DateCompare, array(true, true, '255,255,0,255'), array(true, true, '0,240,0,255'), array(true, true, '255,0,0,255'), array(true, true, '255,255,0,255'), array(true, true, '255,255,0,255'), '2021-10-12T09:18:22','2021-10-12T09:18:22','2021-10-12T09:18:22','2021-10-12T09:18:22'),  if( var('show') != 'default', var('show'), 1111))"
+            #expr_color = " with_variable( 'color', kolor_wersji(@DateCompare, array(true, true, '255,255,0,255'), array(true, true, '0,240,0,255'), array(true, true, '255,0,0,255'), array(true, true, '255,255,0,255'), array(true, true, '255,255,0,255'), '2021-10-12T09:18:22','2021-10-12T09:18:22','2021-10-12T09:18:22','2021-10-12T09:18:22'),  if( var('color'), var('color'), 1111))"
 
-            expr_wers_show = 'case when (@Zamk[0] and "koniecObiekt" is not null) or (@Arch[0] and "koniecWersjaObiekt" is not null and "koniecObiekt" is null) or (@Akt[0] and "koniecWersjaObiekt" is null and "koniecObiekt" is null) then 1111 else 0 end'
-            expr_stat_show = 'case when (@BezZm[0] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startWersjaObiekt" < (@DateCompare)) or (@Nowe[0] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startObiekt" = "startWersjaObiekt" and ("startObiekt") > (@DateCompare)) or (@Zmien[0] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startObiekt" < (@DateCompare) and "startWersjaObiekt" > (@DateCompare)) or (@Usun[0] and ("koniecObiekt") > (@DateCompare)) then 1111 else 0 end'
 
-            expr_show = 'case when @WyswWg = ' + "'zmiany'" + ' then ' + expr_stat_show + ' when @WyswWg = ' + "'wersje'" + ' then ' + expr_wers_show + ' end'
+            #expr_color = 'case when @WyswWg = ' + "'zmiany'" + ' then ' + expr_stawt_color + ' when @WyswWg = ' + "'wersje'" + ' then ' + expr_wers_color + ' end'
 
             expression = ExpressYourself(expr_color, expr_show)
             expression.set_symbol_expression(self.list_or_canvas(self.signal_of_import))
             expression.set_label_expression(self.list_or_canvas(self.signal_of_import))
-
         else:
-            QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'WyswWg', '0')
-            self.cbWysWg.setEnabled(False)
-            self.wgWers.hide()
-            self.wgStat.hide()
-            print('reset wysw')
             # powrot do pierwotnej stylizacji z QML
             self.back_to_qml_symb()
-
-    def showSelected(self):
-        if 'wersj' in self.cbWysWg.currentText().lower():
-            QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'WyswWg', self.cbWysWg.currentText().lower())
-            self.wgWers.show()
-            self.wgStat.hide()
-            self.wyswWers()
-        elif 'zmian' in self.cbWysWg.currentText().lower():
-            QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'WyswWg', self.cbWysWg.currentText().lower())
-            self.wgWers.hide()
-            self.wgStat.show()
-            self.wyswStat()
-
-        '''if self.rel_times < 4:
-            self.rel_times += 1
-            # powrot do pierwotnej stylizacji z QML
-            self.back_to_qml_symb()
-            # ustawienie nowych wyrazen odpowiadajacych za wersje
-
-            expr_stat_color = 'case when @BezZm[1] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startWersjaObiekt" < (@DateCompare) then @BezZm[2] when @Zmien[1] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startObiekt" < (@DateCompare) and "startWersjaObiekt" > (@DateCompare) then @Zmien[2] when @Nowe[1] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startObiekt" = "startWersjaObiekt" and ("startObiekt") > (@DateCompare) then @Nowe[2] when @Usun[1] and ("koniecObiekt") > (@DateCompare) then @Usun[2] else 1111 end'
-            expr_wers_color = 'case when @Zamk[1] and "koniecObiekt" is not null then @Zamk[2] when @Arch[1] and "koniecWersjaObiekt" is not null and "koniecObiekt" is null then @Arch[2] when @Akt[1] then @Akt[2] else 1111 end'
-            expr_color = 'case when @WyswWg = ' + "'zmiany'" + ' then ' + expr_stat_color + ' when @WyswWg = ' + "'wersje'" + ' then ' + expr_wers_color + ' end'
-
-            expr_wers_show = 'case when (@Zamk[0] and "koniecObiekt" is not null) or (@Arch[0] and "koniecWersjaObiekt" is not null and "koniecObiekt" is null) or (@Akt[0] and "koniecWersjaObiekt" is null and "koniecObiekt" is null) then 1111 else 0 end'
-            expr_stat_show = 'case when (@BezZm[0] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startWersjaObiekt" < (@DateCompare)) or (@Nowe[0] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startObiekt" = "startWersjaObiekt" and ("startObiekt") > (@DateCompare)) or (@Zmien[0] and "koniecWersjaObiekt" is NULL and "koniecObiekt" is NULL and "startObiekt" < (@DateCompare) and "startWersjaObiekt" > (@DateCompare)) or (@Usun[0] and ("koniecObiekt") > (@DateCompare)) then 1111 else 0 end'
-
-            expr_show = 'case when @WyswWg = ' + "'zmiany'" + ' then ' + expr_stat_show + ' when @WyswWg = ' + "'wersje'" + ' then ' + expr_wers_show + ' end'
-
-            expression = ExpressYourself(expr_color, expr_show)
-            expression.set_symbol_expression(self.list_or_canvas(self.signal_of_import))
-            expression.set_label_expression(self.list_or_canvas(self.signal_of_import))'''
 
 
     def list_or_canvas(self, signal_of_import):
@@ -594,162 +481,142 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             layers = self.getLayers()
         return layers
 
-    def wyswWers(self):
-        # Aktualne
-        if self.chbShowAkt.isChecked():
-            self.chbColorAkt.setEnabled(True)
-            vis_Akt = True
-            if self.chbColorAkt.isChecked() is True:
-                self.colAkt.setEnabled(True)
-                color_Akt = ','.join([str(x) for x in self.colAkt.color().getRgb()])
-                set_color_Akt = True
+    def disp_settings(self):
+        # Pierwsze
+        if self.chbShowPierwsze.isChecked():
+            self.chbColorPierwsze.setEnabled(True)
+            vis_Pierwsze = True
+            if self.chbColorPierwsze.isChecked() is True:
+                self.colPierwsze.setEnabled(True)
+                # color_Pierwsze = "'" + ','.join([str(x) for x in self.colPierwsze.color().getRgb()]) + "'"
+                color_Pierwsze = ','.join([str(x) for x in self.colPierwsze.color().getRgb()])
+                set_color_Pierwsze = True
             else:
-                self.colAkt.setEnabled(False)
-                set_color_Akt = False
-                color_Akt = 0
+                self.colPierwsze.setEnabled(False)
+                set_color_Pierwsze = False
+                color_Pierwsze = 0
         else:
-            set_color_Akt = False
-            vis_Akt = False
-            color_Akt = False
-            self.chbColorAkt.setEnabled(False)
-            self.colAkt.setEnabled(False)
+            set_color_Pierwsze = False
+            vis_Pierwsze = False
+            color_Pierwsze = 0
+            self.chbColorPierwsze.setEnabled(False)
+            self.colPierwsze.setEnabled(False)
 
-        # Zamkniete
-        if self.chbShowZamk.isChecked():
-            self.chbColorZamk.setEnabled(True)
-            vis_Zamk = True
-            if self.chbColorZamk.isChecked() is True:
-                self.colZamk.setEnabled(True)
-                color_Zamk = ','.join([str(x) for x in self.colZamk.color().getRgb()])
-                set_color_Zamk = True
+
+        # Modyfikowane
+        if self.chbShowModyfikowane.isChecked():
+            self.chbColorModyfikowane.setEnabled(True)
+            vis_Modyfikowane = True
+            if self.chbColorModyfikowane.isChecked() is True:
+                self.colModyfikowane.setEnabled(True)
+                # color_Modyfikowane = "'" + ','.join([str(x) for x in self.colModyfikowane.color().getRgb()]) + "'"
+                color_Modyfikowane = ','.join([str(x) for x in self.colModyfikowane.color().getRgb()])
+                set_color_Modyfikowane = True
             else:
-                self.colZamk.setEnabled(False)
-                set_color_Zamk = False
-                color_Zamk = 0
+                self.colModyfikowane.setEnabled(False)
+                set_color_Modyfikowane = False
+                color_Modyfikowane = 0
         else:
-            set_color_Zamk = False
-            vis_Zamk = False
-            color_Zamk = 0
-            self.chbColorZamk.setEnabled(False)
-            self.colZamk.setEnabled(False)
+            set_color_Modyfikowane = False
+            vis_Modyfikowane = False
+            color_Modyfikowane = 0
+            self.chbColorModyfikowane.setEnabled(False)
+            self.colModyfikowane.setEnabled(False)
+
 
         # Archiwalne
-        if self.chbShowArch.isChecked():
-            self.chbColorArch.setEnabled(True)
-            vis_Arch = True
-            if self.chbColorArch.isChecked() is True:
-                self.colArch.setEnabled(True)
-                color_Arch = ','.join([str(x) for x in self.colArch.color().getRgb()])
-                set_color_Arch = True
+        if self.chbShowArchiwalne.isChecked():
+            self.chbColorArchiwalne.setEnabled(True)
+            vis_Archiwalne = True
+            if self.chbColorArchiwalne.isChecked() is True:
+                self.colArchiwalne.setEnabled(True)
+                # color_Archiwalne = "'" + ','.join([str(x) for x in self.colArchiwalne.color().getRgb()]) + "'"
+                color_Archiwalne = ','.join([str(x) for x in self.colArchiwalne.color().getRgb()])
+                set_color_Archiwalne = True
             else:
-                self.colArch.setEnabled(False)
-                set_color_Arch = False
-                color_Arch = 0
+                self.colArchiwalne.setEnabled(False)
+                set_color_Archiwalne = False
+                color_Archiwalne = 0
         else:
-            set_color_Arch = False
-            vis_Arch = False
-            color_Arch = 0
-            self.chbColorArch.setEnabled(False)
-            self.colArch.setEnabled(False)
+            set_color_Archiwalne = False
+            vis_Archiwalne = False
+            color_Archiwalne = 0
+            self.chbColorArchiwalne.setEnabled(False)
+            self.colArchiwalne.setEnabled(False)
 
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Akt',
-                                                     [vis_Akt, set_color_Akt, color_Akt])
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Zamk',
-                                                     [vis_Zamk, set_color_Zamk, color_Zamk])
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Arch',
-                                                     [vis_Arch, set_color_Arch, color_Arch])
-        iface.mapCanvas().refreshAllLayers()
 
-    def wyswStat(self):
-        # BezZmian
-        if self.chbShowBezZm.isChecked():
-            self.chbColorBezZm.setEnabled(True)
-            vis_BezZm = True
-            if self.chbColorBezZm.isChecked() is True:
-                self.colBezZm.setEnabled(True)
-                #color_BezZm = "'" + ','.join([str(x) for x in self.colBezZm.color().getRgb()]) + "'"
-                color_BezZm = ','.join([str(x) for x in self.colBezZm.color().getRgb()])
-                set_color_BezZm = True
+        # Zamkniete
+        if self.chbShowZamkniete.isChecked():
+            self.chbColorZamkniete.setEnabled(True)
+            vis_Zamkniete = True
+            if self.chbColorZamkniete.isChecked() is True:
+                self.colZamkniete.setEnabled(True)
+                # color_Zamkniete = "'" + ','.join([str(x) for x in self.colZamkniete.color().getRgb()]) + "'"
+                color_Zamkniete = ','.join([str(x) for x in self.colZamkniete.color().getRgb()])
+                set_color_Zamkniete = True
             else:
-                self.colBezZm.setEnabled(False)
-                set_color_BezZm = False
-                color_BezZm = 0
+                self.colZamkniete.setEnabled(False)
+                set_color_Zamkniete = False
+                color_Zamkniete = 0
         else:
-            set_color_BezZm = False
-            vis_BezZm = False
-            color_BezZm = 0
-            self.chbColorBezZm.setEnabled(False)
-            self.colBezZm.setEnabled(False)
+            set_color_Zamkniete = False
+            vis_Zamkniete = False
+            color_Zamkniete = 0
+            self.chbColorZamkniete.setEnabled(False)
+            self.colZamkniete.setEnabled(False)
 
-        # Nowe
-        if self.chbShowNowe.isChecked():
-            self.chbColorNowe.setEnabled(True)
-            vis_Nowe = True
-            if self.chbColorNowe.isChecked() is True:
-                self.colNowe.setEnabled(True)
-                #color_Nowe = "'" + ','.join([str(x) for x in self.colNowe.color().getRgb()]) + "'"
-                color_Nowe = ','.join([str(x) for x in self.colNowe.color().getRgb()])
-                set_color_Nowe = True
+        #Znacznik czasu
+        if self.chbZnacznik.isChecked():
+            self.dteZnacznik.setEnabled(True)
+            date_to_compare = self.dteZnacznik.dateTime()
+            self.chbShowWczesniejsze.setEnabled(True)
+
+            # Wczesniejsze
+            if self.chbShowWczesniejsze.isChecked():
+                self.chbColorWczesniejsze.setEnabled(True)
+                vis_Wczesniejsze = True
+                if self.chbColorWczesniejsze.isChecked() is True:
+                    self.colWczesniejsze.setEnabled(True)
+                    # color_Wczesniejsze = "'" + ','.join([str(x) for x in self.colWczesniejsze.color().getRgb()]) + "'"
+                    color_Wczesniejsze = ','.join([str(x) for x in self.colWczesniejsze.color().getRgb()])
+                    set_color_Wczesniejsze = True
+                else:
+                    self.colWczesniejsze.setEnabled(False)
+                    set_color_Wczesniejsze = False
+                    color_Wczesniejsze = 0
             else:
-                self.colNowe.setEnabled(False)
-                set_color_Nowe = False
-                color_Nowe = 0
+                set_color_Wczesniejsze = False
+                vis_Wczesniejsze = False
+                color_Wczesniejsze = 0
+                self.chbColorWczesniejsze.setEnabled(False)
+                self.colWczesniejsze.setEnabled(False)
+
         else:
-            set_color_Nowe = False
-            vis_Nowe = False
-            color_Nowe = 0
-            self.chbColorNowe.setEnabled(False)
-            self.colNowe.setEnabled(False)
+            self.dteZnacznik.setEnabled(False)
+            date_to_compare = 0
 
-        # Zmienione
-        if self.chbShowZmien.isChecked():
-            self.chbColorZmien.setEnabled(True)
-            vis_Zmien = True
-            if self.chbColorZmien.isChecked() is True:
-                self.colZmien.setEnabled(True)
-                #color_Zmien = "'" + ','.join([str(x) for x in self.colZmien.color().getRgb()]) + "'"
-                color_Zmien = ','.join([str(x) for x in self.colZmien.color().getRgb()])
-                set_color_Zmien = True
-            else:
-                self.colZmien.setEnabled(False)
-                set_color_Zmien = False
-                color_Zmien = 0
-        else:
-            set_color_Zmien = False
-            vis_Zmien = False
-            color_Zmien = 0
-            self.chbColorZmien.setEnabled(False)
-            self.colZmien.setEnabled(False)
+            #wczesniejsze cd
+            self.chbShowWczesniejsze.setEnabled(False)
+            set_color_Wczesniejsze = False
+            vis_Wczesniejsze = False
+            color_Wczesniejsze = 0
+            self.chbColorWczesniejsze.setEnabled(False)
+            self.colWczesniejsze.setEnabled(False)
 
-        # Usuniete
-        if self.chbShowUsun.isChecked():
-            self.chbColorUsun.setEnabled(True)
-            vis_Usun = True
-            if self.chbColorUsun.isChecked() is True:
-                self.colUsun.setEnabled(True)
-                #color_Usun = "'" + ','.join([str(x) for x in self.colUsun.color().getRgb()]) + "'"
-                color_Usun = ','.join([str(x) for x in self.colUsun.color().getRgb()])
-                set_color_Usun = True
-            else:
-                self.colUsun.setEnabled(False)
-                set_color_Usun = False
-                color_Usun = 0
-        else:
-            set_color_Usun = False
-            vis_Usun = False
-            color_Usun = 0
-            self.chbColorUsun.setEnabled(False)
-            self.colUsun.setEnabled(False)
 
-        date_to_compare = self.dteStat.dateTime().toString("yyyy.MM.dd hh:mm:ss")
-        date_to_compare = self.dteStat.dateTime()
-        #print(type(date_to_compare))
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Pierwsze',
+                                                     [vis_Pierwsze, set_color_Pierwsze, color_Pierwsze])
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Modyfikowane',
+                                                     [vis_Modyfikowane, set_color_Modyfikowane, color_Modyfikowane])
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Archiwalne',
+                                                     [vis_Archiwalne, set_color_Archiwalne, color_Archiwalne])
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Zamkniete',
+                                                     [vis_Zamkniete, set_color_Zamkniete, color_Zamkniete])
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Wczesniejsze', [vis_Wczesniejsze, set_color_Wczesniejsze, color_Wczesniejsze])
 
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'BezZm', [vis_BezZm, set_color_BezZm, color_BezZm])
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Nowe', [vis_Nowe, set_color_Nowe, color_Nowe])
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Zmien', [vis_Zmien, set_color_Zmien, color_Zmien])
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Usun', [vis_Usun, set_color_Usun, color_Usun])
         QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'DateCompare', date_to_compare)
 
         iface.mapCanvas().refreshAllLayers()
+
+
 
