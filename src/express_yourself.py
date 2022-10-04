@@ -2,6 +2,7 @@ import re
 
 from qgis.utils import iface
 from qgis.PyQt.QtGui import QColor
+from qgis._core import QgsSimpleLineSymbolLayer
 
 white_color = QColor(255, 255, 255, 255)
 
@@ -52,9 +53,13 @@ class ExpressYourself:
         """Tworzenie wlasciwosci ktore zostana nadane dla symboli"""
         if (symbol.color().getRgb() != white_color.getRgb() and
                 symbol.color().alpha() != 0):
-            self.create_property(symbol, 3, self.color_expression)  # PropertyFillColor
+            if type(symbol) is QgsSimpleLineSymbolLayer:
+                color_index = 4
+            else:
+                color_index = 3
+            self.create_property(symbol, color_index, self.color_expression)  # PropertyFillColor
         if (symbol.strokeColor().getRgb() != white_color.getRgb() and
-                symbol.strokeColor().alpha() != 0):
+                symbol.strokeColor().alpha() != 0) and type(symbol) is not QgsSimpleLineSymbolLayer:
             self.create_property(symbol, 4, self.color_expression)  # PropertyStrokeColor
         self.create_property(symbol, 44, self.enable_expression)  # enable symbol layer
 
@@ -138,7 +143,7 @@ class ExpressYourself:
                     settings = labeling.settings()
 
                     if set_colors:
-                        self.enable_expression = 'case when @Auto then ' + self.enable_expression + ' end'
+                        self.enable_expression = 'case when @Auto then ' + self.enable_expression + ' else 0 end'
 
                         # wyrazenia
                         self.label_properties(settings)

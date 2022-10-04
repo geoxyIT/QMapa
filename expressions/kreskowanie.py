@@ -15,6 +15,8 @@ def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle = 90, 
     """
     start_time = datetime.datetime.now()
 
+    geometry_limit = QgsGeometry.fromWkt(geometry_limit.asWkt(3))
+
     context = QgsExpressionContext()
     context.setFeature(feature)
     geom_wkt = geometry.asWkt(3)
@@ -24,6 +26,7 @@ def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle = 90, 
     bis_list = []
     angle_list = []
     bisection = None
+    # obliczanie dwusiecznych:
     for i in range(points_num):
         ind = i + 1
         '''if ind != 1 and ind != points_num:

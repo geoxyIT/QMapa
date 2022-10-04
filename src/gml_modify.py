@@ -71,7 +71,6 @@ class GmlModify:
 
             ET.register_namespace(name, val)
             self.namespaces_dict[val] = name
-        print(self.namespaces_dict)
 
 
     def get_relations(self, pref_name):

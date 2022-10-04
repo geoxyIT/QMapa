@@ -179,29 +179,37 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             scales = ['500', '1000']
             nr = 0
 
-            start_point_layer_id = 'pocz'
-            end_point_layer_id = 'kon'
-            polyline_layer_id = 'poli'
+            start_point_layer_id = False
+            end_point_layer_id = False
+            ot_polyline_layer_id = False
+            egb_polyline_layer_id = False
             for ll in self.vec_layers_list:
                 if 'poczatekgoryskarpy' in ll.name().lower():
                     start_point_layer_id = ll.id()
                 elif 'koniecgoryskarpy' in ll.name().lower():
                     end_point_layer_id = ll.id()
-                elif 'poliliniakierunkowa' in ll.name().lower():
-                    polyline_layer_id =  ll.id()
+                elif 'ot_poliliniakierunkowa' in ll.name().lower():
+                    ot_polyline_layer_id =  ll.id()
+                elif 'egb_poliliniakierunkowa' in ll.name().lower():
+                    egb_polyline_layer_id =  ll.id()
 
             for sc in scales:
                 self.progressBar.setValue(90 + int((nr/len(scales))*10))
                 nr += 1
                 for lay in self.vec_layers_list:
-                    if 'skarpa' in lay.name().lower():
+                    if 'skarpa' in lay.name().lower() and start_point_layer_id and end_point_layer_id:
                         Main().calculate_hatching(lay, 'skarpa', sc, [start_point_layer_id, end_point_layer_id])
-                    elif 'obiekttrwalezwiazany' in lay.name().lower():
-                        Main().calculate_hatching(lay, 'schody', sc, polyline_layer_id)
-                    elif 'budowle' in lay.name().lower():
-                        Main().calculate_hatching(lay, 'sciana', sc, polyline_layer_id)
-                    elif 'wody' in lay.name().lower():
+                    elif 'ot_obiekttrwalezwiazany' in lay.name().lower() and ot_polyline_layer_id:
+                        Main().calculate_hatching(lay, 'schody', sc, ot_polyline_layer_id)
+                    elif 'egb_obiekttrwalezwiazany' in lay.name().lower() and egb_polyline_layer_id:
+                        Main().calculate_hatching(lay, 'schody', sc, egb_polyline_layer_id)
+                    elif 'budowle' in lay.name().lower() and ot_polyline_layer_id:
+                        Main().calculate_hatching(lay, 'sciana', sc, ot_polyline_layer_id)
+                    elif 'wody' in lay.name().lower()  and start_point_layer_id and end_point_layer_id:
                         Main().calculate_hatching(lay, 'wody', sc, [start_point_layer_id, end_point_layer_id])
+                    elif 'komunikacja' in lay.name().lower() and ot_polyline_layer_id:
+                        Main().calculate_hatching(lay, 'schody', sc, ot_polyline_layer_id)
+
                     if sc == '500':
                         if 'ges_rzedna' in lay.name().lower() and sc == '500':
                             Main().calculate_colors(lay, 'color')

@@ -59,14 +59,14 @@ class Main:
 
         elif type.lower() == 'schody':
             if scale == '500':
-                expression = QgsExpression("geom_to_wkt(kreskowanie( geometry(get_feature( 'EGB_poliliniaKierunkowa',  'gml_id' ,  " + ''"gml_id"'' + ")), $geometry, 0.5, 100, 90, 0, 1))")
+                expression = QgsExpression("geom_to_wkt(kreskowanie( geometry(get_feature( '" + ids + "',  'gml_id' ,  " + ''"gml_id"'' + ")), $geometry, 0.5, 100, 90, 0, 1))")
             elif scale == '1000':
-                expression = QgsExpression("geom_to_wkt(kreskowanie( geometry(get_feature( 'EGB_poliliniaKierunkowa',  'gml_id' ,  " + ''"gml_id"'' + ")), $geometry, 0.75, 100, 90, 0, 1))")
+                expression = QgsExpression("geom_to_wkt(kreskowanie( geometry(get_feature( '" + ids + "',  'gml_id' ,  " + ''"gml_id"'' + ")), $geometry, 0.75, 100, 90, 0, 1))")
         elif type.lower() == 'sciana':
             if scale == '500':
-                expression = QgsExpression("geom_to_wkt( collect_geometries(kreskowanie( geometry(get_feature( 'OT_poliliniaKierunkowa',  'gml_id' , " + '"gml_id"' + " )), $geometry, 5.5, 100, 45, 3.5, 1), kreskowanie( geometry(get_feature( 'OT_poliliniaKierunkowa',  'gml_id' , " + '"gml_id"' + " )), $geometry, 5.5, 100, 45, 3, 1)))")
+                expression = QgsExpression("geom_to_wkt( collect_geometries(kreskowanie( geometry(get_feature( '" + ids + "',  'gml_id' , " + '"gml_id"' + " )), $geometry, 5.5, 100, 45, 3.5, 1), kreskowanie( geometry(get_feature( '" + ids + "',  'gml_id' , " + '"gml_id"' + " )), $geometry, 5.5, 100, 45, 3, 1)))")
             elif scale == '1000':
-                expression = QgsExpression("geom_to_wkt( collect_geometries(kreskowanie( geometry(get_feature( 'OT_poliliniaKierunkowa',  'gml_id' , " + '"gml_id"' + " )), $geometry, 8.25, 100, 45, 4.25 , 1), kreskowanie( geometry(get_feature( 'OT_poliliniaKierunkowa',  'gml_id' , " + '"gml_id"' + " )), $geometry, 8.25, 100, 45, 5, 1)))")
+                expression = QgsExpression("geom_to_wkt( collect_geometries(kreskowanie( geometry(get_feature( '" + ids + "',  'gml_id' , " + '"gml_id"' + " )), $geometry, 8.25, 100, 45, 4.25 , 1), kreskowanie( geometry(get_feature( '" + ids + "',  'gml_id' , " + '"gml_id"' + " )), $geometry, 8.25, 100, 45, 5, 1)))")
 
 
         if expression is not None and layer.geometryType() == 2:
@@ -94,6 +94,13 @@ class Main:
                     QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajobiektu', 'rodzajobiektu', column_name],
                                                               layer.fields()).setFilterExpression(
                         '"rodzajobiektu"=\'w\' or "rodzajobiektu"=\'g\''))
+
+            elif 'ot_komunikacja' in layer.name().lower():
+                print('komunikacja', expression)
+                features = layer.getFeatures(
+                    QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajobiektu', column_name],
+                                                              layer.fields()).setFilterExpression(
+                        '"rodzajobiektu"=\'s\''))
 
 
             if features != []:
@@ -298,7 +305,7 @@ class Main:
         for my_layer, feature_geom in zip(layers, layers_geom):
             if feature_geom == 100:
                 vec = QgsVectorLayer(layer_path + "|layername=" + my_layer, my_layer, 'ogr')
-                table_layers_list.append(vec)
+                table_layers_list.append([my_layer, vec])
                 QgsProject.instance().addMapLayer(vec, False)
 
                 vec_layers_list.append(vec)
@@ -332,7 +339,7 @@ class Main:
         #rozpoznanie z jakiej bazy pochodzi warstwa zeby przyporzadkowac ja do wlasciwej grupy
         def sort_by_base_type (layers_list):
             type_groups_dict = {}
-            for layy in layers_with_type:
+            for layy in layers_list:
                 layname = layy[1].name()
 
                 if layname.startswith('EGB_'):
@@ -357,16 +364,13 @@ class Main:
         type_groups_dict_table = sort_by_base_type(table_layers_list)
 
 
-
         root = QgsProject.instance().layerTreeRoot()
         main_group = QgsLayerTreeGroup(str(main_group_name))
         root.addChildNode(main_group)
 
         for group_name, group_layers_with_type in type_groups_dict.items():
-            print('nazwa grupy', group_name)
             main_group.insertGroup(1, group_name)
             specified_group = main_group.findGroup(group_name)
-            print(specified_group)
 
             # posortowanie listy warstw z typami na podstawie listy z kolejnoscia oraz jej nadmienienie
             for idx, layer in enumerate(group_layers_with_type):
@@ -379,16 +383,6 @@ class Main:
             group_layers_with_type.sort(key=lambda x: x[2])  # posortowanie
 
 
-            # utworzenie roota
-            #root = QgsProject.instance().layerTreeRoot()
-
-            # utworzenie grupy glownej
-            #specified_group = QgsLayerTreeGroup(str(main_group_name))
-
-            # dodanie grupy do roota
-            #root.addChildNode(specified_group)
-
-
             # wstawianie z geometria do grupy z zachowaniem kolejnosci
             for idx, layer in enumerate(group_layers_with_type):
                 # zmiana koncowek nazw warstw z 0 1 2 na puste
@@ -398,12 +392,18 @@ class Main:
                 specified_group.insertChildNode(idx, QgsLayerTreeLayer(layer[1]))
                 root.removeLayer(layer[1])
 
-        # wstawienie tabelarycznych do grupy
-        main_group.insertGroup(-1, 'Warstwy Tekstowe')  # dodanie grupy na koncu
-        group = main_group.findGroup('Warstwy Tekstowe')
-        for layer in table_layers_list:
-            group.addLayer(layer)
-            root.removeLayer(layer)
+        #dodawanie warstw tekstowych (tabele bez geometrii)
+        for table_group_name, table_group_layers_with_type in type_groups_dict_table.items():
+            found_group = main_group.findGroup(table_group_name)
+            if not found_group:
+                main_group.insertGroup(-1, table_group_name)
+                found_group = main_group.findGroup(table_group_name)
+
+            found_group.insertGroup(-1, 'Warstwy Tekstowe')  # dodanie grupy na koncu
+            group = found_group.findGroup('Warstwy Tekstowe')
+            for layer in table_group_layers_with_type:
+                group.addLayer(layer[1])
+                root.removeLayer(layer[1])
 
         return vec_layers_list
 
