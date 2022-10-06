@@ -9,7 +9,9 @@ def pokaz_wersje(date_compare, sett_pierwsze, sett_modyfikowane, sett_archiwalne
     #start_obiekt, start_wersja, koniec_obiekt, koniec_wersja,
     
     #obi = feature.attribute('koniecWersjaObiekt')
-    
+
+    show = 'default'
+
     if type(start_obiekt) is str:
         if '.' in start_obiekt: format = "yyyy-MM-dd'T'hh:mm:ss.z" 
         else: format = "yyyy-MM-dd'T'hh:mm:ss"
@@ -26,9 +28,7 @@ def pokaz_wersje(date_compare, sett_pierwsze, sett_modyfikowane, sett_archiwalne
         if '.' in koniec_wersja: format = "yyyy-MM-dd'T'hh:mm:ss.z" 
         else: format = "yyyy-MM-dd'T'hh:mm:ss"
         koniec_wersja = QDateTime.fromString(koniec_wersja, format)
-    
-    show = 'default'
-    
+
     
     if koniec_wersja.isNull() and koniec_obiekt.isNull() and start_wersja == start_obiekt:
         show = sett_pierwsze[0]

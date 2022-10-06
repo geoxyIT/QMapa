@@ -1,7 +1,7 @@
 import datetime
 import os
 
-from qgis.PyQt.QtCore import QVariant
+from qgis.PyQt.QtCore import QVariant, QDateTime
 
 from qgis.utils import iface
 from qgis.core import *
@@ -363,6 +363,7 @@ class Main:
         type_groups_dict = sort_by_base_type(layers_with_type)
         type_groups_dict_table = sort_by_base_type(table_layers_list)
 
+        self.generateReport(type_groups_dict, type_groups_dict_table)
 
         root = QgsProject.instance().layerTreeRoot()
         main_group = QgsLayerTreeGroup(str(main_group_name))
@@ -436,3 +437,140 @@ class Main:
                 ok_layers.append(lay)
 
         return ok_layers
+
+    def get_version(self, start_object, start_version, end_object, end_version):
+        version = 'no recognized'
+        if type(start_object) is str:
+            if '.' in start_object:
+                format = "yyyy-MM-dd'T'hh:mm:ss.z"
+            else:
+                format = "yyyy-MM-dd'T'hh:mm:ss"
+            start_object = QDateTime.fromString(start_object, format)
+        if type(start_version) is str:
+            if '.' in start_version:
+                format = "yyyy-MM-dd'T'hh:mm:ss.z"
+            else:
+                format = "yyyy-MM-dd'T'hh:mm:ss"
+            start_version = QDateTime.fromString(start_version, format)
+        if type(end_object) is str:
+            if '.' in end_object:
+                format = "yyyy-MM-dd'T'hh:mm:ss.z"
+            else:
+                format = "yyyy-MM-dd'T'hh:mm:ss"
+            end_object = QDateTime.fromString(end_object, format)
+        if type(end_version) is str:
+            if '.' in end_version:
+                format = "yyyy-MM-dd'T'hh:mm:ss.z"
+            else:
+                format = "yyyy-MM-dd'T'hh:mm:ss"
+            end_version = QDateTime.fromString(end_version, format)
+
+        if end_version.isNull() and end_object.isNull() and start_version == start_object:
+            version = 'first'
+        elif end_version.isNull() and end_object.isNull() and start_version > start_object:
+            version = 'modified'
+        elif end_version.isNull() is False and end_object.isNull():
+            version = 'archival'
+        elif end_object.isNull() is False:
+            version = 'closed'
+
+        return version
+
+    def generateReport(self, type_groups_dict, type_groups_dict_table):
+        '''all = 0
+        for group_name, group_items in type_groups_dict.items():
+            for item in group_items:
+                feature_count = 0
+                for feature in item[1].getFeatures():
+                    feature_count += 1
+                    all += 1
+                print(item, feature_count)
+        print(all)'''
+
+        obj_first = 0
+        obj_modified = 0
+        obj_archival = 0
+        obj_closed = 0
+
+        obj_nd = 0
+
+        counting_dict = {}
+
+        dict_split_by_type = {}
+
+        start = datetime.datetime.now()
+        for group_name, group_items in type_groups_dict.items():
+            for item in group_items:
+                layer = item[1]
+                layer_simple_name = layer.name()
+                # print(layer_simple_name)
+                if group_name in ['EGiB', 'GESUT', 'BDOT500']:  # is layer correct : True
+                    if layer_simple_name in counting_dict:
+                        values = counting_dict[layer_simple_name]
+                        lay_obj_first = values[0]
+                        lay_obj_modified = values[1]
+                        lay_obj_archival = values[2]
+                        lay_obj_closed = values[3]
+                    else:
+                        lay_obj_first = 0
+                        lay_obj_modified = 0
+                        lay_obj_archival = 0
+                        lay_obj_closed = 0
+
+                    for feature in layer.getFeatures():
+                        try:
+                            iip = feature.attribute("przestrzenNazw") + feature.attribute("lokalnyId")
+                        except:
+                            pass
+                        try:
+                            start_ob = feature.attribute("startObiekt")
+                        except:
+                            start_ob = ''
+                        try:
+                            start_vers = feature.attribute("startWersjaObiekt")
+                        except:
+                            start_vers = ''
+                        try:
+                            end_ob = feature.attribute("koniecObiekt")
+                        except:
+                            end_ob = ''
+                        try:
+                            end_vers = feature.attribute("koniecWersjaObiekt")
+                        except:
+                            end_vers = ''
+
+                        feature_version = self.get_version(start_object=start_ob, start_version=start_vers, end_object=end_ob,
+                                                      end_version=end_vers)
+
+                        if feature_version == 'first':
+                            lay_obj_first += 1
+                        elif feature_version == 'modified':
+                            lay_obj_modified += 1
+                        elif feature_version == 'archival':
+                            lay_obj_archival += 1
+                        elif feature_version == 'closed':
+                            lay_obj_closed += 1
+
+                        counting_dict[layer_simple_name] = [lay_obj_first, lay_obj_modified, lay_obj_archival,
+                                                            lay_obj_closed]
+
+                    # print(layer.GetName(), lay_obj_open, lay_obj_closed, lay_obj_archival)
+                    obj_first += lay_obj_first
+                    obj_modified += lay_obj_modified
+                    obj_archival += lay_obj_archival
+                    obj_closed += lay_obj_closed
+
+                else:  # is layer correct : False
+                    if layer_simple_name in counting_dict:
+                        lay_obj_nd = counting_dict[layer_simple_name]
+                    else:
+                        lay_obj_nd = 0
+
+                    for feature in layer.getFeatures():
+                        lay_obj_nd += 1
+
+                    obj_nd += lay_obj_nd
+                    counting_dict[layer_simple_name] = lay_obj_nd
+
+        print('suma: ', obj_first+obj_modified+obj_closed+obj_archival+obj_nd, counting_dict)
+        print('czas policzenia wersji w main: ', datetime.datetime.now() - start)

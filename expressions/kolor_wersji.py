@@ -9,12 +9,9 @@ def kolor_wersji(date_compare, sett_pierwsze, sett_modyfikowane, sett_archiwalne
     #start_obiekt, start_wersja, koniec_obiekt, koniec_wersja,
     
     #obi = feature.attribute('koniecWersjaObiekt')
-    
-    '''start_obiekt = feature.attribute('startObiekt')
-    start_wersja =feature.attribute('startWersjaObiekt')
-    koniec_obiekt = feature.attribute('koniecObiekt')
-    koniec_wersja = feature.attribute('koniecWersjaObiekt')'''
-    
+
+    color = False
+
     if type(start_obiekt) is str:
         if '.' in start_obiekt: format = "yyyy-MM-dd'T'hh:mm:ss.z" 
         else: format = "yyyy-MM-dd'T'hh:mm:ss"
@@ -31,8 +28,6 @@ def kolor_wersji(date_compare, sett_pierwsze, sett_modyfikowane, sett_archiwalne
         if '.' in koniec_wersja: format = "yyyy-MM-dd'T'hh:mm:ss.z" 
         else: format = "yyyy-MM-dd'T'hh:mm:ss"
         koniec_wersja = QDateTime.fromString(koniec_wersja, format)
-    
-    color = False
     
     
     if koniec_wersja.isNull() and koniec_obiekt.isNull() and start_wersja == start_obiekt:
