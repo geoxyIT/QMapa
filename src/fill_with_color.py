@@ -9,7 +9,6 @@ file_path = r'D:\PROJEKT_QGIS\!!NOWOSCI_DO_QGEOXY\FILLOWANIE\QMapa_wypelnieniaOb
 df = pd.read_excel(file_path, sheet_name='Wypelnienia')
 fill_dict = df.to_dict(orient='records')
 
-
 # print(fill_dict[0])
 
 '''def hatching(rotation, spacing, offset, width):
@@ -24,8 +23,8 @@ fill_dict = df.to_dict(orient='records')
     return line_pattern'''
 
 
-def hatching(rotation_formula, spacing_formula, offset_formula, width_formula):
-    """Funkcja wykonujaca kreskowanie na symbolu LinePatternFill"""
+def hatching(rotation_formula, spacing_formula, offset_formula, width_formula, single=True):
+    """Funkcja wykonujaca kreskowanie na symbolu LinePatternFill - wypelnianie wyrazen"""
     line_pattern = QgsLinePatternFillSymbolLayer()
 
     # korekta nan value
@@ -45,12 +44,42 @@ def hatching(rotation_formula, spacing_formula, offset_formula, width_formula):
     line_pattern.dataDefinedProperties().property(16).setExpressionString(spacing_formula)
     # spacing jednostka
     line_pattern.setDistanceUnit(1)  # wartosc 1 - map units
-    child.symbols()[0].appendSymbolLayer(line_pattern)
 
     # ABY NADAWAC OFFSET KONIECZNE JEST WEJSCIE W SUBSYMBOL i ustawienie offsetu dla linii
+
+    if single is True:
+        layer.renderer().symbol().appendSymbolLayer(line_pattern)
+        internal_pattern_line = layer.renderer().symbol().symbolLayers()[-1].subSymbol().symbolLayers()[0]  # subsymbol
+    else:
+        child.symbols()[0].appendSymbolLayer(line_pattern)
+        internal_pattern_line = child.symbols()[0][-1].subSymbol().symbolLayers()[0]  # subsymbol
+
     # dla width konieczne jest ustawienie szerokosci w odpowiedniej skali
-    internal_pattern_line = child.symbols()[0][-1].subSymbol().symbolLayers()[0]  # subsymbol
     internal_pattern_line.dataDefinedProperties().property(5).setExpressionString(width_formula)
+    internal_pattern_line.setWidthUnit(1)  # map units
+
+    # dodac warunek dla single i dla rulebased osobno, dla dodania symbolu oraz dla ustawiania szerokosci lini
+
+def hatching_only_values(rotation, spacing, offset, width, single=True):
+    """Funkcja wykonujaca kreskowanie na symbolu LinePatternFill - wypelnianie samych wartosci,
+    jest to wykorzystywane w przypadku gdy nie ma atrybutu podstawowego"""
+    line_pattern = QgsLinePatternFillSymbolLayer()
+    # rotacja
+    line_pattern.setLineAngle(rotation)
+    # spacing
+    line_pattern.setDistance(spacing)
+    line_pattern.setDistanceUnit(1)  # wartosc 1 - map units
+    # offset
+
+    if single is True:
+        layer.renderer().symbol().appendSymbolLayer(line_pattern)
+        internal_pattern_line = layer.renderer().symbol().symbolLayers()[-1].subSymbol().symbolLayers()[0]  # subsymbol
+    else:
+        child.symbols()[0].appendSymbolLayer(line_pattern)
+        internal_pattern_line = child.symbols()[0][-1].subSymbol().symbolLayers()[0]  # subsymbol
+
+    # width
+    internal_pattern_line.setWidth(width)
     internal_pattern_line.setWidthUnit(1)  # map units
 
 # przejscie po warstwach
@@ -58,22 +87,62 @@ layers = list(QgsProject.instance().mapLayers().values())
 for layer in layers:
     if layer.geometryType() == 2:  # warstwa poligonowa
         renderer = layer.renderer()
-        # print(renderer)
         if renderer.type() == 'singleSymbol':
             symbols = layer.renderer().symbol().symbolLayers()
+            summary_hatching = [[], [], [], []]
             formula = 'case '
+            dict_idx = 0
             for single_dict in fill_dict:
                 # warunek jezeli nie ma atrybutow podstawowych
                 if layer.name() == single_dict['KlasaObiektu'] and single_dict['AtrybutPodstawowy'] is np.nan:
                     R, G, B, T = single_dict['R'], single_dict['G'], single_dict['B'], \
                                  single_dict['Transparentnosc']
                     formula = f'\'{R},{G},{B},{T}\''
+                    hatching_list = [v for k, v in single_dict.items() if
+                                     k.startswith(('Obrot', 'Odstep', 'Przesuniecie', 'Grubosc'))]
+                    if len(hatching_list) > 0:  # jezeli ma kolumne dotyczaca kresowania to przechodzi dalej
+                        step = 0  # interwal dla ilosci parametrow w kolumnnach kreskowania
+                        for i in range(int(len(hatching_list) / 4)):  # zaleznie od ilosci kolumn kreskowania
+                            rotation = hatching_list[0 + step]
+                            spacing = hatching_list[1 + step]
+                            offset = hatching_list[2 + step]
+                            width = hatching_list[3 + step]
+                            summary_hatching[0].append(rotation)
+                            summary_hatching[1].append(spacing)
+                            summary_hatching[2].append(offset)
+                            summary_hatching[3].append(width)
+                            step += 4
+                    print(layer.name())
+                    print(summary_hatching)
                 elif layer.name() == single_dict['KlasaObiektu']:
+                    # przypadek jezeli wykorzystywane sa atrybuty zawarte w tabeli atrybutow
+                    # przypadek dla konturu klasyfikacyjnego albo konturu uzytku gruntowego
                     basic_atr = single_dict['AtrybutPodstawowy']
                     ap_value = single_dict['WartoscAP']
                     R, G, B, T = single_dict['R'], single_dict['G'], single_dict['B'], \
                                  single_dict['Transparentnosc']
                     formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{R},{G},{B},{T}\' '
+                    hatching_list = [v for k, v in single_dict.items() if
+                                     k.startswith(('Obrot', 'Odstep', 'Przesuniecie', 'Grubosc'))]
+                    if len(hatching_list) > 0:  # jezeli ma kolumne dotyczaca kresowania to przechodzi dalej
+                        step = 0  # interwal dla ilosci parametrow w kolumnnach kreskowania
+                        for i in range(int(len(hatching_list) / 4)):  # zaleznie od ilosci kolumn kreskowania
+                            if dict_idx == 0:  # dla pierwszego symbolu w rule dodaje warunki - case'y
+                                summary_hatching[0].append('case ')
+                                summary_hatching[1].append('case ')
+                                summary_hatching[2].append('case ')
+                                summary_hatching[3].append('case ')
+                            rotation = hatching_list[0 + step]
+                            spacing = hatching_list[1 + step]
+                            offset = hatching_list[2 + step]
+                            width = hatching_list[3 + step]
+                            summary_hatching[0][i] += f'when \"{basic_atr}\" is \'{ap_value}\' then {rotation} '
+                            summary_hatching[1][i] += f'when \"{basic_atr}\" is \'{ap_value}\' then {spacing} '
+                            summary_hatching[2][i] += f'when \"{basic_atr}\" is \'{ap_value}\' then {offset} '
+                            summary_hatching[3][i] += f'when \"{basic_atr}\" is \'{ap_value}\' then {width} '
+                            step += 4
+                        dict_idx += 1  # indeks dla ilosci kreskowania
+
             # wprowadzenie formuly do QGIS
             if 'case' not in formula:
                 # przypadek jezeli nie ma atrybutow podstawowych
@@ -81,6 +150,12 @@ for layer in layers:
                 new_fill_color.dataDefinedProperties().property(3).setExpressionString(formula)
                 new_fill_color.dataDefinedProperties().property(3).setActive(True)
                 layer.renderer().symbol().appendSymbolLayer(new_fill_color)
+                if int(len(summary_hatching[0])) > 0:
+                    for idx in range(int(len(summary_hatching[0]))):
+                        hatching_only_values(rotation=summary_hatching[0][idx],
+                                             spacing=summary_hatching[1][idx],
+                                             offset=summary_hatching[2][idx],
+                                             width=summary_hatching[3][idx])
             elif formula != 'case ':
                 # przypadek jezeli sa atrybuty
                 formula += 'end'
@@ -88,37 +163,43 @@ for layer in layers:
                 new_fill_color.dataDefinedProperties().property(3).setExpressionString(formula)
                 new_fill_color.dataDefinedProperties().property(3).setActive(True)
                 layer.renderer().symbol().appendSymbolLayer(new_fill_color)
-
-
-            """len(hatching_list) > 0:
-                    step = 0
-                    for i in range(len(hatching_list) / 4):
-                        rotation = hatching_list[0 + step]
-                        spacing = hatching_list[1 + step]
-                        offset = hatching_list[2 + step]
-                        width = hatching_list[3 + step]
-                        step += 4
-                        line_pattern = hatching(rotation, spacing, offset, width)
-                        layer.renderer().symbol().appendSymbolLayer(line_pattern)
-                else:"""
+                if int(len(summary_hatching[0])) > 0:
+                    for idx in range(int(len(summary_hatching[0]))):
+                        hatching(rotation_formula=summary_hatching[0][idx],
+                                 spacing_formula=summary_hatching[1][idx],
+                                 offset_formula=summary_hatching[2][idx],
+                                 width_formula=summary_hatching[3][idx])
 
         elif renderer.type() == 'RuleRenderer':
             for child in layer.renderer().rootRule().children():
                 # rule_exp = child.filterExpression()
                 # splitted_rule_exp = rule_exp.replace('=', '').replace('\'', '').split()
                 # print(splitted_rule_exp)
+                # lista zbiorcza regul kreskowania
+                summary_hatching = [[], [], [], []]
                 formula = 'case '
-                hatching_rotation_formula = 'case '
-                hatching_spacing_formula = 'case '
-                hatching_offset_formula = 'case '
-                hatching_width_formula = 'case '
+                dict_idx = 0
                 for single_dict in fill_dict:
                     # warunek jezeli nie ma atrybutow podstawowych
                     if layer.name() == single_dict['KlasaObiektu'] and single_dict['AtrybutPodstawowy'] is np.nan:
                         R, G, B, T = single_dict['R'], single_dict['G'], single_dict['B'], \
                                      single_dict['Transparentnosc']
                         formula = f'\'{R},{G},{B},{T}\''
-                    elif layer.name() == single_dict['KlasaObiektu']:  # DODAC WARUNEK DLA pustego atrybutupodstawowego
+                        hatching_list = [v for k, v in single_dict.items() if
+                                         k.startswith(('Obrot', 'Odstep', 'Przesuniecie', 'Grubosc'))]
+                        if len(hatching_list) > 0:  #jezeli ma kolumne dotyczaca kresowania to przechodzi dalej
+                            step = 0  # interwal dla ilosci parametrow w kolumnnach kreskowania
+                            for i in range(int(len(hatching_list) / 4)):  # zaleznie od ilosci kolumn kreskowania
+                                rotation = hatching_list[0 + step]
+                                spacing = hatching_list[1 + step]
+                                offset = hatching_list[2 + step]
+                                width = hatching_list[3 + step]
+                                summary_hatching[0].append(rotation)
+                                summary_hatching[1].append(spacing)
+                                summary_hatching[2].append(offset)
+                                summary_hatching[3].append(width)
+                                step += 4
+                    elif layer.name() == single_dict['KlasaObiektu']:
                         # przypadek jezeli wykorzystywane sa atrybuty zawarte w tabeli atrybutow
                         basic_atr = single_dict['AtrybutPodstawowy']
                         ap_value = single_dict['WartoscAP']
@@ -127,19 +208,24 @@ for layer in layers:
                         formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{R},{G},{B},{T}\' '
                         hatching_list = [v for k, v in single_dict.items() if
                                          k.startswith(('Obrot', 'Odstep', 'Przesuniecie', 'Grubosc'))]
-                        if len(hatching_list) > 0:
-                            step = 0
-                            for i in range(int(len(hatching_list)/4)):
+                        if len(hatching_list) > 0:  #jezeli ma kolumne dotyczaca kresowania to przechodzi dalej
+                            step = 0  # interwal dla ilosci parametrow w kolumnnach kreskowania
+                            for i in range(int(len(hatching_list) / 4)):  # zaleznie od ilosci kolumn kreskowania
+                                if dict_idx == 0:  # dla pierwszego symbolu w rule dodaje warunki - case'y
+                                    summary_hatching[0].append('case ')
+                                    summary_hatching[1].append('case ')
+                                    summary_hatching[2].append('case ')
+                                    summary_hatching[3].append('case ')
                                 rotation = hatching_list[0 + step]
                                 spacing = hatching_list[1 + step]
                                 offset = hatching_list[2 + step]
                                 width = hatching_list[3 + step]
-                                hatching_rotation_formula += f'when \"{basic_atr}\" is \'{ap_value}\' then {rotation} '
-                                hatching_spacing_formula += f'when \"{basic_atr}\" is \'{ap_value}\' then {spacing} '
-                                hatching_offset_formula += f'when \"{basic_atr}\" is \'{ap_value}\' then {offset} '
-                                hatching_width_formula += f'when \"{basic_atr}\" is \'{ap_value}\' then {width} '
-                                step+=4
-                                # dodac to do listy zbiorczej reguł, i tworzyc symbole w oparciu o ilosci w liscie
+                                summary_hatching[0][i] += f'when \"{basic_atr}\" is \'{ap_value}\' then {rotation} '
+                                summary_hatching[1][i] += f'when \"{basic_atr}\" is \'{ap_value}\' then {spacing} '
+                                summary_hatching[2][i] += f'when \"{basic_atr}\" is \'{ap_value}\' then {offset} '
+                                summary_hatching[3][i] += f'when \"{basic_atr}\" is \'{ap_value}\' then {width} '
+                                step += 4
+                        dict_idx += 1  # indeks dla ilosci kreskowania
 
                 # wprowadzenie formuly do QGIS
                 if 'case' not in formula:
@@ -148,6 +234,13 @@ for layer in layers:
                     new_fill_color.dataDefinedProperties().property(3).setExpressionString(formula)
                     new_fill_color.dataDefinedProperties().property(3).setActive(True)
                     child.symbols()[0].appendSymbolLayer(new_fill_color)
+                    if int(len(summary_hatching[0])) > 0:
+                        for idx in range(int(len(summary_hatching[0]))):
+                            hatching_only_values(rotation=summary_hatching[0][idx],
+                                                 spacing=summary_hatching[1][idx],
+                                                 offset=summary_hatching[2][idx],
+                                                 width=summary_hatching[3][idx], single=False)
+
                 elif formula != 'case ':
                     # przypadek jezeli sa atrybuty
                     formula += 'end'
@@ -155,8 +248,12 @@ for layer in layers:
                     new_fill_color.dataDefinedProperties().property(3).setExpressionString(formula)
                     new_fill_color.dataDefinedProperties().property(3).setActive(True)
                     child.symbols()[0].appendSymbolLayer(new_fill_color)
-                    hatching(hatching_rotation_formula, hatching_spacing_formula,
-                             hatching_offset_formula, hatching_width_formula)
+                    if int(len(summary_hatching[0])) > 0:
+                        for idx in range(int(len(summary_hatching[0]))):
+                            hatching(rotation_formula=summary_hatching[0][idx],
+                                     spacing_formula=summary_hatching[1][idx],
+                                     offset_formula=summary_hatching[2][idx],
+                                     width_formula=summary_hatching[3][idx], single=False)
 
     # odswiezenie layer tree
     iface.layerTreeView().refreshLayerSymbology(layer.id())
