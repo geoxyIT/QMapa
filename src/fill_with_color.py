@@ -42,11 +42,11 @@ def hatching(rotation_formula, spacing_formula, offset_formula, width_formula, s
     line_pattern.dataDefinedProperties().property(15).setExpressionString(rotation_formula)
     # spacing
     line_pattern.dataDefinedProperties().property(16).setExpressionString(spacing_formula)
-    # spacing jednostka
     line_pattern.setDistanceUnit(1)  # wartosc 1 - map units
 
     # ABY NADAWAC OFFSET KONIECZNE JEST WEJSCIE W SUBSYMBOL i ustawienie offsetu dla linii
 
+    # nadanie symbolu oraz wejscie w subsymbol dla symboli single oraz rule
     if single is True:
         layer.renderer().symbol().appendSymbolLayer(line_pattern)
         internal_pattern_line = layer.renderer().symbol().symbolLayers()[-1].subSymbol().symbolLayers()[0]  # subsymbol
@@ -58,8 +58,6 @@ def hatching(rotation_formula, spacing_formula, offset_formula, width_formula, s
     internal_pattern_line.dataDefinedProperties().property(5).setExpressionString(width_formula)
     internal_pattern_line.setWidthUnit(1)  # map units
 
-    # dodac warunek dla single i dla rulebased osobno, dla dodania symbolu oraz dla ustawiania szerokosci lini
-
 def hatching_only_values(rotation, spacing, offset, width, single=True):
     """Funkcja wykonujaca kreskowanie na symbolu LinePatternFill - wypelnianie samych wartosci,
     jest to wykorzystywane w przypadku gdy nie ma atrybutu podstawowego"""
@@ -69,8 +67,8 @@ def hatching_only_values(rotation, spacing, offset, width, single=True):
     # spacing
     line_pattern.setDistance(spacing)
     line_pattern.setDistanceUnit(1)  # wartosc 1 - map units
-    # offset
 
+    # nadanie symbolu oraz wejscie w subsymbol dla symboli single oraz rule
     if single is True:
         layer.renderer().symbol().appendSymbolLayer(line_pattern)
         internal_pattern_line = layer.renderer().symbol().symbolLayers()[-1].subSymbol().symbolLayers()[0]  # subsymbol
@@ -112,11 +110,9 @@ for layer in layers:
                             summary_hatching[2].append(offset)
                             summary_hatching[3].append(width)
                             step += 4
-                    print(layer.name())
-                    print(summary_hatching)
+                # przypadek jezeli wykorzystywane sa atrybuty zawarte w tabeli atrybutow
+                # przypadek dla konturu klasyfikacyjnego albo konturu uzytku gruntowego
                 elif layer.name() == single_dict['KlasaObiektu']:
-                    # przypadek jezeli wykorzystywane sa atrybuty zawarte w tabeli atrybutow
-                    # przypadek dla konturu klasyfikacyjnego albo konturu uzytku gruntowego
                     basic_atr = single_dict['AtrybutPodstawowy']
                     ap_value = single_dict['WartoscAP']
                     R, G, B, T = single_dict['R'], single_dict['G'], single_dict['B'], \
@@ -199,8 +195,8 @@ for layer in layers:
                                 summary_hatching[2].append(offset)
                                 summary_hatching[3].append(width)
                                 step += 4
+                    # przypadek jezeli wykorzystywane sa atrybuty zawarte w tabeli atrybutow
                     elif layer.name() == single_dict['KlasaObiektu']:
-                        # przypadek jezeli wykorzystywane sa atrybuty zawarte w tabeli atrybutow
                         basic_atr = single_dict['AtrybutPodstawowy']
                         ap_value = single_dict['WartoscAP']
                         R, G, B, T = single_dict['R'], single_dict['G'], single_dict['B'], \
@@ -240,7 +236,6 @@ for layer in layers:
                                                  spacing=summary_hatching[1][idx],
                                                  offset=summary_hatching[2][idx],
                                                  width=summary_hatching[3][idx], single=False)
-
                 elif formula != 'case ':
                     # przypadek jezeli sa atrybuty
                     formula += 'end'
