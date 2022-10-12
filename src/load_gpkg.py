@@ -71,7 +71,7 @@ def load_gpkg(gpkg_path):
 
     dict_split_by_type = {}
 
-    start =datetime.datetime.now()
+    '''start =datetime.datetime.now()
     for layer in data:
         layer_simple_name = layer.GetName()
         #print(layer_simple_name)
@@ -135,7 +135,7 @@ def load_gpkg(gpkg_path):
                 lay_obj += 1
 
             counting_dict[layer_simple_name] = lay_obj
-    print('czas policzenia wersji: ', datetime.datetime.now() - start)
+    print('czas policzenia wersji: ', datetime.datetime.now() - start)'''
 
     for layer in data:
         if layer.GetGeomType() == 0:
