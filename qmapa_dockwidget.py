@@ -31,8 +31,8 @@ from datetime import datetime
 import webbrowser
 
 from qgis.PyQt import QtGui, QtWidgets, uic
-from qgis.PyQt.QtCore import pyqtSignal, pyqtSlot, QVariant, QDateTime
-from qgis.PyQt.QtWidgets import QFileDialog
+from qgis.PyQt.QtCore import Qt, QVariant, QDateTime, QSize, pyqtSignal, pyqtSlot
+from qgis.PyQt.QtWidgets import QFileDialog, QPushButton, QDialog
 from qgis.utils import iface
 from qgis.core import *
 
@@ -46,13 +46,13 @@ from .src.config import correct_layers
 from .src.scrap_version import *
 from .src.config import correct_layers
 from .src.express_yourself import ExpressYourself
+from .src.fill_with_color import fill, open_fill_xlsm, open_fill_xlsm_loc
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'ui', 'qmapa_dockwidget_base.ui'))
 
 
 class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
-
     closingPlugin = pyqtSignal()
 
     def __init__(self, parent=None):
@@ -69,17 +69,14 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.current_dir = os.path.dirname(os.path.realpath(__file__))
         self.cmbStylization.addItems(Main().getStylizations(omit_special=True))
 
-
         # sprawdzenie wersji programu
         self.check_version()
 
         self.progressBar.hide()
 
-
         self.rel_times = 0
 
         self.set_red_labels()
-
 
         QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Pierwsze',
                                                      [0, 0, 0])
@@ -116,7 +113,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def on_pbLogo_clicked(self):
         """Przycisk wywolania strony po nacisnieciu Logo GEOXY"""
         webbrowser.open('http://www.geoxy.pl/')
-
 
     def on_pbImport_pressed(self):
         """Zaimportowanie pliku GML z konwersją do GPKG oraz nadaniem grup warstw"""
@@ -164,14 +160,14 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
             # nadanie stylizacji
             current_style = self.cmbStylization.currentText()
-            #Main().setStyling(self.vec_layers_list, current_style)
+            # Main().setStyling(self.vec_layers_list, current_style)
             self.back_to_qml_symb()
             self.progressBar.setValue(80)
             print('czas 80%:', datetime.now() - start_2)
 
-            #self.set_labels(self.vec_layers_list)
+            # self.set_labels(self.vec_layers_list)
             '''self.wyswWg()  # sprawdzenie i nadanie wyswietlania wersji, statusu'''
-            self.disp_wers(self.gbShowWers.isChecked()) #sprawdzenie i nadanie wyswietlania wersji
+            self.disp_wers(self.gbShowWers.isChecked())  # sprawdzenie i nadanie wyswietlania wersji
             self.progressBar.setValue(90)
             print('czas 90%:', datetime.now() - start_2)
 
@@ -189,12 +185,12 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 elif 'koniecgoryskarpy' in ll.name().lower():
                     end_point_layer_id = ll.id()
                 elif 'ot_poliliniakierunkowa' in ll.name().lower():
-                    ot_polyline_layer_id =  ll.id()
+                    ot_polyline_layer_id = ll.id()
                 elif 'egb_poliliniakierunkowa' in ll.name().lower():
-                    egb_polyline_layer_id =  ll.id()
+                    egb_polyline_layer_id = ll.id()
 
             for sc in scales:
-                self.progressBar.setValue(90 + int((nr/len(scales))*10))
+                self.progressBar.setValue(90 + int((nr / len(scales)) * 10))
                 nr += 1
                 for lay in self.vec_layers_list:
                     if 'skarpa' in lay.name().lower() and start_point_layer_id and end_point_layer_id:
@@ -205,7 +201,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                         Main().calculate_hatching(lay, 'schody', sc, egb_polyline_layer_id)
                     elif 'budowle' in lay.name().lower() and ot_polyline_layer_id:
                         Main().calculate_hatching(lay, 'sciana', sc, ot_polyline_layer_id)
-                    elif 'wody' in lay.name().lower()  and start_point_layer_id and end_point_layer_id:
+                    elif 'wody' in lay.name().lower() and start_point_layer_id and end_point_layer_id:
                         Main().calculate_hatching(lay, 'wody', sc, [start_point_layer_id, end_point_layer_id])
                     elif 'komunikacja' in lay.name().lower() and ot_polyline_layer_id:
                         Main().calculate_hatching(lay, 'schody', sc, ot_polyline_layer_id)
@@ -222,94 +218,103 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
             self.signal_of_import = False
 
-
-
     def on_cmbStylization_currentTextChanged(self):
         """ustaw stylizację wybraną w comboboxie"""
         self.back_to_qml_symb()
 
     def set_joins(self, vec_layers_list):
         """nadawanie joinow podczas importu pliku"""
-        joining_dict = {'GES_Rzedna':{'GES_InneUrzadzeniaTowarzyszace':['relacja', 'lokalnyId',['rodzajSieci']],
-                                      'GES_UrzadzeniaTowarzyszczaceLiniowe':['relacja', 'lokalnyId',['rodzajSieci']],
-                                      'GES_UrzadzeniaTowarzyszaceLiniowe': ['relacja', 'lokalnyId', ['rodzajSieci']],
-                                      'GES_PrzewodWodociagowy':['relacja', 'lokalnyId',['zrodlo']],
-                                      'GES_PrzewodKanalizacyjny':['relacja', 'lokalnyId',['zrodlo']],
-                                      'GES_PrzewodElektroenergetyczny':['relacja', 'lokalnyId',['zrodlo']],
-                                      'GES_PrzewodGazowy':['relacja', 'lokalnyId',['zrodlo']],
-                                      'GES_PrzewodCieplowniczy':['relacja', 'lokalnyId',['zrodlo']],
-                                      'GES_PrzewodTelekomunikacyjny':['relacja', 'lokalnyId',['zrodlo']],
-                                      'GES_PrzewodSpecjalny':['relacja', 'lokalnyId',['zrodlo']],
-                                      'GES_PrzewodNiezidentyfikowany':['relacja', 'lokalnyId',['zrodlo']],
-                                      'GES_UrzadzeniaSiecWodociagowa': ['relacja', 'lokalnyId', ['zrodlo']],
-                                      'GES_UrzadzeniaSiecKanalizacyjna': ['relacja', 'lokalnyId', ['zrodlo']],
-                                      'GES_UrzadzeniaSiecElektroenergetyczna': ['relacja', 'lokalnyId', ['zrodlo']],
-                                      'GES_UrzadzeniaSiecGazowa': ['relacja', 'lokalnyId', ['zrodlo']],
-                                      'GES_UrzadzeniaSiecCieplownicza': ['relacja', 'lokalnyId', ['zrodlo']],
-                                      'GES_UrzadzeniaSiecTelekomunikacyjna': ['relacja', 'lokalnyId', ['zrodlo']],
-                                      'GES_UrzadzeniaTechniczneSieciSpecjalnej': ['relacja', 'lokalnyId', ['zrodlo']],
-                                      'GES_UrzadzenieNiezidentyfikowane': ['relacja', 'lokalnyId', ['zrodlo']]
-                                      },
-                        'OT_etykieta':{'OT_odnosnik':['gml_id', 'gml_id',['x','y']],
-                                       'OT_BudynekNiewykazanyWEGIB': ['obiektPrzedstawiany', 'gml_id', []],
-                                       'OT_BlokBudynku': ['obiektPrzedstawiany', 'gml_id', []],
-                                       'OT_ObiektTrwaleZwiazanyZBudynkami': ['obiektPrzedstawiany', 'gml_id', []],
-                                       'OT_Budowle':['obiektPrzedstawiany', 'gml_id',[]],
-                                       'OT_Komunikacja':['obiektPrzedstawiany', 'gml_id',[]],
-                                       'OT_SportIRekreacja':['obiektPrzedstawiany', 'gml_id',[]],
-                                       'OT_ZagospodarowanieTerenu':['obiektPrzedstawiany', 'gml_id',[]],
-                                       'OT_Wody':['obiektPrzedstawiany', 'gml_id',[]],
-                                       'OT_Rzedna':['obiektPrzedstawiany', 'gml_id',[]]},
-                        'EGB_etykieta':{'EGB_odnosnik':['gml_id', 'gml_id',['x','y']],
-                                        'EGB_JednostkaEwidencyjna': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'EGB_ObrebEwidencyjny': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'EGB_DzialkaEwidencyjna': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'EGB_PunktGraniczny': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'EGB_Budynek': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'EGB_BlokBudynku': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'EGB_ObiektTrwaleZwiazanyZBudynkiem': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'EGB_KonturUzytkuGruntowego': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'EGB_KonturKlasyfikacyjny': ['obiektPrzedstawiany', 'gml_id', []]},
+        joining_dict = {'GES_Rzedna': {'GES_InneUrzadzeniaTowarzyszace': ['relacja', 'lokalnyId', ['rodzajSieci']],
+                                       'GES_UrzadzeniaTowarzyszczaceLiniowe': ['relacja', 'lokalnyId', ['rodzajSieci']],
+                                       'GES_UrzadzeniaTowarzyszaceLiniowe': ['relacja', 'lokalnyId', ['rodzajSieci']],
+                                       'GES_PrzewodWodociagowy': ['relacja', 'lokalnyId', ['zrodlo']],
+                                       'GES_PrzewodKanalizacyjny': ['relacja', 'lokalnyId', ['zrodlo']],
+                                       'GES_PrzewodElektroenergetyczny': ['relacja', 'lokalnyId', ['zrodlo']],
+                                       'GES_PrzewodGazowy': ['relacja', 'lokalnyId', ['zrodlo']],
+                                       'GES_PrzewodCieplowniczy': ['relacja', 'lokalnyId', ['zrodlo']],
+                                       'GES_PrzewodTelekomunikacyjny': ['relacja', 'lokalnyId', ['zrodlo']],
+                                       'GES_PrzewodSpecjalny': ['relacja', 'lokalnyId', ['zrodlo']],
+                                       'GES_PrzewodNiezidentyfikowany': ['relacja', 'lokalnyId', ['zrodlo']],
+                                       'GES_UrzadzeniaSiecWodociagowa': ['relacja', 'lokalnyId', ['zrodlo']],
+                                       'GES_UrzadzeniaSiecKanalizacyjna': ['relacja', 'lokalnyId', ['zrodlo']],
+                                       'GES_UrzadzeniaSiecElektroenergetyczna': ['relacja', 'lokalnyId', ['zrodlo']],
+                                       'GES_UrzadzeniaSiecGazowa': ['relacja', 'lokalnyId', ['zrodlo']],
+                                       'GES_UrzadzeniaSiecCieplownicza': ['relacja', 'lokalnyId', ['zrodlo']],
+                                       'GES_UrzadzeniaSiecTelekomunikacyjna': ['relacja', 'lokalnyId', ['zrodlo']],
+                                       'GES_UrzadzeniaTechniczneSieciSpecjalnej': ['relacja', 'lokalnyId', ['zrodlo']],
+                                       'GES_UrzadzenieNiezidentyfikowane': ['relacja', 'lokalnyId', ['zrodlo']]
+                                       },
+                        'OT_etykieta': {'OT_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
+                                        'OT_BudynekNiewykazanyWEGIB': ['obiektPrzedstawiany', 'gml_id', []],
+                                        'OT_BlokBudynku': ['obiektPrzedstawiany', 'gml_id', []],
+                                        'OT_ObiektTrwaleZwiazanyZBudynkami': ['obiektPrzedstawiany', 'gml_id', []],
+                                        'OT_Budowle': ['obiektPrzedstawiany', 'gml_id', []],
+                                        'OT_Komunikacja': ['obiektPrzedstawiany', 'gml_id', []],
+                                        'OT_SportIRekreacja': ['obiektPrzedstawiany', 'gml_id', []],
+                                        'OT_ZagospodarowanieTerenu': ['obiektPrzedstawiany', 'gml_id', []],
+                                        'OT_Wody': ['obiektPrzedstawiany', 'gml_id', []],
+                                        'OT_Rzedna': ['obiektPrzedstawiany', 'gml_id', []]},
+                        'EGB_etykieta': {'EGB_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
+                                         'EGB_JednostkaEwidencyjna': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'EGB_ObrebEwidencyjny': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'EGB_DzialkaEwidencyjna': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'EGB_PunktGraniczny': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'EGB_Budynek': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'EGB_BlokBudynku': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'EGB_ObiektTrwaleZwiazanyZBudynkiem': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'EGB_KonturUzytkuGruntowego': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'EGB_KonturKlasyfikacyjny': ['obiektPrzedstawiany', 'gml_id', []]},
 
-                        'GES_etykieta':{'GES_odnosnik':['gml_id', 'gml_id',['x','y']],
-                                        'GES_InneUrzadzeniaTowarzyszace': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'GES_UrzadzeniaTowarzyszczaceLiniowe':['obiektPrzedstawiany', 'gml_id',[]],
-                                        'GES_UrzadzeniaTowarzyszaceLiniowe': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'GES_PrzewodWodociagowy':['obiektPrzedstawiany', 'gml_id',[]],
-                                        'GES_PrzewodKanalizacyjny':['obiektPrzedstawiany', 'gml_id',[]],
-                                        'GES_PrzewodElektroenergetyczny':['obiektPrzedstawiany', 'gml_id',[]],
-                                        'GES_PrzewodGazowy':['obiektPrzedstawiany', 'gml_id',[]],
-                                        'GES_PrzewodCieplowniczy':['obiektPrzedstawiany', 'gml_id',[]],
-                                        'GES_PrzewodTelekomunikacyjny':['obiektPrzedstawiany', 'gml_id',[]],
-                                        'GES_PrzewodSpecjalny':['obiektPrzedstawiany', 'gml_id',[]],
-                                        'GES_PrzewodNiezidentyfikowany':['obiektPrzedstawiany', 'gml_id',[]],
-                                        'GES_UrzadzeniaSiecWodociagowa': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'GES_UrzadzeniaSiecKanalizacyjna': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'GES_UrzadzeniaSiecElektroenergetyczna': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'GES_UrzadzeniaSiecGazowa': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'GES_UrzadzeniaSiecCieplownicza': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'GES_UrzadzeniaSiecTelekomunikacyjna': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'GES_UrzadzeniaTechniczneSieciSpecjalnej': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'GES_UrzadzenieNiezidentyfikowane': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'GES_Rzedna': ['obiektPrzedstawiany', 'gml_id', []]},
-                        'GES_UrzadzeniaSiecWodociagowa': {'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'GES_UrzadzeniaSiecKanalizacyjna': {'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'GES_UrzadzeniaSiecElektroenergetyczna': {'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+                        'GES_etykieta': {'GES_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
+                                         'GES_InneUrzadzeniaTowarzyszace': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_UrzadzeniaTowarzyszczaceLiniowe': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_UrzadzeniaTowarzyszaceLiniowe': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_PrzewodWodociagowy': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_PrzewodKanalizacyjny': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_PrzewodElektroenergetyczny': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_PrzewodGazowy': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_PrzewodCieplowniczy': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_PrzewodTelekomunikacyjny': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_PrzewodSpecjalny': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_PrzewodNiezidentyfikowany': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_UrzadzeniaSiecWodociagowa': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_UrzadzeniaSiecKanalizacyjna': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_UrzadzeniaSiecElektroenergetyczna': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_UrzadzeniaSiecGazowa': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_UrzadzeniaSiecCieplownicza': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_UrzadzeniaSiecTelekomunikacyjna': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_UrzadzeniaTechniczneSieciSpecjalnej': ['obiektPrzedstawiany', 'gml_id',
+                                                                                     []],
+                                         'GES_UrzadzenieNiezidentyfikowane': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_Rzedna': ['obiektPrzedstawiany', 'gml_id', []]},
+                        'GES_UrzadzeniaSiecWodociagowa': {
+                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+                        'GES_UrzadzeniaSiecKanalizacyjna': {
+                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+                        'GES_UrzadzeniaSiecElektroenergetyczna': {
+                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
                         'GES_UrzadzeniaSiecGazowa': {'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'GES_UrzadzeniaSiecCieplownicza': {'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'GES_UrzadzeniaSiecTelekomunikacyjna': {'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'GES_UrzadzeniaTechniczneSieciSpecjalnej': {'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'GES_UrzadzenieNiezidentyfikowane': {'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'GES_InneUrzadzeniaTowarzyszace': {'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+                        'GES_UrzadzeniaSiecCieplownicza': {
+                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+                        'GES_UrzadzeniaSiecTelekomunikacyjna': {
+                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+                        'GES_UrzadzeniaTechniczneSieciSpecjalnej': {
+                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+                        'GES_UrzadzenieNiezidentyfikowane': {
+                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+                        'GES_InneUrzadzeniaTowarzyszace': {
+                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
                         'OT_Budowle': {'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
                         'OT_ZagospodarowanieTerenu': {'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
                         'OT_Wody': {'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'OT_ObiektTrwaleZwiazanyZBudynkami': {'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'EGB_ObiektTrwaleZwiazanyZBudynkiem': {'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]}
+                        'OT_ObiektTrwaleZwiazanyZBudynkami': {
+                            'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+                        'EGB_ObiektTrwaleZwiazanyZBudynkiem': {
+                            'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]}
                         }
 
-        #layers = self.getLayers()
-        #tworzenie zlaczen warstw
+        # layers = self.getLayers()
+        # tworzenie zlaczen warstw
         for layer in vec_layers_list:
             layer_name = layer.name()
             if layer_name in joining_dict:
@@ -325,7 +330,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                         QgsProject.instance().addMapLayer(layer)
                         QgsProject.instance().addMapLayer(layer_joining)
                         joinObject = QgsVectorLayerJoinInfo()
-                        joinObject.setJoinFieldNamesBlockList(['prezentacja_etykiety', 'fid', 'przestrzenNazw', 'wersjaId', 'numerOperatu', 'wladajacy'])
+                        joinObject.setJoinFieldNamesBlockList(
+                            ['prezentacja_etykiety', 'fid', 'przestrzenNazw', 'wersjaId', 'numerOperatu', 'wladajacy'])
                         joinObject.setCascadedDelete(False)
                         joinObject.setDynamicFormEnabled(False)
                         joinObject.setEditable(False)
@@ -340,7 +346,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                         joinObject.setJoinLayer(layer_joining)
                         layer.addJoin(joinObject)
 
-        #dodawanie pol
+        # dodawanie pol
         for layer in vec_layers_list:
             fields_list_obj = layer.fields().toList()
             fields_list = []
@@ -356,7 +362,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         iface.mapCanvas().refreshAllLayers()
 
     def on_cmbReda_currentTextChanged(self):
-        #self.set_labels(self.getLayers())
+        # self.set_labels(self.getLayers())
         self.set_red_labels()
 
     def set_red_labels(self):
@@ -373,8 +379,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Karto', karto)
 
         iface.mapCanvas().refreshAllLayers()
-
-
 
     def getLayersByName(self, name):
         layers = self.getLayers()
@@ -393,48 +397,63 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         return layers
 
-
     def on_chbShowPierwsze_stateChanged(self):
         self.disp_settings()
+
     def on_chbShowModyfikowane_stateChanged(self):
         self.disp_settings()
+
     def on_chbShowArchiwalne_stateChanged(self):
         self.disp_settings()
+
     def on_chbShowZamkniete_stateChanged(self):
         self.disp_settings()
+
     def on_chbShowWczesniejsze_stateChanged(self):
         self.disp_settings()
 
     def on_chbColorPierwsze_stateChanged(self):
         self.disp_settings()
+
     def on_chbColorModyfikowane_stateChanged(self):
         self.disp_settings()
+
     def on_chbColorArchiwalne_stateChanged(self):
         self.disp_settings()
+
     def on_chbColorZamkniete_stateChanged(self):
         self.disp_settings()
+
     def on_chbColorWczesniejsze_stateChanged(self):
         self.disp_settings()
 
     def on_colPierwsze_stateChanged(self):
         self.disp_settings()
+
     def on_colModyfikowane_stateChanged(self):
         self.disp_settings()
+
     def on_colArchiwalne_stateChanged(self):
         self.disp_settings()
+
     def on_colZamkniete_stateChanged(self):
         self.disp_settings()
+
     def on_colWczesniejsze_stateChanged(self):
         self.disp_settings()
 
     def on_colPierwsze_colorChanged(self):
         self.disp_settings()
+
     def on_colModyfikowane_colorChanged(self):
         self.disp_settings()
+
     def on_colArchiwalne_colorChanged(self):
         self.disp_settings()
+
     def on_colZamkniete_colorChanged(self):
         self.disp_settings()
+
     def on_colWczesniejsze_colorChanged(self):
         self.disp_settings()
 
@@ -447,28 +466,26 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def on_gbShowWers_toggled(self, on):
         self.disp_wers(on)
 
-
     def back_to_qml_symb(self):
         """Wczytanie stylizacji QML"""
         current_style = self.cmbStylization.currentText()
         Main().setStyling(self.list_or_canvas(self.signal_of_import), current_style)
         expression = ExpressYourself('', '')
         expression.set_label_expression(self.list_or_canvas(self.signal_of_import), False)
-        #self.set_labels(self.getLayers())
+        # self.set_labels(self.getLayers())
 
     def disp_wers(self, on):
         if on:
             self.disp_settings()
-            #expr_color = "kolor_wersji(@DateCompare, @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(startObiekt, ''),concat(startWersjaObiekt, ''),concat(koniecObiekt, ''),concat(koniecWersjaObiekt, ''))"
+            # expr_color = "kolor_wersji(@DateCompare, @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(startObiekt, ''),concat(startWersjaObiekt, ''),concat(koniecObiekt, ''),concat(koniecWersjaObiekt, ''))"
             expr_show = " with_variable( 'show', pokaz_wersje(@DateCompare, @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(" + '"startObiekt"' + ", ''),concat(" + '"startWersjaObiekt"' + ", ''),concat(" + '"koniecObiekt"' + ", ''),concat(" + '"koniecWersjaObiekt"' + ", '')),  if( var('show') != 'default', var('show'), 1111))"
-            #expr_color = "kolor_wersji(@DateCompare, @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(" + '"startObiekt"' + ", ''),concat(" + '"startWersjaObiekt"' + ", ''),concat(" + '"koniecObiekt"' + ", ''),concat(" + '"koniecWersjaObiekt"' + ", ''))"
+            # expr_color = "kolor_wersji(@DateCompare, @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(" + '"startObiekt"' + ", ''),concat(" + '"startWersjaObiekt"' + ", ''),concat(" + '"koniecObiekt"' + ", ''),concat(" + '"koniecWersjaObiekt"' + ", ''))"
             expr_color = " with_variable( 'color', kolor_wersji(@DateCompare, @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(" + '"startObiekt"' + ", ''),concat(" + '"startWersjaObiekt"' + ", ''),concat(" + '"koniecObiekt"' + ", ''),concat(" + '"koniecWersjaObiekt"' + ", '')),  if( var('color'), var('color'), 1111))"
 
-            #expr_show = " with_variable( 'show', pokaz_wersje(@DateCompare, array(true, true, '255,255,0,255'), array(true, true, '0,240,0,255'), array(true, true, '255,0,0,255'), array(true, true, '255,255,0,255'), array(true, true, '255,255,0,255'), '2021-10-12T09:18:22','2021-10-12T09:18:22','2021-10-12T09:18:22','2021-10-12T09:18:22'),  if( var('show') != 'default', var('show'), 1111))"
-            #expr_color = " with_variable( 'color', kolor_wersji(@DateCompare, array(true, true, '255,255,0,255'), array(true, true, '0,240,0,255'), array(true, true, '255,0,0,255'), array(true, true, '255,255,0,255'), array(true, true, '255,255,0,255'), '2021-10-12T09:18:22','2021-10-12T09:18:22','2021-10-12T09:18:22','2021-10-12T09:18:22'),  if( var('color'), var('color'), 1111))"
+            # expr_show = " with_variable( 'show', pokaz_wersje(@DateCompare, array(true, true, '255,255,0,255'), array(true, true, '0,240,0,255'), array(true, true, '255,0,0,255'), array(true, true, '255,255,0,255'), array(true, true, '255,255,0,255'), '2021-10-12T09:18:22','2021-10-12T09:18:22','2021-10-12T09:18:22','2021-10-12T09:18:22'),  if( var('show') != 'default', var('show'), 1111))"
+            # expr_color = " with_variable( 'color', kolor_wersji(@DateCompare, array(true, true, '255,255,0,255'), array(true, true, '0,240,0,255'), array(true, true, '255,0,0,255'), array(true, true, '255,255,0,255'), array(true, true, '255,255,0,255'), '2021-10-12T09:18:22','2021-10-12T09:18:22','2021-10-12T09:18:22','2021-10-12T09:18:22'),  if( var('color'), var('color'), 1111))"
 
-
-            #expr_color = 'case when @WyswWg = ' + "'zmiany'" + ' then ' + expr_stawt_color + ' when @WyswWg = ' + "'wersje'" + ' then ' + expr_wers_color + ' end'
+            # expr_color = 'case when @WyswWg = ' + "'zmiany'" + ' then ' + expr_stawt_color + ' when @WyswWg = ' + "'wersje'" + ' then ' + expr_wers_color + ' end'
 
             expression = ExpressYourself(expr_color, expr_show)
             expression.set_symbol_expression(self.list_or_canvas(self.signal_of_import))
@@ -476,7 +493,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         else:
             # powrot do pierwotnej stylizacji z QML
             self.back_to_qml_symb()
-
 
     def list_or_canvas(self, signal_of_import):
         """Zaleznie od sygnalu, pobierane sa warstwy albo z listy warstw wektorowych
@@ -510,7 +526,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             self.chbColorPierwsze.setEnabled(False)
             self.colPierwsze.setEnabled(False)
 
-
         # Modyfikowane
         if self.chbShowModyfikowane.isChecked():
             self.chbColorModyfikowane.setEnabled(True)
@@ -530,7 +545,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             color_Modyfikowane = 0
             self.chbColorModyfikowane.setEnabled(False)
             self.colModyfikowane.setEnabled(False)
-
 
         # Archiwalne
         if self.chbShowArchiwalne.isChecked():
@@ -552,7 +566,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             self.chbColorArchiwalne.setEnabled(False)
             self.colArchiwalne.setEnabled(False)
 
-
         # Zamkniete
         if self.chbShowZamkniete.isChecked():
             self.chbColorZamkniete.setEnabled(True)
@@ -573,7 +586,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             self.chbColorZamkniete.setEnabled(False)
             self.colZamkniete.setEnabled(False)
 
-        #Znacznik czasu
+        # Znacznik czasu
         if self.chbZnacznik.isChecked():
             self.dteZnacznik.setEnabled(True)
             date_to_compare = self.dteZnacznik.dateTime()
@@ -603,14 +616,13 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             self.dteZnacznik.setEnabled(False)
             date_to_compare = 0
 
-            #wczesniejsze cd
+            # wczesniejsze cd
             self.chbShowWczesniejsze.setEnabled(False)
             set_color_Wczesniejsze = False
             vis_Wczesniejsze = False
             color_Wczesniejsze = 0
             self.chbColorWczesniejsze.setEnabled(False)
             self.colWczesniejsze.setEnabled(False)
-
 
         QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Pierwsze',
                                                      [vis_Pierwsze, set_color_Pierwsze, color_Pierwsze])
@@ -620,11 +632,61 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                                                      [vis_Archiwalne, set_color_Archiwalne, color_Archiwalne])
         QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Zamkniete',
                                                      [vis_Zamkniete, set_color_Zamkniete, color_Zamkniete])
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Wczesniejsze', [vis_Wczesniejsze, set_color_Wczesniejsze, color_Wczesniejsze])
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Wczesniejsze',
+                                                     [vis_Wczesniejsze, set_color_Wczesniejsze, color_Wczesniejsze])
 
         QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'DateCompare', date_to_compare)
 
         iface.mapCanvas().refreshAllLayers()
 
+    def mousePressEvent(self, QMouseEvent):
+        """Przejecie prawego przycisku pod wyswietlanie opcji fillowania"""
+        if QMouseEvent.button() == Qt.RightButton:
+            # pobranie aktualnej pozycji kursora w czasie klikniecia
+            cursor = QtGui.QCursor()
+            cur_pos = cursor.pos()
 
+            self.right_click_dlg = QDialog()
+            self.right_click_dlg.setWindowFlag(Qt.WindowContextHelpButtonHint, False)  # This removes it
+            self.right_click_dlg.setFixedSize(QSize(220, 90))
+            self.right_click_dlg.setWindowTitle("Okno wypełnień")
+
+            # pobranie atrybutow odpowiadajacych za wielkosc okna
+            # wykorzystane przy nadaniu wielkosci przyciskow
+            window_width = self.right_click_dlg.frameGeometry().width()
+            window_height = self.right_click_dlg.frameGeometry().height()
+
+            # definicja przyciskow
+            btn_fill = QPushButton(self.right_click_dlg)
+            btn_fill.setAutoDefault(False)
+            btn_fill.setText("Nadaj kolorystyke wypełnień")
+            btn_fill.setFixedSize(QSize(window_width, 30))
+            # powrot do stylizacji
+            self.back_to_qml_symb()
+            btn_fill.clicked.connect(fill)
+            btn_fill.clicked.connect(self.close_dialog)
+
+            btn_fill_xlsm = QPushButton(self.right_click_dlg)
+            btn_fill_xlsm.setAutoDefault(False)
+            btn_fill_xlsm.setText("Otwórz plik xlsm z parametrami wypełnień")
+            btn_fill_xlsm.move(0, 30)
+            btn_fill_xlsm.setFixedSize(QSize(window_width, 30))
+            btn_fill_xlsm.clicked.connect(open_fill_xlsm)
+            btn_fill_xlsm.clicked.connect(self.close_dialog)
+
+            btn_fill_loc = QPushButton(self.right_click_dlg)
+            btn_fill_loc.setAutoDefault(False)
+            btn_fill_loc.setText("Otwórz lokalizacje pliku wypełnień")
+            btn_fill_loc.move(0, 60)
+            btn_fill_loc.setFixedSize(QSize(window_width, 30))
+            btn_fill_loc.clicked.connect(open_fill_xlsm_loc)
+            btn_fill_loc.clicked.connect(self.close_dialog)
+
+            # przesuniecie okna do pozycji kursora
+            self.right_click_dlg.move(cur_pos)
+            self.right_click_dlg.show()
+
+    def close_dialog(self):
+        """Zamykanie okna dialogu po wywolaniu funkcji"""
+        self.right_click_dlg.close()
 
