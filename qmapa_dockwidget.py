@@ -25,7 +25,6 @@
  *                                                                         *
  ***************************************************************************/
 """
-
 import os
 from datetime import datetime
 import webbrowser
@@ -46,6 +45,9 @@ from .src.config import correct_layers
 from .src.scrap_version import *
 from .src.config import correct_layers
 from .src.express_yourself import ExpressYourself
+from openpyxl import Workbook
+from .src.create_report_file import report
+
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'ui', 'qmapa_dockwidget_base.ui'))
@@ -75,6 +77,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         self.progressBar.hide()
 
+        print(Workbook())
 
         self.rel_times = 0
 
@@ -139,7 +142,9 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             load_gpkg(path)
             self.progressBar.setValue(40)
             print('czas 40%:', datetime.now() - start_2)
-            self.vec_layers_list = Main().create_groups(path)
+            self.vec_layers_list, gr_dict = Main().create_groups(path)
+            counting_dict = Main().generateReport(gr_dict)
+            report().run(counting_dict, name)
             self.vec_layers_list = Main().checkLayers(self.vec_layers_list)
 
             order_list_new = correct_layers  # lista warstw zgodna z rozpo i w dobrej kolejnosci prezentowania

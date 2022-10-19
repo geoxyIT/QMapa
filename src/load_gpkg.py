@@ -1,5 +1,6 @@
 import datetime
 
+
 from osgeo import ogr
 from qgis.PyQt.QtCore import QVariant, QDateTime
 from .config import correct_layers
@@ -10,7 +11,7 @@ def load_gpkg(gpkg_path):
     tj. point, curve, surface"""
 
     def get_version(start_object, start_version, end_object, end_version):
-        version = 'no recognized'
+        '''version = 'no recognized'
         if type(start_object) is str:
             if '.' in start_object:
                 format = "yyyy-MM-dd'T'hh:mm:ss.z"
@@ -45,7 +46,7 @@ def load_gpkg(gpkg_path):
         elif end_object.isNull() is False:
             version = 'closed'
 
-        return version
+        return version'''
 
 
     data = ogr.Open(r'%s' % gpkg_path, 1)
@@ -137,8 +138,11 @@ def load_gpkg(gpkg_path):
             counting_dict[layer_simple_name] = lay_obj
     print('czas policzenia wersji: ', datetime.datetime.now() - start)'''
 
-    for layer in data:
+    data_layers = [lay for lay in data]
+
+    for layer in data_layers:
         if layer.GetGeomType() == 0:
+
             main_layer = data.GetLayer(layer.GetName())
             spatial_ref = main_layer.GetSpatialRef()
             lyr_def = main_layer.GetLayerDefn()
@@ -170,6 +174,23 @@ def load_gpkg(gpkg_path):
                 elif feature.geometry().GetGeometryType() in polygon_list:
                     layer_2.CreateFeature(feature)
             layers_to_delete.append(main_layer.GetName())
+
+        elif layer.GetGeomType() in pts_list:
+            main_layer = data.GetLayer(layer.GetName())
+            data.ExecuteSQL(f'ALTER TABLE {main_layer.GetName()} RENAME TO {main_layer.GetName() + "_0"}')
+
+        elif layer.GetGeomType() in line_list:
+            main_layer = data.GetLayer(layer.GetName())
+            data.ExecuteSQL(f'ALTER TABLE {main_layer.GetName()} RENAME TO {main_layer.GetName() + "_1"}')
+
+        elif layer.GetGeomType() in polygon_list:
+            main_layer = data.GetLayer(layer.GetName())
+            data.ExecuteSQL(f'ALTER TABLE {main_layer.GetName()} RENAME TO {main_layer.GetName() + "_2"}')
+
+        else:
+            main_layer = data.GetLayer(layer.GetName())
+            data.ExecuteSQL(f'ALTER TABLE {main_layer.GetName()} RENAME TO {main_layer.GetName() + "_9"}')
+
 
     '''print(obj_first,obj_modified,obj_archival,obj_closed)
     print(counting_list)

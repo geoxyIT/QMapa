@@ -9,8 +9,9 @@ from qgis.core import *
 from osgeo import ogr
 from osgeo_utils.samples import ogr2ogr
 
-from .config import correct_layers
+from .config import correct_layers, pts_list, line_list, polygon_list
 from .express_yourself import ExpressYourself
+from .create_report_file import report
 
 '''from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
@@ -333,16 +334,18 @@ class Main:
         def mygen(lst):
             """funkcja do tworzenia dodatkowych nazw warstw z sufixem"""
             for item in lst:
+                #print('item: ', item)
                 yield item
                 yield item + '_0'
                 yield item + '_1'
                 yield item + '_2'
+                yield item + '_9'
 
         # numeracja warstw spoza rozporzadzenia
-        # todo: dlaczego tu jest 90?
-        out_list_index = 90
+        out_list_index = 999
 
         order_list = list(mygen(order_list))
+        #print(order_list)
 
         #rozpoznanie z jakiej bazy pochodzi warstwa zeby przyporzadkowac ja do wlasciwej grupy
         def sort_by_base_type (layers_list):
@@ -371,8 +374,6 @@ class Main:
         type_groups_dict = sort_by_base_type(layers_with_type)
         type_groups_dict_table = sort_by_base_type(table_layers_list)
 
-        self.generateReport(sort_by_base_type(all_layers_list), {})
-
         root = QgsProject.instance().layerTreeRoot()
         main_group = QgsLayerTreeGroup(str(main_group_name))
         root.addChildNode(main_group)
@@ -394,7 +395,7 @@ class Main:
 
             # wstawianie z geometria do grupy z zachowaniem kolejnosci
             for idx, layer in enumerate(group_layers_with_type):
-                # zmiana koncowek nazw warstw z 0 1 2 na puste
+                # zmiana koncowek nazw warstw z _0 _1 _2 itp na puste
                 if layer[1].sourceName()[-1].isdigit():
                     replaced_name = layer[1].sourceName().replace(layer[1].sourceName()[-2:], '')
                     layer[1].setName(replaced_name)
@@ -411,10 +412,16 @@ class Main:
             found_group.insertGroup(-1, 'Warstwy Tekstowe')  # dodanie grupy na koncu
             group = found_group.findGroup('Warstwy Tekstowe')
             for layer in table_group_layers_with_type:
+                # zmiana koncowek nazw warstw z _0 _1 _2 itp na puste
+                if layer[1].sourceName()[-1].isdigit():
+                    replaced_name = layer[1].sourceName().replace(layer[1].sourceName()[-2:], '')
+                    layer[1].setName(replaced_name)
                 group.addLayer(layer[1])
                 root.removeLayer(layer[1])
 
-        return vec_layers_list
+        gr_dict = sort_by_base_type(all_layers_list)
+
+        return vec_layers_list, gr_dict
 
     def getStylizations(self, omit_special=False):
         """Pobieranie stylizacji z folderu we wtyczce, omit_special oznacza pomijanie stylizacji zapisanych w [ ]"""
@@ -484,7 +491,7 @@ class Main:
 
         return version
 
-    def generateReport(self, type_groups_dict, type_groups_dict_table):
+    def generateReport(self, type_groups_dict):
         '''all = 0
         for group_name, group_items in type_groups_dict.items():
             for item in group_items:
@@ -504,6 +511,7 @@ class Main:
         obj_nd = 0
 
         counting_dict = {'EGiB':{}, 'GESUT':{}, 'BDOT500':{}}
+        techn_layers = ['OT_etykieta', 'GES_etykieta', 'EGB_etykieta', 'OT_poczatekGorySkarpy', 'OT_koniecGorySkarpy', 'EGB_odnosnik', 'OT_odnosnik', 'GES_odnosnik']
 
         dict_split_by_type = {}
 
@@ -514,66 +522,67 @@ class Main:
                 layer_simple_name = layer.name()
                 # print(layer_simple_name)
                 if group_name in ['EGiB', 'GESUT', 'BDOT500']:  # is layer correct : True
-                    if group_name not in counting_dict:
-                        counting_dict[group_name] = {}
+                    if layer_simple_name not in techn_layers:
+                        if group_name not in counting_dict:
+                            counting_dict[group_name] = {}
 
-                    if layer_simple_name in counting_dict[group_name]:
-                        values = counting_dict[group_name][layer_simple_name]
-                        lay_obj_first = values[0]
-                        lay_obj_modified = values[1]
-                        lay_obj_archival = values[2]
-                        lay_obj_closed = values[3]
-                        uniq_iip = values[5]
-                    else:
-                        lay_obj_first = 0
-                        lay_obj_modified = 0
-                        lay_obj_archival = 0
-                        lay_obj_closed = 0
-                        uniq_iip = set()
-                    for feature in layer.getFeatures():
-                        try:
-                            iip = feature.attribute("przestrzenNazw") + feature.attribute("lokalnyId")
-                            uniq_iip.add(iip)
-                        except:
-                            pass
-                        try:
-                            start_ob = feature.attribute("startObiekt")
-                        except:
-                            start_ob = ''
-                        try:
-                            start_vers = feature.attribute("startWersjaObiekt")
-                        except:
-                            start_vers = ''
-                        try:
-                            end_ob = feature.attribute("koniecObiekt")
-                        except:
-                            end_ob = ''
-                        try:
-                            end_vers = feature.attribute("koniecWersjaObiekt")
-                        except:
-                            end_vers = ''
+                        if layer_simple_name in counting_dict[group_name]:
+                            values = counting_dict[group_name][layer_simple_name]
+                            lay_obj_first = values[0]
+                            lay_obj_modified = values[1]
+                            lay_obj_archival = values[2]
+                            lay_obj_closed = values[3]
+                            uniq_iip = values[5]
+                        else:
+                            lay_obj_first = 0
+                            lay_obj_modified = 0
+                            lay_obj_archival = 0
+                            lay_obj_closed = 0
+                            uniq_iip = set()
+                        for feature in layer.getFeatures():
+                            try:
+                                iip = feature.attribute("przestrzenNazw") + feature.attribute("lokalnyId")
+                                uniq_iip.add(iip)
+                            except:
+                                pass
+                            try:
+                                start_ob = feature.attribute("startObiekt")
+                            except:
+                                start_ob = ''
+                            try:
+                                start_vers = feature.attribute("startWersjaObiekt")
+                            except:
+                                start_vers = ''
+                            try:
+                                end_ob = feature.attribute("koniecObiekt")
+                            except:
+                                end_ob = ''
+                            try:
+                                end_vers = feature.attribute("koniecWersjaObiekt")
+                            except:
+                                end_vers = ''
 
-                        feature_version = self.get_version(start_object=start_ob, start_version=start_vers, end_object=end_ob,
-                                                      end_version=end_vers)
+                            feature_version = self.get_version(start_object=start_ob, start_version=start_vers, end_object=end_ob,
+                                                          end_version=end_vers)
 
-                        if feature_version == 'first':
-                            lay_obj_first += 1
-                        elif feature_version == 'modified':
-                            lay_obj_modified += 1
-                        elif feature_version == 'archival':
-                            lay_obj_archival += 1
-                        elif feature_version == 'closed':
-                            lay_obj_closed += 1
+                            if feature_version == 'first':
+                                lay_obj_first += 1
+                            elif feature_version == 'modified':
+                                lay_obj_modified += 1
+                            elif feature_version == 'archival':
+                                lay_obj_archival += 1
+                            elif feature_version == 'closed':
+                                lay_obj_closed += 1
 
 
-                        counting_dict[group_name][layer_simple_name] = [lay_obj_first, lay_obj_modified, lay_obj_archival,
-                                                            lay_obj_closed, len(uniq_iip), uniq_iip, geometry_type]
+                            counting_dict[group_name][layer_simple_name] = [lay_obj_first, lay_obj_modified, lay_obj_archival,
+                                                                lay_obj_closed, len(uniq_iip), uniq_iip, geometry_type]
 
-                    # print(layer.GetName(), lay_obj_open, lay_obj_closed, lay_obj_archival)
-                    obj_first += lay_obj_first
-                    obj_modified += lay_obj_modified
-                    obj_archival += lay_obj_archival
-                    obj_closed += lay_obj_closed
+                        # print(layer.GetName(), lay_obj_open, lay_obj_closed, lay_obj_archival)
+                        obj_first += lay_obj_first
+                        obj_modified += lay_obj_modified
+                        obj_archival += lay_obj_archival
+                        obj_closed += lay_obj_closed
 
                 else:  # is layer correct : False
                     if group_name not in counting_dict:
@@ -591,70 +600,8 @@ class Main:
                     counting_dict[group_name][layer_simple_name] = [lay_obj_nd, geometry_type]
 
         #print('suma: ', obj_first+obj_modified+obj_closed+obj_archival+obj_nd, counting_dict)
-        print(counting_dict)
-        print('czas policzenia wersji w main: ', datetime.datetime.now() - start)
+        #print(counting_dict)
+        #print('czas policzenia wersji w main: ', datetime.datetime.now() - start)
 
-        #self.saveReport(counting_dict)
-
-    def saveReport(self, counting_dict):
-        pts_list = [1, 4, 2001, 2004, 3001, 3004, -2147483647, -2147483644]
-        line_list = [2, 5, 8, 9, 11, 13, 101, 1008, 1009, 1011, 1013, 2002, 2005, 2008, 2009, 2011, 2013, 3002, 3005,
-                     3008,
-                     3009, 3011, 3013, -2147483646, -2147483643]
-        polygon_list = [3, 6, 10, 12, 14, 15, 16, 17, 1010, 1012, 1014, 1015, 1016, 1017, 2003, 2006, 2010, 2012, 2014,
-                        2015, 2016, 2017,
-                        3003, 3006, 3010, 3012, 3014, 3015, 3016, 3017, -2147483645, -2147483642]
-
-        "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% "
-
-        #template_wb = load_workbook(filename=r"C:\Users\geoxy\Desktop\wszystkie_testy\raport importu\szablon_raport_importu.xlsx")
-
-        #template_wb.save(r"C:\Users\geoxy\Desktop\wszystkie_testy\raport importu\test1.xlsx")
-
-        #new_workbook = self.createEmptyWorkbook()
-        #new_worksheet = new_workbook.create_sheet('raport importu')
-
-        "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% "
-        print(counting_dict)
-
-        print('klasa obiektów: \t typ geometrii: \t liczba wersji \t\t w tym wersje \t\t\t liczba obiektów:\n'
-              '\t\t obiektów: \t pierwsze \t modyfikowane \t archiwalne \t zamkniete')
-
-        for name_obj, obj_count in counting_dict.items():
-
-            geom_id = obj_count[-1]
-            if geom_id in pts_list:
-                geomet_name_type = 'punkt'
-            elif geom_id in line_list:
-                geomet_name_type = 'linia'
-            elif geom_id in polygon_list:
-                geomet_name_type = 'polig'
-            elif geom_id == 100:
-                geomet_name_type = 'brak'
-            else:
-                geomet_name_type = 'nieznana'
-
-
-            if len(obj_count) == 2:
-                #print(name_obj, obj_count, geomet_name_type)
-                line = name_obj + '\t' + geomet_name_type + '\t' + str(obj_count[0])
-            elif len (obj_count) == 7:
-                #print(name_obj, obj_count[0:5], geomet_name_type)
-                line = name_obj + '\t' + geomet_name_type + '\t' + '?\t' + str(obj_count[0]) + '\t' + str(obj_count[1]) + '\t' + str(obj_count[2]) + '\t' + str(obj_count[3]) + '\t' + str(obj_count[4])
-            else:
-                #print(name_obj, obj_count, geomet_name_type, 'Błąd!')
-                pass
-            print(line)
-        pass
-
-    '''def createEmptyWorkbook(self):
-        """stworzenie nowego pustego pliku excel"""
-        wb = Workbook()
-        wb.remove(wb.active)
-        return wb
-
-    def saveWorkbook(self, wb, output_filename):
-        """zapisanie pliku wynikowego"""
-        wb_output = wb.save(output_filename)
-        return wb_output'''
+        return counting_dict
 
