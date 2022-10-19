@@ -646,6 +646,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             cursor = QtGui.QCursor()
             cur_pos = cursor.pos()
 
+            current_scale = self.cmbStylization.currentText()
+
             self.right_click_dlg = QDialog()
             self.right_click_dlg.setWindowFlag(Qt.WindowContextHelpButtonHint, False)  # This removes it
             self.right_click_dlg.setFixedSize(QSize(220, 90))
@@ -663,7 +665,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             btn_fill.setFixedSize(QSize(window_width, 30))
             # powrot do stylizacji
             self.back_to_qml_symb()
-            btn_fill.clicked.connect(fill)
+            btn_fill.clicked.connect(lambda: fill(scale=current_scale))
             btn_fill.clicked.connect(self.close_dialog)
 
             btn_fill_xlsm = QPushButton(self.right_click_dlg)

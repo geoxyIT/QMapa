@@ -6,9 +6,10 @@ import numpy as np
 
 from qgis.utils import iface
 from qgis.core import *
+from qgis.PyQt.QtCore import Qt
 
 # otwarcie pliku excel
-file_path = r'D:\PROJEKT_QGIS\!!NOWOSCI_DO_QGEOXY\FILLOWANIE\QMapa_wypelnieniaObszarow_2022-09-29.xlsm'
+file_path = r'C:\Users\Geoxy\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\QMapa\fill\QMapa_wypelnieniaObszarow_2022-09-29.xlsm'
 
 # utworzenie slownika
 df = pd.read_excel(file_path, sheet_name='Wypelnienia')
@@ -66,6 +67,7 @@ def hatching(rotation_formula, spacing_formula, width_formula, layer=None, child
             internal_pattern_line.dataDefinedProperties().property(5).setExpressionString(width_formula)
             internal_pattern_line.setWidthUnit(1)  # map units
 
+
 def hatching_only_values(rotation, spacing, width, layer=None, child=None, single=True):
     """Funkcja wykonujaca kreskowanie na symbolu LinePatternFill - wypelnianie samych wartosci,
     jest to wykorzystywane w przypadku gdy nie ma atrybutu podstawowego"""
@@ -94,15 +96,28 @@ def hatching_only_values(rotation, spacing, width, layer=None, child=None, singl
             internal_pattern_line.setWidth(width)
             internal_pattern_line.setWidthUnit(1)  # map units
 
-def fill_with_color():
+
+def appropriate_scale(spacing: int, scale: str) -> float:
+    """Ustawienie odpowiednich parametrów kreskowań w zależności od zadanej skali"""
+    if scale == '500':
+        new_spacing = spacing * 1.33
+        return new_spacing
+    elif scale == '2000':
+        new_spacing = spacing * 1.5
+        return new_spacing
+    else:
+        return spacing
+
+def fill_with_color(scale):
+    """Metodyka nadawania kreskowań dla symboli w oparciu o zadany plik konfiguracyjny xlsm"""
     # przejscie po warstwach
     layers = list(QgsProject.instance().mapLayers().values())
     for layer in layers:
-        if layer.geometryType() == 2:  # warstwa poligonowa
+        if layer.type() == QgsMapLayerType.VectorLayer and layer.geometryType() == 2:  # warstwa poligonowa
             renderer = layer.renderer()
             if renderer.type() == 'singleSymbol':
-                symbols = layer.renderer().symbol().symbolLayers()
-                summary_hatching = [[], [], [], []]
+                # symbols = layer.renderer().symbol().symbolLayers()
+                summary_hatching = [[], [], []]
                 formula = 'case '
                 dict_idx = 0
                 for single_dict in fill_dict:
@@ -112,18 +127,19 @@ def fill_with_color():
                                      single_dict['Transparentnosc']
                         formula = f'\'{R},{G},{B},{T}\''
                         hatching_list = [v for k, v in single_dict.items() if
-                                         k.startswith(('Obrot', 'Odstep', 'Przesuniecie', 'Grubosc'))]
+                                         k.startswith(('Obrot', 'Odstep', 'Grubosc'))]
                         if len(hatching_list) > 0:  # jezeli ma kolumne dotyczaca kresowania to przechodzi dalej
                             step = 0  # interwal dla ilosci parametrow w kolumnnach kreskowania
                             for i in range(int(len(hatching_list) / 4)):  # zaleznie od ilosci kolumn kreskowania
                                 rotation = hatching_list[0 + step]
-                                spacing = hatching_list[1 + step]
-                                offset = hatching_list[2 + step]
-                                width = hatching_list[3 + step]
+                                spacing = appropriate_scale(hatching_list[1 + step],
+                                                            scale)  # konwersja w oparciu o skale
+                                # offset = hatching_list[2 + step]
+                                width = hatching_list[2 + step]
                                 summary_hatching[0].append(rotation)
                                 summary_hatching[1].append(spacing)
-                                summary_hatching[2].append(offset)
-                                summary_hatching[3].append(width)
+                                # summary_hatching[2].append(offset)
+                                summary_hatching[2].append(width)
                                 step += 4
                     # przypadek jezeli wykorzystywane sa atrybuty zawarte w tabeli atrybutow
                     # przypadek dla konturu klasyfikacyjnego albo konturu uzytku gruntowego
@@ -134,23 +150,24 @@ def fill_with_color():
                                      single_dict['Transparentnosc']
                         formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{R},{G},{B},{T}\' '
                         hatching_list = [v for k, v in single_dict.items() if
-                                         k.startswith(('Obrot', 'Odstep', 'Przesuniecie', 'Grubosc'))]
+                                         k.startswith(('Obrot', 'Odstep', 'Grubosc'))]
                         if len(hatching_list) > 0:  # jezeli ma kolumne dotyczaca kresowania to przechodzi dalej
                             step = 0  # interwal dla ilosci parametrow w kolumnnach kreskowania
                             for i in range(int(len(hatching_list) / 4)):  # zaleznie od ilosci kolumn kreskowania
                                 if dict_idx == 0:  # dla pierwszego symbolu w rule dodaje warunki - case'y
                                     summary_hatching[0].append('case ')
                                     summary_hatching[1].append('case ')
+                                    # summary_hatching[2].append('case ')
                                     summary_hatching[2].append('case ')
-                                    summary_hatching[3].append('case ')
                                 rotation = hatching_list[0 + step]
-                                spacing = hatching_list[1 + step]
-                                offset = hatching_list[2 + step]
-                                width = hatching_list[3 + step]
+                                spacing = appropriate_scale(hatching_list[1 + step],
+                                                            scale)  # konwersja w oparciu o skale
+                                # offset = hatching_list[2 + step]
+                                width = hatching_list[2 + step]
                                 summary_hatching[0][i] += f'when \"{basic_atr}\" is \'{ap_value}\' then {rotation} '
                                 summary_hatching[1][i] += f'when \"{basic_atr}\" is \'{ap_value}\' then {spacing} '
-                                summary_hatching[2][i] += f'when \"{basic_atr}\" is \'{ap_value}\' then {offset} '
-                                summary_hatching[3][i] += f'when \"{basic_atr}\" is \'{ap_value}\' then {width} '
+                                # summary_hatching[2][i] += f'when \"{basic_atr}\" is \'{ap_value}\' then {offset} '
+                                summary_hatching[2][i] += f'when \"{basic_atr}\" is \'{ap_value}\' then {width} '
                                 step += 4
                             dict_idx += 1  # indeks dla ilosci kreskowania
 
@@ -158,6 +175,7 @@ def fill_with_color():
                 if 'case' not in formula:
                     # przypadek jezeli nie ma atrybutow podstawowych
                     new_fill_color = QgsSimpleFillSymbolLayer()
+                    new_fill_color.setStrokeStyle(Qt.NoPen)
                     new_fill_color.dataDefinedProperties().property(3).setExpressionString(formula)
                     new_fill_color.dataDefinedProperties().property(3).setActive(True)
                     layer.renderer().symbol().appendSymbolLayer(new_fill_color)
@@ -165,11 +183,12 @@ def fill_with_color():
                         for idx in range(int(len(summary_hatching[0]))):
                             hatching_only_values(rotation=summary_hatching[0][idx],
                                                  spacing=summary_hatching[1][idx],
-                                                 width=summary_hatching[3][idx])
+                                                 width=summary_hatching[2][idx])
                 elif formula != 'case ':
                     # przypadek jezeli sa atrybuty
                     formula += 'end'
                     new_fill_color = QgsSimpleFillSymbolLayer()
+                    new_fill_color.setStrokeStyle(Qt.NoPen)
                     new_fill_color.dataDefinedProperties().property(3).setExpressionString(formula)
                     new_fill_color.dataDefinedProperties().property(3).setActive(True)
                     layer.renderer().symbol().appendSymbolLayer(new_fill_color)
@@ -177,7 +196,7 @@ def fill_with_color():
                         for idx in range(int(len(summary_hatching[0]))):
                             hatching(rotation_formula=summary_hatching[0][idx],
                                      spacing_formula=summary_hatching[1][idx],
-                                     width_formula=summary_hatching[3][idx])
+                                     width_formula=summary_hatching[2][idx])
 
             elif renderer.type() == 'RuleRenderer':
                 for child in layer.renderer().rootRule().children():
@@ -195,18 +214,19 @@ def fill_with_color():
                                          single_dict['Transparentnosc']
                             formula = f'\'{R},{G},{B},{T}\''
                             hatching_list = [v for k, v in single_dict.items() if
-                                             k.startswith(('Obrot', 'Odstep', 'Przesuniecie', 'Grubosc'))]
-                            if len(hatching_list) > 0:  #jezeli ma kolumne dotyczaca kresowania to przechodzi dalej
+                                             k.startswith(('Obrot', 'Odstep', 'Grubosc'))]
+                            if len(hatching_list) > 0:  # jezeli ma kolumne dotyczaca kresowania to przechodzi dalej
                                 step = 0  # interwal dla ilosci parametrow w kolumnnach kreskowania
                                 for i in range(int(len(hatching_list) / 4)):  # zaleznie od ilosci kolumn kreskowania
                                     rotation = hatching_list[0 + step]
-                                    spacing = hatching_list[1 + step]
-                                    offset = hatching_list[2 + step]
-                                    width = hatching_list[3 + step]
+                                    spacing = appropriate_scale(hatching_list[1 + step],
+                                                                scale)  # konwersja w oparciu o skale
+                                    # offset = hatching_list[2 + step]
+                                    width = hatching_list[2 + step]
                                     summary_hatching[0].append(rotation)
                                     summary_hatching[1].append(spacing)
-                                    summary_hatching[2].append(offset)
-                                    summary_hatching[3].append(width)
+                                    # summary_hatching[2].append(offset)
+                                    summary_hatching[2].append(width)
                                     step += 4
                         # przypadek jezeli wykorzystywane sa atrybuty zawarte w tabeli atrybutow
                         elif layer.name() == single_dict['KlasaObiektu']:
@@ -216,23 +236,24 @@ def fill_with_color():
                                          single_dict['Transparentnosc']
                             formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{R},{G},{B},{T}\' '
                             hatching_list = [v for k, v in single_dict.items() if
-                                             k.startswith(('Obrot', 'Odstep', 'Przesuniecie', 'Grubosc'))]
-                            if len(hatching_list) > 0:  #jezeli ma kolumne dotyczaca kresowania to przechodzi dalej
+                                             k.startswith(('Obrot', 'Odstep', 'Grubosc'))]
+                            if len(hatching_list) > 0:  # jezeli ma kolumne dotyczaca kresowania to przechodzi dalej
                                 step = 0  # interwal dla ilosci parametrow w kolumnnach kreskowania
                                 for i in range(int(len(hatching_list) / 4)):  # zaleznie od ilosci kolumn kreskowania
                                     if dict_idx == 0:  # dla pierwszego symbolu w rule dodaje warunki - case'y
                                         summary_hatching[0].append('case ')
                                         summary_hatching[1].append('case ')
+                                        # summary_hatching[2].append('case ')
                                         summary_hatching[2].append('case ')
-                                        summary_hatching[3].append('case ')
                                     rotation = hatching_list[0 + step]
-                                    spacing = hatching_list[1 + step]
-                                    offset = hatching_list[2 + step]
-                                    width = hatching_list[3 + step]
+                                    spacing = appropriate_scale(hatching_list[1 + step],
+                                                                scale)  # konwersja w oparciu o skale
+                                    # offset = hatching_list[2 + step]
+                                    width = hatching_list[2 + step]
                                     summary_hatching[0][i] += f'when \"{basic_atr}\" is \'{ap_value}\' then {rotation} '
                                     summary_hatching[1][i] += f'when \"{basic_atr}\" is \'{ap_value}\' then {spacing} '
-                                    summary_hatching[2][i] += f'when \"{basic_atr}\" is \'{ap_value}\' then {offset} '
-                                    summary_hatching[3][i] += f'when \"{basic_atr}\" is \'{ap_value}\' then {width} '
+                                    # summary_hatching[2][i] += f'when \"{basic_atr}\" is \'{ap_value}\' then {offset} '
+                                    summary_hatching[2][i] += f'when \"{basic_atr}\" is \'{ap_value}\' then {width} '
                                     step += 4
                             dict_idx += 1  # indeks dla ilosci kreskowania
 
@@ -240,6 +261,7 @@ def fill_with_color():
                     if 'case' not in formula:
                         # przypadek jezeli nie ma atrybutow podstawowych
                         new_fill_color = QgsSimpleFillSymbolLayer()
+                        new_fill_color.setStrokeStyle(Qt.NoPen)
                         new_fill_color.dataDefinedProperties().property(3).setExpressionString(formula)
                         new_fill_color.dataDefinedProperties().property(3).setActive(True)
                         child.symbols()[0].appendSymbolLayer(new_fill_color)
@@ -247,13 +269,14 @@ def fill_with_color():
                             for idx in range(int(len(summary_hatching[0]))):
                                 hatching_only_values(rotation=summary_hatching[0][idx],
                                                      spacing=summary_hatching[1][idx],
-                                                     width=summary_hatching[3][idx],
+                                                     width=summary_hatching[2][idx],
                                                      layer=layer, child=child,
                                                      single=False)
                     elif formula != 'case ':
                         # przypadek jezeli sa atrybuty
                         formula += 'end'
                         new_fill_color = QgsSimpleFillSymbolLayer()
+                        new_fill_color.setStrokeStyle(Qt.NoPen)
                         new_fill_color.dataDefinedProperties().property(3).setExpressionString(formula)
                         new_fill_color.dataDefinedProperties().property(3).setActive(True)
                         child.symbols()[0].appendSymbolLayer(new_fill_color)
@@ -262,7 +285,7 @@ def fill_with_color():
                             for idx in range(int(len(summary_hatching[0]))):
                                 hatching(rotation_formula=summary_hatching[0][idx],
                                          spacing_formula=summary_hatching[1][idx],
-                                         width_formula=summary_hatching[3][idx],
+                                         width_formula=summary_hatching[2][idx],
                                          layer=layer, child=child,
                                          single=False)
 
@@ -273,17 +296,16 @@ def fill_with_color():
     iface.mapCanvas().refreshAllLayers()
 
 
-
-
-
-def fill():
+def fill(scale):
     print('Wypełniam')
-    fill_with_color()
+    fill_with_color(scale)
+
 
 def open_fill_xlsm():
     print('Otwieram plik xlsm z parametrami wypełniania')
+    webbrowser.open(r'C:\Users\Geoxy\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\QMapa\fill\QMapa_wypelnieniaObszarow_2022-09-29.xlsm')
+
 
 def open_fill_xlsm_loc():
     print('Otwieram lokalizacje pliku xlsx')
     webbrowser.open(r'C:\Users\Geoxy\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\QMapa')
-
