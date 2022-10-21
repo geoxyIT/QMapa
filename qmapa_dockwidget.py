@@ -119,6 +119,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def on_pbLogo_clicked(self):
         """Przycisk wywolania strony po nacisnieciu Logo GEOXY"""
         webbrowser.open('http://www.geoxy.pl/')
+        print(QgsProject.instance().clear())
 
 
     def on_pbImport_pressed(self):
@@ -144,7 +145,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             print('czas 40%:', datetime.now() - start_2)
             self.vec_layers_list, gr_dict = Main().create_groups(path)
             counting_dict = Main().generateReport(gr_dict)
-            report().run(counting_dict, name)
+            report_file_path = report().run(counting_dict, name)
             self.vec_layers_list = Main().checkLayers(self.vec_layers_list)
 
             order_list_new = correct_layers  # lista warstw zgodna z rozpo i w dobrej kolejnosci prezentowania
@@ -224,6 +225,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             self.progressBar.setValue(100)
             print('czas 100%:', datetime.now() - start_2)
             self.progressBar.hide()
+            iface.messageBar().pushMessage("raport z importu", '<a href="' + report_file_path + '">raport' + '</a>', level = Qgis.Success, duration = 120)
 
             self.signal_of_import = False
 

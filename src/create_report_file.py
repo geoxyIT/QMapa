@@ -18,6 +18,7 @@ class report:
         self.a = 1
 
     def copyRange(self, startCol, startRow, endCol, endRow, sheet):
+        """Funkcja do kopiowania zakresu komorek"""
         styleAll = []
         rangeSelected = []
         allMergedCells = sheet.merged_cells.ranges
@@ -54,6 +55,7 @@ class report:
 
     def pasteRange(self, startCol, startRow, endCol, endRow, sheetReceiving, copiedData, style, mergedCells=[],
                    include_value=True):
+        """funckaj do wklejania zakresu komorek"""
         # Paste range
         # Paste data from copyRange into template sheet
 
@@ -91,6 +93,7 @@ class report:
         return sheetReceiving
 
     def remove_merged(self, startCol, startRow, endCol, endRow, sheet):
+        """usuwanie polaczen komorek z wybranego zakresu"""
         allMergedCells = sheet.merged_cells.ranges
         merged_list = []
         for ranges in allMergedCells:
@@ -106,15 +109,6 @@ class report:
         main_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
         template_path = os.path.join(main_dir, 'raport', 'szablon_raport_importu.xlsx')
 
-
-        pts_list = [1, 4, 2001, 2004, 3001, 3004, -2147483647, -2147483644]
-        line_list = [2, 5, 8, 9, 11, 13, 101, 1008, 1009, 1011, 1013, 2002, 2005, 2008, 2009, 2011, 2013, 3002, 3005,
-                     3008,
-                     3009, 3011, 3013, -2147483646, -2147483643]
-        polygon_list = [3, 6, 10, 12, 14, 15, 16, 17, 1010, 1012, 1014, 1015, 1016, 1017, 2003, 2006, 2010, 2012, 2014,
-                        2015, 2016, 2017,
-                        3003, 3006, 3010, 3012, 3014, 3015, 3016, 3017, -2147483645, -2147483642]
-
         start_paste_row = 7
         #template_wb = load_workbook(filename=r"C:\Users\geoxy\Desktop\wszystkie_testy\raport importu\szablon_raport_importu.xlsx")
         template_wb = load_workbook(filename=template_path)
@@ -122,43 +116,50 @@ class report:
 
         sheet = template_wb['QMapa_import']
 
-        header_egib_data, header_egib_style, header_egib_merged = self.copyRange(1,7,9,9,sheet)
-        body_egib_data, body_egib_style, body_egib_merged = self.copyRange(1,10,9,10,sheet)
+        header_egib_data, header_egib_style, header_egib_merged = self.copyRange(1,7,8,9,sheet)
+        body_egib_data, body_egib_style, body_egib_merged = self.copyRange(1,10,8,10,sheet)
         bottom_egib_data, bottom_egib_style, bottom_egib_merged = self.copyRange(1,11,9,11,sheet)
+        prez_egib_data, prez_egib_style, prez_egib_merged = self.copyRange(1,12,9,13,sheet)
 
-        header_gesut_data, header_gesut_style, header_gesut_merged = self.copyRange(1,13,9,15,sheet)
-        body_gesut_data, body_gesut_style, body_gesut_merged = self.copyRange(1,16,9,16,sheet)
-        bottom_gesut_data, bottom_gesut_style, bottom_gesut_merged = self.copyRange(1,17,9,17,sheet)
+        header_gesut_data, header_gesut_style, header_gesut_merged = self.copyRange(1,15,8,17,sheet)
+        body_gesut_data, body_gesut_style, body_gesut_merged = self.copyRange(1,18,8,18,sheet)
+        bottom_gesut_data, bottom_gesut_style, bottom_gesut_merged = self.copyRange(1,19,8,19,sheet)
+        prez_gesut_data, prez_gesut_style, prez_gesut_merged = self.copyRange(1,20,9,21,sheet)
 
-        header_bdot500_data, header_bdot500_style, header_bdot500_merged = self.copyRange(1,19,9,21,sheet)
-        body_bdot500_data, body_bdot500_style, body_bdot500_merged = self.copyRange(1,22,9,22,sheet)
-        bottom_bdot500_data, bottom_bdot500_style, bottom_bdot500_merged = self.copyRange(1,23,9,23,sheet)
 
-        header_other_data, header_other_style, header_other_merged = self.copyRange(1,25,4,27,sheet)
-        body_other_data, body_other_style, body_other_merged = self.copyRange(1,28,4,28,sheet)
-        bottom_other_data, bottom_other_style, bottom_other_merged = self.copyRange(1,29,4,29,sheet)
+        header_bdot500_data, header_bdot500_style, header_bdot500_merged = self.copyRange(1,23,8,25,sheet)
+        body_bdot500_data, body_bdot500_style, body_bdot500_merged = self.copyRange(1,26,8,26,sheet)
+        bottom_bdot500_data, bottom_bdot500_style, bottom_bdot500_merged = self.copyRange(1,27,8,27,sheet)
+        prez_bdot500_data, prez_bdot500_style, prez_bdot500_merged = self.copyRange(1,28,9,29,sheet)
 
-        dict_copied_frame = {'EGiB':{'header':[header_egib_data,header_egib_style,header_egib_merged],'body':[body_egib_data,body_egib_style,body_egib_merged],'bottom':[bottom_egib_data,bottom_egib_style,bottom_egib_merged]},'GESUT':{'header':[header_gesut_data,header_gesut_style,header_gesut_merged],'body':[body_gesut_data,body_gesut_style,body_gesut_merged],'bottom':[bottom_gesut_data,bottom_gesut_style,bottom_gesut_merged]},'BDOT500':{'header':[header_bdot500_data,header_bdot500_style,header_bdot500_merged],'body':[body_bdot500_data,body_bdot500_style,body_bdot500_merged],'bottom':[bottom_bdot500_data,bottom_bdot500_style,bottom_bdot500_merged]},'other':{'header':[header_other_data,header_other_style,header_other_merged],'body':[body_other_data,body_other_style,body_other_merged],'bottom':[bottom_other_data,bottom_other_style,bottom_other_merged]}}
 
-        sheet = self.remove_merged(1,7,9,30,sheet)
-        sheet.delete_rows(7,30)
+        header_other_data, header_other_style, header_other_merged = self.copyRange(1,31,3,33,sheet)
+        body_other_data, body_other_style, body_other_merged = self.copyRange(1,34,3,34,sheet)
+        bottom_other_data, bottom_other_style, bottom_other_merged = self.copyRange(1,35,3,35,sheet)
 
-        sheet['A3'] = 'Plik: ' + str(file_path)
+        dict_copied_frame = {'EGiB':{'header':[header_egib_data,header_egib_style,header_egib_merged],'body':[body_egib_data,body_egib_style,body_egib_merged],'bottom':[bottom_egib_data,bottom_egib_style,bottom_egib_merged], 'prez':[prez_egib_data,prez_egib_style,prez_egib_merged]},'GESUT':{'header':[header_gesut_data,header_gesut_style,header_gesut_merged],'body':[body_gesut_data,body_gesut_style,body_gesut_merged],'bottom':[bottom_gesut_data,bottom_gesut_style,bottom_gesut_merged], 'prez': [prez_egib_data, prez_gesut_style, prez_gesut_merged]},'BDOT500':{'header':[header_bdot500_data,header_bdot500_style,header_bdot500_merged],'body':[body_bdot500_data,body_bdot500_style,body_bdot500_merged],'bottom':[bottom_bdot500_data,bottom_bdot500_style,bottom_bdot500_merged], 'prez': [prez_bdot500_data, prez_bdot500_style, prez_bdot500_merged]},'other':{'header':[header_other_data,header_other_style,header_other_merged],'body':[body_other_data,body_other_style,body_other_merged],'bottom':[bottom_other_data,bottom_other_style,bottom_other_merged]}}
 
-        sheet['A5'] = 'Data i czas importu: ' + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        sheet = self.remove_merged(1,7,9,36,sheet)
+        sheet.delete_rows(7,36)
+
+        sheet['A3'] = sheet['A3'].value + str(os.path.split(file_path)[1])
+
+        sheet['A5'] = sheet['A5'].value + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+        prez_layers = ['EGB_PrezentacjaGraficzna', 'OT_PrezentacjaGraficzna', 'GES_PrezentacjaGraficzna']
 
 
         for group_name, layers_info in dict.items():
             if len(layers_info) > 0:
                 if group_name in ['EGiB', 'GESUT', 'BDOT500'] :
                     key_frame = group_name
-                    last_column = 9
+                    last_column = 8
                     '''rows = 3
                     sheet = self.pasteRange(1, start_paste_row, last_column, start_paste_row+rows -1, sheet, header_egib_data, header_egib_style, header_egib_merged)
                     start_paste_row += rows'''
                 else:
                     key_frame = 'other'
-                    last_column = 4
+                    last_column = 3
                     '''rows = 3
                     sheet = self.pasteRange(1, start_paste_row, last_column, start_paste_row+rows -1, sheet, header_other_data, header_other_style, header_other_merged)
                     start_paste_row += rows'''
@@ -179,75 +180,82 @@ class report:
                 sheet = self.pasteRange(1, start_paste_row, last_column, start_paste_row + rows - 1, sheet,
                                         header_data, header_style, header_merged)
 
-                sheet.cell(column = 1, row = start_paste_row).value = group_name
+                if key_frame == "other":
+                    sheet.cell(column = 1, row = start_paste_row).value = str(sheet.cell(column = 1, row = start_paste_row).value) + ': '.join(group_name.split(': ')[1:])
 
                 start_paste_row += rows
 
                 i = 0
                 sums = [0,0,0,0,0,0]
                 short_sum = 0
+                prez_info = None
                 for layer_name, layer_inf in layers_info.items():
-                    i+=1
-                    rows = 1
-                    sheet = self.pasteRange(1, start_paste_row, last_column, start_paste_row+rows -1, sheet, body_data, body_style, body_merged)
-                    sheet.cell(column=1, row=start_paste_row).value = i
-                    ends = ['_0', '_1', '_2', '_9']
-                    if layer_name[-2:] in ends:
-                        layer_name = layer_name[:-2]
-                    sheet.cell(column=2, row=start_paste_row).value = layer_name
-
-                    geom_id = layer_inf[-1]
-                    if geom_id in pts_list:
-                        geomet_name_type = 'punkt'
-                    elif geom_id in line_list:
-                        geomet_name_type = 'linia'
-                    elif geom_id in polygon_list:
-                        geomet_name_type = 'poligon'
-                    elif geom_id == 100:
-                        geomet_name_type = 'brak'
+                    if layer_name in prez_layers and key_frame != "other":
+                        prez_info = layer_inf
+                        prez_name = layer_name
+                        prez_data = dict_copied_frame[key_frame]['prez'][0]
+                        prez_style = dict_copied_frame[key_frame]['prez'][1]
+                        prez_merged = dict_copied_frame[key_frame]['prez'][2]
                     else:
-                        geomet_name_type = 'nieznana'
+                        i += 1
+                        rows = 1
+                        sheet = self.pasteRange(1, start_paste_row, last_column, start_paste_row+rows -1, sheet, body_data, body_style, body_merged)
+                        sheet.cell(column=1, row=start_paste_row).value = i
 
-                    sheet.cell(column=3, row=start_paste_row).value = geomet_name_type
+                        if key_frame == "other":
+                            # zmiana wstawianej warstwy poprzez usuniecie przedrostka z informacja o niezgodnosci i nazawa bazy
+                            name_of_layer = '_'.join(layer_name.split('_')[3:])
+                        else:
+                            name_of_layer = layer_name
+                        sheet.cell(column=2, row=start_paste_row).value = name_of_layer
 
-                    if last_column == 9:
-                        sheet.cell(column=4, row=start_paste_row).value = sum(layer_inf[0:4])
-                        sheet.cell(column=5, row=start_paste_row).value = layer_inf[0]
-                        sheet.cell(column=6, row=start_paste_row).value = layer_inf[1]
-                        sheet.cell(column=7, row=start_paste_row).value = layer_inf[2]
-                        sheet.cell(column=8, row=start_paste_row).value = layer_inf[3]
-                        sheet.cell(column=9, row=start_paste_row).value = layer_inf[4]
+                        if key_frame != "other":
+                            sheet.cell(column=3, row=start_paste_row).value = sum(layer_inf[0:4])
+                            sheet.cell(column=4, row=start_paste_row).value = layer_inf[0]
+                            sheet.cell(column=5, row=start_paste_row).value = layer_inf[1]
+                            sheet.cell(column=6, row=start_paste_row).value = layer_inf[2]
+                            sheet.cell(column=7, row=start_paste_row).value = layer_inf[3]
+                            sheet.cell(column=8, row=start_paste_row).value = layer_inf[4]
 
-                        if sheet.cell(column=4, row=start_paste_row).value != sheet.cell(column=9, row=start_paste_row).value:
-                            n_font = copy(sheet.cell(column=9, row=start_paste_row).font)
-                            n_font.color = 'FFFF0000'
-                            sheet.cell(column=9, row=start_paste_row).font = n_font
-
-
-                        sums[0] += sum(layer_inf[0:4])
-                        for nr in range(5):
-                            sums[nr+1] += layer_inf[nr]
-
-                    elif last_column == 4:
-                        sheet.cell(column=4, row=start_paste_row).value = layer_inf[0]
-                        short_sum += layer_inf[0]
+                            if sheet.cell(column=3, row=start_paste_row).value != sheet.cell(column=8, row=start_paste_row).value:
+                                n_font = copy(sheet.cell(column=8, row=start_paste_row).font)
+                                n_font.color = 'FFFF0000'
+                                sheet.cell(column=8, row=start_paste_row).font = n_font
 
 
-                    start_paste_row += rows
+                            sums[0] += sum(layer_inf[0:4])
+                            for nr in range(5):
+                                sums[nr+1] += layer_inf[nr]
+
+                        elif key_frame == "other":
+                            sheet.cell(column=3, row=start_paste_row).value = layer_inf[0]
+                            short_sum += layer_inf[0]
+
+
+                        start_paste_row += rows
 
 
                 rows = 1
                 sheet = self.pasteRange(1, start_paste_row, last_column, start_paste_row + rows - 1, sheet,
                                         bottom_data, bottom_style, bottom_merged)
 
-
-                if last_column == 9:
+                if key_frame != "other":
                     for nr in range(6):
-                        sheet.cell(column=4+nr, row=start_paste_row).value = sums[nr]
-                elif last_column == 4:
-                    sheet.cell(column=4, row=start_paste_row).value = short_sum
+                        sheet.cell(column=3+nr, row=start_paste_row).value = sums[nr]
+                elif key_frame == "other":
+                    sheet.cell(column=3, row=start_paste_row).value = short_sum
 
-                start_paste_row += rows + 1
+                start_paste_row += rows
+
+                if prez_info is not None:
+                    rows = 2
+                    sheet = self.pasteRange(1, start_paste_row, last_column, start_paste_row + rows - 1, sheet,
+                                            prez_data, prez_style, prez_merged)
+                    sheet.cell(column = 2, row = start_paste_row + 1).value = prez_name
+                    sheet.cell(column=3, row=start_paste_row + 1).value = prez_info[0]
+                    start_paste_row += rows
+
+                start_paste_row += 1 #zrobienie odstepu 1 wiersza
 
         file_report_path = file_path + '_raport.xlsx'
 
@@ -256,3 +264,5 @@ class report:
 
         '''new_workbook = self.createEmptyWorkbook()
         new_worksheet = new_workbook.create_sheet('raport importu')'''
+
+        return(file_report_path)

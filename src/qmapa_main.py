@@ -47,20 +47,9 @@ class Main:
             pocz = ids[0]
             kon = ids[1]
             if scale == '500':
-                #expression = QgsExpression("geom_to_wkt( try(collect_geometries(kreskowanie(skarpy($geometry, geometry(get_feature('OT_poczatekGorySkarpy',  'gml_id' , " + '"gml_id"' +"  )),geometry(get_feature('OT_koniecGorySkarpy',  'gml_id' , " + '"gml_id"' + " )),'top'),buffer($geometry,0.001), $area / ($perimeter/4), 50, 90,0,1),kreskowanie(skarpy($geometry, geometry(get_feature('OT_poczatekGorySkarpy',  'gml_id' , " + '"gml_id"' + "  )),geometry(get_feature('OT_koniecGorySkarpy',  'gml_id' , " + '"gml_id"' + "  )),'top'),buffer($geometry,0.001), $area / ($perimeter/4), 50, 90, $area / ($perimeter/2),0.5))))")
-                #expression = QgsExpression("geom_to_wkt( try(collect_geometries(kreskowanie(skarpy($geometry,  aggregate('OT_poczatekGorySkarpy', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('OT_koniecGorySkarpy', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'),buffer($geometry,0.001), $area / ($perimeter/2), 50, 90,0,1),kreskowanie(skarpy($geometry,  aggregate('OT_poczatekGorySkarpy', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('OT_koniecGorySkarpy', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'),buffer($geometry,0.001), $area / ($perimeter/2), 50, 90, $area / ($perimeter),0.5))))")
-                #expression = QgsExpression("with_variable('dol_skarpy', skarpy($geometry,  aggregate('OT_poczatekGorySkarpy', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('OT_koniecGorySkarpy', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'), geom_to_wkt( try(collect_geometries(kreskowanie(@dol_skarpy, buffer($geometry,0.001), $area / (length(@dol_skarpy)), 50, 90,0,1),kreskowanie(@dol_skarpy,buffer($geometry,0.001), $area / (length(@dol_skarpy)), 50, 90, $area / (length(@dol_skarpy)*2),0.5)))))")
-                #expression = QgsExpression("with_variable('dol_skarpy', skarpy($geometry,  aggregate('" + pocz + "', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('" + kon + "', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'), geom_to_wkt( try(collect_geometries(kreskowanie(@dol_skarpy, buffer($geometry,0.001), $area / (length(@dol_skarpy)), 50, 90,0,1),kreskowanie(@dol_skarpy,buffer($geometry,0.001), $area / (length(@dol_skarpy)), 50, 90, $area / (length(@dol_skarpy)*2),0.5)))))")
                 expression = QgsExpression("with_variable('gora_skarpy', skarpy($geometry,  aggregate('" + pocz + "', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('" + kon + "', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'), geom_to_wkt( try(collect_geometries(kreskowanie(@gora_skarpy, buffer($geometry,0.001), $area / (length(@gora_skarpy)), 50, 90,0,1),kreskowanie(@gora_skarpy,buffer($geometry,0.001), $area / (length(@gora_skarpy)), 50, 90, $area / (length(@gora_skarpy)*2),0.5)))))")
-                #print(expression)
-                #expression = QgsExpression(str(pocz + kon))
             elif scale == '1000':
-                #expression = QgsExpression("geom_to_wkt( try(collect_geometries(kreskowanie(skarpy($geometry,  aggregate('OT_poczatekGorySkarpy', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('OT_koniecGorySkarpy', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'),buffer($geometry,0.001), ($area / ($perimeter/8))*0.75, 50, 90,0,1),kreskowanie(skarpy($geometry,  aggregate('OT_poczatekGorySkarpy', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('OT_koniecGorySkarpy', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'),buffer($geometry,0.001), ($area / ($perimeter/8))*0.75, 50, 90, ($area / ($perimeter/4))*0.75,0.5))))")
-                #expression = QgsExpression("with_variable('dol_skarpy', skarpy($geometry,  aggregate('OT_poczatekGorySkarpy', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('OT_koniecGorySkarpy', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'), geom_to_wkt( try(collect_geometries(kreskowanie(@dol_skarpy, buffer($geometry,0.001), ($area / (length(@dol_skarpy)/2))*0.75, 50, 90,0,1),kreskowanie(@dol_skarpy,buffer($geometry,0.001), ($area / (length(@dol_skarpy)/2))*0.75, 50, 90, ($area / (length(@dol_skarpy)))*0.75,0.5)))))")
-                #expression = QgsExpression("with_variable('gora_skarpy', skarpy($geometry,  aggregate('OT_poczatekGorySkarpy', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('OT_koniecGorySkarpy', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'), geom_to_wkt( try(collect_geometries(kreskowanie(@gora_skarpy, buffer($geometry,0.001), ($area / (length(@gora_skarpy)/2))*0.75, 50, 90,0,1),kreskowanie(@gora_skarpy,buffer($geometry,0.001), ($area / (length(@gora_skarpy)/2))*0.75, 50, 90, ($area / (length(@gora_skarpy)))*0.75,0.5)))))")
                 expression = QgsExpression("with_variable('gora_skarpy', skarpy($geometry,  aggregate('" + pocz + "', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('" + kon + "', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'), geom_to_wkt( try(collect_geometries(kreskowanie(@gora_skarpy, buffer($geometry,0.001), ($area / (length(@gora_skarpy)/2))*0.75, 50, 90,0,1),kreskowanie(@gora_skarpy,buffer($geometry,0.001), ($area / (length(@gora_skarpy)/2))*0.75, 50, 90, ($area / (length(@gora_skarpy)))*0.75,0.5)))))")
-                #expression = QgsExpression(str(pocz + kon))
-
 
         elif type.lower() == 'schody':
             if scale == '500':
@@ -127,6 +116,7 @@ class Main:
                         outText = expression.evaluate(context)
                         attribute_map.update({feature.id(): {field_index: outText}})
                     start_dod = datetime.datetime.now()
+                    print('iter', datetime.datetime.now() - start_iter)
                     layer.dataProvider().changeAttributeValues(attribute_map)
 
     def calculate_colors(self, layer, column_name):
@@ -186,18 +176,18 @@ class Main:
         expression = QgsExpression(expr_raw)
         request = QgsFeatureRequest().setFlags(
             QgsFeatureRequest.NoGeometry)
-        print('czas kolorku 1', datetime.datetime.now() - start)
+        #print('czas kolorku 1', datetime.datetime.now() - start)
         features = layer.getFeatures(request)
-        print('czas kolorku 2', datetime.datetime.now() - start)
+        #print('czas kolorku 2', datetime.datetime.now() - start)
 
         for feature in features:
             context.setFeature(feature)
             outText = expression.evaluate(context)
             attribute_map.update({feature.id(): {cum_sum_index: outText}})
-        print('czas kolorku 3', datetime.datetime.now() - start)
+        #print('czas kolorku 3', datetime.datetime.now() - start)
 
         layer.dataProvider().changeAttributeValues(attribute_map)
-        print('czas kolorku koniec', datetime.datetime.now() - start)
+        #print('czas kolorku koniec', datetime.datetime.now() - start)
 
     def setStyling(self, layers, style_name):
         """ustawianie wybranej stylizacji dla wybranych warstw na mapie, z plików qml"""
@@ -216,7 +206,8 @@ class Main:
                 else:
                     geom_type = ''
                 try:
-                    style_file_path = os.path.join(stylization_dir, geom_type, layer.name()+ '.qml')
+                    style_file_path = os.path.join(stylization_dir, geom_type, layer.name() + '.qml')
+                    # todo: zrobic zeby probowalo pobierac takze pliki dla wartw z koncowka geometrii (_0, _1, _2)
                     layer.loadNamedStyle(theURI=style_file_path,
                                          loadFromLocalDb=False)
                     layer.triggerRepaint()
@@ -511,15 +502,16 @@ class Main:
         obj_nd = 0
 
         counting_dict = {'EGiB':{}, 'GESUT':{}, 'BDOT500':{}}
-        techn_layers = ['OT_etykieta', 'GES_etykieta', 'EGB_etykieta', 'OT_poczatekGorySkarpy', 'OT_koniecGorySkarpy', 'EGB_odnosnik', 'OT_odnosnik', 'GES_odnosnik']
+        techn_layers = ['EGB_poliliniaKierunkowa', 'OT_poliliniaKierunkowa', 'OT_etykieta', 'GES_etykieta', 'EGB_etykieta', 'OT_poczatekGorySkarpy', 'OT_koniecGorySkarpy', 'EGB_odnosnik', 'OT_odnosnik', 'GES_odnosnik']
+        prez_layers = ['EGB_PrezentacjaGraficzna', 'OT_PrezentacjaGraficzna', 'GES_PrezentacjaGraficzna']
 
         dict_split_by_type = {}
 
         for group_name, group_items in type_groups_dict.items():
             for item in group_items:
                 layer = item[1]
-                geometry_type = item[2]
                 layer_simple_name = layer.name()
+
                 # print(layer_simple_name)
                 if group_name in ['EGiB', 'GESUT', 'BDOT500']:  # is layer correct : True
                     if layer_simple_name not in techn_layers:
@@ -576,7 +568,7 @@ class Main:
 
 
                             counting_dict[group_name][layer_simple_name] = [lay_obj_first, lay_obj_modified, lay_obj_archival,
-                                                                lay_obj_closed, len(uniq_iip), uniq_iip, geometry_type]
+                                                                lay_obj_closed, len(uniq_iip), uniq_iip]
 
                         # print(layer.GetName(), lay_obj_open, lay_obj_closed, lay_obj_archival)
                         obj_first += lay_obj_first
@@ -597,7 +589,7 @@ class Main:
                         lay_obj_nd += 1
 
                     obj_nd += lay_obj_nd
-                    counting_dict[group_name][layer_simple_name] = [lay_obj_nd, geometry_type]
+                    counting_dict[group_name][layer_simple_name] = [lay_obj_nd]
 
         #print('suma: ', obj_first+obj_modified+obj_closed+obj_archival+obj_nd, counting_dict)
         #print(counting_dict)

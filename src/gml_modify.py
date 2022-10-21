@@ -266,14 +266,15 @@ class GmlModify:
         path, ext = os.path.splitext(self.file_path)
         path_file_name = os.path.basename(path)
         path_dirname = os.path.dirname(path)
-        output_file_name =  path_file_name + '_mod' + ext
-        out_gpkg = path_file_name + '_mod' + '.gpkg'
+        output_file_name = path_file_name + '_mod' + ext
+        out_gpkg = path_file_name + '.gpkg'
+        '''out_gpkg = path_file_name + '_mod' + '.gpkg'
         unique_add = 1
         while os.path.exists(os.path.join(path_dirname, output_file_name)) or os.path.exists(os.path.join(path_dirname, out_gpkg)):
             #print('exist')
             output_file_name = path_file_name + '_mod' + ' (' + str(unique_add) + ')' + ext
             out_gpkg = path_file_name + '_mod' + ' (' + str(unique_add) + ')' + '.gpkg'
-            unique_add += 1
+            unique_add += 1'''
         self.output_path = os.path.join(path_dirname, output_file_name)
         self.tree.write(self.output_path)
 
