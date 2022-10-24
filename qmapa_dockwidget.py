@@ -51,6 +51,9 @@ from .src.fill_with_color import fill, open_fill_xlsm, open_fill_xlsm_loc
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'ui', 'qmapa_dockwidget_base.ui'))
 
+PLUGIN_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
+
+FILL_PARAMETERS = os.path.join(PLUGIN_DIRECTORY, 'fill', 'QMapa_wypelnieniaObszarow_2022-09-29.xlsm')
 
 class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     closingPlugin = pyqtSignal()
@@ -66,7 +69,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.signal_of_import = False
         self.setupUi(self)
 
-        self.current_dir = os.path.dirname(os.path.realpath(__file__))
         self.cmbStylization.addItems(Main().getStylizations(omit_special=True))
 
         # sprawdzenie wersji programu
@@ -665,7 +667,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             btn_fill.setFixedSize(QSize(window_width, 30))
             # powrot do stylizacji
             self.back_to_qml_symb()
-            btn_fill.clicked.connect(lambda: fill(scale=current_scale))
+            btn_fill.clicked.connect(lambda: fill(excel_path=FILL_PARAMETERS, scale=current_scale))
             btn_fill.clicked.connect(self.close_dialog)
 
             btn_fill_xlsm = QPushButton(self.right_click_dlg)

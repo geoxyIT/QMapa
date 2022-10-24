@@ -1,34 +1,22 @@
 # Funkcja do wypełniania warstw poligonowych w oparciu o reguły w Excel
-import webbrowser
+import os, webbrowser
 
 import math
 import pandas as pd
 import numpy as np
+from typing import Dict
 
 from qgis.utils import iface
 from qgis.core import *
 from qgis.PyQt.QtCore import Qt
 
-# otwarcie pliku excel
-file_path = r'C:\Users\Geoxy\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\QMapa\fill\QMapa_wypelnieniaObszarow_2022-09-29.xlsm'
-
-# utworzenie slownika
-df = pd.read_excel(file_path, sheet_name='Wypelnienia')
-fill_dict = df.to_dict(orient='records')
-
-# print(fill_dict[0])
-
-'''def hatching(rotation, spacing, offset, width):
-    """Funkcja wykonujaca kreskowanie na symbolu LinePatternFill"""
-    line_pattern = QgsLinePatternFillSymbolLayer()
-    line_pattern.setLineAngle(rotation)
-    line_pattern.setDistanceMapUnitScale(spacing)
-    line_pattern.setOffsetMapUnitScale(offset)
-    line_pattern.setLineWidthMapUnitScale(width)
-    line_pattern.dataDefinedProperties().property(3).setExpressionString(formula)
-    line_pattern.dataDefinedProperties().property(3).setActive(True)
-    return line_pattern'''
-
+def excel_to_dict(excel_path: str) -> Dict:
+    """Odczytanie pliku excel z parametrami wypelniania z konwersja do slownika"""
+    # otwarcie pliku excel
+    df = pd.read_excel(excel_path, sheet_name='Wypelnienia')
+    # utworzenie slownika
+    fill_dict = df.to_dict(orient='records')
+    return fill_dict
 
 def hatching(rotation_formula, spacing_formula, width_formula, color_formula, layer=None, child=None, single=True):
     """Funkcja wykonujaca kreskowanie na symbolu LinePatternFill - wypelnianie wyrazen"""
@@ -123,7 +111,7 @@ def appropriate_scale(spacing: int, scale: str) -> float:
     else:
         return spacing
 
-def fill_with_color(scale):
+def fill_with_color(fill_dict, scale):
     """Metodyka nadawania kreskowań dla symboli w oparciu o zadany plik konfiguracyjny xlsm"""
     # przejscie po warstwach
     layers = list(QgsProject.instance().mapLayers().values())
@@ -141,14 +129,18 @@ def fill_with_color(scale):
                     if layer.name() == single_dict['KlasaObiektu'] and single_dict['AtrybutPodstawowy'] is np.nan:
                         R, G, B, T = single_dict['R'], single_dict['G'], single_dict['B'], \
                                      single_dict['Transparentnosc']*255/100
-                        formula = f'\'{int(R)},{int(G)},{int(B)},{int(T)}\''
                         hatching_list = [v for k, v in single_dict.items() if
                                          k.startswith(('Obrot', 'Odstep', 'Grubosc'))]
                         hR, hG, hB, hT = single_dict['Rkreskowanie'], single_dict['Gkreskowanie'], single_dict[
                             'Bkreskowanie'], \
                                          single_dict['Tkreskowanie'] * 255 / 100
-                        no_color = [el for el in [hR, hG, hB, hT] if math.isnan(el) == True]
-                        if len(no_color) == 0:
+                        # wyjatek - wystapienie bledu w kolorze, brak ktorejs ze skladowych dla wypelnien
+                        fill_no_color = [el for el in [R, G, B, T] if math.isnan(el) is True]
+                        if len(fill_no_color) == 0:
+                            formula = f'\'{int(R)},{int(G)},{int(B)},{int(T)}\''
+                        # wyjatek - wystapienie bledu w kolorze, brak ktorejs ze skladowych dla kreskowan
+                        hatch_no_color = [el for el in [hR, hG, hB, hT] if math.isnan(el) is True]
+                        if len(hatch_no_color) == 0:
                             hatching_color_formula = f'\'{int(hR)},{int(hG)},{int(hB)},{int(hT)}\''
                         if len(hatching_list) > 0:  # jezeli ma kolumne dotyczaca kresowania to przechodzi dalej
                             step = 0  # interwal dla ilosci parametrow w kolumnnach kreskowania
@@ -170,14 +162,18 @@ def fill_with_color(scale):
                         ap_value = single_dict['WartoscAP']
                         R, G, B, T = single_dict['R'], single_dict['G'], single_dict['B'], \
                                      single_dict['Transparentnosc']*255/100
-                        formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(R)},{int(G)},{int(B)},{int(T)}\' '
                         hatching_list = [v for k, v in single_dict.items() if
                                          k.startswith(('Obrot', 'Odstep', 'Grubosc'))]
                         hR, hG, hB, hT = single_dict['Rkreskowanie'], single_dict['Gkreskowanie'], single_dict[
                             'Bkreskowanie'], \
                                          single_dict['Tkreskowanie'] * 255 / 100
-                        no_color = [el for el in [hR, hG, hB, hT] if math.isnan(el) == True]
-                        if len(no_color) == 0:
+                        # wyjatek - wystapienie bledu w kolorze, brak ktorejs ze skladowych dla wypelnien
+                        fill_no_color = [el for el in [R, G, B, T] if math.isnan(el) is True]
+                        if len(fill_no_color) == 0:
+                            formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(R)},{int(G)},{int(B)},{int(T)}\' '
+                        # wyjatek - wystapienie bledu w kolorze, brak ktorejs ze skladowych dla kreskowan
+                        hatch_no_color = [el for el in [hR, hG, hB, hT] if math.isnan(el) is True]
+                        if len(hatch_no_color) == 0:
                             hatching_color_formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(hR)},{int(hG)},{int(hB)},{int(hT)}\' '
                         if len(hatching_list) > 0:  # jezeli ma kolumne dotyczaca kresowania to przechodzi dalej
                             step = 0  # interwal dla ilosci parametrow w kolumnnach kreskowania
@@ -250,8 +246,13 @@ def fill_with_color(scale):
                             hR, hG, hB, hT = single_dict['Rkreskowanie'], single_dict['Gkreskowanie'], single_dict[
                                 'Bkreskowanie'], \
                                              single_dict['Tkreskowanie'] * 255 / 100
-                            no_color = [el for el in [hR, hG, hB, hT] if math.isnan(el) == True]
-                            if len(no_color) == 0:
+                            # wyjatek - wystapienie bledu w kolorze, brak ktorejs ze skladowych dla wypelnien
+                            fill_no_color = [el for el in [R, G, B, T] if math.isnan(el) is True]
+                            if len(fill_no_color) == 0:
+                                formula = f'\'{int(R)},{int(G)},{int(B)},{int(T)}\''
+                            # wyjatek - wystapienie bledu w kolorze, brak ktorejs ze skladowych dla kreskowan
+                            hatch_no_color = [el for el in [hR, hG, hB, hT] if math.isnan(el) is True]
+                            if len(hatch_no_color) == 0:
                                 hatching_color_formula = f'\'{int(hR)},{int(hG)},{int(hB)},{int(hT)}\''
                             if len(hatching_list) > 0:  # jezeli ma kolumne dotyczaca kresowania to przechodzi dalej
                                 step = 0  # interwal dla ilosci parametrow w kolumnnach kreskowania
@@ -272,13 +273,17 @@ def fill_with_color(scale):
                             ap_value = single_dict['WartoscAP']
                             R, G, B, T = single_dict['R'], single_dict['G'], single_dict['B'], \
                                          single_dict['Transparentnosc']*255/100
-                            formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(R)},{int(G)},{int(B)},{int(T)}\' '
                             hatching_list = [v for k, v in single_dict.items() if
                                              k.startswith(('Obrot', 'Odstep', 'Grubosc'))]
                             hR, hG, hB, hT = single_dict['Rkreskowanie'], single_dict['Gkreskowanie'], single_dict['Bkreskowanie'], \
                                          single_dict['Tkreskowanie']*255/100
-                            no_color = [el for el in [hR, hG, hB, hT] if math.isnan(el) == True]
-                            if len(no_color) == 0:
+                            # wyjatek - wystapienie bledu w kolorze, brak ktorejs ze skladowych dla wypelnien
+                            fill_no_color = [el for el in [R, G, B, T] if math.isnan(el) is True]
+                            if len(fill_no_color) == 0:
+                                formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(R)},{int(G)},{int(B)},{int(T)}\' '
+                            # wyjatek - wystapienie bledu w kolorze, brak ktorejs ze skladowych dla kreskowan
+                            hatch_no_color = [el for el in [hR, hG, hB, hT] if math.isnan(el) is True]
+                            if len(hatch_no_color) == 0:
                                 hatching_color_formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(hR)},{int(hG)},{int(hB)},{int(hT)}\' '
                             if len(hatching_list) > 0:  # jezeli ma kolumne dotyczaca kresowania to przechodzi dalej
                                 step = 0  # interwal dla ilosci parametrow w kolumnnach kreskowania
@@ -341,16 +346,17 @@ def fill_with_color(scale):
     iface.mapCanvas().refreshAllLayers()
 
 
-def fill(scale):
-    print('Wypełniam')
-    fill_with_color(scale)
+def fill(excel_path, scale):
+    """Nadanie wypelniania w oparciu o plik Excel"""
+    fill_dict = excel_to_dict(excel_path)
+    fill_with_color(fill_dict, scale)
 
 
-def open_fill_xlsm():
-    print('Otwieram plik xlsm z parametrami wypełniania')
-    webbrowser.open(r'C:\Users\Geoxy\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\QMapa\fill\QMapa_wypelnieniaObszarow_2022-09-29.xlsm')
+def open_fill_xlsm(path: str):
+    """Otwarcie pliku xlsm z parametrami wypełniania do edycji"""
+    webbrowser.open(path)
 
 
-def open_fill_xlsm_loc():
-    print('Otwieram lokalizacje pliku xlsx')
-    webbrowser.open(r'C:\Users\Geoxy\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\QMapa')
+def open_fill_xlsm_loc(path: str):
+    """Otwarcie lokalizacji w której znajduje się plik xlsx"""
+    webbrowser.open(path)
