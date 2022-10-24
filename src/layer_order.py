@@ -3,6 +3,7 @@ from qgis.utils import iface
 from typing import List
 from .config import correct_layers
 
+
 def set_new_order(layer_new_order: List):
     # wejscie do roota
     root = iface.layerTreeCanvasBridge().rootGroup()
@@ -18,7 +19,8 @@ def set_new_order(layer_new_order: List):
             index = layer_new_order.index(layer.name())  # pobranie indeksu nowej kolejnosci na podstawie warstwy
             new_order_index.append(index)
         else:
-            new_order_index.append(out_list_index+1)
+            # niezgodne
+            new_order_index.append(out_list_index + 1)
 
     # zlaczenie obu list ze soba
     order_zipped = [[a, b] for a, b in zip(current_order, new_order_index)]
@@ -27,16 +29,14 @@ def set_new_order(layer_new_order: List):
     # wybranie juz posortowanych warstw i zapisanie do listy
     new_order = [a[0] for a in order_zipped]
 
+    # wyrzucanie warstw punktowych na sama gore
     for layer in new_order:
-        if layer.type() == QgsMapLayerType.VectorLayer:
+        # warstwa musi byc zgodna punktowa - wtedy rzuca na gore
+        if layer.type() == QgsMapLayerType.VectorLayer and layer.name() in layer_new_order:
             if layer.geometryType() == 0:
                 new_order.insert(0, new_order.pop(new_order.index(layer)))
-        else: pass
-
-    #print(new_order)
-    #for znajdz_typ in new_order:
-        #print(znajdz_typ.name(),znajdz_typ.geometryType())
-
+        else:
+            pass
 
     # wlaczenie wlasnej kolejnosci
     root.setHasCustomLayerOrder(True)
@@ -44,8 +44,3 @@ def set_new_order(layer_new_order: List):
     set_custom = root.setCustomLayerOrder(new_order)
 
     return set_custom
-
-# wywolanie funkcji
-order_list_new = correct_layers
-    
-set_new_order(order_list_new)
