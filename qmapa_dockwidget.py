@@ -675,7 +675,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             btn_fill_xlsm.setText("Otwórz plik xlsm z parametrami wypełnień")
             btn_fill_xlsm.move(0, 30)
             btn_fill_xlsm.setFixedSize(QSize(window_width, 30))
-            btn_fill_xlsm.clicked.connect(open_fill_xlsm)
+            btn_fill_xlsm.clicked.connect(lambda: open_fill_xlsm(path=FILL_PARAMETERS))
             btn_fill_xlsm.clicked.connect(self.close_dialog)
 
             btn_fill_loc = QPushButton(self.right_click_dlg)
@@ -683,7 +683,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             btn_fill_loc.setText("Otwórz lokalizacje pliku wypełnień")
             btn_fill_loc.move(0, 60)
             btn_fill_loc.setFixedSize(QSize(window_width, 30))
-            btn_fill_loc.clicked.connect(open_fill_xlsm_loc)
+            btn_fill_loc.clicked.connect(lambda: open_fill_xlsm_loc(path=os.path.join(PLUGIN_DIRECTORY, 'fill')))
             btn_fill_loc.clicked.connect(self.close_dialog)
 
             # przesuniecie okna do pozycji kursora

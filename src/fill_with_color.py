@@ -10,6 +10,7 @@ from qgis.utils import iface
 from qgis.core import *
 from qgis.PyQt.QtCore import Qt
 
+
 def excel_to_dict(excel_path: str) -> Dict:
     """Odczytanie pliku excel z parametrami wypelniania z konwersja do slownika"""
     # otwarcie pliku excel
@@ -17,6 +18,7 @@ def excel_to_dict(excel_path: str) -> Dict:
     # utworzenie slownika
     fill_dict = df.to_dict(orient='records')
     return fill_dict
+
 
 def hatching(rotation_formula, spacing_formula, width_formula, color_formula, layer=None, child=None, single=True):
     """Funkcja wykonujaca kreskowanie na symbolu LinePatternFill - wypelnianie wyrazen"""
@@ -111,6 +113,7 @@ def appropriate_scale(spacing: int, scale: str) -> float:
     else:
         return spacing
 
+
 def fill_with_color(fill_dict, scale):
     """Metodyka nadawania kreskowań dla symboli w oparciu o zadany plik konfiguracyjny xlsm"""
     # przejscie po warstwach
@@ -128,7 +131,7 @@ def fill_with_color(fill_dict, scale):
                     # warunek jezeli nie ma atrybutow podstawowych
                     if layer.name() == single_dict['KlasaObiektu'] and single_dict['AtrybutPodstawowy'] is np.nan:
                         R, G, B, T = single_dict['R'], single_dict['G'], single_dict['B'], \
-                                     single_dict['Transparentnosc']*255/100
+                                     single_dict['Transparentnosc'] * 255 / 100
                         hatching_list = [v for k, v in single_dict.items() if
                                          k.startswith(('Obrot', 'Odstep', 'Grubosc'))]
                         hR, hG, hB, hT = single_dict['Rkreskowanie'], single_dict['Gkreskowanie'], single_dict[
@@ -138,9 +141,15 @@ def fill_with_color(fill_dict, scale):
                         fill_no_color = [el for el in [R, G, B, T] if math.isnan(el) is True]
                         if len(fill_no_color) == 0:
                             formula = f'\'{int(R)},{int(G)},{int(B)},{int(T)}\''
+                        else:
+                            R, G, B, T = 0, 0, 0, 0
+                            formula = f'\'{int(R)},{int(G)},{int(B)},{int(T)}\''
                         # wyjatek - wystapienie bledu w kolorze, brak ktorejs ze skladowych dla kreskowan
                         hatch_no_color = [el for el in [hR, hG, hB, hT] if math.isnan(el) is True]
                         if len(hatch_no_color) == 0:
+                            hatching_color_formula = f'\'{int(hR)},{int(hG)},{int(hB)},{int(hT)}\''
+                        else:
+                            hR, hG, hB, hT = 0, 0, 0, 0
                             hatching_color_formula = f'\'{int(hR)},{int(hG)},{int(hB)},{int(hT)}\''
                         if len(hatching_list) > 0:  # jezeli ma kolumne dotyczaca kresowania to przechodzi dalej
                             step = 0  # interwal dla ilosci parametrow w kolumnnach kreskowania
@@ -161,7 +170,7 @@ def fill_with_color(fill_dict, scale):
                         basic_atr = single_dict['AtrybutPodstawowy']
                         ap_value = single_dict['WartoscAP']
                         R, G, B, T = single_dict['R'], single_dict['G'], single_dict['B'], \
-                                     single_dict['Transparentnosc']*255/100
+                                     single_dict['Transparentnosc'] * 255 / 100
                         hatching_list = [v for k, v in single_dict.items() if
                                          k.startswith(('Obrot', 'Odstep', 'Grubosc'))]
                         hR, hG, hB, hT = single_dict['Rkreskowanie'], single_dict['Gkreskowanie'], single_dict[
@@ -171,9 +180,15 @@ def fill_with_color(fill_dict, scale):
                         fill_no_color = [el for el in [R, G, B, T] if math.isnan(el) is True]
                         if len(fill_no_color) == 0:
                             formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(R)},{int(G)},{int(B)},{int(T)}\' '
+                        else:
+                            R, G, B, T = 0, 0, 0, 0
+                            formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(R)},{int(G)},{int(B)},{int(T)}\' '
                         # wyjatek - wystapienie bledu w kolorze, brak ktorejs ze skladowych dla kreskowan
                         hatch_no_color = [el for el in [hR, hG, hB, hT] if math.isnan(el) is True]
                         if len(hatch_no_color) == 0:
+                            hatching_color_formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(hR)},{int(hG)},{int(hB)},{int(hT)}\' '
+                        else:
+                            hR, hG, hB, hT = 0, 0, 0, 0
                             hatching_color_formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(hR)},{int(hG)},{int(hB)},{int(hT)}\' '
                         if len(hatching_list) > 0:  # jezeli ma kolumne dotyczaca kresowania to przechodzi dalej
                             step = 0  # interwal dla ilosci parametrow w kolumnnach kreskowania
@@ -239,8 +254,7 @@ def fill_with_color(fill_dict, scale):
                         # warunek jezeli nie ma atrybutow podstawowych
                         if layer.name() == single_dict['KlasaObiektu'] and single_dict['AtrybutPodstawowy'] is np.nan:
                             R, G, B, T = single_dict['R'], single_dict['G'], single_dict['B'], \
-                                         single_dict['Transparentnosc']*255/100
-                            formula = f'\'{int(R)},{int(G)},{int(B)},{int(T)}\''
+                                         single_dict['Transparentnosc'] * 255 / 100
                             hatching_list = [v for k, v in single_dict.items() if
                                              k.startswith(('Obrot', 'Odstep', 'Grubosc'))]
                             hR, hG, hB, hT = single_dict['Rkreskowanie'], single_dict['Gkreskowanie'], single_dict[
@@ -250,9 +264,15 @@ def fill_with_color(fill_dict, scale):
                             fill_no_color = [el for el in [R, G, B, T] if math.isnan(el) is True]
                             if len(fill_no_color) == 0:
                                 formula = f'\'{int(R)},{int(G)},{int(B)},{int(T)}\''
+                            else:
+                                R, G, B, T = 0, 0, 0, 0
+                                formula = f'\'{int(R)},{int(G)},{int(B)},{int(T)}\''
                             # wyjatek - wystapienie bledu w kolorze, brak ktorejs ze skladowych dla kreskowan
                             hatch_no_color = [el for el in [hR, hG, hB, hT] if math.isnan(el) is True]
                             if len(hatch_no_color) == 0:
+                                hatching_color_formula = f'\'{int(hR)},{int(hG)},{int(hB)},{int(hT)}\''
+                            else:
+                                hR, hG, hB, hT = 0, 0, 0, 0
                                 hatching_color_formula = f'\'{int(hR)},{int(hG)},{int(hB)},{int(hT)}\''
                             if len(hatching_list) > 0:  # jezeli ma kolumne dotyczaca kresowania to przechodzi dalej
                                 step = 0  # interwal dla ilosci parametrow w kolumnnach kreskowania
@@ -272,18 +292,25 @@ def fill_with_color(fill_dict, scale):
                             basic_atr = single_dict['AtrybutPodstawowy']
                             ap_value = single_dict['WartoscAP']
                             R, G, B, T = single_dict['R'], single_dict['G'], single_dict['B'], \
-                                         single_dict['Transparentnosc']*255/100
+                                         single_dict['Transparentnosc'] * 255 / 100
                             hatching_list = [v for k, v in single_dict.items() if
                                              k.startswith(('Obrot', 'Odstep', 'Grubosc'))]
-                            hR, hG, hB, hT = single_dict['Rkreskowanie'], single_dict['Gkreskowanie'], single_dict['Bkreskowanie'], \
-                                         single_dict['Tkreskowanie']*255/100
+                            hR, hG, hB, hT = single_dict['Rkreskowanie'], single_dict['Gkreskowanie'], single_dict[
+                                'Bkreskowanie'], \
+                                             single_dict['Tkreskowanie'] * 255 / 100
                             # wyjatek - wystapienie bledu w kolorze, brak ktorejs ze skladowych dla wypelnien
                             fill_no_color = [el for el in [R, G, B, T] if math.isnan(el) is True]
                             if len(fill_no_color) == 0:
                                 formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(R)},{int(G)},{int(B)},{int(T)}\' '
+                            else:
+                                R, G, B, T = 0, 0, 0, 0
+                                formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(R)},{int(G)},{int(B)},{int(T)}\' '
                             # wyjatek - wystapienie bledu w kolorze, brak ktorejs ze skladowych dla kreskowan
                             hatch_no_color = [el for el in [hR, hG, hB, hT] if math.isnan(el) is True]
                             if len(hatch_no_color) == 0:
+                                hatching_color_formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(hR)},{int(hG)},{int(hB)},{int(hT)}\' '
+                            else:
+                                hR, hG, hB, hT = 0, 0, 0, 0
                                 hatching_color_formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(hR)},{int(hG)},{int(hB)},{int(hT)}\' '
                             if len(hatching_list) > 0:  # jezeli ma kolumne dotyczaca kresowania to przechodzi dalej
                                 step = 0  # interwal dla ilosci parametrow w kolumnnach kreskowania
