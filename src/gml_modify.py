@@ -27,7 +27,7 @@ class GmlModify:
     zaimlementowany jest algorytm tworzenia relacji pomiedzy obiektami
     wyciaganie wieloetykiet z pojedynczych plikow prezentacji graficznej"""
 
-    def __init__(self, file_path):
+    def __init__(self, file_path, output_path):
         #podane tagi sa rozpoznawane jako zgodne z rozporzadzeniem, slownik mowi dodatkowo jaki przedrostek dopisywac gdy wystapi dany tag (np dopisze OT_ do poczatekGorySkarpy)
         self.pref_tag_dict = {'{ewidencjaGruntowIBudynkow:1.0}': 'EGB_', '{bazaDanychObiektowTopograficznych500:1.0}': 'OT_',
                          '{geodezyjnaEwidencjaSieciUzbrojeniaTerenu:1.0}': 'GES_'}
@@ -35,7 +35,7 @@ class GmlModify:
         # sciezka do pliku gml
         self.file_path = file_path
         self.file = open(file_path, 'r')
-        self.output_path = None
+        self.output_path = output_path
 
         # zmienna z root
         self.tree = ET.parse(self.file_path)
@@ -263,7 +263,7 @@ class GmlModify:
 
     def save_gml(self):
         """Zapis pliku wynikowego gml"""
-        path, ext = os.path.splitext(self.file_path)
+        """path, ext = os.path.splitext(self.file_path)
         path_file_name = os.path.basename(path)
         path_dirname = os.path.dirname(path)
         output_file_name = path_file_name + '_mod' + ext
@@ -275,7 +275,7 @@ class GmlModify:
             output_file_name = path_file_name + '_mod' + ' (' + str(unique_add) + ')' + ext
             out_gpkg = path_file_name + '_mod' + ' (' + str(unique_add) + ')' + '.gpkg'
             unique_add += 1'''
-        self.output_path = os.path.join(path_dirname, output_file_name)
+        self.output_path = os.path.join(path_dirname, self.output_file_name)"""
         self.tree.write(self.output_path)
 
     def check_is_correct(self, root, pref_name_list, tag_dict):

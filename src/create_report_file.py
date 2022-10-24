@@ -105,7 +105,7 @@ class report:
             sheet.unmerge_cells(start_row=merged[0], start_column=merged[1], end_row=merged[2], end_column=merged[3])
 
         return sheet
-    def run(self, dict, file_path):
+    def run(self, dict, file_path, out_path):
         main_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
         template_path = os.path.join(main_dir, 'raport', 'szablon_raport_importu.xlsx')
 
@@ -257,7 +257,8 @@ class report:
 
                 start_paste_row += 1 #zrobienie odstepu 1 wiersza
 
-        file_report_path = file_path + '_raport.xlsx'
+        #file_report_path = file_path + '_raport.xlsx'
+        file_report_path = out_path
 
         template_wb.save(file_report_path)
         #template_wb.save(r"C:\Users\geoxy\Desktop\wszystkie_testy\raport importu\test1.xlsx")

@@ -31,7 +31,7 @@ import webbrowser
 
 from qgis.PyQt import QtGui, QtWidgets, uic
 from qgis.PyQt.QtCore import pyqtSignal, pyqtSlot, QVariant, QDateTime
-from qgis.PyQt.QtWidgets import QFileDialog
+from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox
 from qgis.utils import iface
 from qgis.core import *
 
@@ -47,6 +47,9 @@ from .src.config import correct_layers
 from .src.express_yourself import ExpressYourself
 from openpyxl import Workbook
 from .src.create_report_file import report
+
+
+from osgeo_utils.samples import ogr2ogr
 
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -82,6 +85,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.rel_times = 0
 
         self.set_red_labels()
+
+        self.dialogs = []
 
 
         QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Pierwsze',
@@ -121,113 +126,178 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         webbrowser.open('http://www.geoxy.pl/')
         print(QgsProject.instance().clear())
 
+    def paths(self, gml_path):
+        path, ext = os.path.splitext(gml_path)
+        mod_gml_path = os.path.join(os.path.dirname(path), os.path.basename(path) + '_mod' + ext)
+        gpkg_path = os.path.join(os.path.dirname(path), os.path.basename(path) + '.gpkg')
+        report_path = os.path.join(os.path.dirname(path), os.path.basename(path) + '.xlsx')
+
+        dict_existing_files = {}
+        if os.path.exists(mod_gml_path):
+            dict_existing_files['Zmodyfikowany gml'] = mod_gml_path
+        if os.path.exists(gpkg_path):
+            dict_existing_files['Plik GeoPackage'] = gpkg_path
+        if os.path.exists(report_path):
+            dict_existing_files['Plik raportu'] = report_path
+
+        if len(dict_existing_files)>0:
+            if len(dict_existing_files) == 1:
+                info_1 = 'Plik'
+                info_2 = 'istnieje'
+                info_3 = 'go'
+            else:
+                info_1 = 'Pliki'
+                info_2 = 'istnieją'
+                info_3 = 'je'
+
+            existing_file_names = []
+            for name_key, path  in dict_existing_files.items():
+                existing_file_names.append(name_key + ": \n" + path)
+
+
+            allow_override_reply = QMessageBox.question(iface.mainWindow(), 'Nadpisać?',
+                                         ("{} importu już {}, czy chesz {} nadpisać? \n\n{}".format(info_1, info_2, info_3, ', \n\n'.join(existing_file_names))), QMessageBox.Yes, QMessageBox.No)
+
+            if allow_override_reply == QMessageBox.Yes:
+                override = True
+            else:
+                override = False
+
+            #print('y: ', y)
+            print('{} importu: ({}) {}, \nczy chesz {} nadpisać?'.format(info_1, ', '.join(existing_file_names), info_2, info_3))
+
+
+
+            if override:
+                for name_key, path in dict_existing_files.items():
+                    try:
+                        os.remove(path)
+                    except:
+                        QMessageBox.critical(iface.mainWindow(), 'Błąd: brak dostępu do pliku',
+                                         'Brak dostępu do pliku, sprawdź czy plik nie jest używany przez inny program. \n' + path, buttons=QMessageBox.Ok)
+                        print('nie można otworzyć pliku')
+                        mod_gml_path = ''
+                        gpkg_path = ''
+                        report_path = ''
+                        break
+            else:
+                mod_gml_path = ''
+                gpkg_path = ''
+                report_path = ''
+
+        return mod_gml_path, gpkg_path, report_path
 
     def on_pbImport_pressed(self):
         """Zaimportowanie pliku GML z konwersją do GPKG oraz nadaniem grup warstw"""
         name, ext = QFileDialog.getOpenFileName(self, caption='Wybierz wejściowy plik GML',
                                                 filter='gml (*.gml)')
-        self.signal_of_import = True
+
         if name != '':
-            start_2 = datetime.now()
-            self.progressBar.show()
-            self.progressBar.setValue(1)
-            self.gml_mod = GmlModify(name)
-            self.progressBar.setValue(10)
-            print('czas 10%:', datetime.now() - start_2)
-            self.gml_mod.run()
-            self.progressBar.setValue(20)
-            print('czas 20%:', datetime.now() - start_2)
-            _, path = Main().gml2gpkg(self.gml_mod.output_path)
-            self.progressBar.setValue(30)
-            print('czas 30%:', datetime.now() - start_2)
-            load_gpkg(path)
-            self.progressBar.setValue(40)
-            print('czas 40%:', datetime.now() - start_2)
-            self.vec_layers_list, gr_dict = Main().create_groups(path)
-            counting_dict = Main().generateReport(gr_dict)
-            report_file_path = report().run(counting_dict, name)
-            self.vec_layers_list = Main().checkLayers(self.vec_layers_list)
+            mod_gml_path, gpkg_path, report_path = self.paths(name)
+            if mod_gml_path != '' and gpkg_path != '' and report_path != '':
+                start_2 = datetime.now()
+                self.signal_of_import = True
 
-            order_list_new = correct_layers  # lista warstw zgodna z rozpo i w dobrej kolejnosci prezentowania
+                self.progressBar.show()
+                self.progressBar.setValue(1)
+                self.gml_mod = GmlModify(name, mod_gml_path)
+                self.progressBar.setValue(10)
+                print('czas 10%:', datetime.now() - start_2)
+                self.gml_mod.run()
+                self.progressBar.setValue(20)
+                print('czas 20%:', datetime.now() - start_2)
+                ogr2ogr.main(["", "-f", "GPKG", gpkg_path, mod_gml_path])
+                self.progressBar.setValue(30)
+                print('czas 30%:', datetime.now() - start_2)
+                load_gpkg(gpkg_path)
+                self.progressBar.setValue(40)
+                print('czas 40%:', datetime.now() - start_2)
+                self.vec_layers_list, gr_dict = Main().create_groups(gpkg_path)
+                counting_dict = Main().generateReport(gr_dict)
+                report().run(counting_dict, name, report_path)
+                self.vec_layers_list = Main().checkLayers(self.vec_layers_list)
 
-            # ustalenie nowej kolejnosci
-            set_new_order(order_list_new)
-            self.progressBar.setValue(50)
-            print('czas 50%:', datetime.now() - start_2)
+                order_list_new = correct_layers  # lista warstw zgodna z rozpo i w dobrej kolejnosci prezentowania
 
-            # nadanie zlaczen
-            self.set_joins(self.vec_layers_list)
-            self.progressBar.setValue(60)
-            print('czas 60%:', datetime.now() - start_2)
+                # ustalenie nowej kolejnosci
+                set_new_order(order_list_new)
+                self.progressBar.setValue(50)
+                print('czas 50%:', datetime.now() - start_2)
 
-            # usuniecie pliku
-            try:
-                os.remove(self.gml_mod.output_path)
-            except:
-                print("Problem z usunieciem pliku modyfikowanego gml")
-            self.progressBar.setValue(70)
-            print('czas 70%:', datetime.now() - start_2)
+                # nadanie zlaczen
+                self.set_joins(self.vec_layers_list)
+                self.progressBar.setValue(60)
+                print('czas 60%:', datetime.now() - start_2)
 
-            # nadanie stylizacji
-            current_style = self.cmbStylization.currentText()
-            #Main().setStyling(self.vec_layers_list, current_style)
-            self.back_to_qml_symb()
-            self.progressBar.setValue(80)
-            print('czas 80%:', datetime.now() - start_2)
+                # usuniecie pliku
+                try:
+                    os.remove(mod_gml_path)
+                except:
+                    print("Problem z usunieciem pliku modyfikowanego gml")
+                self.progressBar.setValue(70)
+                print('czas 70%:', datetime.now() - start_2)
 
-            #self.set_labels(self.vec_layers_list)
-            '''self.wyswWg()  # sprawdzenie i nadanie wyswietlania wersji, statusu'''
-            self.disp_wers(self.gbShowWers.isChecked()) #sprawdzenie i nadanie wyswietlania wersji
-            self.progressBar.setValue(90)
-            print('czas 90%:', datetime.now() - start_2)
+                # nadanie stylizacji
+                current_style = self.cmbStylization.currentText()
+                #Main().setStyling(self.vec_layers_list, current_style)
+                self.back_to_qml_symb()
+                self.progressBar.setValue(80)
+                print('czas 80%:', datetime.now() - start_2)
 
-            # obliczenie kreskowania dla skarp, sciany, schodow i wstawienie geometrii do atrybutow
-            scales = ['500', '1000']
-            nr = 0
+                #self.set_labels(self.vec_layers_list)
+                '''self.wyswWg()  # sprawdzenie i nadanie wyswietlania wersji, statusu'''
+                self.disp_wers(self.gbShowWers.isChecked()) #sprawdzenie i nadanie wyswietlania wersji
+                self.progressBar.setValue(90)
+                print('czas 90%:', datetime.now() - start_2)
 
-            start_point_layer_id = False
-            end_point_layer_id = False
-            ot_polyline_layer_id = False
-            egb_polyline_layer_id = False
-            for ll in self.vec_layers_list:
-                if 'poczatekgoryskarpy' in ll.name().lower():
-                    start_point_layer_id = ll.id()
-                elif 'koniecgoryskarpy' in ll.name().lower():
-                    end_point_layer_id = ll.id()
-                elif 'ot_poliliniakierunkowa' in ll.name().lower():
-                    ot_polyline_layer_id =  ll.id()
-                elif 'egb_poliliniakierunkowa' in ll.name().lower():
-                    egb_polyline_layer_id =  ll.id()
+                # obliczenie kreskowania dla skarp, sciany, schodow i wstawienie geometrii do atrybutow
+                scales = ['500', '1000']
+                nr = 0
 
-            for sc in scales:
-                self.progressBar.setValue(90 + int((nr/len(scales))*10))
-                nr += 1
-                for lay in self.vec_layers_list:
-                    if 'skarpa' in lay.name().lower() and start_point_layer_id and end_point_layer_id:
-                        Main().calculate_hatching(lay, 'skarpa', sc, [start_point_layer_id, end_point_layer_id])
-                    elif 'ot_obiekttrwalezwiazany' in lay.name().lower() and ot_polyline_layer_id:
-                        Main().calculate_hatching(lay, 'schody', sc, ot_polyline_layer_id)
-                    elif 'egb_obiekttrwalezwiazany' in lay.name().lower() and egb_polyline_layer_id:
-                        Main().calculate_hatching(lay, 'schody', sc, egb_polyline_layer_id)
-                    elif 'budowle' in lay.name().lower() and ot_polyline_layer_id:
-                        Main().calculate_hatching(lay, 'sciana', sc, ot_polyline_layer_id)
-                    elif 'wody' in lay.name().lower()  and start_point_layer_id and end_point_layer_id:
-                        Main().calculate_hatching(lay, 'wody', sc, [start_point_layer_id, end_point_layer_id])
-                    elif 'komunikacja' in lay.name().lower() and ot_polyline_layer_id:
-                        Main().calculate_hatching(lay, 'schody', sc, ot_polyline_layer_id)
+                start_point_layer_id = False
+                end_point_layer_id = False
+                ot_polyline_layer_id = False
+                egb_polyline_layer_id = False
+                for ll in self.vec_layers_list:
+                    if 'poczatekgoryskarpy' in ll.name().lower():
+                        start_point_layer_id = ll.id()
+                    elif 'koniecgoryskarpy' in ll.name().lower():
+                        end_point_layer_id = ll.id()
+                    elif 'ot_poliliniakierunkowa' in ll.name().lower():
+                        ot_polyline_layer_id =  ll.id()
+                    elif 'egb_poliliniakierunkowa' in ll.name().lower():
+                        egb_polyline_layer_id =  ll.id()
 
-                    if sc == '500':
-                        if 'ges_rzedna' in lay.name().lower() and sc == '500':
-                            Main().calculate_colors(lay, 'color')
+                for sc in scales:
+                    self.progressBar.setValue(90 + int((nr/len(scales))*10))
+                    nr += 1
+                    for lay in self.vec_layers_list:
+                        if 'skarpa' in lay.name().lower() and start_point_layer_id and end_point_layer_id:
+                            Main().calculate_hatching(lay, 'skarpa', sc, [start_point_layer_id, end_point_layer_id])
+                        elif 'ot_obiekttrwalezwiazany' in lay.name().lower() and ot_polyline_layer_id:
+                            Main().calculate_hatching(lay, 'schody', sc, ot_polyline_layer_id)
+                        elif 'egb_obiekttrwalezwiazany' in lay.name().lower() and egb_polyline_layer_id:
+                            Main().calculate_hatching(lay, 'schody', sc, egb_polyline_layer_id)
+                        elif 'budowle' in lay.name().lower() and ot_polyline_layer_id:
+                            Main().calculate_hatching(lay, 'sciana', sc, ot_polyline_layer_id)
+                        elif 'wody' in lay.name().lower()  and start_point_layer_id and end_point_layer_id:
+                            Main().calculate_hatching(lay, 'wody', sc, [start_point_layer_id, end_point_layer_id])
+                        elif 'komunikacja' in lay.name().lower() and ot_polyline_layer_id:
+                            Main().calculate_hatching(lay, 'schody', sc, ot_polyline_layer_id)
 
-                    if 'etykieta' not in lay.name().lower() and sc == '1000':
-                        Main().add_obligatory_fields(lay)
-            self.progressBar.setValue(100)
-            print('czas 100%:', datetime.now() - start_2)
-            self.progressBar.hide()
-            iface.messageBar().pushMessage("raport z importu", '<a href="' + report_file_path + '">raport' + '</a>', level = Qgis.Success, duration = 120)
+                        if sc == '500':
+                            if 'ges_rzedna' in lay.name().lower() and sc == '500':
+                                Main().calculate_colors(lay, 'color')
 
-            self.signal_of_import = False
+                        if 'etykieta' not in lay.name().lower() and sc == '1000':
+                            Main().add_obligatory_fields(lay)
+                self.progressBar.setValue(100)
+                print('czas 100%:', datetime.now() - start_2)
+                self.progressBar.hide()
+
+                iface.messageBar().pushMessage("raport z importu", '<a href="file:///' + report_path + '">' + report_path + '</a>', level = Qgis.Success, duration = 0)
+
+                self.signal_of_import = False
 
 
 

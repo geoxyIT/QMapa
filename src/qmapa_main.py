@@ -7,7 +7,6 @@ from qgis.utils import iface
 from qgis.core import *
 
 from osgeo import ogr
-from osgeo_utils.samples import ogr2ogr
 
 from .config import correct_layers, pts_list, line_list, polygon_list
 from .express_yourself import ExpressYourself
@@ -115,8 +114,6 @@ class Main:
                         context.setFeature(feature)
                         outText = expression.evaluate(context)
                         attribute_map.update({feature.id(): {field_index: outText}})
-                    start_dod = datetime.datetime.now()
-                    print('iter', datetime.datetime.now() - start_iter)
                     layer.dataProvider().changeAttributeValues(attribute_map)
 
     def calculate_colors(self, layer, column_name):
@@ -214,12 +211,6 @@ class Main:
                     iface.layerTreeView().refreshLayerSymbology(layer.id())
                 except:
                     pass
-
-    def gml2gpkg(self, path):
-        """konwersja gml do gpkg z algorytmu ogra"""
-        gpkg_path = os.path.splitext(path)[0] + '.gpkg'
-        file = ogr2ogr.main(["", "-f", "GPKG", gpkg_path, path])
-        return file, gpkg_path
 
     def create_groups(self, layer_path):
         """tworzenie grupy dla plikow ktore nie maja geometrii oraz grupy glownej dla reszty"""
