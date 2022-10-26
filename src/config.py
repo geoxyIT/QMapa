@@ -67,3 +67,6 @@ line_list = [2, 5, 8, 9, 11, 13, 101, 1008, 1009, 1011, 1013, 2002, 2005, 2008, 
 polygon_list = [3, 6, 10, 12, 14, 15, 16, 17, 1010, 1012, 1014, 1015, 1016, 1017, 2003, 2006, 2010, 2012, 2014,
                         2015, 2016, 2017,
                         3003, 3006, 3010, 3012, 3014, 3015, 3016, 3017, -2147483645, -2147483642]
+
+incompatible_pref = '_' + 'NIESTANDARDOWE' + '_' # mozna zmienic tylko srodkowy argument, musza pozostac znaki "_" na zewnatrz i nie moga byc w srodku
+incompatible_pref_friendly_name = 'NIESTANDARDOWE: '

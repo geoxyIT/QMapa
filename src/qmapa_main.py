@@ -8,7 +8,7 @@ from qgis.core import *
 
 from osgeo import ogr
 
-from .config import correct_layers, pts_list, line_list, polygon_list
+from .config import correct_layers, pts_list, line_list, polygon_list, incompatible_pref, incompatible_pref_friendly_name
 from .express_yourself import ExpressYourself
 from .create_report_file import report
 
@@ -341,8 +341,8 @@ class Main:
                     base_name =  'GESUT'
                 elif layname.startswith('OT_'):
                     base_name = 'BDOT500'
-                elif layname.startswith('_NIEZGODNE_'):
-                    base_name = 'NIEZGODNE: ' + layname.split('_')[2]
+                elif layname.startswith(incompatible_pref):
+                    base_name = incompatible_pref_friendly_name + layname.split('_')[2]
                 else:
                     base_name = 'NIE WIADOMO CO TO'
 
@@ -474,15 +474,6 @@ class Main:
         return version
 
     def generateReport(self, type_groups_dict):
-        '''all = 0
-        for group_name, group_items in type_groups_dict.items():
-            for item in group_items:
-                feature_count = 0
-                for feature in item[1].getFeatures():
-                    feature_count += 1
-                    all += 1
-                print(item, feature_count)
-        print(all)'''
         start = datetime.datetime.now()
 
         obj_first = 0

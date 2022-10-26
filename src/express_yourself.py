@@ -106,6 +106,12 @@ class ExpressYourself:
                             # wyrazenia
                             self.symbol_properties(symb)
 
+                            # wejscie w marker line, hashed line, geometry generator...
+                            if symb.subSymbol():
+                                sub_symbols = symb.subSymbol().symbolLayers()
+                                # rekurencja po zagniezdzonych symbolach
+                                self.symbol_recursion(sub_symbols)
+
                     # nadanie wyrazen dla warstw, ktore sa oparte na regulach
                     elif renderer.type() == 'RuleRenderer':
                         for child in layer.renderer().rootRule().children():

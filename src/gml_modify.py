@@ -4,7 +4,7 @@ import copy
 import re
 import cProfile
 import datetime
-from .config import correct_layers
+from .config import correct_layers, pts_list, line_list, polygon_list, incompatible_pref, incompatible_pref_friendly_name
 
 class GMLIncorrect(Exception):
     """Exception raised when gml is incorrect.
@@ -34,7 +34,7 @@ class GmlModify:
 
         # sciezka do pliku gml
         self.file_path = file_path
-        self.file = open(file_path, 'r')
+        self.file = open(file_path, 'r', encoding='utf-8')
         self.output_path = output_path
 
         # zmienna z root
@@ -276,7 +276,7 @@ class GmlModify:
             out_gpkg = path_file_name + '_mod' + ' (' + str(unique_add) + ')' + '.gpkg'
             unique_add += 1'''
         self.output_path = os.path.join(path_dirname, self.output_file_name)"""
-        self.tree.write(self.output_path)
+        self.tree.write(self.output_path, encoding='utf-8')
 
     def check_is_correct(self, root, pref_name_list, tag_dict):
         for main_child in root:
@@ -289,7 +289,7 @@ class GmlModify:
                             name_of_base = self.namespaces_dict[pref_name[1:-1]]
                         else:
                             name_of_base = 'NotRecognized'
-                        main_child[0].tag = pref_name + '_NIEZGODNE_' + name_of_base + '_' + class_name
+                        main_child[0].tag = pref_name + incompatible_pref + name_of_base + '_' + class_name
 
 
     def run(self):

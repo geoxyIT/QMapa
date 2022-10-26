@@ -108,6 +108,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         event.accept()
 
     def check_version(self):
+        """sprawdzenie czy zainstalowana wersja wtyczki jest aktualna"""
         try:
             URL = 'https://github.com/geoxyIT/QMapa/blob/main/metadata.txt'
             local_path = (os.path.join(os.path.dirname(__file__), 'metadata.txt'))
@@ -126,11 +127,14 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         print(QgsProject.instance().clear())
 
     def paths(self, gml_path):
+        """utworzenie sciezek plikow importu i raportu, sprawdzenie czy juz istnieja i czy jest do nich dostep, zapytanie czy nadpisac"""
+
         path, ext = os.path.splitext(gml_path)
         mod_gml_path = os.path.join(os.path.dirname(path), os.path.basename(path) + '_mod' + ext)
         gpkg_path = os.path.join(os.path.dirname(path), os.path.basename(path) + '.gpkg')
         report_path = os.path.join(os.path.dirname(path), os.path.basename(path) + '.xlsx')
 
+        # slownik zawierajacy liste istniejacych juz plikow importu:
         dict_existing_files = {}
         if os.path.exists(mod_gml_path):
             dict_existing_files['Zmodyfikowany gml'] = mod_gml_path
@@ -139,7 +143,9 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         if os.path.exists(report_path):
             dict_existing_files['Plik raportu'] = report_path
 
+        # zapytanie czy nadpisac, sprawdzenie dostepu:
         if len(dict_existing_files)>0:
+            # dobranie odpowiednich slow w zalezosci od liczy pojedynczej / mnogiej
             if len(dict_existing_files) == 1:
                 info_1 = 'Plik'
                 info_2 = 'istnieje'
@@ -153,33 +159,30 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             for name_key, path  in dict_existing_files.items():
                 existing_file_names.append(name_key + ": \n" + path)
 
-
+            # zapytanie czy nadpisac
             allow_override_reply = QMessageBox.question(iface.mainWindow(), 'Nadpisać?',
                                          ("{} importu już {}, czy chesz {} nadpisać? \n\n{}".format(info_1, info_2, info_3, ', \n\n'.join(existing_file_names))), QMessageBox.Yes, QMessageBox.No)
 
+
             if allow_override_reply == QMessageBox.Yes:
-                override = True
-            else:
-                override = False
-
-            #print('y: ', y)
-            print('{} importu: ({}) {}, \nczy chesz {} nadpisać?'.format(info_1, ', '.join(existing_file_names), info_2, info_3))
-
-
-
-            if override:
                 for name_key, path in dict_existing_files.items():
+                    # sprawdzenie dostepu poprzez probe usuniecia pliku
                     try:
                         os.remove(path)
                     except:
+                        iface.messageBar().pushMessage("import nie został wykonany: ", "brak dostępu do pliku " + path,
+                                                       level=2, duration=0)
                         QMessageBox.critical(iface.mainWindow(), 'Błąd: brak dostępu do pliku',
-                                         'Brak dostępu do pliku, sprawdź czy plik nie jest używany przez inny program. \n' + path, buttons=QMessageBox.Ok)
+                                         'Brak dostępu do pliku, sprawdż czy plik nie jest używany przez inny program. \n' + path, buttons=QMessageBox.Ok)
+
+
                         print('nie można otworzyć pliku')
                         mod_gml_path = ''
                         gpkg_path = ''
                         report_path = ''
                         break
             else:
+                iface.messageBar().pushMessage("import nie został wykonany: ", "nie zezwolono na nadpisanie", level = Qgis.Info, duration = 0)
                 mod_gml_path = ''
                 gpkg_path = ''
                 report_path = ''
@@ -192,34 +195,38 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                                                 filter='gml (*.gml)')
 
         if name != '':
-            mod_gml_path, gpkg_path, report_path = self.paths(name)
+            mod_gml_path, gpkg_path, report_path = self.paths(name)  # pobranie sciezek importu
             if mod_gml_path != '' and gpkg_path != '' and report_path != '':
                 start_2 = datetime.now()
-                self.signal_of_import = True
 
+                self.signal_of_import = True
                 self.progressBar.show()
                 self.progressBar.setValue(1)
                 self.gml_mod = GmlModify(name, mod_gml_path)
+                self.gml_mod.run()  # przerobienie pliku gml i zapisanie do nowego pliku
                 self.progressBar.setValue(10)
                 print('czas 10%:', datetime.now() - start_2)
-                self.gml_mod.run()
+
+                # utworzenie gpkg z gml
+                ogr2ogr.main(["", "-f", "GPKG", gpkg_path, mod_gml_path])
                 self.progressBar.setValue(20)
                 print('czas 20%:', datetime.now() - start_2)
-                ogr2ogr.main(["", "-f", "GPKG", gpkg_path, mod_gml_path])
+                load_gpkg(gpkg_path)
                 self.progressBar.setValue(30)
                 print('czas 30%:', datetime.now() - start_2)
-                load_gpkg(gpkg_path)
-                self.progressBar.setValue(40)
-                print('czas 40%:', datetime.now() - start_2)
                 self.vec_layers_list, gr_dict = Main().create_groups(gpkg_path)
-                counting_dict = Main().generateReport(gr_dict)
-                report().run(counting_dict, name, report_path)
                 self.vec_layers_list = Main().checkLayers(self.vec_layers_list)
 
                 order_list_new = correct_layers  # lista warstw zgodna z rozpo i w dobrej kolejnosci prezentowania
 
                 # ustalenie nowej kolejnosci
                 set_new_order(order_list_new)
+                self.progressBar.setValue(40)
+                print('czas 40%:', datetime.now() - start_2)
+
+                # utworzenie raportu
+                counting_dict = Main().generateReport(gr_dict)
+                report().run(counting_dict, name, report_path)
                 self.progressBar.setValue(50)
                 print('czas 50%:', datetime.now() - start_2)
 
@@ -245,7 +252,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
                 #self.set_labels(self.vec_layers_list)
                 '''self.wyswWg()  # sprawdzenie i nadanie wyswietlania wersji, statusu'''
-                self.disp_wers(self.gbShowWers.isChecked()) #sprawdzenie i nadanie wyswietlania wersji
+                self.disp_wers() #sprawdzenie i nadanie wyswietlania wersji
                 self.progressBar.setValue(90)
                 print('czas 90%:', datetime.now() - start_2)
 
@@ -301,6 +308,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def on_cmbStylization_currentTextChanged(self):
         """ustaw stylizację wybraną w comboboxie"""
         self.back_to_qml_symb()
+        self.disp_wers()
 
     def set_joins(self, vec_layers_list):
         """nadawanie joinow podczas importu pliku"""
@@ -544,7 +552,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.disp_settings()
 
     def on_gbShowWers_toggled(self, on):
-        self.disp_wers(on)
+        self.disp_wers()
 
     def back_to_qml_symb(self):
         """Wczytanie stylizacji QML"""
@@ -554,18 +562,13 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         expression.set_label_expression(self.list_or_canvas(self.signal_of_import), False)
         # self.set_labels(self.getLayers())
 
-    def disp_wers(self, on):
+    def disp_wers(self):
+        """ustawienie wyswietlania/niewyswietlania po wersjach"""
+        on = self.gbShowWers.isChecked()
         if on:
             self.disp_settings()
-            # expr_color = "kolor_wersji(@DateCompare, @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(startObiekt, ''),concat(startWersjaObiekt, ''),concat(koniecObiekt, ''),concat(koniecWersjaObiekt, ''))"
             expr_show = " with_variable( 'show', pokaz_wersje(@DateCompare, @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(" + '"startObiekt"' + ", ''),concat(" + '"startWersjaObiekt"' + ", ''),concat(" + '"koniecObiekt"' + ", ''),concat(" + '"koniecWersjaObiekt"' + ", '')),  if( var('show') != 'default', var('show'), 1111))"
-            # expr_color = "kolor_wersji(@DateCompare, @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(" + '"startObiekt"' + ", ''),concat(" + '"startWersjaObiekt"' + ", ''),concat(" + '"koniecObiekt"' + ", ''),concat(" + '"koniecWersjaObiekt"' + ", ''))"
             expr_color = " with_variable( 'color', kolor_wersji(@DateCompare, @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(" + '"startObiekt"' + ", ''),concat(" + '"startWersjaObiekt"' + ", ''),concat(" + '"koniecObiekt"' + ", ''),concat(" + '"koniecWersjaObiekt"' + ", '')),  if( var('color'), var('color'), 1111))"
-
-            # expr_show = " with_variable( 'show', pokaz_wersje(@DateCompare, array(true, true, '255,255,0,255'), array(true, true, '0,240,0,255'), array(true, true, '255,0,0,255'), array(true, true, '255,255,0,255'), array(true, true, '255,255,0,255'), '2021-10-12T09:18:22','2021-10-12T09:18:22','2021-10-12T09:18:22','2021-10-12T09:18:22'),  if( var('show') != 'default', var('show'), 1111))"
-            # expr_color = " with_variable( 'color', kolor_wersji(@DateCompare, array(true, true, '255,255,0,255'), array(true, true, '0,240,0,255'), array(true, true, '255,0,0,255'), array(true, true, '255,255,0,255'), array(true, true, '255,255,0,255'), '2021-10-12T09:18:22','2021-10-12T09:18:22','2021-10-12T09:18:22','2021-10-12T09:18:22'),  if( var('color'), var('color'), 1111))"
-
-            # expr_color = 'case when @WyswWg = ' + "'zmiany'" + ' then ' + expr_stawt_color + ' when @WyswWg = ' + "'wersje'" + ' then ' + expr_wers_color + ' end'
 
             expression = ExpressYourself(expr_color, expr_show)
             expression.set_symbol_expression(self.list_or_canvas(self.signal_of_import))
@@ -577,7 +580,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def list_or_canvas(self, signal_of_import):
         """Zaleznie od sygnalu, pobierane sa warstwy albo z listy warstw wektorowych
             albo z metody getLayers. Ma to za zadanie pozyskac odpowiednie warstwy podczas
-            importu. Aby zostala nadana symbolizacja wg. statusu czy tez wersji.
+            importu. Aby zostala nadana symbolizacja wg. wersji.
         """
         if signal_of_import is True:
             layers = self.vec_layers_list
@@ -586,6 +589,12 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         return layers
 
     def disp_settings(self):
+        """ustawienia dotyczace wyswietlania po wersjach:
+        pobranie ustawien z okna wtyczki i zapisanie do zmiennych w projekcie
+        obsluga aktywowania opcji w oknie wtyczki"""
+
+        # todo : opisac
+        #
         # Pierwsze
         if self.chbShowPierwsze.isChecked():
             self.chbColorPierwsze.setEnabled(True)
@@ -744,7 +753,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             btn_fill.setText("Nadaj kolorystyke wypełnień")
             btn_fill.setFixedSize(QSize(window_width, 30))
             # powrot do stylizacji
-            self.back_to_qml_symb()
+            btn_fill.clicked.connect(self.back_to_qml_symb)
+            btn_fill.clicked.connect(self.disp_wers)
             btn_fill.clicked.connect(lambda: fill(excel_path=FILL_PARAMETERS, scale=current_scale))
             btn_fill.clicked.connect(self.close_dialog)
 
