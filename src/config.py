@@ -56,8 +56,27 @@ correct_layers = ['EGB_etykieta',
                           'OT_PrezentacjaGraficzna',
                           'OT_odnosnik',
                           'GES_PrezentacjaGraficzna',
+                          'GES_odnosnik',
+                          'EGB_LokalSamodzielny',
+                          'EGB_PomieszczeniePrzynalezneDoLokalu',
+                          'EGB_JednostkaRejestrowaGruntow',
+                          'EGB_JednostkaRejestrowaBudynkow',
+                          'EGB_JednostkaRejestrowaLokali',
+                          'EGB_JednostkaRejestrowa',
+                          'EGB_OsobaFizyczna',
+                          'EGB_Malzenstwo',
+                          'EGB_Instytucja',
+                          'EGB_PodmiotGrupowy',
+                          'EGB_WspolnotaGruntowa',
+                          'EGB_Podmiot',
+                          'EGB_UdzialWeWlasnosci',
+                          'EGB_UdzialWeWladaniu',
+                          'EGB_AdresPodmiotu',
+                          'EGB_AdresNieruchomosci',
+                          'EGB_PunktGraniczny',
                           'EGB_Zmiana',
-                          'GES_odnosnik']
+                          'EGB_Dokument',
+                          'EGB_OperatTechniczny']
 
 pts_list = [1, 4, 2001, 2004, 3001, 3004, -2147483647, -2147483644]
 
