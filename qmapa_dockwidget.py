@@ -272,7 +272,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                     elif 'ot_poliliniakierunkowa' in ll.name().lower():
                         ot_polyline_layer_id =  ll.id()
                     elif 'egb_poliliniakierunkowa' in ll.name().lower():
-                        egb_polyline_layer_id =  ll.id()
+                        egb_polyline_layer_id = ll.id()
 
                 for sc in scales:
                     self.progressBar.setValue(90 + int((nr/len(scales))*10))
@@ -552,6 +552,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.disp_settings()
 
     def on_gbShowWers_toggled(self, on):
+
         self.disp_wers()
 
     def back_to_qml_symb(self):
@@ -565,6 +566,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def disp_wers(self):
         """ustawienie wyswietlania/niewyswietlania po wersjach"""
         on = self.gbShowWers.isChecked()
+        self.back_to_qml_symb()
         if on:
             self.disp_settings()
             expr_show = " with_variable( 'show', pokaz_wersje(@DateCompare, @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(" + '"startObiekt"' + ", ''),concat(" + '"startWersjaObiekt"' + ", ''),concat(" + '"koniecObiekt"' + ", ''),concat(" + '"koniecWersjaObiekt"' + ", '')),  if( var('show') != 'default', var('show'), 1111))"
@@ -575,7 +577,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             expression.set_label_expression(self.list_or_canvas(self.signal_of_import))
         else:
             # powrot do pierwotnej stylizacji z QML
-            self.back_to_qml_symb()
+            #self.back_to_qml_symb()
+            pass
 
     def list_or_canvas(self, signal_of_import):
         """Zaleznie od sygnalu, pobierane sa warstwy albo z listy warstw wektorowych

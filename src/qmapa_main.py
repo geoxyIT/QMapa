@@ -1,6 +1,8 @@
 import datetime
 import os
 
+from copy import copy
+
 from qgis.PyQt.QtCore import QVariant, QDateTime
 
 from qgis.utils import iface
@@ -31,12 +33,6 @@ class Main:
                 layer.addAttribute(field)
                 #layer.updateFields()
                 layer.commitChanges()
-            '''else:
-                pass
-                layer.dataProvider().fields().field(field_index).setType(QVariant.DateTime)
-                print('blebleblebleblebleb', layer.dataProvider().fields().field(field_index).setType(QVariant.DateTime))
-                layer.updateFields()'''
-
 
     def calculate_hatching(self, layer, type, scale, ids):
         """funkcja przelicza kreskowanie i wstawia ta geometrie w formacie wkt do atrybutow
@@ -51,6 +47,7 @@ class Main:
                 expression = QgsExpression("with_variable('gora_skarpy', skarpy($geometry,  aggregate('" + pocz + "', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('" + kon + "', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'), geom_to_wkt( try(collect_geometries(kreskowanie(@gora_skarpy, buffer($geometry,0.001), ($area / (length(@gora_skarpy)/2))*0.75, 50, 90,0,1),kreskowanie(@gora_skarpy,buffer($geometry,0.001), ($area / (length(@gora_skarpy)/2))*0.75, 50, 90, ($area / (length(@gora_skarpy)))*0.75,0.5)))))")
 
         elif type.lower() == 'schody':
+
             if scale == '500':
                 expression = QgsExpression("geom_to_wkt(kreskowanie( geometry(get_feature( '" + ids + "',  'gml_id' ,  " + ''"gml_id"'' + ")), $geometry, 0.5, 100, 90, 0, 1))")
             elif scale == '1000':
@@ -61,41 +58,42 @@ class Main:
             elif scale == '1000':
                 expression = QgsExpression("geom_to_wkt( collect_geometries(kreskowanie( geometry(get_feature( '" + ids + "',  'gml_id' , " + '"gml_id"' + " )), $geometry, 8.25, 100, 45, 4.25 , 1), kreskowanie( geometry(get_feature( '" + ids + "',  'gml_id' , " + '"gml_id"' + " )), $geometry, 8.25, 100, 45, 5, 1)))")
 
-
         if expression is not None and layer.geometryType() == 2:
-            column_name = 'obliczona_geometria' + '_' + scale
             # rozpoczecie edycji warstwy
-            features = []
-            if 'egb_obiekttrwale' in layer.name().lower():
-                features = layer.getFeatures(
-                    QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajobiektuzwiazanegozbudynkiem', column_name],
-                                                              layer.fields()).setFilterExpression(
-                        '"rodzajobiektuzwiazanegozbudynkiem"=\'s\''))
-            elif 'ot_obiekttrwale' in layer.name().lower():
-                features = layer.getFeatures(QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajobiektu', column_name],
-                                                                                       layer.fields()).setFilterExpression(
-                    '"rodzajobiektu"=\'s\''))
-            elif 'ot_skarpa' in layer.name().lower():
-                features = layer.getFeatures(QgsFeatureRequest().setSubsetOfAttributes(['gml_id', column_name],
-                                                                                       layer.fields()))
-            elif 'ot_budowle' in layer.name().lower():
-                features = layer.getFeatures(QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajbudowli', column_name],
-                                                                                       layer.fields()).setFilterExpression(
-                    '"rodzajbudowli"=\'n\''))
-            elif 'ot_wody' in layer.name().lower():
-                features = layer.getFeatures(
-                    QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajobiektu', 'rodzajobiektu', column_name],
-                                                              layer.fields()).setFilterExpression(
-                        '"rodzajobiektu"=\'w\' or "rodzajobiektu"=\'g\''))
-
-            elif 'ot_komunikacja' in layer.name().lower():
-                features = layer.getFeatures(
-                    QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajobiektu', column_name],
-                                                              layer.fields()).setFilterExpression(
+            column_name = 'obliczona_geometria' + '_' + scale
+            def get_feats():
+                features = []
+                if 'egb_obiekttrwale' in layer.name().lower():
+                    features = layer.getFeatures(
+                        QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajobiektuzwiazanegozbudynkiem', column_name],
+                                                                  layer.fields()).setFilterExpression(
+                            '"rodzajobiektuzwiazanegozbudynkiem"=\'s\''))
+                elif 'ot_obiekttrwale' in layer.name().lower():
+                    features = layer.getFeatures(QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajobiektu', column_name],
+                                                                                           layer.fields()).setFilterExpression(
                         '"rodzajobiektu"=\'s\''))
+                elif 'ot_skarpa' in layer.name().lower():
+                    features = layer.getFeatures(QgsFeatureRequest().setSubsetOfAttributes(['gml_id', column_name],
+                                                                                           layer.fields()))
+                elif 'ot_budowle' in layer.name().lower():
+                    features = layer.getFeatures(QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajbudowli', column_name],
+                                                                                           layer.fields()).setFilterExpression(
+                        '"rodzajbudowli"=\'n\''))
+                elif 'ot_wody' in layer.name().lower():
+                    features = layer.getFeatures(
+                        QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajobiektu', 'rodzajobiektu', column_name],
+                                                                  layer.fields()).setFilterExpression(
+                            '"rodzajobiektu"=\'w\' or "rodzajobiektu"=\'g\''))
+
+                elif 'ot_komunikacja' in layer.name().lower():
+                    features = layer.getFeatures(
+                        QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajobiektu', column_name],
+                                                                  layer.fields()).setFilterExpression(
+                            '"rodzajobiektu"=\'s\''))
+                return features
 
 
-            if features != []:
+            if get_feats() != []:
                 context = QgsExpressionContext()
                 context.appendScopes(QgsExpressionContextUtils.globalProjectLayerScopes(layer))
 
@@ -109,12 +107,13 @@ class Main:
                 attribute_map = {}
 
                 if field_index >= 0:
-                    start_iter = datetime.datetime.now()
+                    features = get_feats()  #tutaj jest pobierany iterator poniewaz gdy jest wczesniej to nie zawsze dobrzez dziala
                     for feature in features:
                         context.setFeature(feature)
                         outText = expression.evaluate(context)
                         attribute_map.update({feature.id(): {field_index: outText}})
                     layer.dataProvider().changeAttributeValues(attribute_map)
+
 
     def calculate_colors(self, layer, column_name):
         expr_raw = ("case "
