@@ -276,6 +276,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
                 for sc in scales:
                     self.progressBar.setValue(90 + int((nr/len(scales))*10))
+                    print('czas ' + str(90 + int((nr/len(scales))*10)) + '%:', datetime.now() - start_2)
                     nr += 1
                     for lay in self.vec_layers_list:
                         if 'skarpa' in lay.name().lower() and start_point_layer_id and end_point_layer_id:

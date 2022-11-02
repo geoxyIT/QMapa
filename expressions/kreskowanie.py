@@ -1,5 +1,6 @@
 from qgis.core import *
 from qgis.gui import *
+import math
 import datetime
 
 @qgsfunction(args='auto', group='Custom')
@@ -20,13 +21,22 @@ def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle = 90, 
     context = QgsExpressionContext()
     context.setFeature(feature)
     geom_wkt = geometry.asWkt(3)
-    "geom_from_wkt('" + geom_wkt + "'),"
     points_num_exp = QgsExpression("num_points(geom_from_wkt('" + geom_wkt + "'))")
     points_num = points_num_exp.evaluate(context)
     bis_list = []
     angle_list = []
     bisection = None
+
+    '''verts = geometry.vertices()
+    a=0
+    print(points_num)
+    for v in verts:
+        a += 1
+        print(a)
+    #print(len(verts))'''
+
     # obliczanie dwusiecznych:
+    start_dw = datetime.datetime.now()
     for i in range(points_num):
         ind = i + 1
         '''if ind != 1 and ind != points_num:
@@ -67,16 +77,25 @@ def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle = 90, 
         bisections = bisection.collectGeometry(bis_list)
     else:
         bisections = None
-    
+
+    #print('dwusieczne ;' , datetime.datetime.now() - start_dw)
+    start_ind = datetime.datetime.now()
+
+    def project_point(start_point, proj_distance, proj_azimuth_radians):
+        #print('start: ',start_point, distance, proj_azimuth_radians)
+        x_proj = round(round(start_point.x(), 5) + proj_distance * math.sin(proj_azimuth_radians),4)
+        y_proj = round(round(start_point.y(),5) + proj_distance * math.cos(proj_azimuth_radians),4)
+        point_projected = QgsPoint(x_proj,y_proj)
+        return point_projected
+
     orig_geom_lines_exp = QgsExpression("segments_to_lines(geom_from_wkt('" + geom_wkt + "'))")
     orig_geom_lines = orig_geom_lines_exp.evaluate(context)
     orig_geom_list = orig_geom_lines.asGeometryCollection()
     new_geom_list = []
     prev_residue = offset
+
     for part in orig_geom_list:
         parts_list=[]
-        '''new_part_1 = part.singleSidedBuffer(distance,1,1,1,1)
-        new_part_2 = part.singleSidedBuffer(distance,1,2,1,1)'''
         new_part_1 = part.singleSidedBuffer(distance,1,Qgis.BufferSide(0),Qgis.JoinStyle(1),1)
         new_part_2 = part.singleSidedBuffer(distance,1,Qgis.BufferSide(1),Qgis.JoinStyle(1),1)
         new_part = new_part_1.combine(new_part_2)
@@ -89,26 +108,21 @@ def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle = 90, 
         for part_prz in new_prz_list:
             if part_prz.intersects(part):
                 parts_list.append(part_prz)
-        parts_geom = part_prz.collectGeometry(parts_list)
+        parts_geom = QgsGeometry.collectGeometry(parts_list)
         
         part_length = part.length()
         spacing_sum = spacing - prev_residue
-        step_list = []
         while spacing_sum < part_length:
+
             point_interp = part.interpolate(spacing_sum)
             azym = part.interpolateAngle(spacing_sum)
-            point = point_interp.asWkt()
 
-            step_exp_1 = QgsExpression("make_line(geom_from_wkt('" + point + "'),project(geom_from_wkt('" + str(point) + "')," + str(distance) + ',' +
-            str(azym) + '- radians(' +str(rotate_angle)+')'+ 
-            '))')
+            point_proj1 = project_point(point_interp.vertexAt(0), distance, azym-(rotate_angle*(math.pi/180)))
+            step1 = QgsGeometry.fromPolyline([point_interp.vertexAt(0), point_proj1])
+            point_proj2 = project_point(point_interp.vertexAt(0), distance, azym+((180-rotate_angle)*(math.pi/180)))
+            step2 = QgsGeometry.fromPolyline([point_interp.vertexAt(0), point_proj2])
 
-            step_exp_2 = QgsExpression("make_line(geom_from_wkt('" + point + "'),project(geom_from_wkt('" + str(point) + "')," + str(distance) + ',' +
-            str(azym) + '+ radians(' +str(180-rotate_angle)+')'+ 
-            '))')
-            step1 = step_exp_1.evaluate(context)
-            step2 = step_exp_2.evaluate(context)
-            step = step1.collectGeometry([step1,step2])
+            step = QgsGeometry.collectGeometry([step1, step2])
             step_cut = step.intersection(parts_geom)
             if step_cut is not None and not step_cut.isEmpty():
                 new_geom_list.append(step_cut)
@@ -117,22 +131,23 @@ def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle = 90, 
         
         #new_geom = step.collectGeometry(step_list) 
         
-    new_geom = new_part_1.collectGeometry(new_geom_list)
-    
+    new_geom = QgsGeometry.collectGeometry(new_geom_list)
+
+    #print('indiv ; ;' , datetime.datetime.now() - start_ind)
+    start_mult = datetime.datetime.now()
+    #podzielenie obliczonych kresek
     if multiply < 1:
-        #individuals_exp = QgsExpression("segments_to_lines(geom_from_wkt('" + geom_wkt + "'))")
         individuals = new_geom.asGeometryCollection()
         cut_lines = []
         for indiv in individuals:
-            long = indiv.length()
-            point_mult = indiv.interpolate(long*multiply)
-            point_mult_wkt = point_mult.asWkt()
-            indiv_wkt = indiv.asWkt()
-            cut_li_exp = QgsExpression("make_line(point_n(geom_from_wkt('"+indiv_wkt+"'),1),geom_from_wkt('"+point_mult_wkt+"'))")
-            cut_li = cut_li_exp.evaluate(context)
+            full_length = indiv.length()
+            point_mult = indiv.interpolate(full_length*multiply)
+            cut_li = QgsGeometry.fromPolyline([indiv.vertexAt(0), point_mult.vertexAt(0)])
             if cut_li is not None and not cut_li.isEmpty():
                 cut_lines.append(cut_li)
-        new_geom = point_mult.collectGeometry(cut_lines)
+        new_geom = QgsGeometry.collectGeometry(cut_lines)
+
+    #print('multipl ; ; ;', datetime.datetime.now() - start_mult)
 
     #print('kreskowanie time: ', datetime.datetime.now() - start_time)
     return new_geom

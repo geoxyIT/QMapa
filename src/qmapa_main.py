@@ -41,10 +41,18 @@ class Main:
         if type.lower() == 'skarpa' or type.lower() == 'wody':
             pocz = ids[0]
             kon = ids[1]
+
             if scale == '500':
                 expression = QgsExpression("with_variable('gora_skarpy', skarpy($geometry,  aggregate('" + pocz + "', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('" + kon + "', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'), geom_to_wkt( try(collect_geometries(kreskowanie(@gora_skarpy, buffer($geometry,0.001), $area / (length(@gora_skarpy)), 50, 90,0,1),kreskowanie(@gora_skarpy,buffer($geometry,0.001), $area / (length(@gora_skarpy)), 50, 90, $area / (length(@gora_skarpy)*2),0.5)))))")
             elif scale == '1000':
                 expression = QgsExpression("with_variable('gora_skarpy', skarpy($geometry,  aggregate('" + pocz + "', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('" + kon + "', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'), geom_to_wkt( try(collect_geometries(kreskowanie(@gora_skarpy, buffer($geometry,0.001), ($area / (length(@gora_skarpy)/2))*0.75, 50, 90,0,1),kreskowanie(@gora_skarpy,buffer($geometry,0.001), ($area / (length(@gora_skarpy)/2))*0.75, 50, 90, ($area / (length(@gora_skarpy)))*0.75,0.5)))))")
+
+            '''
+            if scale == '500':
+                expression = QgsExpression("skarpy($geometry,  aggregate('" + pocz + "', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('" + kon + "', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top')")
+            elif scale == '1000':
+                expression = QgsExpression("skarpy($geometry,  aggregate('" + pocz + "', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('" + kon + "', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top')")
+            '''
 
         elif type.lower() == 'schody':
 
@@ -107,11 +115,13 @@ class Main:
                 attribute_map = {}
 
                 if field_index >= 0:
-                    features = get_feats()  #tutaj jest pobierany iterator poniewaz gdy jest wczesniej to nie zawsze dobrzez dziala
+                    features = get_feats()  #tutaj jest pobierany iterator poniewaz gdy jest wczesniej to nie zawsze dobrze dziala
+                    start_f = datetime.datetime.now()
                     for feature in features:
                         context.setFeature(feature)
                         outText = expression.evaluate(context)
                         attribute_map.update({feature.id(): {field_index: outText}})
+                    print(datetime.datetime.now()-start_f)
                     layer.dataProvider().changeAttributeValues(attribute_map)
 
 
