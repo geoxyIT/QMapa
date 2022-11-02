@@ -1,3 +1,11 @@
+2.0.0 2022.11.02
+-Dodanie możliwości wypełniania obiektów powierzchniowych pod prawym przyciskiem myszy w oparciu o plik xlsm z zadeklarowaną strukturą
+-Dodanie możliwości wyświetlania wersji
+-Dodanie generowania raportu podczas importu pliku GML
+-Poprawa symbolu dla skarp, schodów
+-Poprarwa generowania grobli i wałów dla multi geometrii
+-Dodanie symbolu EGB_odnosnik
+-Poprawa kodowania w modyfikowanym pliku GML
 1.1.1 2022.08.01
 -Dodanie obslugi bledu przy nieprawidlowym namespace w gml
 -Poprawa etykietowania przy imporcie
