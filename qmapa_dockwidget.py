@@ -61,7 +61,7 @@ FORM_CLASS, _ = uic.loadUiType(os.path.join(
 
 PLUGIN_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 
-FILL_PARAMETERS = os.path.join(PLUGIN_DIRECTORY, 'fill', 'QMapa_wypelnieniaObszarow_2022-09-29.xlsm')
+FILL_PARAMETERS = os.path.join(PLUGIN_DIRECTORY, 'fill', 'QMapa_wypelnieniaObszarow_2022-10-26.xlsm')
 
 class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     closingPlugin = pyqtSignal()

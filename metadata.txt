@@ -6,7 +6,7 @@
 name=QMapa GML 2021
 qgisMinimumVersion=3.24
 description=Wizualizacja mapy zasadniczej z plików GML obejmujących zbiory danych EGiB, GESUT i BDOT500.
-version=1.1.1
+version=2.0.0
 author=GEOXY sp. z o.o. 
 email=qgis@geoxy.pl
 
@@ -22,7 +22,7 @@ repository=https://github.com/geoxyIT/QMapa
 hasProcessingProvider=no
 
 changelog=
-	1.2.0 2022.08.09
+	2.0.0 2022.11.02
 	-
 	1.1.1 2022.08.01
 	-Dodanie obsługi błędu przy wczytywaniu pliku GML niezgodnego z rozporządzeniem 2021.

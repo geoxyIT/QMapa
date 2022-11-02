@@ -217,7 +217,7 @@ def fill_with_color(fill_dict, scale):
                     new_fill_color.setStrokeStyle(Qt.NoPen)
                     new_fill_color.dataDefinedProperties().property(3).setExpressionString(formula)
                     new_fill_color.dataDefinedProperties().property(3).setActive(True)
-                    layer.renderer().symbol().appendSymbolLayer(new_fill_color)
+                    layer.renderer().symbol().insertSymbolLayer(0, new_fill_color)
                     if int(len(summary_hatching[0])) > 0:
                         for idx in range(int(len(summary_hatching[0]))):
                             hatching_only_values(rotation=summary_hatching[0][idx],
@@ -232,7 +232,7 @@ def fill_with_color(fill_dict, scale):
                     new_fill_color.setStrokeStyle(Qt.NoPen)
                     new_fill_color.dataDefinedProperties().property(3).setExpressionString(formula)
                     new_fill_color.dataDefinedProperties().property(3).setActive(True)
-                    layer.renderer().symbol().appendSymbolLayer(new_fill_color)
+                    layer.renderer().symbol().insertSymbolLayer(0, new_fill_color)
                     if int(len(summary_hatching[0])) > 0:
                         for idx in range(int(len(summary_hatching[0]))):
                             hatching(rotation_formula=summary_hatching[0][idx],
@@ -301,14 +301,21 @@ def fill_with_color(fill_dict, scale):
                             # wyjatek - wystapienie bledu w kolorze, brak ktorejs ze skladowych dla wypelnien
                             fill_no_color = [el for el in [R, G, B, T] if math.isnan(el) is True]
                             if len(fill_no_color) == 0:
-                                formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(R)},{int(G)},{int(B)},{int(T)}\' '
+                                if ap_value == '*':  # przypadek dla wielosieciowych
+                                    formula += f"""when array_contains( (string_to_array(\"{basic_atr}\", '')),',') then \'{int(R)},{int(G)},{int(B)},{int(T)}\' """
+                                else:
+                                    formula += f"""when array_contains( (string_to_array(\"{basic_atr}\", '')),\'{ap_value}\') then \'{int(R)},{int(G)},{int(B)},{int(T)}\' """
+                                    #formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(R)},{int(G)},{int(B)},{int(T)}\' '
                             else:
                                 R, G, B, T = 0, 0, 0, 0
                                 formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(R)},{int(G)},{int(B)},{int(T)}\' '
                             # wyjatek - wystapienie bledu w kolorze, brak ktorejs ze skladowych dla kreskowan
                             hatch_no_color = [el for el in [hR, hG, hB, hT] if math.isnan(el) is True]
                             if len(hatch_no_color) == 0:
-                                hatching_color_formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(hR)},{int(hG)},{int(hB)},{int(hT)}\' '
+                                if ap_value == '*':  # przypadek dla wielosieciowych
+                                    hatching_color_formula += f"""when array_contains( (string_to_array(\"{basic_atr}\", '')),',') then \'{int(hR)},{int(hG)},{int(hB)},{int(hT)}\' """
+                                else:
+                                    hatching_color_formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(hR)},{int(hG)},{int(hB)},{int(hT)}\' '
                             else:
                                 hR, hG, hB, hT = 0, 0, 0, 0
                                 hatching_color_formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(hR)},{int(hG)},{int(hB)},{int(hT)}\' '
@@ -350,7 +357,10 @@ def fill_with_color(fill_dict, scale):
                                                      single=False)
                     elif formula != 'case ':
                         # przypadek jezeli sa atrybuty
+                        # dodanie else, ktory wypelnia na pusto nieuwzglednione warunki
+                        formula += "else '255,255,255,255' "
                         formula += 'end'
+                        hatching_color_formula += "else '255,255,255,255' "
                         hatching_color_formula += 'end'
                         new_fill_color = QgsSimpleFillSymbolLayer()
                         new_fill_color.setStrokeStyle(Qt.NoPen)
