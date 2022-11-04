@@ -14,13 +14,16 @@ from .config import correct_layers, pts_list, line_list, polygon_list, incompati
 from .express_yourself import ExpressYourself
 from .create_report_file import report
 
-'''from openpyxl import Workbook
-from openpyxl.utils import get_column_letter
-from openpyxl import load_workbook'''
 
 class Main:
     def __init__(self):
         self.current_dir = os.path.dirname(os.path.realpath(__file__))
+
+    def remove_all_joins(self, layer):
+        joins_info = layer.vectorJoins()
+
+        for join in joins_info:
+            layer.removeJoin(join.joinLayerId())
 
     def add_obligatory_fields(self, layer):
         obligatory_fields = ['startObiekt', 'startWersjaObiekt', 'koniecWersjaObiekt', 'koniecObiekt']
@@ -34,6 +37,7 @@ class Main:
                 #layer.updateFields()
                 layer.commitChanges()
 
+
     def calculate_hatching(self, layer, type, scale, ids):
         """funkcja przelicza kreskowanie i wstawia ta geometrie w formacie wkt do atrybutow
         type: 'skarpa' or 'schody' or 'sciana' or 'wody' """
@@ -46,13 +50,6 @@ class Main:
                 expression = QgsExpression("with_variable('gora_skarpy', skarpy($geometry,  aggregate('" + pocz + "', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('" + kon + "', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'), geom_to_wkt( try(collect_geometries(kreskowanie(@gora_skarpy, buffer($geometry,0.001), $area / (length(@gora_skarpy)), 50, 90,0,1),kreskowanie(@gora_skarpy,buffer($geometry,0.001), $area / (length(@gora_skarpy)), 50, 90, $area / (length(@gora_skarpy)*2),0.5)))))")
             elif scale == '1000':
                 expression = QgsExpression("with_variable('gora_skarpy', skarpy($geometry,  aggregate('" + pocz + "', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('" + kon + "', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'), geom_to_wkt( try(collect_geometries(kreskowanie(@gora_skarpy, buffer($geometry,0.001), ($area / (length(@gora_skarpy)/2))*0.75, 50, 90,0,1),kreskowanie(@gora_skarpy,buffer($geometry,0.001), ($area / (length(@gora_skarpy)/2))*0.75, 50, 90, ($area / (length(@gora_skarpy)))*0.75,0.5)))))")
-
-            '''
-            if scale == '500':
-                expression = QgsExpression("skarpy($geometry,  aggregate('" + pocz + "', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('" + kon + "', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top')")
-            elif scale == '1000':
-                expression = QgsExpression("skarpy($geometry,  aggregate('" + pocz + "', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('" + kon + "', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top')")
-            '''
 
         elif type.lower() == 'schody':
 
@@ -121,7 +118,6 @@ class Main:
                         context.setFeature(feature)
                         outText = expression.evaluate(context)
                         attribute_map.update({feature.id(): {field_index: outText}})
-                    print(datetime.datetime.now()-start_f)
                     layer.dataProvider().changeAttributeValues(attribute_map)
 
 
@@ -166,6 +162,8 @@ class Main:
                           " else "
                           "'0,0,0,255'"
                           " end")
+
+
 
         start = datetime.datetime.now()
         field_index = layer.fields().indexFromName(column_name)
