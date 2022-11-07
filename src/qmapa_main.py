@@ -179,53 +179,15 @@ class Main:
         expression = QgsExpression(expr_raw)
         request = QgsFeatureRequest().setFlags(
             QgsFeatureRequest.NoGeometry)
-        print('czas kolorku 1', datetime.datetime.now() - start)
         features = layer.getFeatures(request)
 
-        attr_names = layer.fields().names()
-        print('czas kolorku 2', datetime.datetime.now() - start)
-        innn = 1
         for feature in features:
             context.setFeature(feature)
             out_text = expression.evaluate(context)
 
-            #out_text = ''
-            '''if ((attr_id := feature.fieldNameIndex("GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci")) != -1 and ',' in str(feature[attr_id])) or ((attr_id := feature.fieldNameIndex("GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci")) != -1 and ',' in str(feature[attr_id])) or ((attr_id := feature.fieldNameIndex("GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci")) != -1 and ',' in str(feature[attr_id])) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci")) != -1 and ',' in str(feature[attr_id])):
-                out_text = "0,0,0,255"
-            elif ((attr_id := feature.fieldNameIndex("GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci")) != -1 and feature[attr_id] is not None and 'e' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci")) != -1 and feature[attr_id] is not None and 'e' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci")) != -1 and feature[attr_id] is not None and 'e' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci")) != -1 and feature[attr_id] is not None and 'e' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_PrzewodElektroenergetyczny_1_zrodlo")) != -1 and feature[attr_id] is not None) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo")) != -1 and feature[attr_id] is not None) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaSiecElektroenergetyczna_1_zrodlo")) != -1 and feature[attr_id] is not None) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo")) != -1 and feature[attr_id] is not None):
-                out_text = "255,0,0,255"
-            elif ((attr_id := feature.fieldNameIndex("GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci")) != -1 and feature[attr_id] is not None and 'w' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci")) != -1 and feature[attr_id] is not None and 'w' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci")) != -1 and feature[attr_id] is not None and 'w' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci")) != -1 and feature[attr_id] is not None and 'w' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_PrzewodWodociagowy_1_zrodlo")) != -1 and feature[attr_id] is not None) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaSiecWodociagowa_0_zrodlo")) != -1 and feature[attr_id] is not None) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaSiecWodociagowa_1_zrodlo")) != -1 and feature[attr_id] is not None) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaSiecWodociagowa_2_zrodlo")) != -1 and feature[attr_id] is not None):
-                out_text = "0,0,255,255"
-            elif ((attr_id := feature.fieldNameIndex("GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci")) != -1 and feature[attr_id] is not None and 'k' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci")) != -1 and feature[attr_id] is not None and 'k' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci")) != -1 and feature[attr_id] is not None and 'k' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci")) != -1 and feature[attr_id] is not None and 'k' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_PrzewodKanalizacyjny_1_zrodlo")) != -1 and feature[attr_id] is not None) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo")) != -1 and feature[attr_id] is not None) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo")) != -1 and feature[attr_id] is not None) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo")) != -1 and feature[attr_id] is not None):
-                out_text = "128,51,0,255"
-            elif ((attr_id := feature.fieldNameIndex("GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci")) != -1 and feature[attr_id] is not None and 'g' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci")) != -1 and feature[attr_id] is not None and 'g' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci")) != -1 and feature[attr_id] is not None and 'g' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci")) != -1 and feature[attr_id] is not None and 'g' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_PrzewodGazowy_1_zrodlo")) != -1 and feature[attr_id] is not None) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaSiecGazowa_0_zrodlo")) != -1 and feature[attr_id] is not None) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaSiecGazowa_1_zrodlo")) != -1 and feature[attr_id] is not None) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaSiecGazowa_2_zrodlo")) != -1 and feature[attr_id] is not None):
-                out_text = "191,191,0,255"
-            elif ((attr_id := feature.fieldNameIndex("GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci")) != -1 and feature[attr_id] is not None and 't' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci")) != -1 and feature[attr_id] is not None and 't' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci")) != -1 and feature[attr_id] is not None and 't' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci")) != -1 and feature[attr_id] is not None and 't' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_PrzewodTelekomunikacyjny_1_zrodlo")) != -1 and feature[attr_id] is not None) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo")) != -1 and feature[attr_id] is not None) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaSiecTelekomunikacyjna_1_zrodlo")) != -1 and feature[attr_id] is not None) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaSiecTelekomunikacyjna_2_zrodlo")) != -1 and feature[attr_id] is not None):
-                out_text = "255,145,0,255"
-            elif ((attr_id := feature.fieldNameIndex("GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci")) != -1 and feature[attr_id] is not None and 'c' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci")) != -1 and feature[attr_id] is not None and 'c' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci")) != -1 and feature[attr_id] is not None and 'c' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci")) != -1 and feature[attr_id] is not None and 'c' in feature[attr_id]) or ((attr_id := feature.fieldNameIndex("GES_PrzewodCieplowniczy_1_zrodlo")) != -1 and feature[attr_id] is not None) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaSiecCieplownicza_0_zrodlo")) != -1 and feature[attr_id] is not None) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaSiecCieplownicza_1_zrodlo")) != -1 and feature[attr_id] is not None) or ((attr_id := feature.fieldNameIndex("GES_UrzadzeniaSiecCieplownicza_2_zrodlo")) != -1 and feature[attr_id] is not None):
-                out_text = "210,0,210,255"
-            else:
-                out_text = "0,0,0,255"'''
-
-            '''attributes = feature.attributes()
-            #print(attributes)
-            ind_field = 0
-            out_text = '''''
-            '''for attr_value in attributes:
-                if attr_names[ind_field] == "GES_PrzewodElektroenergetyczny_1_zrodlo" and attr_value is not None:
-                    out_text = "255,0,0,255"
-                else:
-                    out_text = "0,0,0,255"
-                ind_field += 1
-            #out_text = ''
-
-            innn += 1'''
-
             attribute_map.update({feature.id(): {cum_sum_index: out_text}})
-        print('czas kolorku 3', datetime.datetime.now() - start)
 
         layer.dataProvider().changeAttributeValues(attribute_map)
-        print('czas kolorku koniec', datetime.datetime.now() - start)
 
     def setStyling(self, layers, style_name):
         """ustawianie wybranej stylizacji dla wybranych warstw na mapie, z plików qml"""

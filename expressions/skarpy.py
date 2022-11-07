@@ -26,15 +26,6 @@ def skarpy(geometry, top_start_point, top_end_point, side = 'top', feature = Non
     lines_list = []
     listka = []
     for idx, geomet in enumerate(orig_geom_list):
-        if geomet.isMultipart() is False:
-            polyg = geomet.asPolygon()
-            multi = [polyg]
-        else:  # is multipart
-            #wymuszenie jakby multi
-            multi = geomet.asMultiPolygon()
-
-        points2_num_exp = QgsExpression('num_points($geometry)')
-        points2_num = points2_num_exp.evaluate(context)
 
         rings_list = []
         ext_ring_exp = QgsExpression("exterior_ring(geom_from_wkt('" + geomet.asWkt() + "'))")
@@ -52,18 +43,6 @@ def skarpy(geometry, top_start_point, top_end_point, side = 'top', feature = Non
 
         # iteracja po poligonach z multipoligonu
         for x in [1]:
-
-            """print(poly)
-            #wyciagniecie wszystkich ringow z danego poligonu
-            '''for ring in polyg:
-                ring_geom = QgsGeometry.fromMultiPointXY(ring)
-                rings_list.append(ring_geom)'''
-            ext_ring_exp = QgsExpression("exterior_ring(geom_from_wkt('" + poly.asWkt() + "'))")
-            ext_ring = ext_ring_exp.evaluate(context)
-            print('pr', ext_ring)
-            rings_list.append(ext_ring)"""
-
-
             for geom in rings_list:
                 points_num_exp = QgsExpression("num_points(geom_from_wkt('" + geom.asWkt() + "'))")
                 points_num = points_num_exp.evaluate(context)
