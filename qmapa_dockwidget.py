@@ -294,7 +294,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
                         if sc == '500':
                             if 'ges_rzedna' in lay.name().lower() and sc == '500':
-                                Main().remove_all_joins(lay)
                                 Main().calculate_colors(lay, 'color')
 
                         if 'etykieta' not in lay.name().lower() and 'prezentacja' not in lay.name().lower() and sc == '1000':
