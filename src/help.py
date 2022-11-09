@@ -12,7 +12,6 @@ class Help(wnd, cls):
         self.setupUi(self)
 
         # nadanie wersji z metadanych w okno help
-        #print('xd', os.path.dirname(os.path.join(os.path.dirname(__file__))))
         metadata_path = (os.path.join(os.path.dirname(os.path.dirname(__file__)), 'metadata.txt'))
         ver = reg_ver(get_local_ver(metadata_path))
         self.lb_ver.setText(ver)
