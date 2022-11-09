@@ -745,7 +745,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
             self.right_click_dlg = QDialog()
             self.right_click_dlg.setWindowFlag(Qt.WindowContextHelpButtonHint, False)  # This removes it
-            self.right_click_dlg.setFixedSize(QSize(220, 90))
+            #self.right_click_dlg.setFixedSize(QSize(220, 90))
             self.right_click_dlg.setWindowTitle("Okno wypełnień")
 
             # pobranie atrybutow odpowiadajacych za wielkosc okna
@@ -757,7 +757,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             btn_fill = QPushButton(self.right_click_dlg)
             btn_fill.setAutoDefault(False)
             btn_fill.setText("Nadaj kolorystyke wypełnień")
-            btn_fill.setFixedSize(QSize(window_width, 30))
+
+            #btn_fill.setFixedSize(QSize(window_width, 30))
             # powrot do stylizacji
             btn_fill.clicked.connect(self.back_to_qml_symb)
             btn_fill.clicked.connect(self.disp_wers)
@@ -768,7 +769,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             btn_fill_xlsm.setAutoDefault(False)
             btn_fill_xlsm.setText("Otwórz plik xlsm z parametrami wypełnień")
             btn_fill_xlsm.move(0, 30)
-            btn_fill_xlsm.setFixedSize(QSize(window_width, 30))
+            btn_fill_xlsm.setFixedSize(btn_fill_xlsm.sizeHint().width(), 30)
+            #btn_fill_xlsm.setFixedSize(QSize(window_width, 30))
             btn_fill_xlsm.clicked.connect(lambda: open_fill_xlsm(path=FILL_PARAMETERS))
             btn_fill_xlsm.clicked.connect(self.close_dialog)
 
@@ -776,13 +778,20 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             btn_fill_loc.setAutoDefault(False)
             btn_fill_loc.setText("Otwórz lokalizacje pliku wypełnień")
             btn_fill_loc.move(0, 60)
-            btn_fill_loc.setFixedSize(QSize(window_width, 30))
+            #btn_fill_loc.setFixedSize(QSize(window_width, 30))
             btn_fill_loc.clicked.connect(lambda: open_fill_xlsm_loc(path=os.path.join(PLUGIN_DIRECTORY, 'fill')))
             btn_fill_loc.clicked.connect(self.close_dialog)
+
+            # nadanie rozmiaru przyciskow
+            btn_fill.setFixedSize(btn_fill_xlsm.sizeHint().width(), 30)
+            btn_fill_loc.setFixedSize(btn_fill_xlsm.sizeHint().width(), 30)
 
             # przesuniecie okna do pozycji kursora
             self.right_click_dlg.move(cur_pos)
             self.right_click_dlg.show()
+
+
+
 
     def close_dialog(self):
         """Zamykanie okna dialogu po wywolaniu funkcji"""
