@@ -16,7 +16,6 @@ about=Wtyczka do wizualizacji mapy zasadniczej z plików GML obejmujących zbior
 tracker=https://github.com/geoxyIT/QMapa/issues
 repository=https://github.com/geoxyIT/QMapa
 # End of mandatory metadata
-git 
 # Recommended items:
 
 hasProcessingProvider=no
