@@ -301,7 +301,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 self.progressBar.setValue(100)
                 print('czas 100%:', datetime.now() - start_2)
                 self.progressBar.hide()
-
+                if report_path.startswith('/'):  # przypadek dla linuksa kiedy sciezka zaczyna sie od slasha
+                    report_path = report_path.lstrip('/')
                 iface.messageBar().pushMessage("raport z importu", '<a href="file:///' + report_path + '">' + report_path + '</a>', level = Qgis.Success, duration = 0)
 
                 self.signal_of_import = False
@@ -785,4 +786,3 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def close_dialog(self):
         """Zamykanie okna dialogu po wywolaniu funkcji"""
         self.right_click_dlg.close()
-

@@ -9,6 +9,7 @@ from typing import Dict
 from qgis.utils import iface
 from qgis.core import *
 from qgis.PyQt.QtCore import Qt
+from .qmapa_main import Main
 
 
 def excel_to_dict(excel_path: str) -> Dict:
@@ -382,18 +383,19 @@ def fill_with_color(fill_dict, scale):
     # odswiezenie wszystkich warstw canvy
     iface.mapCanvas().refreshAllLayers()
 
-
 def fill(excel_path, scale):
     """Nadanie wypelniania w oparciu o plik Excel"""
     fill_dict = excel_to_dict(excel_path)
     fill_with_color(fill_dict, scale)
 
-
 def open_fill_xlsm(path: str):
     """Otwarcie pliku xlsm z parametrami wypełniania do edycji"""
-    webbrowser.open(path)
+    # webbrowser.open(path)
+    Main().os_open(path)
+
 
 
 def open_fill_xlsm_loc(path: str):
     """Otwarcie lokalizacji w której znajduje się plik xlsx"""
-    webbrowser.open(path)
+    # webbrowser.open(path)
+    Main().os_open(path)

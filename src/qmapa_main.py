@@ -1,5 +1,5 @@
 import datetime
-import os
+import os, sys
 
 from copy import copy
 
@@ -581,4 +581,17 @@ class Main:
         #print('czas policzenia wersji w main: ', datetime.datetime.now() - start)
 
         return counting_dict
+
+    def os_open(self, path):
+        """Wykrywanie aktualnie uzywanego systemu operacyjnego"""
+        if sys.platform == 'win32':
+            os.startfile(path)
+        elif sys.platform == 'darwin' or sys.platform == 'linux':
+            os.system(f'open "{path}"')
+        else:
+            try:
+                os.system(f'xdg-open "{path}"')
+            except OSError as err:
+                print('Ta funkcjonalność nie obsługuje twojego systemu operacyjnego', err)
+
 
