@@ -194,15 +194,6 @@ class QMapa:
         QgsExpression.registerFunction(pokaz_wersje.pokaz_wersje)
         QgsExpression.registerFunction(kolor_wersji.kolor_wersji)
 
-
-
-        icon_path = ':/plugins/qmapa/icons/icon.png'
-        '''self.add_action(
-            icon_path,
-            text=self.tr(u'QMapa'),
-            callback=self.run,
-            parent=self.iface.mainWindow())'''
-
         self.initExpandToolbar()
 
     def tryUnregister(self):
@@ -282,12 +273,6 @@ class QMapa:
         """Cleanup necessary items here when plugin dockwidget is closed"""
 
         #print "** CLOSING QMapa"
-        # usuniecie funkcji expressions po wylaczeniu wtyczki
-        '''QgsExpression.unregisterFunction('kreskowanie')
-        QgsExpression.unregisterFunction('connect_points')
-        QgsExpression.unregisterFunction('get_half_line')
-        QgsExpression.unregisterFunction('skarpy')
-        QgsExpression.unregisterFunction('recalculate_justification')'''
 
         # disconnects
         self.dockwidget.closingPlugin.disconnect(self.onClosePlugin)
@@ -311,12 +296,6 @@ class QMapa:
                 self.tr(u'&QMapa GML 2021'),
                 action)
             self.iface.removeToolBarIcon(action)
-        '''self.iface.removePluginMenu(
-                self.tr(u'&QMapa'),
-                self.action)
-        self.iface.removePluginMenu(
-                self.tr(u'&QMapa'),
-                self.tlbar)'''
         
         # remove the toolbar
         del self.toolbar

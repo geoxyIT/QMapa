@@ -16,14 +16,25 @@ about=Wtyczka do wizualizacji mapy zasadniczej z plików GML obejmujących zbior
 tracker=https://github.com/geoxyIT/QMapa/issues
 repository=https://github.com/geoxyIT/QMapa
 # End of mandatory metadata
-
+git 
 # Recommended items:
 
 hasProcessingProvider=no
 
 changelog=
-	2.0.0 2022.11.02
-	-
+	2.0.0 2022.11.10
+    -Optymalizacja importu i wyświetlania
+    -Dodanie generowania raportu z importu
+    -Dodanie obsługi importu plików zawierających kilka baz,
+     obiekty które są niezgodne z modelami BDOT, EGiB i GESUT 2021 są wczytywane, ale nie jest obsługiwana ich odpowiednia wizualizacja
+    -Dodanie możliwości wypełniania obiektów powierzchniowych pod prawym przyciskiem myszy w oparciu o plik xlsm z zadeklarowaną strukturą
+    -Dodanie możliwości wyświetlania wersji
+    -Dodanie generowania raportu podczas importu pliku GML
+    -Poprawa symbolu ekranu akustycznego
+    -Poprawa generowania kreskowania dla skarp, schodów, grobli, wałów, ścian oporowych
+    -Dodanie symbolu EGB_odnosnik
+    -Poprawa etykiet
+    -Poprawa kodowania na utf-8 w modyfikowanym pliku GML
 	1.1.1 2022.08.01
 	-Dodanie obsługi błędu przy wczytywaniu pliku GML niezgodnego z rozporządzeniem 2021.
 	-Poprawa etykietowania podczas wykonywania importu.
