@@ -1,5 +1,5 @@
 2.0.0 2022.11.10
--Optymalizacja importu i wyświetlania
+-Optymalizacja importu i renderowania
 -Dodanie generowania raportu z importu
 -Dodanie obsługi importu plików zawierających kilka baz,
  obiekty które są niezgodne z modelami BDOT, EGiB i GESUT 2021 są wczytywane, ale nie jest obsługiwana ich odpowiednia wizualizacja

@@ -23,6 +23,14 @@ def reg_ver(text):
     ver = results.group().lstrip('version=')
     return ver
 
+def reg_date(text):
+    """Regex dla wyszukiwania daty opublikowanej wersji w pliku metadanych"""
+    version = reg_ver(text)
+    pattern = version+".+\n"
+    results = re.search(pattern, text)
+    date = results.group().lstrip(version).lstrip()
+    return date
+
 def compare_versions(label, git_ver, loc_ver):
     """Porownywanie ze soba wersji github i lokalnej"""
     if git_ver > loc_ver:
@@ -36,7 +44,9 @@ def compare_versions(label, git_ver, loc_ver):
     else:
         # print('Twoja wersja jest aktualna')
         pass
-    
+
+
+
 if __name__ == '__main__':
     URL = 'https://raw.githubusercontent.com/g-sherman/Qgis-Plugin-Builder/master/metadata.txt'
     hub_ver = reg_ver(get_hub_ver(URL))
@@ -44,7 +54,10 @@ if __name__ == '__main__':
     local_path = r'C:\Users\Geoxy\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\QMapa\metadata.txt'
     local_ver = reg_ver(get_local_ver(local_path))
     print(local_ver)
-    compare_versions(hub_ver, local_ver)
+    # compare_versions(hub_ver, local_ver)
+    date = reg_date(get_local_ver(local_path))
+    print(date)
+
 
     
     

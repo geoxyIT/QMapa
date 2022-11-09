@@ -68,9 +68,9 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLabel" name="label_8">
+        <widget class="QLabel" name="lb_ver">
          <property name="text">
-          <string>1.1.1</string>
+          <string/>
          </property>
         </widget>
        </item>
@@ -201,9 +201,9 @@
         </widget>
        </item>
        <item row="9" column="1">
-        <widget class="QLabel" name="label_23">
+        <widget class="QLabel" name="lb_date">
          <property name="text">
-          <string>2022.08.01</string>
+          <string/>
          </property>
         </widget>
        </item>
