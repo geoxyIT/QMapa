@@ -787,6 +787,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             btn_fill_loc.setFixedSize(btn_fill_xlsm.sizeHint().width(), 30)
 
             # przesuniecie okna do pozycji kursora
+
             self.right_click_dlg.move(cur_pos)
             self.right_click_dlg.show()
 

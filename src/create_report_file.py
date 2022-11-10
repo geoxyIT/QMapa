@@ -3,12 +3,13 @@ from openpyxl.utils import get_column_letter
 from openpyxl import load_workbook'''
 from copy import copy
 #from .config import pts_list, line_list, polygon_list
-from openpyxl import *
+#from openpyxl import *
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
 from openpyxl import load_workbook
 import datetime
 import os
+import hashlib
 
 class report:
     """tworzenie raportu z importu"""
@@ -16,6 +17,18 @@ class report:
     def __init__(self):
         #podane tagi sa rozpoznawane jako zgodne z rozporzadzeniem, slownik mowi dodatkowo jaki przedrostek dopisywac gdy wystapi dany tag (np dopisze OT_ do poczatekGorySkarpy)
         self.a = 1
+
+
+    def control_sum(self, file_path):
+        #filename = input(file_path)
+        start = datetime.datetime.now()
+        sha256_hash = hashlib.sha256()
+
+        with open(file_path, 'rb') as f:
+            # Read and update hash string value in blocks of 4K
+            for byte_block in iter(lambda: f.read(4096), b""):
+                sha256_hash.update(byte_block)
+        return sha256_hash
 
     def copyRange(self, startCol, startRow, endCol, endRow, sheet):
         """Funkcja do kopiowania zakresu komorek"""
@@ -109,6 +122,8 @@ class report:
         main_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
         template_path = os.path.join(main_dir, 'raport', 'szablon_raport_importu.xlsx')
 
+        control_sum_sha256 = self.control_sum(file_path)
+
         start_paste_row = 7
         #template_wb = load_workbook(filename=r"C:\Users\geoxy\Desktop\wszystkie_testy\raport importu\szablon_raport_importu.xlsx")
         template_wb = load_workbook(filename=template_path)
@@ -143,7 +158,7 @@ class report:
         sheet.delete_rows(7,36)
 
         sheet['A3'] = sheet['A3'].value + str(os.path.split(file_path)[1])
-
+        sheet['A4'] = sheet['A4'].value + str(control_sum_sha256.hexdigest())
         sheet['A5'] = sheet['A5'].value + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
         prez_layers = ['EGB_PrezentacjaGraficzna', 'OT_PrezentacjaGraficzna', 'GES_PrezentacjaGraficzna']
