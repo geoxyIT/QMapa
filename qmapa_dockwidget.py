@@ -61,7 +61,8 @@ FORM_CLASS, _ = uic.loadUiType(os.path.join(
 
 PLUGIN_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 
-FILL_PARAMETERS = os.path.join(PLUGIN_DIRECTORY, 'fill', 'QMapa_wypelnieniaObszarow_2022-10-26.xlsm')
+#FILL_PARAMETERS = os.path.join(PLUGIN_DIRECTORY, 'fill', 'QMapa_wypelnieniaObszarow_2022-10-26.xlsm')
+FILL_PARAMETERS = os.path.join(PLUGIN_DIRECTORY, 'fill', 'QMapa_wypelnieniaObszarow_2022-11-17.xlsm')
 
 class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     closingPlugin = pyqtSignal()
@@ -78,6 +79,9 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.setupUi(self)
 
         self.cmbStylization.addItems(Main().getStylizations(omit_special=True))
+
+        # aktywne zbiory dla fillowania
+        self.active_sets = []
 
         # sprawdzenie wersji programu
         self.check_version()
@@ -554,8 +558,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def on_dteZnacznik_valueChanged(self):
         self.disp_settings()
 
-    def on_gbShowWers_toggled(self, on):
-
+    def on_gbShowWers_toggled(self):
         self.disp_wers()
 
     def back_to_qml_symb(self):
@@ -741,49 +744,46 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             cursor = QtGui.QCursor()
             cur_pos = cursor.pos()
 
-            current_scale = self.cmbStylization.currentText()
-
             self.right_click_dlg = QDialog()
             self.right_click_dlg.setWindowFlag(Qt.WindowContextHelpButtonHint, False)  # This removes it
             #self.right_click_dlg.setFixedSize(QSize(220, 90))
             self.right_click_dlg.setWindowTitle("Okno wypełnień")
 
-            # pobranie atrybutow odpowiadajacych za wielkosc okna
-            # wykorzystane przy nadaniu wielkosci przyciskow
-            window_width = self.right_click_dlg.frameGeometry().width()
-            window_height = self.right_click_dlg.frameGeometry().height()
-
             # definicja przyciskow
             btn_fill = QPushButton(self.right_click_dlg)
             btn_fill.setAutoDefault(False)
             btn_fill.setText("Nadaj kolorystyke wypełnień")
-
-            #btn_fill.setFixedSize(QSize(window_width, 30))
             # powrot do stylizacji
             btn_fill.clicked.connect(self.back_to_qml_symb)
             btn_fill.clicked.connect(self.disp_wers)
-            btn_fill.clicked.connect(lambda: fill(excel_path=FILL_PARAMETERS, scale=current_scale))
+            btn_fill.clicked.connect(self.fill_select_set)  # nadanie symboli w oparciu o zbior danych
             btn_fill.clicked.connect(self.close_dialog)
+
+            btn_close_fill = QPushButton(self.right_click_dlg)
+            btn_close_fill.setAutoDefault(False)
+            btn_close_fill.setText("Wyłącz wypełnianie")
+            btn_close_fill.move(0, 30)
+            btn_close_fill.clicked.connect(self.back_to_qml_symb)
+            btn_close_fill.clicked.connect(self.close_dialog)
 
             btn_fill_xlsm = QPushButton(self.right_click_dlg)
             btn_fill_xlsm.setAutoDefault(False)
             btn_fill_xlsm.setText("Otwórz plik xlsm z parametrami wypełnień")
-            btn_fill_xlsm.move(0, 30)
-            btn_fill_xlsm.setFixedSize(btn_fill_xlsm.sizeHint().width(), 30)
-            #btn_fill_xlsm.setFixedSize(QSize(window_width, 30))
+            btn_fill_xlsm.move(0, 60)
             btn_fill_xlsm.clicked.connect(lambda: open_fill_xlsm(path=FILL_PARAMETERS))
             btn_fill_xlsm.clicked.connect(self.close_dialog)
 
             btn_fill_loc = QPushButton(self.right_click_dlg)
             btn_fill_loc.setAutoDefault(False)
             btn_fill_loc.setText("Otwórz lokalizacje pliku wypełnień")
-            btn_fill_loc.move(0, 60)
-            #btn_fill_loc.setFixedSize(QSize(window_width, 30))
+            btn_fill_loc.move(0, 90)
             btn_fill_loc.clicked.connect(lambda: open_fill_xlsm_loc(path=os.path.join(PLUGIN_DIRECTORY, 'fill')))
             btn_fill_loc.clicked.connect(self.close_dialog)
 
             # nadanie rozmiaru przyciskow
             btn_fill.setFixedSize(btn_fill_xlsm.sizeHint().width(), 30)
+            btn_close_fill.setFixedSize(btn_fill_xlsm.sizeHint().width(), 30)
+            btn_fill_xlsm.setFixedSize(btn_fill_xlsm.sizeHint().width(), 30)
             btn_fill_loc.setFixedSize(btn_fill_xlsm.sizeHint().width(), 30)
 
             # przesuniecie okna do pozycji kursora
@@ -791,9 +791,47 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             self.right_click_dlg.move(cur_pos)
             self.right_click_dlg.show()
 
-
-
-
     def close_dialog(self):
         """Zamykanie okna dialogu po wywolaniu funkcji"""
         self.right_click_dlg.close()
+
+    def fill_select_set(self):
+        self.back_to_qml_symb()
+        current_scale = self.cmbStylization.currentText()
+
+        # pobranie aktywnych przyciskow
+        if self.chbFillBDOT.isChecked() and 'OT' not in self.active_sets:
+            self.active_sets.append('OT')
+        elif self.chbFillBDOT.isChecked() is False and 'OT' in self.active_sets:
+            self.active_sets.remove('OT')
+
+        if self.chbFillEGIB.isChecked() and 'EGB' not in self.active_sets:
+            self.active_sets.append('EGB')
+        elif self.chbFillEGIB.isChecked() is False and 'EGB' in self.active_sets:
+            self.active_sets.remove('EGB')
+
+        if self.chbFillGESUT.isChecked() and 'GES' not in self.active_sets:
+            self.active_sets.append('GES')
+        elif self.chbFillGESUT.isChecked() is False and 'GES' in self.active_sets:
+            self.active_sets.remove('GES')
+
+        # przejscie po zaznaczonych zbiorach i nadanie wypelnien
+        for set in self.active_sets:
+            fill(excel_path=FILL_PARAMETERS, scale=current_scale, set=set)
+
+    def on_gbFill_toggled(self, state):
+        """GroupBox dla fillowania w zaleznosci od wyswietlanego zbioru danych"""
+        if state is True:
+            self.fill_select_set()
+        else:
+            self.back_to_qml_symb()  # wylaczenie fillowania
+
+    def on_chbFillBDOT_stateChanged(self):
+        self.fill_select_set()
+
+    def on_chbFillEGIB_stateChanged(self):
+        self.fill_select_set()
+
+    def on_chbFillGESUT_stateChanged(self):
+        self.fill_select_set()
+
