@@ -3,7 +3,7 @@
 -Dodanie generowania raportu z importu
 -Dodanie obsługi importu plików zawierających kilka baz,
  obiekty które są niezgodne z modelami BDOT, EGiB i GESUT 2021 są wczytywane, ale nie jest obsługiwana ich odpowiednia wizualizacja
--Dodanie możliwości wypełniania obiektów powierzchniowych pod prawym przyciskiem myszy w oparciu o plik xlsm z zadeklarowaną strukturą
+-Dodanie możliwości wypełniania obiektów powierzchniowych w oparciu o plik xlsm (dostępny np. pod prawym przyciskiem myszy) z zadeklarowaną strukturą
 -Dodanie możliwości wyświetlania wersji
 -Dodanie generowania raportu podczas importu pliku GML
 -Poprawa symbolu ekranu akustycznego
