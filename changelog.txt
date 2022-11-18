@@ -1,4 +1,4 @@
-2.0.0 2022.11.10
+2.0.0 2022.11.21
 -Optymalizacja importu i renderowania
 -Dodanie generowania raportu z importu
 -Dodanie obsługi importu plików zawierających kilka baz,
