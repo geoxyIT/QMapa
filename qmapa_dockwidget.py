@@ -75,6 +75,10 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         # self.<objectname>, and you can use autoconnect slots - see
         # http://doc.qt.io/qt-5/designer-using-a-ui-file.html
         # #widgets-and-dialogs-with-auto-connect
+        # pozwalanie na powrot do pierwotnej symbolizacji
+        self.back_wers = True
+        self.back_fill = True
+
         self.signal_of_import = False
         self.setupUi(self)
 
@@ -106,6 +110,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'DateCompare', 0)
 
         iface.mapCanvas().refreshAllLayers()
+
+
 
     def closeEvent(self, event):
         self.closingPlugin.emit()
@@ -257,6 +263,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 #self.set_labels(self.vec_layers_list)
                 '''self.wyswWg()  # sprawdzenie i nadanie wyswietlania wersji, statusu'''
                 self.disp_wers() #sprawdzenie i nadanie wyswietlania wersji
+                self.fill_select_set() #sprawdzenie i nadanie fillowania
                 self.progressBar.setValue(90)
                 print('czas 90%:', datetime.now() - start_2)
 
@@ -315,7 +322,10 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def on_cmbStylization_currentTextChanged(self):
         """ustaw stylizację wybraną w comboboxie"""
         self.back_to_qml_symb()
+        self.back_wers = False
+        self.back_fill = False
         self.disp_wers()
+        self.fill_select_set()
 
     def set_joins(self, vec_layers_list):
         """nadawanie joinow podczas importu pliku"""
@@ -558,8 +568,15 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def on_dteZnacznik_valueChanged(self):
         self.disp_settings()
 
-    def on_gbShowWers_toggled(self):
+    def on_gbShowWers_toggled(self,state):
         self.disp_wers()
+        if state:
+            # uncheck dla wersji, dodanie zeby nie wracalo wtedy do poprzedniego gml przy uncheck (bo inaczej robi sie 2 razy)
+            self.back_fill = False
+            self.gbFill.setChecked(False)
+            self.gbFill.setCollapsed(True)
+        self.back_fill = True
+
 
     def back_to_qml_symb(self):
         """Wczytanie stylizacji QML"""
@@ -572,7 +589,12 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def disp_wers(self):
         """ustawienie wyswietlania/niewyswietlania po wersjach"""
         on = self.gbShowWers.isChecked()
-        self.back_to_qml_symb()
+        # powrot do pierwotnej stylizacji
+        if self.back_wers:
+            self.back_to_qml_symb()
+
+        self.back_wers = True
+
         if on:
             self.disp_settings()
             expr_show = " with_variable( 'show', pokaz_wersje(@DateCompare, @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(" + '"startObiekt"' + ", ''),concat(" + '"startWersjaObiekt"' + ", ''),concat(" + '"koniecObiekt"' + ", ''),concat(" + '"koniecWersjaObiekt"' + ", '')),  if( var('show') != 'default', var('show'), 1111))"
@@ -754,16 +776,18 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             btn_fill.setAutoDefault(False)
             btn_fill.setText("Nadaj kolorystyke wypełnień")
             # powrot do stylizacji
-            btn_fill.clicked.connect(self.back_to_qml_symb)
-            btn_fill.clicked.connect(self.disp_wers)
-            btn_fill.clicked.connect(self.fill_select_set)  # nadanie symboli w oparciu o zbior danych
+            # btn_fill.clicked.connect(self.back_to_qml_symb)
+            # btn_fill.clicked.connect(self.disp_wers)
+            btn_fill.clicked.connect(lambda: self.set_fill_checked(state = True))
+            #btn_fill.clicked.connect(self.fill_select_set)  # nadanie symboli w oparciu o zbior danych
             btn_fill.clicked.connect(self.close_dialog)
 
             btn_close_fill = QPushButton(self.right_click_dlg)
             btn_close_fill.setAutoDefault(False)
             btn_close_fill.setText("Wyłącz wypełnianie")
             btn_close_fill.move(0, 30)
-            btn_close_fill.clicked.connect(self.back_to_qml_symb)
+            btn_close_fill.clicked.connect(lambda: self.set_fill_checked(state=False))
+            #btn_close_fill.clicked.connect(self.back_to_qml_symb)
             btn_close_fill.clicked.connect(self.close_dialog)
 
             btn_fill_xlsm = QPushButton(self.right_click_dlg)
@@ -796,35 +820,45 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.right_click_dlg.close()
 
     def fill_select_set(self):
-        self.back_to_qml_symb()
-        current_scale = self.cmbStylization.currentText()
+        if self.back_fill:
+            self.back_to_qml_symb()
 
-        # pobranie aktywnych przyciskow
-        if self.chbFillBDOT.isChecked() and 'OT' not in self.active_sets:
-            self.active_sets.append('OT')
-        elif self.chbFillBDOT.isChecked() is False and 'OT' in self.active_sets:
-            self.active_sets.remove('OT')
+        self.back_fill = True
 
-        if self.chbFillEGIB.isChecked() and 'EGB' not in self.active_sets:
-            self.active_sets.append('EGB')
-        elif self.chbFillEGIB.isChecked() is False and 'EGB' in self.active_sets:
-            self.active_sets.remove('EGB')
+        on = self.gbFill.isChecked()
+        if on:
+            current_scale = self.cmbStylization.currentText()
 
-        if self.chbFillGESUT.isChecked() and 'GES' not in self.active_sets:
-            self.active_sets.append('GES')
-        elif self.chbFillGESUT.isChecked() is False and 'GES' in self.active_sets:
-            self.active_sets.remove('GES')
+            # pobranie aktywnych przyciskow
+            if self.chbFillBDOT.isChecked() and 'OT' not in self.active_sets:
+                self.active_sets.append('OT')
+            elif self.chbFillBDOT.isChecked() is False and 'OT' in self.active_sets:
+                self.active_sets.remove('OT')
 
-        # przejscie po zaznaczonych zbiorach i nadanie wypelnien
-        for set in self.active_sets:
-            fill(excel_path=FILL_PARAMETERS, scale=current_scale, set=set)
+            if self.chbFillEGIB.isChecked() and 'EGB' not in self.active_sets:
+                self.active_sets.append('EGB')
+            elif self.chbFillEGIB.isChecked() is False and 'EGB' in self.active_sets:
+                self.active_sets.remove('EGB')
+
+            if self.chbFillGESUT.isChecked() and 'GES' not in self.active_sets:
+                self.active_sets.append('GES')
+            elif self.chbFillGESUT.isChecked() is False and 'GES' in self.active_sets:
+                self.active_sets.remove('GES')
+
+            # przejscie po zaznaczonych zbiorach i nadanie wypelnien
+            for set in self.active_sets:
+                fill(excel_path=FILL_PARAMETERS, scale=current_scale, set=set)
 
     def on_gbFill_toggled(self, state):
         """GroupBox dla fillowania w zaleznosci od wyswietlanego zbioru danych"""
+        self.fill_select_set()
         if state is True:
-            self.fill_select_set()
-        else:
-            self.back_to_qml_symb()  # wylaczenie fillowania
+            # uncheck dla wersji, dodanie zeby nie wracalo wtedy do poprzedniego gml przy uncheck (bo inaczej robi sie 2 razy)
+            self.back_wers = False
+            self.gbShowWers.setChecked(False)
+            self.gbShowWers.setCollapsed(True)
+        self.back_wers = True
+
 
     def on_chbFillBDOT_stateChanged(self):
         self.fill_select_set()
@@ -834,4 +868,14 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     def on_chbFillGESUT_stateChanged(self):
         self.fill_select_set()
+
+    def set_fill_checked(self, state):
+        """ustawienie checked/unchecked dla fillowania"""
+        if state == self.gbFill.isChecked():
+            self.back_fill = False
+            self.gbFill.setChecked(not state)
+        self.back_fill = True
+        self.gbFill.setChecked(state)
+        self.gbFill.setCollapsed(not state)
+
 
