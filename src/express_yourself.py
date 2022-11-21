@@ -149,7 +149,7 @@ class ExpressYourself:
                     settings = labeling.settings()
 
                     if set_colors:
-                        self.enable_expression = 'case when @Auto then ' + self.enable_expression + ' else 0 end'
+                        self.enable_expression = 'case when 1111 then ' + self.enable_expression + ' else 0 end'
 
                         # wyrazenia
                         self.label_properties(settings)
@@ -190,7 +190,8 @@ class ExpressYourself:
                                     self.color_expression = new_color_expression
                                     self.enable_expression = new_enable_expression
 
-                                    self.enable_expression = 'case when @Karto then ' + self.enable_expression + ' else 0 end'
+                                    #self.enable_expression = 'case when @Karto then ' + self.enable_expression + ' else 0 end'
+                                    self.enable_expression = 'case when 1111 then ' + self.enable_expression + ' else 0 end'
                                 else:
                                     self.enable_expression = '@Karto'
 
@@ -198,7 +199,7 @@ class ExpressYourself:
                                 pass
                         else:
                             if set_colors:
-                                self.enable_expression = 'case when @Auto then ' + self.enable_expression + ' else 0 end'
+                                self.enable_expression = 'case when 1111 then ' + self.enable_expression + ' else 0 end'
                             else:
                                 self.enable_expression = '@Auto'
                         if set_colors:
