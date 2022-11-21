@@ -324,10 +324,10 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def on_cmbStylization_currentTextChanged(self):
         """ustaw stylizację wybraną w comboboxie"""
         self.back_to_qml_symb()
-        self.back_wers = False
-        self.back_fill = False
-        self.disp_wers()
-        self.fill_select_set()
+        if self.gbShowWers.isChecked():
+            self.disp_wers()  # sprawdzenie i nadanie wyswietlania wersji
+        if self.gbFill.isChecked():
+            self.fill_select_set()  # sprawdzenie i nadanie fillowania
 
     def set_joins(self, vec_layers_list):
         """nadawanie joinow podczas importu pliku"""
