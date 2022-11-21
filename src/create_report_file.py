@@ -125,7 +125,6 @@ class report:
         control_sum_sha256 = self.control_sum(file_path)
 
         start_paste_row = 7
-        #template_wb = load_workbook(filename=r"C:\Users\geoxy\Desktop\wszystkie_testy\raport importu\szablon_raport_importu.xlsx")
         template_wb = load_workbook(filename=template_path)
 
 
@@ -276,7 +275,6 @@ class report:
         file_report_path = out_path
 
         template_wb.save(file_report_path)
-        #template_wb.save(r"C:\Users\geoxy\Desktop\wszystkie_testy\raport importu\test1.xlsx")
 
         '''new_workbook = self.createEmptyWorkbook()
         new_worksheet = new_workbook.create_sheet('raport importu')'''

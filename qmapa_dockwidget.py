@@ -142,7 +142,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         path, ext = os.path.splitext(gml_path)
         mod_gml_path = os.path.join(os.path.dirname(path), os.path.basename(path) + '_mod' + ext)
         gpkg_path = os.path.join(os.path.dirname(path), os.path.basename(path) + '.gpkg')
-        report_path = os.path.join(os.path.dirname(path), os.path.basename(path) + '.xlsx')
+        report_path = os.path.join(os.path.dirname(path), os.path.basename(path) + '_raport.xlsx')
 
         # slownik zawierajacy liste istniejacych juz plikow importu:
         dict_existing_files = {}
