@@ -262,8 +262,10 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
                 #self.set_labels(self.vec_layers_list)
                 '''self.wyswWg()  # sprawdzenie i nadanie wyswietlania wersji, statusu'''
-                self.disp_wers() #sprawdzenie i nadanie wyswietlania wersji
-                self.fill_select_set() #sprawdzenie i nadanie fillowania
+                if self.gbShowWers.isChecked():
+                    self.disp_wers() #sprawdzenie i nadanie wyswietlania wersji
+                if self.gbFill.isChecked():
+                    self.fill_select_set() #sprawdzenie i nadanie fillowania
                 self.progressBar.setValue(90)
                 print('czas 90%:', datetime.now() - start_2)
 
