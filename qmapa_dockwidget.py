@@ -292,17 +292,17 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                     print('czas ' + str(90 + int((nr/len(scales))*10)) + '%:', datetime.now() - start_2)
                     nr += 1
                     for lay in self.vec_layers_list:
-                        if 'skarpa' in lay.name().lower() and start_point_layer_id and end_point_layer_id:
+                        if 'skarpa' in lay.name().lower():
                             Main().calculate_hatching(lay, 'skarpa', sc, [start_point_layer_id, end_point_layer_id])
-                        elif 'ot_obiekttrwalezwiazany' in lay.name().lower() and ot_polyline_layer_id:
+                        elif 'ot_obiekttrwalezwiazany' in lay.name().lower():
                             Main().calculate_hatching(lay, 'schody', sc, ot_polyline_layer_id)
-                        elif 'egb_obiekttrwalezwiazany' in lay.name().lower() and egb_polyline_layer_id:
+                        elif 'egb_obiekttrwalezwiazany' in lay.name().lower():
                             Main().calculate_hatching(lay, 'schody', sc, egb_polyline_layer_id)
-                        elif 'budowle' in lay.name().lower() and ot_polyline_layer_id:
+                        elif 'budowle' in lay.name().lower():
                             Main().calculate_hatching(lay, 'sciana', sc, ot_polyline_layer_id)
-                        elif 'wody' in lay.name().lower()  and start_point_layer_id and end_point_layer_id:
+                        elif 'wody' in lay.name().lower():
                             Main().calculate_hatching(lay, 'wody', sc, [start_point_layer_id, end_point_layer_id])
-                        elif 'komunikacja' in lay.name().lower() and ot_polyline_layer_id:
+                        elif 'komunikacja' in lay.name().lower():
                             Main().calculate_hatching(lay, 'schody', sc, ot_polyline_layer_id)
 
                         if sc == '500':
