@@ -27,6 +27,7 @@
 """
 
 import os
+import time
 from datetime import datetime
 import webbrowser
 
@@ -37,6 +38,8 @@ from qgis.PyQt.QtCore import pyqtSignal, pyqtSlot, QVariant, QDateTime
 from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox
 from qgis.utils import iface
 from qgis.core import *
+
+from qgis.gui import QgsLayerTreeView
 
 # import z folderu src
 from .src.create_relations import CreateRelations
@@ -76,6 +79,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         # http://doc.qt.io/qt-5/designer-using-a-ui-file.html
         # #widgets-and-dialogs-with-auto-connect
         # pozwalanie na powrot do pierwotnej symbolizacji
+
         self.back_wers = True
         self.back_fill = True
 
@@ -199,8 +203,11 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         return mod_gml_path, gpkg_path, report_path
 
-    def on_pbImport_pressed(self):
+    @pyqtSlot()
+    def on_pbImport_clicked(self):
         """Zaimportowanie pliku GML z konwersją do GPKG oraz nadaniem grup warstw"""
+        #print(iface.layerTreeView().layerTreeModel().legendMapViewData())
+
         name, ext = QFileDialog.getOpenFileName(self, caption='Wybierz wejściowy plik GML',
                                                 filter='gml (*.gml)')
 
@@ -255,17 +262,17 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
                 # nadanie stylizacji
                 current_style = self.cmbStylization.currentText()
-                #Main().setStyling(self.vec_layers_list, current_style)
+                # Main().setStyling(self.vec_layers_list, current_style)
                 self.back_to_qml_symb()
                 self.progressBar.setValue(80)
                 print('czas 80%:', datetime.now() - start_2)
 
-                #self.set_labels(self.vec_layers_list)
+                # self.set_labels(self.vec_layers_list)
                 '''self.wyswWg()  # sprawdzenie i nadanie wyswietlania wersji, statusu'''
                 if self.gbShowWers.isChecked():
-                    self.disp_wers() #sprawdzenie i nadanie wyswietlania wersji
+                    self.disp_wers()  # sprawdzenie i nadanie wyswietlania wersji
                 if self.gbFill.isChecked():
-                    self.fill_select_set() #sprawdzenie i nadanie fillowania
+                    self.fill_select_set()  # sprawdzenie i nadanie fillowania
                 self.progressBar.setValue(90)
                 print('czas 90%:', datetime.now() - start_2)
 
@@ -283,13 +290,13 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                     elif 'koniecgoryskarpy' in ll.name().lower():
                         end_point_layer_id = ll.id()
                     elif 'ot_poliliniakierunkowa' in ll.name().lower():
-                        ot_polyline_layer_id =  ll.id()
+                        ot_polyline_layer_id = ll.id()
                     elif 'egb_poliliniakierunkowa' in ll.name().lower():
                         egb_polyline_layer_id = ll.id()
 
                 for sc in scales:
-                    self.progressBar.setValue(90 + int((nr/len(scales))*10))
-                    print('czas ' + str(90 + int((nr/len(scales))*10)) + '%:', datetime.now() - start_2)
+                    self.progressBar.setValue(90 + int((nr / len(scales)) * 10))
+                    print('czas ' + str(90 + int((nr / len(scales)) * 10)) + '%:', datetime.now() - start_2)
                     nr += 1
                     for lay in self.vec_layers_list:
                         if 'skarpa' in lay.name().lower():
@@ -317,9 +324,23 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 self.progressBar.hide()
                 if report_path.startswith('/'):  # przypadek dla linuksa kiedy sciezka zaczyna sie od slasha
                     report_path = report_path.lstrip('/')
-                iface.messageBar().pushMessage("raport z importu", '<a href="file:///' + report_path + '">' + report_path + '</a>', level = Qgis.Success, duration = 0)
+                iface.messageBar().pushMessage("raport z importu",
+                                               '<a href="file:///' + report_path + '">' + report_path + '</a>',
+                                               level=Qgis.Success, duration=0)
 
                 self.signal_of_import = False
+
+        '''name2, ext2 = QFileDialog.getOpenFileName(self, caption='Wybierz wejściowy plik GML2',
+                                                filter='gml (*.gml)')'''
+
+        self.setLegendScale()
+        '''lee = self.getLayers()
+        print('2get',lee)
+        for laa in lee:
+            laa.triggerRepaint()
+            iface.layerTreeView().refreshLayerSymbology(laa.id())
+        print('2222',iface.layerTreeView().layerTreeModel().legendMapViewData())'''
+        #print(name2, ext2)
 
     def on_cmbStylization_currentTextChanged(self):
         """ustaw stylizację wybraną w comboboxie"""
@@ -328,7 +349,30 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             self.disp_wers()  # sprawdzenie i nadanie wyswietlania wersji
         if self.gbFill.isChecked():
             self.fill_select_set()  # sprawdzenie i nadanie fillowania
+        #print(QgsLayerTreeView().currentLegendNode())
+        #print(QgsMapLayer(self.getLayers()[0]))
 
+        '''layers = self.getLayers()
+        for laaa in layers:
+            symbs = laaa.renderer().legendSymbolItems()
+            i = 0
+            for symb in symbs:
+                if i == 0:
+                    first_sym = symb.symbol().clone()
+                    print(first_sym)
+                elif i == 1:
+                    symb.setSymbol(first_sym)
+
+                    laaa.renderer().checkLegendSymbolItem(symb.ruleKey(), False)
+                    laaa.renderer().setLegendSymbolItem(symb.ruleKey(), first_sym)
+
+                i += 1
+                print(laaa.name(), symb.symbol())
+            iface.layerTreeView().refreshLayerSymbology(laaa.id())'''
+        '''print(iface.layerTreeView().layerTreeModel().legendMapViewData())
+        iface.layerTreeView().layerTreeModel().setLegendMapViewData(0.105833333, 120, 500)
+        print(iface.layerTreeView().layerTreeModel().legendMapViewData())'''
+        #print(iface.layerTreeView().currentLegendNode())
     def set_joins(self, vec_layers_list):
         """nadawanie joinow podczas importu pliku"""
         joining_dict = {'GES_Rzedna': {'GES_InneUrzadzeniaTowarzyszace': ['relacja', 'lokalnyId', ['rodzajSieci']],
@@ -487,6 +531,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         iface.mapCanvas().refreshAllLayers()
 
+        self.setLegendScale()
+
     def getLayersByName(self, name):
         layers = self.getLayers()
         sk_layers = []
@@ -586,6 +632,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         Main().setStyling(self.list_or_canvas(self.signal_of_import), current_style)
         expression = ExpressYourself('', '')
         expression.set_label_expression(self.list_or_canvas(self.signal_of_import), False)
+        self.setLegendScale()
         # self.set_labels(self.getLayers())
 
     def disp_wers(self):
@@ -605,6 +652,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             expression = ExpressYourself(expr_color, expr_show)
             expression.set_symbol_expression(self.list_or_canvas(self.signal_of_import))
             expression.set_label_expression(self.list_or_canvas(self.signal_of_import))
+
+            self.setLegendScale()
         else:
             # powrot do pierwotnej stylizacji z QML
             #self.back_to_qml_symb()
@@ -829,7 +878,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         on = self.gbFill.isChecked()
         if on:
-            current_scale = self.cmbStylization.currentText()
+            #current_scale = self.cmbStylization.currentText()
+            current_scale = self.getSelectedScale()
 
             # pobranie aktywnych przyciskow
             if self.chbFillBDOT.isChecked() and 'OT' not in self.active_sets:
@@ -850,6 +900,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             # przejscie po zaznaczonych zbiorach i nadanie wypelnien
             for set in self.active_sets:
                 fill(excel_path=FILL_PARAMETERS, scale=current_scale, set=set)
+
+            self.setLegendScale()
 
     def on_gbFill_toggled(self, state):
         """GroupBox dla fillowania w zaleznosci od wyswietlanego zbioru danych"""
@@ -880,4 +932,27 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.gbFill.setChecked(state)
         self.gbFill.setCollapsed(not state)
 
+    def getSelectedScale(self):
+        """rozpoznanie aktualnie wybranej skali, gdy nie rozpozna to wstawi domyslna skale 500"""
+        val = self.cmbStylization.currentText()
+        if '500' in val and '5000' not in val:
+            scale = 500
+        elif '1000' in val:
+            scale = 1000
+        elif '2000' in val:
+            scale = 2000
+        elif '5000' in val:
+            scale = 5000
+        else:
+            scale = 500
+        return scale
 
+    def setLegendScale(self):
+        """nadawanie skali renderowania symboli w widoku warstw"""
+        current_scale = iface.layerTreeView().layerTreeModel().legendMapViewData()
+
+        dpi = current_scale[1]
+        scale = self.getSelectedScale()
+        mupp = (2.54*scale)/(100*dpi)
+
+        iface.layerTreeView().layerTreeModel().setLegendMapViewData(mupp, dpi, scale)

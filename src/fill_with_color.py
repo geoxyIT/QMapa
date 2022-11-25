@@ -47,6 +47,20 @@ def hatching(rotation_formula, spacing_formula, width_formula, color_formula, la
     # ABY NADAWAC OFFSET KONIECZNE JEST WEJSCIE W SUBSYMBOL i ustawienie offsetu dla linii
 
     # nadanie symbolu oraz wejscie w subsymbol dla symboli single oraz rule
+    '''feature = layer.getFeature(1)
+    print(layer.name(), layer.renderer().legendKeysForFeature(feature, QgsRenderContext()))
+    layer.renderer().checkLegendSymbolItem(key='{e5e65104-337a-4815-b02f-0ddfff356ac4}', state=False)
+    '''
+    '''symbs = layer.renderer().legendSymbolItems()
+    i = 0
+    for symb in symbs:
+        if i == 0:
+            first_sym = symb.symbol()
+            print(first_sym)
+        else:
+            symb.setSymbol(first_sym)
+        i += 1'''
+
     if single is True and layer is not None:
         layer.renderer().symbol().insertSymbolLayer(1, line_pattern)
         internal_pattern_line = layer.renderer().symbol().symbolLayers()[-1].subSymbol().symbolLayers()[0]  # subsymbol
@@ -103,19 +117,19 @@ def hatching_only_values(rotation, spacing, width, color_formula, layer=None, ch
             internal_pattern_line.dataDefinedProperties().property(4).setActive(True)
 
 
-def appropriate_scale(spacing: int, scale: str) -> float:
+def appropriate_scale(spacing: int, scale: int) -> float:
     """Ustawienie odpowiednich parametrów kreskowań w zależności od zadanej skali"""
-    if scale == '500':
+    if scale == 500:
         new_spacing = spacing * 1.33
         return new_spacing
-    elif scale == '2000':
+    elif scale == 2000:
         new_spacing = spacing * 1.5
         return new_spacing
     else:
         return spacing
 
 
-def fill_with_color(fill_dict: Dict, scale: str, set: str):
+def fill_with_color(fill_dict: Dict, scale: int, set: str):
     """Metodyka nadawania kreskowań dla symboli w oparciu o zadany plik konfiguracyjny xlsm
     :param scale: wartosc tekstowa brana z combobox'a current_scale
     :param set: aktualnie nadawany zbior danych - EGIB, BDOT, GESUT
