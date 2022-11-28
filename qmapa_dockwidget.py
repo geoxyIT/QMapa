@@ -115,6 +115,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         iface.mapCanvas().refreshAllLayers()
 
+        iface.mapCanvas().scaleChanged.connect(self.setLegendScale)
+
         self.setLegendScale()
 
 
@@ -331,21 +333,15 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                                                '<a href="file:///' + report_path + '">' + report_path + '</a>',
                                                level=Qgis.Success, duration=0)
 
-                self.signal_of_import = False
-
-        '''QMessageBox.critical(iface.mainWindow(), 'moze teraz',
-                             'no nie wiem',
-                             buttons=QMessageBox.Ok)'''
-
-        lee = self.getLayers()
-        print('get', lee)
+        # nadanie wyswietlania ilosci obiektow
+        allLayers = QgsProject.instance().layerTreeRoot().findLayers()
+        QgsProject.instance().reloadAllLayers()
+        for (layer) in allLayers:
+            layer.setCustomProperty("showFeatureCount", True)
 
         self.setLegendScale()
-        for laa in lee:
-            laa.triggerRepaint()
-            iface.layerTreeView().refreshLayerSymbology(laa.id())
-        print('2222',iface.layerTreeView().layerTreeModel().legendMapViewData())
-        #print(name2, ext2)
+
+        self.signal_of_import = False
 
     def on_cmbStylization_currentTextChanged(self):
         """ustaw stylizację wybraną w comboboxie"""
@@ -354,30 +350,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             self.disp_wers()  # sprawdzenie i nadanie wyswietlania wersji
         if self.gbFill.isChecked():
             self.fill_select_set()  # sprawdzenie i nadanie fillowania
-        #print(QgsLayerTreeView().currentLegendNode())
-        #print(QgsMapLayer(self.getLayers()[0]))
 
-        '''layers = self.getLayers()
-        for laaa in layers:
-            symbs = laaa.renderer().legendSymbolItems()
-            i = 0
-            for symb in symbs:
-                if i == 0:
-                    first_sym = symb.symbol().clone()
-                    print(first_sym)
-                elif i == 1:
-                    symb.setSymbol(first_sym)
-
-                    laaa.renderer().checkLegendSymbolItem(symb.ruleKey(), False)
-                    laaa.renderer().setLegendSymbolItem(symb.ruleKey(), first_sym)
-
-                i += 1
-                print(laaa.name(), symb.symbol())
-            iface.layerTreeView().refreshLayerSymbology(laaa.id())'''
-        '''print(iface.layerTreeView().layerTreeModel().legendMapViewData())
-        iface.layerTreeView().layerTreeModel().setLegendMapViewData(0.105833333, 120, 500)
-        print(iface.layerTreeView().layerTreeModel().legendMapViewData())'''
-        #print(iface.layerTreeView().currentLegendNode())
     def set_joins(self, vec_layers_list):
         """nadawanie joinow podczas importu pliku"""
         joining_dict = {'GES_Rzedna': {'GES_InneUrzadzeniaTowarzyszace': ['relacja', 'lokalnyId', ['rodzajSieci']],
@@ -952,10 +925,11 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             scale = 500
         return scale
 
-    def setLegendScale(self, layers = None):
+    def setLegendScale(self, scale = 500, layers = None):
         """nadawanie skali renderowania symboli w widoku warstw"""
         if layers is None:
-            layers = self.getLayers()
+            layers = self.list_or_canvas(self.signal_of_import)
+
         current_scale = iface.layerTreeView().layerTreeModel().legendMapViewData()
 
         dpi = current_scale[1]
@@ -963,9 +937,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         mupp = (2.54*scale)/(100*dpi)
 
         iface.layerTreeView().layerTreeModel().setLegendMapViewData(mupp, dpi, scale)
-        print(current_scale, layers)
 
-
+        print('zmiana skali')
         for layer in layers:
             layer.triggerRepaint()
             iface.layerTreeView().refreshLayerSymbology(layer.id())
