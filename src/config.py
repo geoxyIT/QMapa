@@ -4,10 +4,7 @@
 # warstwy w zmiennej są ulozone w kolejnosci zgodnej z reprezentacja graficzna
 
 
-correct_layers = ['EGB_etykieta',
-                          'OT_etykieta',
-                          'GES_etykieta',
-                          'EGB_JednostkaEwidencyjna',
+correct_layers = ['EGB_JednostkaEwidencyjna',
                           'EGB_ObrebEwidencyjny',
                           'EGB_DzialkaEwidencyjna',
                           'EGB_PunktGraniczny',
@@ -49,6 +46,9 @@ correct_layers = ['EGB_etykieta',
                           'OT_Rzedna',
                           'GES_Rzedna',
                           'OT_Skarpa',
+                          'EGB_etykieta',
+                          'OT_etykieta',
+                          'GES_etykieta',
                           'OT_poczatekGorySkarpy',
                           'OT_koniecGorySkarpy',
                           'EGB_PrezentacjaGraficzna',

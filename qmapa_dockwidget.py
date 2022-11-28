@@ -115,6 +115,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         iface.mapCanvas().refreshAllLayers()
 
+        self.setLegendScale()
 
 
     def closeEvent(self, event):
@@ -208,7 +209,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         """Zaimportowanie pliku GML z konwersją do GPKG oraz nadaniem grup warstw"""
         #print(iface.layerTreeView().layerTreeModel().legendMapViewData())
 
-        name, ext = QFileDialog.getOpenFileName(self, caption='Wybierz wejściowy plik GML',
+        dial = QFileDialog(self)
+        name, ext = dial.getOpenFileName(self, caption='Wybierz wejściowy plik GML',
                                                 filter='gml (*.gml)')
 
         if name != '':
@@ -317,7 +319,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                                 Main().calculate_colors(lay, 'color')
 
                         if 'etykieta' not in lay.name().lower() and 'prezentacja' not in lay.name().lower() and sc == '1000':
-                            Main().remove_all_joins(lay)
+                            if 'rzedna' in lay.name().lower():
+                                Main().remove_all_joins(lay)
                             Main().add_obligatory_fields(lay)
                 self.progressBar.setValue(100)
                 print('czas 100%:', datetime.now() - start_2)
@@ -330,16 +333,18 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
                 self.signal_of_import = False
 
-        '''name2, ext2 = QFileDialog.getOpenFileName(self, caption='Wybierz wejściowy plik GML2',
-                                                filter='gml (*.gml)')'''
+        '''QMessageBox.critical(iface.mainWindow(), 'moze teraz',
+                             'no nie wiem',
+                             buttons=QMessageBox.Ok)'''
+
+        lee = self.getLayers()
+        print('get', lee)
 
         self.setLegendScale()
-        '''lee = self.getLayers()
-        print('2get',lee)
         for laa in lee:
             laa.triggerRepaint()
             iface.layerTreeView().refreshLayerSymbology(laa.id())
-        print('2222',iface.layerTreeView().layerTreeModel().legendMapViewData())'''
+        print('2222',iface.layerTreeView().layerTreeModel().legendMapViewData())
         #print(name2, ext2)
 
     def on_cmbStylization_currentTextChanged(self):
@@ -947,8 +952,10 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             scale = 500
         return scale
 
-    def setLegendScale(self):
+    def setLegendScale(self, layers = None):
         """nadawanie skali renderowania symboli w widoku warstw"""
+        if layers is None:
+            layers = self.getLayers()
         current_scale = iface.layerTreeView().layerTreeModel().legendMapViewData()
 
         dpi = current_scale[1]
@@ -956,3 +963,9 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         mupp = (2.54*scale)/(100*dpi)
 
         iface.layerTreeView().layerTreeModel().setLegendMapViewData(mupp, dpi, scale)
+        print(current_scale, layers)
+
+
+        for layer in layers:
+            layer.triggerRepaint()
+            iface.layerTreeView().refreshLayerSymbology(layer.id())
