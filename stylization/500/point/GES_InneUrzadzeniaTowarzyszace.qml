@@ -1,18 +1,18 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis simplifyDrawingTol="1" version="3.24.0-Tisler" minScale="100000000" readOnly="0" labelsEnabled="1" simplifyLocal="1" symbologyReferenceScale="-1" styleCategories="AllStyleCategories" simplifyDrawingHints="0" simplifyMaxScale="1" maxScale="0" simplifyAlgorithm="0" hasScaleBasedVisibilityFlag="0">
+<qgis styleCategories="AllStyleCategories" labelsEnabled="1" simplifyAlgorithm="0" simplifyLocal="1" maxScale="0" symbologyReferenceScale="-1" version="3.24.0-Tisler" minScale="100000000" simplifyDrawingHints="0" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="0" readOnly="0" simplifyDrawingTol="1">
   <flags>
     <Identifiable>1</Identifiable>
     <Removable>1</Removable>
     <Searchable>1</Searchable>
     <Private>0</Private>
   </flags>
-  <temporal startField="" startExpression="" durationUnit="min" mode="0" endExpression="" fixedDuration="0" enabled="0" limitMode="0" accumulate="0" endField="" durationField="">
+  <temporal startField="" durationField="" accumulate="0" endExpression="" durationUnit="min" enabled="0" mode="0" limitMode="0" endField="" fixedDuration="0" startExpression="">
     <fixedRange>
       <start></start>
       <end></end>
     </fixedRange>
   </temporal>
-  <renderer-v2 referencescale="-1" symbollevels="0" type="RuleRenderer" enableorderby="0" forceraster="0">
+  <renderer-v2 type="RuleRenderer" symbollevels="0" referencescale="-1" forceraster="0" enableorderby="0">
     <rules key="{9f530e0e-244c-48ba-822a-3168ce469f49}">
       <rule symbol="0" label="komora podziemna" filter="rodzajUrzadzenia = 'k'" key="{c28c6b4f-7d62-48b8-8613-7b7120a5882d}"/>
       <rule symbol="1" label="właz do komory, kanału bez kształtu" filter="rodzajUrzadzenia = 'w' and &quot;ksztaltUrzadzenia&quot; is NULL" key="{5612aaff-a2ed-4791-80e2-8a6f787cbccb}"/>
@@ -24,7 +24,7 @@
       <rule symbol="7" label="podpora przewodów" filter="rodzajUrzadzenia = 'n'" key="{245ad9eb-2c66-44bf-9695-2f89f03e6091}"/>
     </rules>
     <symbols>
-      <symbol name="0" force_rhr="0" type="marker" clip_to_extent="1" alpha="1">
+      <symbol name="0" type="marker" alpha="1" force_rhr="0" clip_to_extent="1">
         <data_defined_properties>
           <Option type="Map">
             <Option name="name" type="QString" value=""/>
@@ -32,7 +32,7 @@
             <Option name="type" type="QString" value="collection"/>
           </Option>
         </data_defined_properties>
-        <layer pass="0" locked="0" class="SimpleMarker" enabled="1">
+        <layer pass="0" class="SimpleMarker" enabled="1" locked="0">
           <Option type="Map">
             <Option name="angle" type="QString" value="0"/>
             <Option name="cap_style" type="QString" value="round"/>
@@ -54,25 +54,25 @@
             <Option name="size_unit" type="QString" value="MapUnit"/>
             <Option name="vertical_anchor_point" type="QString" value="1"/>
           </Option>
-          <prop v="0" k="angle"/>
-          <prop v="round" k="cap_style"/>
-          <prop v="255,158,23,0" k="color"/>
-          <prop v="1" k="horizontal_anchor_point"/>
-          <prop v="round" k="joinstyle"/>
-          <prop v="circle" k="name"/>
-          <prop v="0,0" k="offset"/>
-          <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
-          <prop v="MapUnit" k="offset_unit"/>
-          <prop v="0,0,0,255" k="outline_color"/>
-          <prop v="solid" k="outline_style"/>
-          <prop v="0.09" k="outline_width"/>
-          <prop v="3x:0,0,0,0,0,0" k="outline_width_map_unit_scale"/>
-          <prop v="MapUnit" k="outline_width_unit"/>
-          <prop v="diameter" k="scale_method"/>
-          <prop v="0.5" k="size"/>
-          <prop v="3x:0,0,0,0,0,0" k="size_map_unit_scale"/>
-          <prop v="MapUnit" k="size_unit"/>
-          <prop v="1" k="vertical_anchor_point"/>
+          <prop k="angle" v="0"/>
+          <prop k="cap_style" v="round"/>
+          <prop k="color" v="255,158,23,0"/>
+          <prop k="horizontal_anchor_point" v="1"/>
+          <prop k="joinstyle" v="round"/>
+          <prop k="name" v="circle"/>
+          <prop k="offset" v="0,0"/>
+          <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="offset_unit" v="MapUnit"/>
+          <prop k="outline_color" v="0,0,0,255"/>
+          <prop k="outline_style" v="solid"/>
+          <prop k="outline_width" v="0.09"/>
+          <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="outline_width_unit" v="MapUnit"/>
+          <prop k="scale_method" v="diameter"/>
+          <prop k="size" v="0.5"/>
+          <prop k="size_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="size_unit" v="MapUnit"/>
+          <prop k="vertical_anchor_point" v="1"/>
           <data_defined_properties>
             <Option type="Map">
               <Option name="name" type="QString" value=""/>
@@ -98,7 +98,7 @@
           </data_defined_properties>
         </layer>
       </symbol>
-      <symbol name="1" force_rhr="0" type="marker" clip_to_extent="1" alpha="1">
+      <symbol name="1" type="marker" alpha="1" force_rhr="0" clip_to_extent="1">
         <data_defined_properties>
           <Option type="Map">
             <Option name="name" type="QString" value=""/>
@@ -106,7 +106,7 @@
             <Option name="type" type="QString" value="collection"/>
           </Option>
         </data_defined_properties>
-        <layer pass="0" locked="0" class="SimpleMarker" enabled="1">
+        <layer pass="0" class="SimpleMarker" enabled="1" locked="0">
           <Option type="Map">
             <Option name="angle" type="QString" value="0"/>
             <Option name="cap_style" type="QString" value="round"/>
@@ -128,25 +128,25 @@
             <Option name="size_unit" type="QString" value="MapUnit"/>
             <Option name="vertical_anchor_point" type="QString" value="1"/>
           </Option>
-          <prop v="0" k="angle"/>
-          <prop v="round" k="cap_style"/>
-          <prop v="255,158,23,0" k="color"/>
-          <prop v="1" k="horizontal_anchor_point"/>
-          <prop v="round" k="joinstyle"/>
-          <prop v="circle" k="name"/>
-          <prop v="0,0" k="offset"/>
-          <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
-          <prop v="MapUnit" k="offset_unit"/>
-          <prop v="0,0,0,255" k="outline_color"/>
-          <prop v="solid" k="outline_style"/>
-          <prop v="0.09" k="outline_width"/>
-          <prop v="3x:0,0,0,0,0,0" k="outline_width_map_unit_scale"/>
-          <prop v="MapUnit" k="outline_width_unit"/>
-          <prop v="diameter" k="scale_method"/>
-          <prop v="0.5" k="size"/>
-          <prop v="3x:0,0,0,0,0,0" k="size_map_unit_scale"/>
-          <prop v="MapUnit" k="size_unit"/>
-          <prop v="1" k="vertical_anchor_point"/>
+          <prop k="angle" v="0"/>
+          <prop k="cap_style" v="round"/>
+          <prop k="color" v="255,158,23,0"/>
+          <prop k="horizontal_anchor_point" v="1"/>
+          <prop k="joinstyle" v="round"/>
+          <prop k="name" v="circle"/>
+          <prop k="offset" v="0,0"/>
+          <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="offset_unit" v="MapUnit"/>
+          <prop k="outline_color" v="0,0,0,255"/>
+          <prop k="outline_style" v="solid"/>
+          <prop k="outline_width" v="0.09"/>
+          <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="outline_width_unit" v="MapUnit"/>
+          <prop k="scale_method" v="diameter"/>
+          <prop k="size" v="0.5"/>
+          <prop k="size_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="size_unit" v="MapUnit"/>
+          <prop k="vertical_anchor_point" v="1"/>
           <data_defined_properties>
             <Option type="Map">
               <Option name="name" type="QString" value=""/>
@@ -172,7 +172,7 @@
           </data_defined_properties>
         </layer>
       </symbol>
-      <symbol name="2" force_rhr="0" type="marker" clip_to_extent="1" alpha="1">
+      <symbol name="2" type="marker" alpha="1" force_rhr="0" clip_to_extent="1">
         <data_defined_properties>
           <Option type="Map">
             <Option name="name" type="QString" value=""/>
@@ -180,7 +180,7 @@
             <Option name="type" type="QString" value="collection"/>
           </Option>
         </data_defined_properties>
-        <layer pass="0" locked="0" class="SimpleMarker" enabled="1">
+        <layer pass="0" class="SimpleMarker" enabled="1" locked="0">
           <Option type="Map">
             <Option name="angle" type="QString" value="0"/>
             <Option name="cap_style" type="QString" value="round"/>
@@ -202,25 +202,25 @@
             <Option name="size_unit" type="QString" value="MapUnit"/>
             <Option name="vertical_anchor_point" type="QString" value="1"/>
           </Option>
-          <prop v="0" k="angle"/>
-          <prop v="round" k="cap_style"/>
-          <prop v="255,158,23,0" k="color"/>
-          <prop v="1" k="horizontal_anchor_point"/>
-          <prop v="round" k="joinstyle"/>
-          <prop v="circle" k="name"/>
-          <prop v="0,0" k="offset"/>
-          <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
-          <prop v="MapUnit" k="offset_unit"/>
-          <prop v="0,0,0,255" k="outline_color"/>
-          <prop v="solid" k="outline_style"/>
-          <prop v="0.09" k="outline_width"/>
-          <prop v="3x:0,0,0,0,0,0" k="outline_width_map_unit_scale"/>
-          <prop v="MapUnit" k="outline_width_unit"/>
-          <prop v="diameter" k="scale_method"/>
-          <prop v="0.5" k="size"/>
-          <prop v="3x:0,0,0,0,0,0" k="size_map_unit_scale"/>
-          <prop v="MapUnit" k="size_unit"/>
-          <prop v="1" k="vertical_anchor_point"/>
+          <prop k="angle" v="0"/>
+          <prop k="cap_style" v="round"/>
+          <prop k="color" v="255,158,23,0"/>
+          <prop k="horizontal_anchor_point" v="1"/>
+          <prop k="joinstyle" v="round"/>
+          <prop k="name" v="circle"/>
+          <prop k="offset" v="0,0"/>
+          <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="offset_unit" v="MapUnit"/>
+          <prop k="outline_color" v="0,0,0,255"/>
+          <prop k="outline_style" v="solid"/>
+          <prop k="outline_width" v="0.09"/>
+          <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="outline_width_unit" v="MapUnit"/>
+          <prop k="scale_method" v="diameter"/>
+          <prop k="size" v="0.5"/>
+          <prop k="size_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="size_unit" v="MapUnit"/>
+          <prop k="vertical_anchor_point" v="1"/>
           <data_defined_properties>
             <Option type="Map">
               <Option name="name" type="QString" value=""/>
@@ -246,7 +246,7 @@
           </data_defined_properties>
         </layer>
       </symbol>
-      <symbol name="3" force_rhr="0" type="marker" clip_to_extent="1" alpha="1">
+      <symbol name="3" type="marker" alpha="1" force_rhr="0" clip_to_extent="1">
         <data_defined_properties>
           <Option type="Map">
             <Option name="name" type="QString" value=""/>
@@ -254,7 +254,7 @@
             <Option name="type" type="QString" value="collection"/>
           </Option>
         </data_defined_properties>
-        <layer pass="0" locked="0" class="SvgMarker" enabled="1">
+        <layer pass="0" class="SvgMarker" enabled="1" locked="0">
           <Option type="Map">
             <Option name="angle" type="QString" value="0"/>
             <Option name="color" type="QString" value="255,158,23,0"/>
@@ -275,24 +275,24 @@
             <Option name="size_unit" type="QString" value="MapUnit"/>
             <Option name="vertical_anchor_point" type="QString" value="1"/>
           </Option>
-          <prop v="0" k="angle"/>
-          <prop v="255,158,23,0" k="color"/>
-          <prop v="0" k="fixedAspectRatio"/>
-          <prop v="1" k="horizontal_anchor_point"/>
-          <prop v="base64:PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYXRlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgoKPHN2ZwogICB3aWR0aD0iMS4wMTA5NDIybW0iCiAgIGhlaWdodD0iMS4wMTA5NDJtbSIKICAgdmlld0JveD0iMCAwIDEuMDEwOTQyMiAxLjAxMDk0MiIKICAgdmVyc2lvbj0iMS4xIgogICBpZD0ic3ZnNSIKICAgaW5rc2NhcGU6dmVyc2lvbj0iMS4xIChjNjhlMjJjMzg3LCAyMDIxLTA1LTIzKSIKICAgc29kaXBvZGk6ZG9jbmFtZT0iU1VQV19Ldy5zdmciCiAgIHhtbG5zOmlua3NjYXBlPSJodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy9uYW1lc3BhY2VzL2lua3NjYXBlIgogICB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM6c3ZnPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHNvZGlwb2RpOm5hbWVkdmlldwogICAgIGlkPSJuYW1lZHZpZXc3IgogICAgIHBhZ2Vjb2xvcj0iI2ZmZmZmZiIKICAgICBib3JkZXJjb2xvcj0iIzY2NjY2NiIKICAgICBib3JkZXJvcGFjaXR5PSIxLjAiCiAgICAgaW5rc2NhcGU6cGFnZXNoYWRvdz0iMiIKICAgICBpbmtzY2FwZTpwYWdlb3BhY2l0eT0iMC4wIgogICAgIGlua3NjYXBlOnBhZ2VjaGVja2VyYm9hcmQ9IjAiCiAgICAgaW5rc2NhcGU6ZG9jdW1lbnQtdW5pdHM9Im1tIgogICAgIHNob3dncmlkPSJmYWxzZSIKICAgICBpbmtzY2FwZTp6b29tPSI2NCIKICAgICBpbmtzY2FwZTpjeD0iLTEuMjUiCiAgICAgaW5rc2NhcGU6Y3k9IjIuOTM3NSIKICAgICBpbmtzY2FwZTp3aW5kb3ctd2lkdGg9IjE4MDAiCiAgICAgaW5rc2NhcGU6d2luZG93LWhlaWdodD0iMTA0NiIKICAgICBpbmtzY2FwZTp3aW5kb3cteD0iLTkiCiAgICAgaW5rc2NhcGU6d2luZG93LXk9IjIyIgogICAgIGlua3NjYXBlOndpbmRvdy1tYXhpbWl6ZWQ9IjEiCiAgICAgaW5rc2NhcGU6Y3VycmVudC1sYXllcj0ibGF5ZXIxIiAvPgogIDxkZWZzCiAgICAgaWQ9ImRlZnMyIiAvPgogIDxnCiAgICAgaW5rc2NhcGU6bGFiZWw9IkxheWVyIDEiCiAgICAgaW5rc2NhcGU6Z3JvdXBtb2RlPSJsYXllciIKICAgICBpZD0ibGF5ZXIxIgogICAgIHRyYW5zZm9ybT0idHJhbnNsYXRlKC01MC43MTY5MTUsLTc3Ljc4MzQyOCkiPgogICAgPHJlY3QKICAgICAgIGZpbGw9Im5vbmUiCiAgICAgICBzdHJva2U9InBhcmFtKG91dGxpbmUpICMwMDAiCiAgICAgICBzdHJva2Utd2lkdGg9IjAuMTgiCiAgICAgICBzdHJva2UtbGluZWNhcD0ic3F1YXJlIgogICAgICAgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIKICAgICAgIHN0cm9rZS1taXRlcmxpbWl0PSI0IgogICAgICAgc3Ryb2tlLWRhc2hhcnJheT0ibm9uZSIKICAgICAgIHBhaW50LW9yZGVyPSJzdHJva2UgZmlsbCBtYXJrZXJzIgoJICAgaWQ9InJlY3Q4NDYiCiAgICAgICB3aWR0aD0iMC44MzA5NDIyNyIKICAgICAgIGhlaWdodD0iMC44MzA5NDE5MiIKICAgICAgIHg9IjUwLjgwNjkxNSIKICAgICAgIHk9Ijc3Ljg3MzQyOCIgLz4KICA8L2c+Cjwvc3ZnPgo=" k="name"/>
-          <prop v="0,0" k="offset"/>
-          <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
-          <prop v="MapUnit" k="offset_unit"/>
-          <prop v="0,0,0,255" k="outline_color"/>
-          <prop v="0" k="outline_width"/>
-          <prop v="3x:0,0,0,0,0,0" k="outline_width_map_unit_scale"/>
-          <prop v="MapUnit" k="outline_width_unit"/>
-          <prop v="" k="parameters"/>
-          <prop v="diameter" k="scale_method"/>
-          <prop v="0.5" k="size"/>
-          <prop v="3x:0,0,0,0,0,0" k="size_map_unit_scale"/>
-          <prop v="MapUnit" k="size_unit"/>
-          <prop v="1" k="vertical_anchor_point"/>
+          <prop k="angle" v="0"/>
+          <prop k="color" v="255,158,23,0"/>
+          <prop k="fixedAspectRatio" v="0"/>
+          <prop k="horizontal_anchor_point" v="1"/>
+          <prop k="name" v="base64:PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYXRlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgoKPHN2ZwogICB3aWR0aD0iMS4wMTA5NDIybW0iCiAgIGhlaWdodD0iMS4wMTA5NDJtbSIKICAgdmlld0JveD0iMCAwIDEuMDEwOTQyMiAxLjAxMDk0MiIKICAgdmVyc2lvbj0iMS4xIgogICBpZD0ic3ZnNSIKICAgaW5rc2NhcGU6dmVyc2lvbj0iMS4xIChjNjhlMjJjMzg3LCAyMDIxLTA1LTIzKSIKICAgc29kaXBvZGk6ZG9jbmFtZT0iU1VQV19Ldy5zdmciCiAgIHhtbG5zOmlua3NjYXBlPSJodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy9uYW1lc3BhY2VzL2lua3NjYXBlIgogICB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM6c3ZnPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHNvZGlwb2RpOm5hbWVkdmlldwogICAgIGlkPSJuYW1lZHZpZXc3IgogICAgIHBhZ2Vjb2xvcj0iI2ZmZmZmZiIKICAgICBib3JkZXJjb2xvcj0iIzY2NjY2NiIKICAgICBib3JkZXJvcGFjaXR5PSIxLjAiCiAgICAgaW5rc2NhcGU6cGFnZXNoYWRvdz0iMiIKICAgICBpbmtzY2FwZTpwYWdlb3BhY2l0eT0iMC4wIgogICAgIGlua3NjYXBlOnBhZ2VjaGVja2VyYm9hcmQ9IjAiCiAgICAgaW5rc2NhcGU6ZG9jdW1lbnQtdW5pdHM9Im1tIgogICAgIHNob3dncmlkPSJmYWxzZSIKICAgICBpbmtzY2FwZTp6b29tPSI2NCIKICAgICBpbmtzY2FwZTpjeD0iLTEuMjUiCiAgICAgaW5rc2NhcGU6Y3k9IjIuOTM3NSIKICAgICBpbmtzY2FwZTp3aW5kb3ctd2lkdGg9IjE4MDAiCiAgICAgaW5rc2NhcGU6d2luZG93LWhlaWdodD0iMTA0NiIKICAgICBpbmtzY2FwZTp3aW5kb3cteD0iLTkiCiAgICAgaW5rc2NhcGU6d2luZG93LXk9IjIyIgogICAgIGlua3NjYXBlOndpbmRvdy1tYXhpbWl6ZWQ9IjEiCiAgICAgaW5rc2NhcGU6Y3VycmVudC1sYXllcj0ibGF5ZXIxIiAvPgogIDxkZWZzCiAgICAgaWQ9ImRlZnMyIiAvPgogIDxnCiAgICAgaW5rc2NhcGU6bGFiZWw9IkxheWVyIDEiCiAgICAgaW5rc2NhcGU6Z3JvdXBtb2RlPSJsYXllciIKICAgICBpZD0ibGF5ZXIxIgogICAgIHRyYW5zZm9ybT0idHJhbnNsYXRlKC01MC43MTY5MTUsLTc3Ljc4MzQyOCkiPgogICAgPHJlY3QKICAgICAgIGZpbGw9Im5vbmUiCiAgICAgICBzdHJva2U9InBhcmFtKG91dGxpbmUpICMwMDAiCiAgICAgICBzdHJva2Utd2lkdGg9IjAuMTgiCiAgICAgICBzdHJva2UtbGluZWNhcD0ic3F1YXJlIgogICAgICAgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIKICAgICAgIHN0cm9rZS1taXRlcmxpbWl0PSI0IgogICAgICAgc3Ryb2tlLWRhc2hhcnJheT0ibm9uZSIKICAgICAgIHBhaW50LW9yZGVyPSJzdHJva2UgZmlsbCBtYXJrZXJzIgoJICAgaWQ9InJlY3Q4NDYiCiAgICAgICB3aWR0aD0iMC44MzA5NDIyNyIKICAgICAgIGhlaWdodD0iMC44MzA5NDE5MiIKICAgICAgIHg9IjUwLjgwNjkxNSIKICAgICAgIHk9Ijc3Ljg3MzQyOCIgLz4KICA8L2c+Cjwvc3ZnPgo="/>
+          <prop k="offset" v="0,0"/>
+          <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="offset_unit" v="MapUnit"/>
+          <prop k="outline_color" v="0,0,0,255"/>
+          <prop k="outline_width" v="0"/>
+          <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="outline_width_unit" v="MapUnit"/>
+          <prop k="parameters" v=""/>
+          <prop k="scale_method" v="diameter"/>
+          <prop k="size" v="0.5"/>
+          <prop k="size_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="size_unit" v="MapUnit"/>
+          <prop k="vertical_anchor_point" v="1"/>
           <data_defined_properties>
             <Option type="Map">
               <Option name="name" type="QString" value=""/>
@@ -318,7 +318,7 @@
           </data_defined_properties>
         </layer>
       </symbol>
-      <symbol name="4" force_rhr="0" type="marker" clip_to_extent="1" alpha="1">
+      <symbol name="4" type="marker" alpha="1" force_rhr="0" clip_to_extent="1">
         <data_defined_properties>
           <Option type="Map">
             <Option name="name" type="QString" value=""/>
@@ -326,7 +326,7 @@
             <Option name="type" type="QString" value="collection"/>
           </Option>
         </data_defined_properties>
-        <layer pass="0" locked="0" class="SvgMarker" enabled="1">
+        <layer pass="0" class="SvgMarker" enabled="1" locked="0">
           <Option type="Map">
             <Option name="angle" type="QString" value="0"/>
             <Option name="color" type="QString" value="255,158,23,0"/>
@@ -347,24 +347,24 @@
             <Option name="size_unit" type="QString" value="MapUnit"/>
             <Option name="vertical_anchor_point" type="QString" value="1"/>
           </Option>
-          <prop v="0" k="angle"/>
-          <prop v="255,158,23,0" k="color"/>
-          <prop v="0" k="fixedAspectRatio"/>
-          <prop v="1" k="horizontal_anchor_point"/>
-          <prop v="base64:PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYXRlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgoKPHN2ZwogICB3aWR0aD0iMS40NjE2NjA2bW0iCiAgIGhlaWdodD0iMC45NzI2NjA2Nm1tIgogICB2aWV3Qm94PSIwIDAgMS40NjE2NjA2IDAuOTcyNjYwNjgiCiAgIHZlcnNpb249IjEuMSIKICAgaWQ9InN2ZzUiCiAgIGlua3NjYXBlOnZlcnNpb249IjEuMSAoYzY4ZTIyYzM4NywgMjAyMS0wNS0yMykiCiAgIHNvZGlwb2RpOmRvY25hbWU9IlNVUFdfcHJvcy5zdmciCiAgIHhtbG5zOmlua3NjYXBlPSJodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy9uYW1lc3BhY2VzL2lua3NjYXBlIgogICB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM6c3ZnPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHNvZGlwb2RpOm5hbWVkdmlldwogICAgIGlkPSJuYW1lZHZpZXc3IgogICAgIHBhZ2Vjb2xvcj0iI2ZmZmZmZiIKICAgICBib3JkZXJjb2xvcj0iIzY2NjY2NiIKICAgICBib3JkZXJvcGFjaXR5PSIxLjAiCiAgICAgaW5rc2NhcGU6cGFnZXNoYWRvdz0iMiIKICAgICBpbmtzY2FwZTpwYWdlb3BhY2l0eT0iMC4wIgogICAgIGlua3NjYXBlOnBhZ2VjaGVja2VyYm9hcmQ9IjAiCiAgICAgaW5rc2NhcGU6ZG9jdW1lbnQtdW5pdHM9Im1tIgogICAgIHNob3dncmlkPSJmYWxzZSIKICAgICBpbmtzY2FwZTp6b29tPSI2NCIKICAgICBpbmtzY2FwZTpjeD0iNC45Mzc1IgogICAgIGlua3NjYXBlOmN5PSIyLjg1OTM3NSIKICAgICBpbmtzY2FwZTp3aW5kb3ctd2lkdGg9IjE4MDAiCiAgICAgaW5rc2NhcGU6d2luZG93LWhlaWdodD0iMTA0NiIKICAgICBpbmtzY2FwZTp3aW5kb3cteD0iLTkiCiAgICAgaW5rc2NhcGU6d2luZG93LXk9IjIyIgogICAgIGlua3NjYXBlOndpbmRvdy1tYXhpbWl6ZWQ9IjEiCiAgICAgaW5rc2NhcGU6Y3VycmVudC1sYXllcj0ibGF5ZXIxIiAvPgogIDxkZWZzCiAgICAgaWQ9ImRlZnMyIiAvPgogIDxnCiAgICAgaW5rc2NhcGU6bGFiZWw9IkxheWVyIDEiCiAgICAgaW5rc2NhcGU6Z3JvdXBtb2RlPSJsYXllciIKICAgICBpZD0ibGF5ZXIxIgogICAgIHRyYW5zZm9ybT0idHJhbnNsYXRlKC01MC43MzYwODQsLTc3LjgwMjYwMSkiPgogICAgPHJlY3QKCSAgIGZpbGw9Im5vbmUiCiAgICAgICBzdHJva2U9InBhcmFtKG91dGxpbmUpICMwMDAiCiAgICAgICBzdHJva2Utd2lkdGg9IjAuMTgiCiAgICAgICBzdHJva2UtbGluZWNhcD0ic3F1YXJlIgogICAgICAgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIKICAgICAgIHN0cm9rZS1taXRlcmxpbWl0PSI0IgogICAgICAgc3Ryb2tlLWRhc2hhcnJheT0ibm9uZSIKICAgICAgIHBhaW50LW9yZGVyPSJzdHJva2UgZmlsbCBtYXJrZXJzIgogICAgICAgaWQ9InJlY3Q4NDYiCiAgICAgICB3aWR0aD0iMS4yODE2NjA3IgogICAgICAgaGVpZ2h0PSIwLjc5MjY2MDY1IgogICAgICAgeD0iNTAuODI2MDg0IgogICAgICAgeT0iNzcuODkyNjAxIiAvPgogIDwvZz4KPC9zdmc+Cg==" k="name"/>
-          <prop v="0,0" k="offset"/>
-          <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
-          <prop v="MapUnit" k="offset_unit"/>
-          <prop v="0,0,0,255" k="outline_color"/>
-          <prop v="0" k="outline_width"/>
-          <prop v="3x:0,0,0,0,0,0" k="outline_width_map_unit_scale"/>
-          <prop v="MapUnit" k="outline_width_unit"/>
-          <prop v="" k="parameters"/>
-          <prop v="diameter" k="scale_method"/>
-          <prop v="0.75" k="size"/>
-          <prop v="3x:0,0,0,0,0,0" k="size_map_unit_scale"/>
-          <prop v="MapUnit" k="size_unit"/>
-          <prop v="1" k="vertical_anchor_point"/>
+          <prop k="angle" v="0"/>
+          <prop k="color" v="255,158,23,0"/>
+          <prop k="fixedAspectRatio" v="0"/>
+          <prop k="horizontal_anchor_point" v="1"/>
+          <prop k="name" v="base64:PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYXRlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgoKPHN2ZwogICB3aWR0aD0iMS40NjE2NjA2bW0iCiAgIGhlaWdodD0iMC45NzI2NjA2Nm1tIgogICB2aWV3Qm94PSIwIDAgMS40NjE2NjA2IDAuOTcyNjYwNjgiCiAgIHZlcnNpb249IjEuMSIKICAgaWQ9InN2ZzUiCiAgIGlua3NjYXBlOnZlcnNpb249IjEuMSAoYzY4ZTIyYzM4NywgMjAyMS0wNS0yMykiCiAgIHNvZGlwb2RpOmRvY25hbWU9IlNVUFdfcHJvcy5zdmciCiAgIHhtbG5zOmlua3NjYXBlPSJodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy9uYW1lc3BhY2VzL2lua3NjYXBlIgogICB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM6c3ZnPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHNvZGlwb2RpOm5hbWVkdmlldwogICAgIGlkPSJuYW1lZHZpZXc3IgogICAgIHBhZ2Vjb2xvcj0iI2ZmZmZmZiIKICAgICBib3JkZXJjb2xvcj0iIzY2NjY2NiIKICAgICBib3JkZXJvcGFjaXR5PSIxLjAiCiAgICAgaW5rc2NhcGU6cGFnZXNoYWRvdz0iMiIKICAgICBpbmtzY2FwZTpwYWdlb3BhY2l0eT0iMC4wIgogICAgIGlua3NjYXBlOnBhZ2VjaGVja2VyYm9hcmQ9IjAiCiAgICAgaW5rc2NhcGU6ZG9jdW1lbnQtdW5pdHM9Im1tIgogICAgIHNob3dncmlkPSJmYWxzZSIKICAgICBpbmtzY2FwZTp6b29tPSI2NCIKICAgICBpbmtzY2FwZTpjeD0iNC45Mzc1IgogICAgIGlua3NjYXBlOmN5PSIyLjg1OTM3NSIKICAgICBpbmtzY2FwZTp3aW5kb3ctd2lkdGg9IjE4MDAiCiAgICAgaW5rc2NhcGU6d2luZG93LWhlaWdodD0iMTA0NiIKICAgICBpbmtzY2FwZTp3aW5kb3cteD0iLTkiCiAgICAgaW5rc2NhcGU6d2luZG93LXk9IjIyIgogICAgIGlua3NjYXBlOndpbmRvdy1tYXhpbWl6ZWQ9IjEiCiAgICAgaW5rc2NhcGU6Y3VycmVudC1sYXllcj0ibGF5ZXIxIiAvPgogIDxkZWZzCiAgICAgaWQ9ImRlZnMyIiAvPgogIDxnCiAgICAgaW5rc2NhcGU6bGFiZWw9IkxheWVyIDEiCiAgICAgaW5rc2NhcGU6Z3JvdXBtb2RlPSJsYXllciIKICAgICBpZD0ibGF5ZXIxIgogICAgIHRyYW5zZm9ybT0idHJhbnNsYXRlKC01MC43MzYwODQsLTc3LjgwMjYwMSkiPgogICAgPHJlY3QKCSAgIGZpbGw9Im5vbmUiCiAgICAgICBzdHJva2U9InBhcmFtKG91dGxpbmUpICMwMDAiCiAgICAgICBzdHJva2Utd2lkdGg9IjAuMTgiCiAgICAgICBzdHJva2UtbGluZWNhcD0ic3F1YXJlIgogICAgICAgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIKICAgICAgIHN0cm9rZS1taXRlcmxpbWl0PSI0IgogICAgICAgc3Ryb2tlLWRhc2hhcnJheT0ibm9uZSIKICAgICAgIHBhaW50LW9yZGVyPSJzdHJva2UgZmlsbCBtYXJrZXJzIgogICAgICAgaWQ9InJlY3Q4NDYiCiAgICAgICB3aWR0aD0iMS4yODE2NjA3IgogICAgICAgaGVpZ2h0PSIwLjc5MjY2MDY1IgogICAgICAgeD0iNTAuODI2MDg0IgogICAgICAgeT0iNzcuODkyNjAxIiAvPgogIDwvZz4KPC9zdmc+Cg=="/>
+          <prop k="offset" v="0,0"/>
+          <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="offset_unit" v="MapUnit"/>
+          <prop k="outline_color" v="0,0,0,255"/>
+          <prop k="outline_width" v="0"/>
+          <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="outline_width_unit" v="MapUnit"/>
+          <prop k="parameters" v=""/>
+          <prop k="scale_method" v="diameter"/>
+          <prop k="size" v="0.75"/>
+          <prop k="size_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="size_unit" v="MapUnit"/>
+          <prop k="vertical_anchor_point" v="1"/>
           <data_defined_properties>
             <Option type="Map">
               <Option name="name" type="QString" value=""/>
@@ -390,7 +390,7 @@
           </data_defined_properties>
         </layer>
       </symbol>
-      <symbol name="5" force_rhr="0" type="marker" clip_to_extent="1" alpha="1">
+      <symbol name="5" type="marker" alpha="1" force_rhr="0" clip_to_extent="1">
         <data_defined_properties>
           <Option type="Map">
             <Option name="name" type="QString" value=""/>
@@ -398,15 +398,15 @@
             <Option name="type" type="QString" value="collection"/>
           </Option>
         </data_defined_properties>
-        <layer pass="0" locked="0" class="GeometryGenerator" enabled="1">
+        <layer pass="0" class="GeometryGenerator" enabled="1" locked="0">
           <Option type="Map">
             <Option name="SymbolType" type="QString" value="Line"/>
             <Option name="geometryModifier" type="QString" value="connect_points($geometry)"/>
             <Option name="units" type="QString" value="MapUnit"/>
           </Option>
-          <prop v="Line" k="SymbolType"/>
-          <prop v="connect_points($geometry)" k="geometryModifier"/>
-          <prop v="MapUnit" k="units"/>
+          <prop k="SymbolType" v="Line"/>
+          <prop k="geometryModifier" v="connect_points($geometry)"/>
+          <prop k="units" v="MapUnit"/>
           <data_defined_properties>
             <Option type="Map">
               <Option name="name" type="QString" value=""/>
@@ -420,7 +420,7 @@
               <Option name="type" type="QString" value="collection"/>
             </Option>
           </data_defined_properties>
-          <symbol name="@5@0" force_rhr="0" type="line" clip_to_extent="1" alpha="1">
+          <symbol name="@5@0" type="line" alpha="1" force_rhr="0" clip_to_extent="1">
             <data_defined_properties>
               <Option type="Map">
                 <Option name="name" type="QString" value=""/>
@@ -428,7 +428,7 @@
                 <Option name="type" type="QString" value="collection"/>
               </Option>
             </data_defined_properties>
-            <layer pass="0" locked="0" class="SimpleLine" enabled="1">
+            <layer pass="0" class="SimpleLine" enabled="1" locked="0">
               <Option type="Map">
                 <Option name="align_dash_pattern" type="QString" value="0"/>
                 <Option name="capstyle" type="QString" value="round"/>
@@ -458,33 +458,33 @@
                 <Option name="use_custom_dash" type="QString" value="1"/>
                 <Option name="width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
               </Option>
-              <prop v="0" k="align_dash_pattern"/>
-              <prop v="round" k="capstyle"/>
-              <prop v="0.5;0.5" k="customdash"/>
-              <prop v="3x:0,0,0,0,0,0" k="customdash_map_unit_scale"/>
-              <prop v="RenderMetersInMapUnits" k="customdash_unit"/>
-              <prop v="0" k="dash_pattern_offset"/>
-              <prop v="3x:0,0,0,0,0,0" k="dash_pattern_offset_map_unit_scale"/>
-              <prop v="MM" k="dash_pattern_offset_unit"/>
-              <prop v="0" k="draw_inside_polygon"/>
-              <prop v="round" k="joinstyle"/>
-              <prop v="35,35,35,255" k="line_color"/>
-              <prop v="solid" k="line_style"/>
-              <prop v="0.09" k="line_width"/>
-              <prop v="RenderMetersInMapUnits" k="line_width_unit"/>
-              <prop v="0" k="offset"/>
-              <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
-              <prop v="RenderMetersInMapUnits" k="offset_unit"/>
-              <prop v="0" k="ring_filter"/>
-              <prop v="0" k="trim_distance_end"/>
-              <prop v="3x:0,0,0,0,0,0" k="trim_distance_end_map_unit_scale"/>
-              <prop v="MM" k="trim_distance_end_unit"/>
-              <prop v="0" k="trim_distance_start"/>
-              <prop v="3x:0,0,0,0,0,0" k="trim_distance_start_map_unit_scale"/>
-              <prop v="MM" k="trim_distance_start_unit"/>
-              <prop v="0" k="tweak_dash_pattern_on_corners"/>
-              <prop v="1" k="use_custom_dash"/>
-              <prop v="3x:0,0,0,0,0,0" k="width_map_unit_scale"/>
+              <prop k="align_dash_pattern" v="0"/>
+              <prop k="capstyle" v="round"/>
+              <prop k="customdash" v="0.5;0.5"/>
+              <prop k="customdash_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+              <prop k="customdash_unit" v="RenderMetersInMapUnits"/>
+              <prop k="dash_pattern_offset" v="0"/>
+              <prop k="dash_pattern_offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+              <prop k="dash_pattern_offset_unit" v="MM"/>
+              <prop k="draw_inside_polygon" v="0"/>
+              <prop k="joinstyle" v="round"/>
+              <prop k="line_color" v="35,35,35,255"/>
+              <prop k="line_style" v="solid"/>
+              <prop k="line_width" v="0.09"/>
+              <prop k="line_width_unit" v="RenderMetersInMapUnits"/>
+              <prop k="offset" v="0"/>
+              <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+              <prop k="offset_unit" v="RenderMetersInMapUnits"/>
+              <prop k="ring_filter" v="0"/>
+              <prop k="trim_distance_end" v="0"/>
+              <prop k="trim_distance_end_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+              <prop k="trim_distance_end_unit" v="MM"/>
+              <prop k="trim_distance_start" v="0"/>
+              <prop k="trim_distance_start_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+              <prop k="trim_distance_start_unit" v="MM"/>
+              <prop k="tweak_dash_pattern_on_corners" v="0"/>
+              <prop k="use_custom_dash" v="1"/>
+              <prop k="width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
               <data_defined_properties>
                 <Option type="Map">
                   <Option name="name" type="QString" value=""/>
@@ -501,7 +501,7 @@
             </layer>
           </symbol>
         </layer>
-        <layer pass="0" locked="0" class="SimpleMarker" enabled="1">
+        <layer pass="0" class="SimpleMarker" enabled="1" locked="0">
           <Option type="Map">
             <Option name="angle" type="QString" value="0"/>
             <Option name="cap_style" type="QString" value="square"/>
@@ -523,25 +523,25 @@
             <Option name="size_unit" type="QString" value="MapUnit"/>
             <Option name="vertical_anchor_point" type="QString" value="1"/>
           </Option>
-          <prop v="0" k="angle"/>
-          <prop v="square" k="cap_style"/>
-          <prop v="255,255,255,255" k="color"/>
-          <prop v="1" k="horizontal_anchor_point"/>
-          <prop v="round" k="joinstyle"/>
-          <prop v="circle" k="name"/>
-          <prop v="0,0" k="offset"/>
-          <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
-          <prop v="MM" k="offset_unit"/>
-          <prop v="35,35,35,255" k="outline_color"/>
-          <prop v="solid" k="outline_style"/>
-          <prop v="0.09" k="outline_width"/>
-          <prop v="3x:0,0,0,0,0,0" k="outline_width_map_unit_scale"/>
-          <prop v="MapUnit" k="outline_width_unit"/>
-          <prop v="diameter" k="scale_method"/>
-          <prop v="0.5" k="size"/>
-          <prop v="3x:0,0,0,0,0,0" k="size_map_unit_scale"/>
-          <prop v="MapUnit" k="size_unit"/>
-          <prop v="1" k="vertical_anchor_point"/>
+          <prop k="angle" v="0"/>
+          <prop k="cap_style" v="square"/>
+          <prop k="color" v="255,255,255,255"/>
+          <prop k="horizontal_anchor_point" v="1"/>
+          <prop k="joinstyle" v="round"/>
+          <prop k="name" v="circle"/>
+          <prop k="offset" v="0,0"/>
+          <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="offset_unit" v="MM"/>
+          <prop k="outline_color" v="35,35,35,255"/>
+          <prop k="outline_style" v="solid"/>
+          <prop k="outline_width" v="0.09"/>
+          <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="outline_width_unit" v="MapUnit"/>
+          <prop k="scale_method" v="diameter"/>
+          <prop k="size" v="0.5"/>
+          <prop k="size_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="size_unit" v="MapUnit"/>
+          <prop k="vertical_anchor_point" v="1"/>
           <data_defined_properties>
             <Option type="Map">
               <Option name="name" type="QString" value=""/>
@@ -567,7 +567,7 @@
           </data_defined_properties>
         </layer>
       </symbol>
-      <symbol name="6" force_rhr="0" type="marker" clip_to_extent="1" alpha="1">
+      <symbol name="6" type="marker" alpha="1" force_rhr="0" clip_to_extent="1">
         <data_defined_properties>
           <Option type="Map">
             <Option name="name" type="QString" value=""/>
@@ -575,14 +575,14 @@
             <Option name="type" type="QString" value="collection"/>
           </Option>
         </data_defined_properties>
-        <layer pass="0" locked="0" class="SvgMarker" enabled="1">
+        <layer pass="0" class="SvgMarker" enabled="1" locked="0">
           <Option type="Map">
             <Option name="angle" type="QString" value="0"/>
             <Option name="color" type="QString" value="0,0,0,255"/>
             <Option name="fixedAspectRatio" type="QString" value="0"/>
             <Option name="horizontal_anchor_point" type="QString" value="1"/>
             <Option name="name" type="QString" value="base64:PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYXRlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgoKPHN2ZwogICB3aWR0aD0iMi41MjQ1MzQ5bW0iCiAgIGhlaWdodD0iNy45OTczNzQ1bW0iCiAgIHZpZXdCb3g9IjAgMCAyLjUyNDUzNDkgNy45OTczNzQ1IgogICB2ZXJzaW9uPSIxLjEiCiAgIGlkPSJzdmc2NTA2IgogICBpbmtzY2FwZTp2ZXJzaW9uPSIxLjEgKGM2OGUyMmMzODcsIDIwMjEtMDUtMjMpIgogICBzb2RpcG9kaTpkb2NuYW1lPSJTVVBZLnN2ZyIKICAgeG1sbnM6aW5rc2NhcGU9Imh0dHA6Ly93d3cuaW5rc2NhcGUub3JnL25hbWVzcGFjZXMvaW5rc2NhcGUiCiAgIHhtbG5zOnNvZGlwb2RpPSJodHRwOi8vc29kaXBvZGkuc291cmNlZm9yZ2UubmV0L0RURC9zb2RpcG9kaS0wLmR0ZCIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8c29kaXBvZGk6bmFtZWR2aWV3CiAgICAgaWQ9Im5hbWVkdmlldzY1MDgiCiAgICAgcGFnZWNvbG9yPSIjZmZmZmZmIgogICAgIGJvcmRlcmNvbG9yPSIjNjY2NjY2IgogICAgIGJvcmRlcm9wYWNpdHk9IjEuMCIKICAgICBpbmtzY2FwZTpwYWdlc2hhZG93PSIyIgogICAgIGlua3NjYXBlOnBhZ2VvcGFjaXR5PSIwLjAiCiAgICAgaW5rc2NhcGU6cGFnZWNoZWNrZXJib2FyZD0iMCIKICAgICBpbmtzY2FwZTpkb2N1bWVudC11bml0cz0ibW0iCiAgICAgc2hvd2dyaWQ9ImZhbHNlIgogICAgIGlua3NjYXBlOnNuYXAtc21vb3RoLW5vZGVzPSJ0cnVlIgogICAgIGlua3NjYXBlOnpvb209IjE2LjM2ODA1NCIKICAgICBpbmtzY2FwZTpjeD0iLTE0LjYwMTYxNCIKICAgICBpbmtzY2FwZTpjeT0iMTEuMjEwODYyIgogICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iMTkyMCIKICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSIxMDAxIgogICAgIGlua3NjYXBlOndpbmRvdy14PSIxMzQxIgogICAgIGlua3NjYXBlOndpbmRvdy15PSIxMDMyIgogICAgIGlua3NjYXBlOndpbmRvdy1tYXhpbWl6ZWQ9IjEiCiAgICAgaW5rc2NhcGU6Y3VycmVudC1sYXllcj0ibGF5ZXIxIiAvPgogIDxkZWZzCiAgICAgaWQ9ImRlZnM2NTAzIj4KICAgIDxpbmtzY2FwZTpwYXRoLWVmZmVjdAogICAgICAgZWZmZWN0PSJic3BsaW5lIgogICAgICAgaWQ9InBhdGgtZWZmZWN0NzY0NSIKICAgICAgIGlzX3Zpc2libGU9InRydWUiCiAgICAgICBscGV2ZXJzaW9uPSIxIgogICAgICAgd2VpZ2h0PSIzMy4zMzMzMzMiCiAgICAgICBzdGVwcz0iMiIKICAgICAgIGhlbHBlcl9zaXplPSIwIgogICAgICAgYXBwbHlfbm9fd2VpZ2h0PSJ0cnVlIgogICAgICAgYXBwbHlfd2l0aF93ZWlnaHQ9InRydWUiCiAgICAgICBvbmx5X3NlbGVjdGVkPSJmYWxzZSIgLz4KICAgIDxpbmtzY2FwZTpwYXRoLWVmZmVjdAogICAgICAgZWZmZWN0PSJic3BsaW5lIgogICAgICAgaWQ9InBhdGgtZWZmZWN0NzQ5NSIKICAgICAgIGlzX3Zpc2libGU9InRydWUiCiAgICAgICBscGV2ZXJzaW9uPSIxIgogICAgICAgd2VpZ2h0PSIzMy4zMzMzMzMiCiAgICAgICBzdGVwcz0iMiIKICAgICAgIGhlbHBlcl9zaXplPSIwIgogICAgICAgYXBwbHlfbm9fd2VpZ2h0PSJ0cnVlIgogICAgICAgYXBwbHlfd2l0aF93ZWlnaHQ9InRydWUiCiAgICAgICBvbmx5X3NlbGVjdGVkPSJmYWxzZSIgLz4KICAgIDxpbmtzY2FwZTpwYXRoLWVmZmVjdAogICAgICAgZWZmZWN0PSJic3BsaW5lIgogICAgICAgaWQ9InBhdGgtZWZmZWN0NzI2MiIKICAgICAgIGlzX3Zpc2libGU9InRydWUiCiAgICAgICBscGV2ZXJzaW9uPSIxIgogICAgICAgd2VpZ2h0PSIzMy4zMzMzMzMiCiAgICAgICBzdGVwcz0iMiIKICAgICAgIGhlbHBlcl9zaXplPSIwIgogICAgICAgYXBwbHlfbm9fd2VpZ2h0PSJ0cnVlIgogICAgICAgYXBwbHlfd2l0aF93ZWlnaHQ9InRydWUiCiAgICAgICBvbmx5X3NlbGVjdGVkPSJmYWxzZSIgLz4KICAgIDxpbmtzY2FwZTpwYXRoLWVmZmVjdAogICAgICAgZWZmZWN0PSJic3BsaW5lIgogICAgICAgaWQ9InBhdGgtZWZmZWN0NzE0NCIKICAgICAgIGlzX3Zpc2libGU9InRydWUiCiAgICAgICBscGV2ZXJzaW9uPSIxIgogICAgICAgd2VpZ2h0PSIzMy4zMzMzMzMiCiAgICAgICBzdGVwcz0iMiIKICAgICAgIGhlbHBlcl9zaXplPSIwIgogICAgICAgYXBwbHlfbm9fd2VpZ2h0PSJ0cnVlIgogICAgICAgYXBwbHlfd2l0aF93ZWlnaHQ9InRydWUiCiAgICAgICBvbmx5X3NlbGVjdGVkPSJmYWxzZSIgLz4KICAgIDxpbmtzY2FwZTpwYXRoLWVmZmVjdAogICAgICAgZWZmZWN0PSJic3BsaW5lIgogICAgICAgaWQ9InBhdGgtZWZmZWN0NzAzMCIKICAgICAgIGlzX3Zpc2libGU9InRydWUiCiAgICAgICBscGV2ZXJzaW9uPSIxIgogICAgICAgd2VpZ2h0PSIzMy4zMzMzMzMiCiAgICAgICBzdGVwcz0iMiIKICAgICAgIGhlbHBlcl9zaXplPSIwIgogICAgICAgYXBwbHlfbm9fd2VpZ2h0PSJ0cnVlIgogICAgICAgYXBwbHlfd2l0aF93ZWlnaHQ9InRydWUiCiAgICAgICBvbmx5X3NlbGVjdGVkPSJmYWxzZSIgLz4KICAgIDxpbmtzY2FwZTpwYXRoLWVmZmVjdAogICAgICAgZWZmZWN0PSJic3BsaW5lIgogICAgICAgaWQ9InBhdGgtZWZmZWN0Njg3NyIKICAgICAgIGlzX3Zpc2libGU9InRydWUiCiAgICAgICBscGV2ZXJzaW9uPSIxIgogICAgICAgd2VpZ2h0PSIzMy4zMzMzMzMiCiAgICAgICBzdGVwcz0iMiIKICAgICAgIGhlbHBlcl9zaXplPSIwIgogICAgICAgYXBwbHlfbm9fd2VpZ2h0PSJ0cnVlIgogICAgICAgYXBwbHlfd2l0aF93ZWlnaHQ9InRydWUiCiAgICAgICBvbmx5X3NlbGVjdGVkPSJmYWxzZSIgLz4KICAgIDxpbmtzY2FwZTpwYXRoLWVmZmVjdAogICAgICAgZWZmZWN0PSJic3BsaW5lIgogICAgICAgaWQ9InBhdGgtZWZmZWN0NjcyNCIKICAgICAgIGlzX3Zpc2libGU9InRydWUiCiAgICAgICBscGV2ZXJzaW9uPSIxIgogICAgICAgd2VpZ2h0PSIzMy4zMzMzMzMiCiAgICAgICBzdGVwcz0iMiIKICAgICAgIGhlbHBlcl9zaXplPSIwIgogICAgICAgYXBwbHlfbm9fd2VpZ2h0PSJ0cnVlIgogICAgICAgYXBwbHlfd2l0aF93ZWlnaHQ9InRydWUiCiAgICAgICBvbmx5X3NlbGVjdGVkPSJmYWxzZSIgLz4KICA8L2RlZnM+CiAgPGcKICAgICBpbmtzY2FwZTpsYWJlbD0iTGF5ZXIgMSIKICAgICBpbmtzY2FwZTpncm91cG1vZGU9ImxheWVyIgogICAgIGlkPSJsYXllcjEiCiAgICAgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTg3LjAyMzMwMywtMTIxLjA1MjkyKSI+CiAgICA8ZWxsaXBzZQogICAgICAgZmlsbD0ibm9uZSIKICAgICAgIHN0cm9rZT0icGFyYW0ob3V0bGluZSkgIzAwMCIKICAgICAgIHN0cm9rZS13aWR0aD0iMC4xOCIKICAgICAgIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIKICAgICAgIHN0cm9rZS1saW5lam9pbj0icm91bmQiCiAgICAgICBzdHJva2UtbWl0ZXJsaW1pdD0iNCIKICAgICAgIHN0cm9rZS1kYXNoYXJyYXk9Im5vbmUiCiAgICAgICBwYWludC1vcmRlcj0ic3Ryb2tlIGZpbGwgbWFya2VycyIKCSAgIGlkPSJwYXRoNjU4OSIKICAgICAgIGN4PSI4OS4wNDkxNDkiCiAgICAgICBjeT0iMTI4LjU1MTYxIgogICAgICAgcng9IjAuNDA4Njg5MjkiCiAgICAgICByeT0iMC40MDg2ODk1MyIgLz4KICAgIDxwYXRoCgkgICBmaWxsPSJub25lIgogICAgICAgc3Ryb2tlPSJwYXJhbShvdXRsaW5lKSAjMDAwIgogICAgICAgc3Ryb2tlLXdpZHRoPSIwLjE4IgogICAgICAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogICAgICAgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIKICAgICAgIHN0cm9rZS1taXRlcmxpbWl0PSI0IgogICAgICAgc3Ryb2tlLWRhc2hhcnJheT0ibm9uZSIKICAgICAgIHN0cm9rZS1vcGFjaXR5PSIxIgogICAgICAgZD0ibSA4OS4wNDkxNDksMTI4LjE0MjkyIGMgMCwtMS4yMDg5OSAwLC0yLjQxODM2IDAsLTMuNjI4MTQiCiAgICAgICBpZD0icGF0aDY3MjIiCiAgICAgICBpbmtzY2FwZTpwYXRoLWVmZmVjdD0iI3BhdGgtZWZmZWN0NjcyNCIKICAgICAgIGlua3NjYXBlOm9yaWdpbmFsLWQ9Im0gODkuMDQ5MTQ5LDEyOC4xNDI5MiBjIDIuNjVlLTQsLTEuMjA4OTkgMi42NWUtNCwtMi40MTgzNiAwLC0zLjYyODE0IiAvPgogICAgPHBhdGgKCSAgIGZpbGw9Im5vbmUiCiAgICAgICBzdHJva2U9InBhcmFtKG91dGxpbmUpICMwMDAiCiAgICAgICBzdHJva2Utd2lkdGg9IjAuMTgiCiAgICAgICBzdHJva2UtbGluZWNhcD0icm91bmQiCiAgICAgICBzdHJva2UtbGluZWpvaW49InJvdW5kIgogICAgICAgc3Ryb2tlLW1pdGVybGltaXQ9IjQiCiAgICAgICBzdHJva2UtZGFzaGFycmF5PSJub25lIgogICAgICAgc3Ryb2tlLW9wYWNpdHk9IjEiCiAgICAgICBkPSJtIDg3LjgyMDQwOSwxMjQuNzcxMDYgYyAwLC0xLjIwODk5IDAsLTIuNDE4MzYgMCwtMy42MjgxNCIKICAgICAgIGlkPSJwYXRoNjcyMi05IgogICAgICAgaW5rc2NhcGU6cGF0aC1lZmZlY3Q9IiNwYXRoLWVmZmVjdDcxNDQiCiAgICAgICBpbmtzY2FwZTpvcmlnaW5hbC1kPSJtIDg3LjgyMDQwOSwxMjQuNzcxMDYgYyAyLjY1ZS00LC0xLjIwODk5IDIuNjVlLTQsLTIuNDE4MzYgMCwtMy42MjgxNCIgLz4KICAgIDxwYXRoCgkgICBmaWxsPSJub25lIgogICAgICAgc3Ryb2tlPSJwYXJhbShvdXRsaW5lKSAjMDAwIgogICAgICAgc3Ryb2tlLXdpZHRoPSIwLjE4IgogICAgICAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogICAgICAgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIKICAgICAgIHN0cm9rZS1taXRlcmxpbWl0PSI0IgogICAgICAgc3Ryb2tlLWRhc2hhcnJheT0ibm9uZSIKICAgICAgIHN0cm9rZS1vcGFjaXR5PSIxIgogICAgICAgZD0ibSA4Ny44MjA0MDksMTI0Ljc3MTA2IGMgMC40MDk3ODYsLTAuMDg1NSAwLjgxOTM1OCwtMC4xNzA4OSAxLjIyODczOCwtMC4yNTYyOCIKICAgICAgIGlkPSJwYXRoNzI2MCIKICAgICAgIGlua3NjYXBlOnBhdGgtZWZmZWN0PSIjcGF0aC1lZmZlY3Q3MjYyIgogICAgICAgaW5rc2NhcGU6b3JpZ2luYWwtZD0ibSA4Ny44MjA0MDksMTI0Ljc3MTA2IGMgMC40MDk4NDIsLTAuMDg1MiAwLjgxOTQyMiwtMC4xNzA1OSAxLjIyODczOCwtMC4yNTYyOCIgLz4KICAgIDxwYXRoCgkgICBmaWxsPSJub25lIgogICAgICAgc3Ryb2tlPSJwYXJhbShvdXRsaW5lKSAjMDAwIgogICAgICAgc3Ryb2tlLXdpZHRoPSIwLjE4IgogICAgICAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogICAgICAgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIKICAgICAgIHN0cm9rZS1taXRlcmxpbWl0PSI0IgogICAgICAgc3Ryb2tlLWRhc2hhcnJheT0ibm9uZSIKICAgICAgIHN0cm9rZS1vcGFjaXR5PSIxIgogICAgICAgZD0ibSA4Ny4xMTMzMDMsMTIxLjg1MDAyIGMgMC4yMzU1MDgsLTAuMjM1NTEgMC40NzEyMDksLTAuNDcxMjEgMC43MDcxMDYsLTAuNzA3MSIKICAgICAgIGlkPSJwYXRoNzQ5MyIKICAgICAgIGlua3NjYXBlOnBhdGgtZWZmZWN0PSIjcGF0aC1lZmZlY3Q3NDk1IgogICAgICAgaW5rc2NhcGU6b3JpZ2luYWwtZD0ibSA4Ny4xMTMzMDMsMTIxLjg1MDAyIGMgMC4yMzU2OTUsLTAuMjM1MzIgMC40NzEzOTUsLTAuNDcxMDIgMC43MDcxMDYsLTAuNzA3MSIgLz4KICAgIDxwYXRoCgkgICBmaWxsPSJub25lIgogICAgICAgc3Ryb2tlPSJwYXJhbShvdXRsaW5lKSAjMDAwIgogICAgICAgc3Ryb2tlLXdpZHRoPSIwLjE4IgogICAgICAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogICAgICAgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIKICAgICAgIHN0cm9rZS1taXRlcmxpbWl0PSI0IgogICAgICAgc3Ryb2tlLWRhc2hhcnJheT0ibm9uZSIKICAgICAgIHN0cm9rZS1vcGFjaXR5PSIxIgogICAgICAgZD0ibSA4OC41Mjc1MTUsMTIxLjg1MDAyIGMgLTAuMjM1NTA4LC0wLjIzNTUxIC0wLjQ3MTIwOSwtMC40NzEyMSAtMC43MDcxMDYsLTAuNzA3MSIKICAgICAgIGlkPSJwYXRoNzQ5My0yIgogICAgICAgaW5rc2NhcGU6cGF0aC1lZmZlY3Q9IiNwYXRoLWVmZmVjdDc2NDUiCiAgICAgICBpbmtzY2FwZTpvcmlnaW5hbC1kPSJNIDg4LjUyNzUxNSwxMjEuODUwMDIgQyA4OC4yOTE4MiwxMjEuNjE0NyA4OC4wNTYxMiwxMjEuMzc5IDg3LjgyMDQwOSwxMjEuMTQyOTIiIC8+CiAgPC9nPgo8L3N2Zz4K"/>
-            <Option name="offset" type="QString" value="-0.59999999999999998,-0.40000000000000002"/>
+            <Option name="offset" type="QString" value="-0.38200000000000001,-1.75"/>
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
             <Option name="offset_unit" type="QString" value="MapUnit"/>
             <Option name="outline_color" type="QString" value="0,0,0,255"/>
@@ -591,29 +591,29 @@
             <Option name="outline_width_unit" type="QString" value="MM"/>
             <Option name="parameters"/>
             <Option name="scale_method" type="QString" value="diameter"/>
-            <Option name="size" type="QString" value="2"/>
+            <Option name="size" type="QString" value="1.26268"/>
             <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
             <Option name="size_unit" type="QString" value="MapUnit"/>
             <Option name="vertical_anchor_point" type="QString" value="1"/>
           </Option>
-          <prop v="0" k="angle"/>
-          <prop v="0,0,0,255" k="color"/>
-          <prop v="0" k="fixedAspectRatio"/>
-          <prop v="1" k="horizontal_anchor_point"/>
-          <prop v="base64:PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYXRlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgoKPHN2ZwogICB3aWR0aD0iMi41MjQ1MzQ5bW0iCiAgIGhlaWdodD0iNy45OTczNzQ1bW0iCiAgIHZpZXdCb3g9IjAgMCAyLjUyNDUzNDkgNy45OTczNzQ1IgogICB2ZXJzaW9uPSIxLjEiCiAgIGlkPSJzdmc2NTA2IgogICBpbmtzY2FwZTp2ZXJzaW9uPSIxLjEgKGM2OGUyMmMzODcsIDIwMjEtMDUtMjMpIgogICBzb2RpcG9kaTpkb2NuYW1lPSJTVVBZLnN2ZyIKICAgeG1sbnM6aW5rc2NhcGU9Imh0dHA6Ly93d3cuaW5rc2NhcGUub3JnL25hbWVzcGFjZXMvaW5rc2NhcGUiCiAgIHhtbG5zOnNvZGlwb2RpPSJodHRwOi8vc29kaXBvZGkuc291cmNlZm9yZ2UubmV0L0RURC9zb2RpcG9kaS0wLmR0ZCIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8c29kaXBvZGk6bmFtZWR2aWV3CiAgICAgaWQ9Im5hbWVkdmlldzY1MDgiCiAgICAgcGFnZWNvbG9yPSIjZmZmZmZmIgogICAgIGJvcmRlcmNvbG9yPSIjNjY2NjY2IgogICAgIGJvcmRlcm9wYWNpdHk9IjEuMCIKICAgICBpbmtzY2FwZTpwYWdlc2hhZG93PSIyIgogICAgIGlua3NjYXBlOnBhZ2VvcGFjaXR5PSIwLjAiCiAgICAgaW5rc2NhcGU6cGFnZWNoZWNrZXJib2FyZD0iMCIKICAgICBpbmtzY2FwZTpkb2N1bWVudC11bml0cz0ibW0iCiAgICAgc2hvd2dyaWQ9ImZhbHNlIgogICAgIGlua3NjYXBlOnNuYXAtc21vb3RoLW5vZGVzPSJ0cnVlIgogICAgIGlua3NjYXBlOnpvb209IjE2LjM2ODA1NCIKICAgICBpbmtzY2FwZTpjeD0iLTE0LjYwMTYxNCIKICAgICBpbmtzY2FwZTpjeT0iMTEuMjEwODYyIgogICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iMTkyMCIKICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSIxMDAxIgogICAgIGlua3NjYXBlOndpbmRvdy14PSIxMzQxIgogICAgIGlua3NjYXBlOndpbmRvdy15PSIxMDMyIgogICAgIGlua3NjYXBlOndpbmRvdy1tYXhpbWl6ZWQ9IjEiCiAgICAgaW5rc2NhcGU6Y3VycmVudC1sYXllcj0ibGF5ZXIxIiAvPgogIDxkZWZzCiAgICAgaWQ9ImRlZnM2NTAzIj4KICAgIDxpbmtzY2FwZTpwYXRoLWVmZmVjdAogICAgICAgZWZmZWN0PSJic3BsaW5lIgogICAgICAgaWQ9InBhdGgtZWZmZWN0NzY0NSIKICAgICAgIGlzX3Zpc2libGU9InRydWUiCiAgICAgICBscGV2ZXJzaW9uPSIxIgogICAgICAgd2VpZ2h0PSIzMy4zMzMzMzMiCiAgICAgICBzdGVwcz0iMiIKICAgICAgIGhlbHBlcl9zaXplPSIwIgogICAgICAgYXBwbHlfbm9fd2VpZ2h0PSJ0cnVlIgogICAgICAgYXBwbHlfd2l0aF93ZWlnaHQ9InRydWUiCiAgICAgICBvbmx5X3NlbGVjdGVkPSJmYWxzZSIgLz4KICAgIDxpbmtzY2FwZTpwYXRoLWVmZmVjdAogICAgICAgZWZmZWN0PSJic3BsaW5lIgogICAgICAgaWQ9InBhdGgtZWZmZWN0NzQ5NSIKICAgICAgIGlzX3Zpc2libGU9InRydWUiCiAgICAgICBscGV2ZXJzaW9uPSIxIgogICAgICAgd2VpZ2h0PSIzMy4zMzMzMzMiCiAgICAgICBzdGVwcz0iMiIKICAgICAgIGhlbHBlcl9zaXplPSIwIgogICAgICAgYXBwbHlfbm9fd2VpZ2h0PSJ0cnVlIgogICAgICAgYXBwbHlfd2l0aF93ZWlnaHQ9InRydWUiCiAgICAgICBvbmx5X3NlbGVjdGVkPSJmYWxzZSIgLz4KICAgIDxpbmtzY2FwZTpwYXRoLWVmZmVjdAogICAgICAgZWZmZWN0PSJic3BsaW5lIgogICAgICAgaWQ9InBhdGgtZWZmZWN0NzI2MiIKICAgICAgIGlzX3Zpc2libGU9InRydWUiCiAgICAgICBscGV2ZXJzaW9uPSIxIgogICAgICAgd2VpZ2h0PSIzMy4zMzMzMzMiCiAgICAgICBzdGVwcz0iMiIKICAgICAgIGhlbHBlcl9zaXplPSIwIgogICAgICAgYXBwbHlfbm9fd2VpZ2h0PSJ0cnVlIgogICAgICAgYXBwbHlfd2l0aF93ZWlnaHQ9InRydWUiCiAgICAgICBvbmx5X3NlbGVjdGVkPSJmYWxzZSIgLz4KICAgIDxpbmtzY2FwZTpwYXRoLWVmZmVjdAogICAgICAgZWZmZWN0PSJic3BsaW5lIgogICAgICAgaWQ9InBhdGgtZWZmZWN0NzE0NCIKICAgICAgIGlzX3Zpc2libGU9InRydWUiCiAgICAgICBscGV2ZXJzaW9uPSIxIgogICAgICAgd2VpZ2h0PSIzMy4zMzMzMzMiCiAgICAgICBzdGVwcz0iMiIKICAgICAgIGhlbHBlcl9zaXplPSIwIgogICAgICAgYXBwbHlfbm9fd2VpZ2h0PSJ0cnVlIgogICAgICAgYXBwbHlfd2l0aF93ZWlnaHQ9InRydWUiCiAgICAgICBvbmx5X3NlbGVjdGVkPSJmYWxzZSIgLz4KICAgIDxpbmtzY2FwZTpwYXRoLWVmZmVjdAogICAgICAgZWZmZWN0PSJic3BsaW5lIgogICAgICAgaWQ9InBhdGgtZWZmZWN0NzAzMCIKICAgICAgIGlzX3Zpc2libGU9InRydWUiCiAgICAgICBscGV2ZXJzaW9uPSIxIgogICAgICAgd2VpZ2h0PSIzMy4zMzMzMzMiCiAgICAgICBzdGVwcz0iMiIKICAgICAgIGhlbHBlcl9zaXplPSIwIgogICAgICAgYXBwbHlfbm9fd2VpZ2h0PSJ0cnVlIgogICAgICAgYXBwbHlfd2l0aF93ZWlnaHQ9InRydWUiCiAgICAgICBvbmx5X3NlbGVjdGVkPSJmYWxzZSIgLz4KICAgIDxpbmtzY2FwZTpwYXRoLWVmZmVjdAogICAgICAgZWZmZWN0PSJic3BsaW5lIgogICAgICAgaWQ9InBhdGgtZWZmZWN0Njg3NyIKICAgICAgIGlzX3Zpc2libGU9InRydWUiCiAgICAgICBscGV2ZXJzaW9uPSIxIgogICAgICAgd2VpZ2h0PSIzMy4zMzMzMzMiCiAgICAgICBzdGVwcz0iMiIKICAgICAgIGhlbHBlcl9zaXplPSIwIgogICAgICAgYXBwbHlfbm9fd2VpZ2h0PSJ0cnVlIgogICAgICAgYXBwbHlfd2l0aF93ZWlnaHQ9InRydWUiCiAgICAgICBvbmx5X3NlbGVjdGVkPSJmYWxzZSIgLz4KICAgIDxpbmtzY2FwZTpwYXRoLWVmZmVjdAogICAgICAgZWZmZWN0PSJic3BsaW5lIgogICAgICAgaWQ9InBhdGgtZWZmZWN0NjcyNCIKICAgICAgIGlzX3Zpc2libGU9InRydWUiCiAgICAgICBscGV2ZXJzaW9uPSIxIgogICAgICAgd2VpZ2h0PSIzMy4zMzMzMzMiCiAgICAgICBzdGVwcz0iMiIKICAgICAgIGhlbHBlcl9zaXplPSIwIgogICAgICAgYXBwbHlfbm9fd2VpZ2h0PSJ0cnVlIgogICAgICAgYXBwbHlfd2l0aF93ZWlnaHQ9InRydWUiCiAgICAgICBvbmx5X3NlbGVjdGVkPSJmYWxzZSIgLz4KICA8L2RlZnM+CiAgPGcKICAgICBpbmtzY2FwZTpsYWJlbD0iTGF5ZXIgMSIKICAgICBpbmtzY2FwZTpncm91cG1vZGU9ImxheWVyIgogICAgIGlkPSJsYXllcjEiCiAgICAgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTg3LjAyMzMwMywtMTIxLjA1MjkyKSI+CiAgICA8ZWxsaXBzZQogICAgICAgZmlsbD0ibm9uZSIKICAgICAgIHN0cm9rZT0icGFyYW0ob3V0bGluZSkgIzAwMCIKICAgICAgIHN0cm9rZS13aWR0aD0iMC4xOCIKICAgICAgIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIKICAgICAgIHN0cm9rZS1saW5lam9pbj0icm91bmQiCiAgICAgICBzdHJva2UtbWl0ZXJsaW1pdD0iNCIKICAgICAgIHN0cm9rZS1kYXNoYXJyYXk9Im5vbmUiCiAgICAgICBwYWludC1vcmRlcj0ic3Ryb2tlIGZpbGwgbWFya2VycyIKCSAgIGlkPSJwYXRoNjU4OSIKICAgICAgIGN4PSI4OS4wNDkxNDkiCiAgICAgICBjeT0iMTI4LjU1MTYxIgogICAgICAgcng9IjAuNDA4Njg5MjkiCiAgICAgICByeT0iMC40MDg2ODk1MyIgLz4KICAgIDxwYXRoCgkgICBmaWxsPSJub25lIgogICAgICAgc3Ryb2tlPSJwYXJhbShvdXRsaW5lKSAjMDAwIgogICAgICAgc3Ryb2tlLXdpZHRoPSIwLjE4IgogICAgICAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogICAgICAgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIKICAgICAgIHN0cm9rZS1taXRlcmxpbWl0PSI0IgogICAgICAgc3Ryb2tlLWRhc2hhcnJheT0ibm9uZSIKICAgICAgIHN0cm9rZS1vcGFjaXR5PSIxIgogICAgICAgZD0ibSA4OS4wNDkxNDksMTI4LjE0MjkyIGMgMCwtMS4yMDg5OSAwLC0yLjQxODM2IDAsLTMuNjI4MTQiCiAgICAgICBpZD0icGF0aDY3MjIiCiAgICAgICBpbmtzY2FwZTpwYXRoLWVmZmVjdD0iI3BhdGgtZWZmZWN0NjcyNCIKICAgICAgIGlua3NjYXBlOm9yaWdpbmFsLWQ9Im0gODkuMDQ5MTQ5LDEyOC4xNDI5MiBjIDIuNjVlLTQsLTEuMjA4OTkgMi42NWUtNCwtMi40MTgzNiAwLC0zLjYyODE0IiAvPgogICAgPHBhdGgKCSAgIGZpbGw9Im5vbmUiCiAgICAgICBzdHJva2U9InBhcmFtKG91dGxpbmUpICMwMDAiCiAgICAgICBzdHJva2Utd2lkdGg9IjAuMTgiCiAgICAgICBzdHJva2UtbGluZWNhcD0icm91bmQiCiAgICAgICBzdHJva2UtbGluZWpvaW49InJvdW5kIgogICAgICAgc3Ryb2tlLW1pdGVybGltaXQ9IjQiCiAgICAgICBzdHJva2UtZGFzaGFycmF5PSJub25lIgogICAgICAgc3Ryb2tlLW9wYWNpdHk9IjEiCiAgICAgICBkPSJtIDg3LjgyMDQwOSwxMjQuNzcxMDYgYyAwLC0xLjIwODk5IDAsLTIuNDE4MzYgMCwtMy42MjgxNCIKICAgICAgIGlkPSJwYXRoNjcyMi05IgogICAgICAgaW5rc2NhcGU6cGF0aC1lZmZlY3Q9IiNwYXRoLWVmZmVjdDcxNDQiCiAgICAgICBpbmtzY2FwZTpvcmlnaW5hbC1kPSJtIDg3LjgyMDQwOSwxMjQuNzcxMDYgYyAyLjY1ZS00LC0xLjIwODk5IDIuNjVlLTQsLTIuNDE4MzYgMCwtMy42MjgxNCIgLz4KICAgIDxwYXRoCgkgICBmaWxsPSJub25lIgogICAgICAgc3Ryb2tlPSJwYXJhbShvdXRsaW5lKSAjMDAwIgogICAgICAgc3Ryb2tlLXdpZHRoPSIwLjE4IgogICAgICAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogICAgICAgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIKICAgICAgIHN0cm9rZS1taXRlcmxpbWl0PSI0IgogICAgICAgc3Ryb2tlLWRhc2hhcnJheT0ibm9uZSIKICAgICAgIHN0cm9rZS1vcGFjaXR5PSIxIgogICAgICAgZD0ibSA4Ny44MjA0MDksMTI0Ljc3MTA2IGMgMC40MDk3ODYsLTAuMDg1NSAwLjgxOTM1OCwtMC4xNzA4OSAxLjIyODczOCwtMC4yNTYyOCIKICAgICAgIGlkPSJwYXRoNzI2MCIKICAgICAgIGlua3NjYXBlOnBhdGgtZWZmZWN0PSIjcGF0aC1lZmZlY3Q3MjYyIgogICAgICAgaW5rc2NhcGU6b3JpZ2luYWwtZD0ibSA4Ny44MjA0MDksMTI0Ljc3MTA2IGMgMC40MDk4NDIsLTAuMDg1MiAwLjgxOTQyMiwtMC4xNzA1OSAxLjIyODczOCwtMC4yNTYyOCIgLz4KICAgIDxwYXRoCgkgICBmaWxsPSJub25lIgogICAgICAgc3Ryb2tlPSJwYXJhbShvdXRsaW5lKSAjMDAwIgogICAgICAgc3Ryb2tlLXdpZHRoPSIwLjE4IgogICAgICAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogICAgICAgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIKICAgICAgIHN0cm9rZS1taXRlcmxpbWl0PSI0IgogICAgICAgc3Ryb2tlLWRhc2hhcnJheT0ibm9uZSIKICAgICAgIHN0cm9rZS1vcGFjaXR5PSIxIgogICAgICAgZD0ibSA4Ny4xMTMzMDMsMTIxLjg1MDAyIGMgMC4yMzU1MDgsLTAuMjM1NTEgMC40NzEyMDksLTAuNDcxMjEgMC43MDcxMDYsLTAuNzA3MSIKICAgICAgIGlkPSJwYXRoNzQ5MyIKICAgICAgIGlua3NjYXBlOnBhdGgtZWZmZWN0PSIjcGF0aC1lZmZlY3Q3NDk1IgogICAgICAgaW5rc2NhcGU6b3JpZ2luYWwtZD0ibSA4Ny4xMTMzMDMsMTIxLjg1MDAyIGMgMC4yMzU2OTUsLTAuMjM1MzIgMC40NzEzOTUsLTAuNDcxMDIgMC43MDcxMDYsLTAuNzA3MSIgLz4KICAgIDxwYXRoCgkgICBmaWxsPSJub25lIgogICAgICAgc3Ryb2tlPSJwYXJhbShvdXRsaW5lKSAjMDAwIgogICAgICAgc3Ryb2tlLXdpZHRoPSIwLjE4IgogICAgICAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogICAgICAgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIKICAgICAgIHN0cm9rZS1taXRlcmxpbWl0PSI0IgogICAgICAgc3Ryb2tlLWRhc2hhcnJheT0ibm9uZSIKICAgICAgIHN0cm9rZS1vcGFjaXR5PSIxIgogICAgICAgZD0ibSA4OC41Mjc1MTUsMTIxLjg1MDAyIGMgLTAuMjM1NTA4LC0wLjIzNTUxIC0wLjQ3MTIwOSwtMC40NzEyMSAtMC43MDcxMDYsLTAuNzA3MSIKICAgICAgIGlkPSJwYXRoNzQ5My0yIgogICAgICAgaW5rc2NhcGU6cGF0aC1lZmZlY3Q9IiNwYXRoLWVmZmVjdDc2NDUiCiAgICAgICBpbmtzY2FwZTpvcmlnaW5hbC1kPSJNIDg4LjUyNzUxNSwxMjEuODUwMDIgQyA4OC4yOTE4MiwxMjEuNjE0NyA4OC4wNTYxMiwxMjEuMzc5IDg3LjgyMDQwOSwxMjEuMTQyOTIiIC8+CiAgPC9nPgo8L3N2Zz4K" k="name"/>
-          <prop v="-0.59999999999999998,-0.40000000000000002" k="offset"/>
-          <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
-          <prop v="MapUnit" k="offset_unit"/>
-          <prop v="0,0,0,255" k="outline_color"/>
-          <prop v="0" k="outline_width"/>
-          <prop v="3x:0,0,0,0,0,0" k="outline_width_map_unit_scale"/>
-          <prop v="MM" k="outline_width_unit"/>
-          <prop v="" k="parameters"/>
-          <prop v="diameter" k="scale_method"/>
-          <prop v="2" k="size"/>
-          <prop v="3x:0,0,0,0,0,0" k="size_map_unit_scale"/>
-          <prop v="MapUnit" k="size_unit"/>
-          <prop v="1" k="vertical_anchor_point"/>
+          <prop k="angle" v="0"/>
+          <prop k="color" v="0,0,0,255"/>
+          <prop k="fixedAspectRatio" v="0"/>
+          <prop k="horizontal_anchor_point" v="1"/>
+          <prop k="name" v="base64:PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYXRlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgoKPHN2ZwogICB3aWR0aD0iMi41MjQ1MzQ5bW0iCiAgIGhlaWdodD0iNy45OTczNzQ1bW0iCiAgIHZpZXdCb3g9IjAgMCAyLjUyNDUzNDkgNy45OTczNzQ1IgogICB2ZXJzaW9uPSIxLjEiCiAgIGlkPSJzdmc2NTA2IgogICBpbmtzY2FwZTp2ZXJzaW9uPSIxLjEgKGM2OGUyMmMzODcsIDIwMjEtMDUtMjMpIgogICBzb2RpcG9kaTpkb2NuYW1lPSJTVVBZLnN2ZyIKICAgeG1sbnM6aW5rc2NhcGU9Imh0dHA6Ly93d3cuaW5rc2NhcGUub3JnL25hbWVzcGFjZXMvaW5rc2NhcGUiCiAgIHhtbG5zOnNvZGlwb2RpPSJodHRwOi8vc29kaXBvZGkuc291cmNlZm9yZ2UubmV0L0RURC9zb2RpcG9kaS0wLmR0ZCIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8c29kaXBvZGk6bmFtZWR2aWV3CiAgICAgaWQ9Im5hbWVkdmlldzY1MDgiCiAgICAgcGFnZWNvbG9yPSIjZmZmZmZmIgogICAgIGJvcmRlcmNvbG9yPSIjNjY2NjY2IgogICAgIGJvcmRlcm9wYWNpdHk9IjEuMCIKICAgICBpbmtzY2FwZTpwYWdlc2hhZG93PSIyIgogICAgIGlua3NjYXBlOnBhZ2VvcGFjaXR5PSIwLjAiCiAgICAgaW5rc2NhcGU6cGFnZWNoZWNrZXJib2FyZD0iMCIKICAgICBpbmtzY2FwZTpkb2N1bWVudC11bml0cz0ibW0iCiAgICAgc2hvd2dyaWQ9ImZhbHNlIgogICAgIGlua3NjYXBlOnNuYXAtc21vb3RoLW5vZGVzPSJ0cnVlIgogICAgIGlua3NjYXBlOnpvb209IjE2LjM2ODA1NCIKICAgICBpbmtzY2FwZTpjeD0iLTE0LjYwMTYxNCIKICAgICBpbmtzY2FwZTpjeT0iMTEuMjEwODYyIgogICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iMTkyMCIKICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSIxMDAxIgogICAgIGlua3NjYXBlOndpbmRvdy14PSIxMzQxIgogICAgIGlua3NjYXBlOndpbmRvdy15PSIxMDMyIgogICAgIGlua3NjYXBlOndpbmRvdy1tYXhpbWl6ZWQ9IjEiCiAgICAgaW5rc2NhcGU6Y3VycmVudC1sYXllcj0ibGF5ZXIxIiAvPgogIDxkZWZzCiAgICAgaWQ9ImRlZnM2NTAzIj4KICAgIDxpbmtzY2FwZTpwYXRoLWVmZmVjdAogICAgICAgZWZmZWN0PSJic3BsaW5lIgogICAgICAgaWQ9InBhdGgtZWZmZWN0NzY0NSIKICAgICAgIGlzX3Zpc2libGU9InRydWUiCiAgICAgICBscGV2ZXJzaW9uPSIxIgogICAgICAgd2VpZ2h0PSIzMy4zMzMzMzMiCiAgICAgICBzdGVwcz0iMiIKICAgICAgIGhlbHBlcl9zaXplPSIwIgogICAgICAgYXBwbHlfbm9fd2VpZ2h0PSJ0cnVlIgogICAgICAgYXBwbHlfd2l0aF93ZWlnaHQ9InRydWUiCiAgICAgICBvbmx5X3NlbGVjdGVkPSJmYWxzZSIgLz4KICAgIDxpbmtzY2FwZTpwYXRoLWVmZmVjdAogICAgICAgZWZmZWN0PSJic3BsaW5lIgogICAgICAgaWQ9InBhdGgtZWZmZWN0NzQ5NSIKICAgICAgIGlzX3Zpc2libGU9InRydWUiCiAgICAgICBscGV2ZXJzaW9uPSIxIgogICAgICAgd2VpZ2h0PSIzMy4zMzMzMzMiCiAgICAgICBzdGVwcz0iMiIKICAgICAgIGhlbHBlcl9zaXplPSIwIgogICAgICAgYXBwbHlfbm9fd2VpZ2h0PSJ0cnVlIgogICAgICAgYXBwbHlfd2l0aF93ZWlnaHQ9InRydWUiCiAgICAgICBvbmx5X3NlbGVjdGVkPSJmYWxzZSIgLz4KICAgIDxpbmtzY2FwZTpwYXRoLWVmZmVjdAogICAgICAgZWZmZWN0PSJic3BsaW5lIgogICAgICAgaWQ9InBhdGgtZWZmZWN0NzI2MiIKICAgICAgIGlzX3Zpc2libGU9InRydWUiCiAgICAgICBscGV2ZXJzaW9uPSIxIgogICAgICAgd2VpZ2h0PSIzMy4zMzMzMzMiCiAgICAgICBzdGVwcz0iMiIKICAgICAgIGhlbHBlcl9zaXplPSIwIgogICAgICAgYXBwbHlfbm9fd2VpZ2h0PSJ0cnVlIgogICAgICAgYXBwbHlfd2l0aF93ZWlnaHQ9InRydWUiCiAgICAgICBvbmx5X3NlbGVjdGVkPSJmYWxzZSIgLz4KICAgIDxpbmtzY2FwZTpwYXRoLWVmZmVjdAogICAgICAgZWZmZWN0PSJic3BsaW5lIgogICAgICAgaWQ9InBhdGgtZWZmZWN0NzE0NCIKICAgICAgIGlzX3Zpc2libGU9InRydWUiCiAgICAgICBscGV2ZXJzaW9uPSIxIgogICAgICAgd2VpZ2h0PSIzMy4zMzMzMzMiCiAgICAgICBzdGVwcz0iMiIKICAgICAgIGhlbHBlcl9zaXplPSIwIgogICAgICAgYXBwbHlfbm9fd2VpZ2h0PSJ0cnVlIgogICAgICAgYXBwbHlfd2l0aF93ZWlnaHQ9InRydWUiCiAgICAgICBvbmx5X3NlbGVjdGVkPSJmYWxzZSIgLz4KICAgIDxpbmtzY2FwZTpwYXRoLWVmZmVjdAogICAgICAgZWZmZWN0PSJic3BsaW5lIgogICAgICAgaWQ9InBhdGgtZWZmZWN0NzAzMCIKICAgICAgIGlzX3Zpc2libGU9InRydWUiCiAgICAgICBscGV2ZXJzaW9uPSIxIgogICAgICAgd2VpZ2h0PSIzMy4zMzMzMzMiCiAgICAgICBzdGVwcz0iMiIKICAgICAgIGhlbHBlcl9zaXplPSIwIgogICAgICAgYXBwbHlfbm9fd2VpZ2h0PSJ0cnVlIgogICAgICAgYXBwbHlfd2l0aF93ZWlnaHQ9InRydWUiCiAgICAgICBvbmx5X3NlbGVjdGVkPSJmYWxzZSIgLz4KICAgIDxpbmtzY2FwZTpwYXRoLWVmZmVjdAogICAgICAgZWZmZWN0PSJic3BsaW5lIgogICAgICAgaWQ9InBhdGgtZWZmZWN0Njg3NyIKICAgICAgIGlzX3Zpc2libGU9InRydWUiCiAgICAgICBscGV2ZXJzaW9uPSIxIgogICAgICAgd2VpZ2h0PSIzMy4zMzMzMzMiCiAgICAgICBzdGVwcz0iMiIKICAgICAgIGhlbHBlcl9zaXplPSIwIgogICAgICAgYXBwbHlfbm9fd2VpZ2h0PSJ0cnVlIgogICAgICAgYXBwbHlfd2l0aF93ZWlnaHQ9InRydWUiCiAgICAgICBvbmx5X3NlbGVjdGVkPSJmYWxzZSIgLz4KICAgIDxpbmtzY2FwZTpwYXRoLWVmZmVjdAogICAgICAgZWZmZWN0PSJic3BsaW5lIgogICAgICAgaWQ9InBhdGgtZWZmZWN0NjcyNCIKICAgICAgIGlzX3Zpc2libGU9InRydWUiCiAgICAgICBscGV2ZXJzaW9uPSIxIgogICAgICAgd2VpZ2h0PSIzMy4zMzMzMzMiCiAgICAgICBzdGVwcz0iMiIKICAgICAgIGhlbHBlcl9zaXplPSIwIgogICAgICAgYXBwbHlfbm9fd2VpZ2h0PSJ0cnVlIgogICAgICAgYXBwbHlfd2l0aF93ZWlnaHQ9InRydWUiCiAgICAgICBvbmx5X3NlbGVjdGVkPSJmYWxzZSIgLz4KICA8L2RlZnM+CiAgPGcKICAgICBpbmtzY2FwZTpsYWJlbD0iTGF5ZXIgMSIKICAgICBpbmtzY2FwZTpncm91cG1vZGU9ImxheWVyIgogICAgIGlkPSJsYXllcjEiCiAgICAgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTg3LjAyMzMwMywtMTIxLjA1MjkyKSI+CiAgICA8ZWxsaXBzZQogICAgICAgZmlsbD0ibm9uZSIKICAgICAgIHN0cm9rZT0icGFyYW0ob3V0bGluZSkgIzAwMCIKICAgICAgIHN0cm9rZS13aWR0aD0iMC4xOCIKICAgICAgIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIKICAgICAgIHN0cm9rZS1saW5lam9pbj0icm91bmQiCiAgICAgICBzdHJva2UtbWl0ZXJsaW1pdD0iNCIKICAgICAgIHN0cm9rZS1kYXNoYXJyYXk9Im5vbmUiCiAgICAgICBwYWludC1vcmRlcj0ic3Ryb2tlIGZpbGwgbWFya2VycyIKCSAgIGlkPSJwYXRoNjU4OSIKICAgICAgIGN4PSI4OS4wNDkxNDkiCiAgICAgICBjeT0iMTI4LjU1MTYxIgogICAgICAgcng9IjAuNDA4Njg5MjkiCiAgICAgICByeT0iMC40MDg2ODk1MyIgLz4KICAgIDxwYXRoCgkgICBmaWxsPSJub25lIgogICAgICAgc3Ryb2tlPSJwYXJhbShvdXRsaW5lKSAjMDAwIgogICAgICAgc3Ryb2tlLXdpZHRoPSIwLjE4IgogICAgICAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogICAgICAgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIKICAgICAgIHN0cm9rZS1taXRlcmxpbWl0PSI0IgogICAgICAgc3Ryb2tlLWRhc2hhcnJheT0ibm9uZSIKICAgICAgIHN0cm9rZS1vcGFjaXR5PSIxIgogICAgICAgZD0ibSA4OS4wNDkxNDksMTI4LjE0MjkyIGMgMCwtMS4yMDg5OSAwLC0yLjQxODM2IDAsLTMuNjI4MTQiCiAgICAgICBpZD0icGF0aDY3MjIiCiAgICAgICBpbmtzY2FwZTpwYXRoLWVmZmVjdD0iI3BhdGgtZWZmZWN0NjcyNCIKICAgICAgIGlua3NjYXBlOm9yaWdpbmFsLWQ9Im0gODkuMDQ5MTQ5LDEyOC4xNDI5MiBjIDIuNjVlLTQsLTEuMjA4OTkgMi42NWUtNCwtMi40MTgzNiAwLC0zLjYyODE0IiAvPgogICAgPHBhdGgKCSAgIGZpbGw9Im5vbmUiCiAgICAgICBzdHJva2U9InBhcmFtKG91dGxpbmUpICMwMDAiCiAgICAgICBzdHJva2Utd2lkdGg9IjAuMTgiCiAgICAgICBzdHJva2UtbGluZWNhcD0icm91bmQiCiAgICAgICBzdHJva2UtbGluZWpvaW49InJvdW5kIgogICAgICAgc3Ryb2tlLW1pdGVybGltaXQ9IjQiCiAgICAgICBzdHJva2UtZGFzaGFycmF5PSJub25lIgogICAgICAgc3Ryb2tlLW9wYWNpdHk9IjEiCiAgICAgICBkPSJtIDg3LjgyMDQwOSwxMjQuNzcxMDYgYyAwLC0xLjIwODk5IDAsLTIuNDE4MzYgMCwtMy42MjgxNCIKICAgICAgIGlkPSJwYXRoNjcyMi05IgogICAgICAgaW5rc2NhcGU6cGF0aC1lZmZlY3Q9IiNwYXRoLWVmZmVjdDcxNDQiCiAgICAgICBpbmtzY2FwZTpvcmlnaW5hbC1kPSJtIDg3LjgyMDQwOSwxMjQuNzcxMDYgYyAyLjY1ZS00LC0xLjIwODk5IDIuNjVlLTQsLTIuNDE4MzYgMCwtMy42MjgxNCIgLz4KICAgIDxwYXRoCgkgICBmaWxsPSJub25lIgogICAgICAgc3Ryb2tlPSJwYXJhbShvdXRsaW5lKSAjMDAwIgogICAgICAgc3Ryb2tlLXdpZHRoPSIwLjE4IgogICAgICAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogICAgICAgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIKICAgICAgIHN0cm9rZS1taXRlcmxpbWl0PSI0IgogICAgICAgc3Ryb2tlLWRhc2hhcnJheT0ibm9uZSIKICAgICAgIHN0cm9rZS1vcGFjaXR5PSIxIgogICAgICAgZD0ibSA4Ny44MjA0MDksMTI0Ljc3MTA2IGMgMC40MDk3ODYsLTAuMDg1NSAwLjgxOTM1OCwtMC4xNzA4OSAxLjIyODczOCwtMC4yNTYyOCIKICAgICAgIGlkPSJwYXRoNzI2MCIKICAgICAgIGlua3NjYXBlOnBhdGgtZWZmZWN0PSIjcGF0aC1lZmZlY3Q3MjYyIgogICAgICAgaW5rc2NhcGU6b3JpZ2luYWwtZD0ibSA4Ny44MjA0MDksMTI0Ljc3MTA2IGMgMC40MDk4NDIsLTAuMDg1MiAwLjgxOTQyMiwtMC4xNzA1OSAxLjIyODczOCwtMC4yNTYyOCIgLz4KICAgIDxwYXRoCgkgICBmaWxsPSJub25lIgogICAgICAgc3Ryb2tlPSJwYXJhbShvdXRsaW5lKSAjMDAwIgogICAgICAgc3Ryb2tlLXdpZHRoPSIwLjE4IgogICAgICAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogICAgICAgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIKICAgICAgIHN0cm9rZS1taXRlcmxpbWl0PSI0IgogICAgICAgc3Ryb2tlLWRhc2hhcnJheT0ibm9uZSIKICAgICAgIHN0cm9rZS1vcGFjaXR5PSIxIgogICAgICAgZD0ibSA4Ny4xMTMzMDMsMTIxLjg1MDAyIGMgMC4yMzU1MDgsLTAuMjM1NTEgMC40NzEyMDksLTAuNDcxMjEgMC43MDcxMDYsLTAuNzA3MSIKICAgICAgIGlkPSJwYXRoNzQ5MyIKICAgICAgIGlua3NjYXBlOnBhdGgtZWZmZWN0PSIjcGF0aC1lZmZlY3Q3NDk1IgogICAgICAgaW5rc2NhcGU6b3JpZ2luYWwtZD0ibSA4Ny4xMTMzMDMsMTIxLjg1MDAyIGMgMC4yMzU2OTUsLTAuMjM1MzIgMC40NzEzOTUsLTAuNDcxMDIgMC43MDcxMDYsLTAuNzA3MSIgLz4KICAgIDxwYXRoCgkgICBmaWxsPSJub25lIgogICAgICAgc3Ryb2tlPSJwYXJhbShvdXRsaW5lKSAjMDAwIgogICAgICAgc3Ryb2tlLXdpZHRoPSIwLjE4IgogICAgICAgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIgogICAgICAgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIKICAgICAgIHN0cm9rZS1taXRlcmxpbWl0PSI0IgogICAgICAgc3Ryb2tlLWRhc2hhcnJheT0ibm9uZSIKICAgICAgIHN0cm9rZS1vcGFjaXR5PSIxIgogICAgICAgZD0ibSA4OC41Mjc1MTUsMTIxLjg1MDAyIGMgLTAuMjM1NTA4LC0wLjIzNTUxIC0wLjQ3MTIwOSwtMC40NzEyMSAtMC43MDcxMDYsLTAuNzA3MSIKICAgICAgIGlkPSJwYXRoNzQ5My0yIgogICAgICAgaW5rc2NhcGU6cGF0aC1lZmZlY3Q9IiNwYXRoLWVmZmVjdDc2NDUiCiAgICAgICBpbmtzY2FwZTpvcmlnaW5hbC1kPSJNIDg4LjUyNzUxNSwxMjEuODUwMDIgQyA4OC4yOTE4MiwxMjEuNjE0NyA4OC4wNTYxMiwxMjEuMzc5IDg3LjgyMDQwOSwxMjEuMTQyOTIiIC8+CiAgPC9nPgo8L3N2Zz4K"/>
+          <prop k="offset" v="-0.38200000000000001,-1.75"/>
+          <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="offset_unit" v="MapUnit"/>
+          <prop k="outline_color" v="0,0,0,255"/>
+          <prop k="outline_width" v="0"/>
+          <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="outline_width_unit" v="MM"/>
+          <prop k="parameters" v=""/>
+          <prop k="scale_method" v="diameter"/>
+          <prop k="size" v="1.26268"/>
+          <prop k="size_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="size_unit" v="MapUnit"/>
+          <prop k="vertical_anchor_point" v="1"/>
           <data_defined_properties>
             <Option type="Map">
               <Option name="name" type="QString" value=""/>
@@ -639,7 +639,7 @@
           </data_defined_properties>
         </layer>
       </symbol>
-      <symbol name="7" force_rhr="0" type="marker" clip_to_extent="1" alpha="1">
+      <symbol name="7" type="marker" alpha="1" force_rhr="0" clip_to_extent="1">
         <data_defined_properties>
           <Option type="Map">
             <Option name="name" type="QString" value=""/>
@@ -647,7 +647,7 @@
             <Option name="type" type="QString" value="collection"/>
           </Option>
         </data_defined_properties>
-        <layer pass="0" locked="0" class="SimpleMarker" enabled="1">
+        <layer pass="0" class="SimpleMarker" enabled="1" locked="0">
           <Option type="Map">
             <Option name="angle" type="QString" value="0"/>
             <Option name="cap_style" type="QString" value="round"/>
@@ -669,25 +669,25 @@
             <Option name="size_unit" type="QString" value="MapUnit"/>
             <Option name="vertical_anchor_point" type="QString" value="1"/>
           </Option>
-          <prop v="0" k="angle"/>
-          <prop v="round" k="cap_style"/>
-          <prop v="255,158,23,0" k="color"/>
-          <prop v="1" k="horizontal_anchor_point"/>
-          <prop v="round" k="joinstyle"/>
-          <prop v="circle" k="name"/>
-          <prop v="0,0" k="offset"/>
-          <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
-          <prop v="MapUnit" k="offset_unit"/>
-          <prop v="35,35,35,255" k="outline_color"/>
-          <prop v="solid" k="outline_style"/>
-          <prop v="0.09" k="outline_width"/>
-          <prop v="3x:0,0,0,0,0,0" k="outline_width_map_unit_scale"/>
-          <prop v="MapUnit" k="outline_width_unit"/>
-          <prop v="diameter" k="scale_method"/>
-          <prop v="0.5" k="size"/>
-          <prop v="3x:0,0,0,0,0,0" k="size_map_unit_scale"/>
-          <prop v="MapUnit" k="size_unit"/>
-          <prop v="1" k="vertical_anchor_point"/>
+          <prop k="angle" v="0"/>
+          <prop k="cap_style" v="round"/>
+          <prop k="color" v="255,158,23,0"/>
+          <prop k="horizontal_anchor_point" v="1"/>
+          <prop k="joinstyle" v="round"/>
+          <prop k="name" v="circle"/>
+          <prop k="offset" v="0,0"/>
+          <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="offset_unit" v="MapUnit"/>
+          <prop k="outline_color" v="35,35,35,255"/>
+          <prop k="outline_style" v="solid"/>
+          <prop k="outline_width" v="0.09"/>
+          <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="outline_width_unit" v="MapUnit"/>
+          <prop k="scale_method" v="diameter"/>
+          <prop k="size" v="0.5"/>
+          <prop k="size_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="size_unit" v="MapUnit"/>
+          <prop k="vertical_anchor_point" v="1"/>
           <data_defined_properties>
             <Option type="Map">
               <Option name="name" type="QString" value=""/>
@@ -716,15 +716,15 @@
     </symbols>
   </renderer-v2>
   <labeling type="rule-based">
-    <rules key="{bebc9f0b-7ebe-4d96-9c0f-c70010973cc3}">
-      <rule description="właz do komory, kanału" filter="rodzajUrzadzenia = 'w' and try(&quot;status&quot;) is not 'p'" key="{c9618177-25aa-4a7d-9a63-cf2d86ee61d1}">
+    <rules key="{cb0a664b-fb12-4007-8db5-c7d2d1cf6bc1}">
+      <rule description="właz do komory, kanału" filter="rodzajUrzadzenia = 'w' and try(&quot;status&quot;) is not 'p'" key="{a14c49af-0dc9-4af5-8542-36de23069495}">
         <settings calloutType="simple">
-          <text-style fontKerning="1" fontWeight="50" fontUnderline="0" allowHtml="0" isExpression="1" fontFamily="Arial" fieldName="regexp_substr(  &quot;rodzajSieci&quot; , '([a-zA-Z,]+)')&#xa;" textOrientation="horizontal" multilineHeight="1" fontSizeMapUnitScale="3x:0,0,0,0,0,0" textOpacity="1" namedStyle="Normal" textColor="0,0,0,255" fontItalic="0" previewBkgrdColor="255,255,255,255" capitalization="0" useSubstitutions="0" legendString="Aa" fontStrikeout="0" fontLetterSpacing="0" fontSizeUnit="MapUnit" fontSize="1.0417000000000001" blendMode="0" fontWordSpacing="0">
+          <text-style fontKerning="1" previewBkgrdColor="255,255,255,255" allowHtml="0" namedStyle="Normal" legendString="Aa" fontWordSpacing="0" textOpacity="1" fontFamily="Arial" fieldName="regexp_substr(  &quot;rodzajSieci&quot; , '([a-zA-Z,]+)')&#xa;" fontSizeUnit="MapUnit" fontStrikeout="0" capitalization="0" fontWeight="50" blendMode="0" fontSize="1.0417000000000001" fontSizeMapUnitScale="3x:0,0,0,0,0,0" useSubstitutions="0" textOrientation="horizontal" textColor="0,0,0,255" fontUnderline="0" fontLetterSpacing="0" fontItalic="0" multilineHeight="1" isExpression="1">
             <families/>
-            <text-buffer bufferSizeUnits="MM" bufferJoinStyle="128" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferColor="255,255,255,255" bufferBlendMode="0" bufferDraw="0" bufferSize="1" bufferOpacity="1" bufferNoFill="1"/>
-            <text-mask maskJoinStyle="128" maskSizeUnits="MM" maskedSymbolLayers="" maskSize="1.5" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskType="0" maskOpacity="1" maskEnabled="0"/>
-            <background shapeSizeY="0" shapeRadiiX="0" shapeFillColor="255,255,255,255" shapeRadiiY="0" shapeSVGFile="" shapeRadiiMapUnitScale="3x:0,0,0,0,0,0" shapeBorderWidthMapUnitScale="3x:0,0,0,0,0,0" shapeOffsetUnit="MM" shapeSizeX="0" shapeDraw="0" shapeBorderWidth="0" shapeBorderWidthUnit="MM" shapeType="0" shapeBlendMode="0" shapeBorderColor="128,128,128,255" shapeOffsetMapUnitScale="3x:0,0,0,0,0,0" shapeRadiiUnit="MM" shapeSizeType="0" shapeOffsetY="0" shapeSizeUnit="MM" shapeOpacity="1" shapeRotation="0" shapeRotationType="0" shapeSizeMapUnitScale="3x:0,0,0,0,0,0" shapeOffsetX="0" shapeJoinStyle="64">
-              <symbol name="markerSymbol" force_rhr="0" type="marker" clip_to_extent="1" alpha="1">
+            <text-buffer bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferSizeUnits="MM" bufferColor="255,255,255,255" bufferJoinStyle="128" bufferOpacity="1" bufferBlendMode="0" bufferNoFill="1" bufferSize="1" bufferDraw="0"/>
+            <text-mask maskSizeUnits="MM" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskJoinStyle="128" maskSize="1.5" maskType="0" maskEnabled="0" maskOpacity="1" maskedSymbolLayers=""/>
+            <background shapeSVGFile="" shapeType="0" shapeRadiiUnit="MM" shapeRotationType="0" shapeJoinStyle="64" shapeOffsetMapUnitScale="3x:0,0,0,0,0,0" shapeDraw="0" shapeBorderColor="128,128,128,255" shapeOffsetY="0" shapeBorderWidthUnit="MM" shapeRadiiMapUnitScale="3x:0,0,0,0,0,0" shapeBorderWidthMapUnitScale="3x:0,0,0,0,0,0" shapeOffsetUnit="MM" shapeSizeType="0" shapeBorderWidth="0" shapeRadiiX="0" shapeSizeX="0" shapeSizeY="0" shapeSizeUnit="MM" shapeRadiiY="0" shapeSizeMapUnitScale="3x:0,0,0,0,0,0" shapeOffsetX="0" shapeOpacity="1" shapeBlendMode="0" shapeRotation="0" shapeFillColor="255,255,255,255">
+              <symbol name="markerSymbol" type="marker" alpha="1" force_rhr="0" clip_to_extent="1">
                 <data_defined_properties>
                   <Option type="Map">
                     <Option name="name" type="QString" value=""/>
@@ -732,7 +732,7 @@
                     <Option name="type" type="QString" value="collection"/>
                   </Option>
                 </data_defined_properties>
-                <layer pass="0" locked="0" class="SimpleMarker" enabled="1">
+                <layer pass="0" class="SimpleMarker" enabled="1" locked="0">
                   <Option type="Map">
                     <Option name="angle" type="QString" value="0"/>
                     <Option name="cap_style" type="QString" value="square"/>
@@ -754,25 +754,25 @@
                     <Option name="size_unit" type="QString" value="MM"/>
                     <Option name="vertical_anchor_point" type="QString" value="1"/>
                   </Option>
-                  <prop v="0" k="angle"/>
-                  <prop v="square" k="cap_style"/>
-                  <prop v="243,166,178,255" k="color"/>
-                  <prop v="1" k="horizontal_anchor_point"/>
-                  <prop v="bevel" k="joinstyle"/>
-                  <prop v="circle" k="name"/>
-                  <prop v="0,0" k="offset"/>
-                  <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
-                  <prop v="MM" k="offset_unit"/>
-                  <prop v="35,35,35,255" k="outline_color"/>
-                  <prop v="solid" k="outline_style"/>
-                  <prop v="0" k="outline_width"/>
-                  <prop v="3x:0,0,0,0,0,0" k="outline_width_map_unit_scale"/>
-                  <prop v="MM" k="outline_width_unit"/>
-                  <prop v="diameter" k="scale_method"/>
-                  <prop v="2" k="size"/>
-                  <prop v="3x:0,0,0,0,0,0" k="size_map_unit_scale"/>
-                  <prop v="MM" k="size_unit"/>
-                  <prop v="1" k="vertical_anchor_point"/>
+                  <prop k="angle" v="0"/>
+                  <prop k="cap_style" v="square"/>
+                  <prop k="color" v="243,166,178,255"/>
+                  <prop k="horizontal_anchor_point" v="1"/>
+                  <prop k="joinstyle" v="bevel"/>
+                  <prop k="name" v="circle"/>
+                  <prop k="offset" v="0,0"/>
+                  <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+                  <prop k="offset_unit" v="MM"/>
+                  <prop k="outline_color" v="35,35,35,255"/>
+                  <prop k="outline_style" v="solid"/>
+                  <prop k="outline_width" v="0"/>
+                  <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+                  <prop k="outline_width_unit" v="MM"/>
+                  <prop k="scale_method" v="diameter"/>
+                  <prop k="size" v="2"/>
+                  <prop k="size_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+                  <prop k="size_unit" v="MM"/>
+                  <prop k="vertical_anchor_point" v="1"/>
                   <data_defined_properties>
                     <Option type="Map">
                       <Option name="name" type="QString" value=""/>
@@ -782,7 +782,7 @@
                   </data_defined_properties>
                 </layer>
               </symbol>
-              <symbol name="fillSymbol" force_rhr="0" type="fill" clip_to_extent="1" alpha="1">
+              <symbol name="fillSymbol" type="fill" alpha="1" force_rhr="0" clip_to_extent="1">
                 <data_defined_properties>
                   <Option type="Map">
                     <Option name="name" type="QString" value=""/>
@@ -790,7 +790,7 @@
                     <Option name="type" type="QString" value="collection"/>
                   </Option>
                 </data_defined_properties>
-                <layer pass="0" locked="0" class="SimpleFill" enabled="1">
+                <layer pass="0" class="SimpleFill" enabled="1" locked="0">
                   <Option type="Map">
                     <Option name="border_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
                     <Option name="color" type="QString" value="255,255,255,255"/>
@@ -804,17 +804,17 @@
                     <Option name="outline_width_unit" type="QString" value="MM"/>
                     <Option name="style" type="QString" value="solid"/>
                   </Option>
-                  <prop v="3x:0,0,0,0,0,0" k="border_width_map_unit_scale"/>
-                  <prop v="255,255,255,255" k="color"/>
-                  <prop v="bevel" k="joinstyle"/>
-                  <prop v="0,0" k="offset"/>
-                  <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
-                  <prop v="MM" k="offset_unit"/>
-                  <prop v="128,128,128,255" k="outline_color"/>
-                  <prop v="no" k="outline_style"/>
-                  <prop v="0" k="outline_width"/>
-                  <prop v="MM" k="outline_width_unit"/>
-                  <prop v="solid" k="style"/>
+                  <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+                  <prop k="color" v="255,255,255,255"/>
+                  <prop k="joinstyle" v="bevel"/>
+                  <prop k="offset" v="0,0"/>
+                  <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+                  <prop k="offset_unit" v="MM"/>
+                  <prop k="outline_color" v="128,128,128,255"/>
+                  <prop k="outline_style" v="no"/>
+                  <prop k="outline_width" v="0"/>
+                  <prop k="outline_width_unit" v="MM"/>
+                  <prop k="style" v="solid"/>
                   <data_defined_properties>
                     <Option type="Map">
                       <Option name="name" type="QString" value=""/>
@@ -825,7 +825,7 @@
                 </layer>
               </symbol>
             </background>
-            <shadow shadowDraw="0" shadowRadiusUnit="MM" shadowOpacity="0.69999999999999996" shadowOffsetDist="1" shadowOffsetMapUnitScale="3x:0,0,0,0,0,0" shadowRadiusAlphaOnly="0" shadowOffsetUnit="MM" shadowUnder="0" shadowRadius="1.5" shadowScale="100" shadowOffsetAngle="135" shadowColor="0,0,0,255" shadowOffsetGlobal="1" shadowRadiusMapUnitScale="3x:0,0,0,0,0,0" shadowBlendMode="6"/>
+            <shadow shadowRadiusAlphaOnly="0" shadowScale="100" shadowUnder="0" shadowOpacity="0.69999999999999996" shadowBlendMode="6" shadowRadiusMapUnitScale="3x:0,0,0,0,0,0" shadowOffsetMapUnitScale="3x:0,0,0,0,0,0" shadowRadius="1.5" shadowRadiusUnit="MM" shadowColor="0,0,0,255" shadowOffsetAngle="135" shadowOffsetDist="1" shadowOffsetUnit="MM" shadowDraw="0" shadowOffsetGlobal="1"/>
             <dd_properties>
               <Option type="Map">
                 <Option name="name" type="QString" value=""/>
@@ -835,9 +835,9 @@
             </dd_properties>
             <substitutions/>
           </text-style>
-          <text-format reverseDirectionSymbol="0" decimals="3" formatNumbers="0" plussign="0" placeDirectionSymbol="0" multilineAlign="3" rightDirectionSymbol=">" addDirectionSymbol="0" wrapChar="" leftDirectionSymbol="&lt;" autoWrapLength="0" useMaxLineLengthForAutoWrap="1"/>
-          <placement overrunDistanceMapUnitScale="3x:0,0,0,0,0,0" overrunDistance="0" centroidWhole="0" placementFlags="10" lineAnchorPercent="0.5" repeatDistance="0" offsetUnits="MM" distMapUnitScale="3x:0,0,0,0,0,0" geometryGeneratorType="PointGeometry" labelOffsetMapUnitScale="3x:0,0,0,0,0,0" yOffset="0" rotationAngle="0" predefinedPositionOrder="TR,TL,BR,BL,R,L,TSR,BSR" centroidInside="0" repeatDistanceMapUnitScale="3x:0,0,0,0,0,0" overrunDistanceUnit="MM" maxCurvedCharAngleOut="-25" quadOffset="4" dist="0" offsetType="1" preserveRotation="1" placement="6" distUnits="MM" lineAnchorType="0" polygonPlacementFlags="2" fitInPolygonOnly="0" geometryGenerator="" layerType="PointGeometry" rotationUnit="AngleDegrees" xOffset="0" geometryGeneratorEnabled="0" maxCurvedCharAngleIn="25" priority="5" lineAnchorClipping="0" repeatDistanceUnits="MM"/>
-          <rendering scaleMin="0" displayAll="1" obstacleType="1" scaleMax="0" fontMaxPixelSize="10000" fontLimitPixelSize="0" drawLabels="1" zIndex="0" obstacleFactor="1" unplacedVisibility="0" minFeatureSize="0" limitNumLabels="0" fontMinPixelSize="3" labelPerPart="0" obstacle="1" maxNumLabels="2000" mergeLines="0" scaleVisibility="0" upsidedownLabels="0"/>
+          <text-format placeDirectionSymbol="0" useMaxLineLengthForAutoWrap="1" decimals="3" formatNumbers="0" plussign="0" autoWrapLength="0" leftDirectionSymbol="&lt;" multilineAlign="3" rightDirectionSymbol=">" reverseDirectionSymbol="0" wrapChar="" addDirectionSymbol="0"/>
+          <placement repeatDistanceMapUnitScale="3x:0,0,0,0,0,0" centroidInside="0" dist="0" rotationAngle="0" yOffset="0" quadOffset="4" labelOffsetMapUnitScale="3x:0,0,0,0,0,0" offsetType="1" placement="6" maxCurvedCharAngleOut="-25" predefinedPositionOrder="TR,TL,BR,BL,R,L,TSR,BSR" offsetUnits="MM" xOffset="0" preserveRotation="1" repeatDistance="0" overrunDistance="0" geometryGeneratorType="PointGeometry" placementFlags="10" fitInPolygonOnly="0" centroidWhole="0" distMapUnitScale="3x:0,0,0,0,0,0" lineAnchorPercent="0.5" polygonPlacementFlags="2" geometryGenerator="" lineAnchorType="0" rotationUnit="AngleDegrees" maxCurvedCharAngleIn="25" repeatDistanceUnits="MM" lineAnchorClipping="0" overrunDistanceUnit="MM" overrunDistanceMapUnitScale="3x:0,0,0,0,0,0" priority="5" distUnits="MM" geometryGeneratorEnabled="0" layerType="PointGeometry"/>
+          <rendering scaleVisibility="0" fontMaxPixelSize="10000" scaleMax="0" obstacleType="1" scaleMin="0" displayAll="1" obstacle="1" mergeLines="0" unplacedVisibility="0" minFeatureSize="0" fontLimitPixelSize="0" upsidedownLabels="0" zIndex="0" obstacleFactor="1" fontMinPixelSize="3" labelPerPart="0" drawLabels="1" limitNumLabels="0" maxNumLabels="2000"/>
           <dd_properties>
             <Option type="Map">
               <Option name="name" type="QString" value=""/>
@@ -868,7 +868,7 @@
               <Option name="drawToAllParts" type="bool" value="false"/>
               <Option name="enabled" type="QString" value="0"/>
               <Option name="labelAnchorPoint" type="QString" value="point_on_exterior"/>
-              <Option name="lineSymbol" type="QString" value="&lt;symbol name=&quot;symbol&quot; force_rhr=&quot;0&quot; type=&quot;line&quot; clip_to_extent=&quot;1&quot; alpha=&quot;1&quot;>&lt;data_defined_properties>&lt;Option type=&quot;Map&quot;>&lt;Option name=&quot;name&quot; type=&quot;QString&quot; value=&quot;&quot;/>&lt;Option name=&quot;properties&quot;/>&lt;Option name=&quot;type&quot; type=&quot;QString&quot; value=&quot;collection&quot;/>&lt;/Option>&lt;/data_defined_properties>&lt;layer pass=&quot;0&quot; locked=&quot;0&quot; class=&quot;SimpleLine&quot; enabled=&quot;1&quot;>&lt;Option type=&quot;Map&quot;>&lt;Option name=&quot;align_dash_pattern&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;capstyle&quot; type=&quot;QString&quot; value=&quot;square&quot;/>&lt;Option name=&quot;customdash&quot; type=&quot;QString&quot; value=&quot;5;2&quot;/>&lt;Option name=&quot;customdash_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;customdash_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;dash_pattern_offset&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;dash_pattern_offset_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;dash_pattern_offset_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;draw_inside_polygon&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;joinstyle&quot; type=&quot;QString&quot; value=&quot;bevel&quot;/>&lt;Option name=&quot;line_color&quot; type=&quot;QString&quot; value=&quot;60,60,60,255&quot;/>&lt;Option name=&quot;line_style&quot; type=&quot;QString&quot; value=&quot;solid&quot;/>&lt;Option name=&quot;line_width&quot; type=&quot;QString&quot; value=&quot;0.3&quot;/>&lt;Option name=&quot;line_width_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;offset&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;offset_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;offset_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;ring_filter&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;trim_distance_end&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;trim_distance_end_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;trim_distance_end_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;trim_distance_start&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;trim_distance_start_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;trim_distance_start_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;tweak_dash_pattern_on_corners&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;use_custom_dash&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;width_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;/Option>&lt;prop v=&quot;0&quot; k=&quot;align_dash_pattern&quot;/>&lt;prop v=&quot;square&quot; k=&quot;capstyle&quot;/>&lt;prop v=&quot;5;2&quot; k=&quot;customdash&quot;/>&lt;prop v=&quot;3x:0,0,0,0,0,0&quot; k=&quot;customdash_map_unit_scale&quot;/>&lt;prop v=&quot;MM&quot; k=&quot;customdash_unit&quot;/>&lt;prop v=&quot;0&quot; k=&quot;dash_pattern_offset&quot;/>&lt;prop v=&quot;3x:0,0,0,0,0,0&quot; k=&quot;dash_pattern_offset_map_unit_scale&quot;/>&lt;prop v=&quot;MM&quot; k=&quot;dash_pattern_offset_unit&quot;/>&lt;prop v=&quot;0&quot; k=&quot;draw_inside_polygon&quot;/>&lt;prop v=&quot;bevel&quot; k=&quot;joinstyle&quot;/>&lt;prop v=&quot;60,60,60,255&quot; k=&quot;line_color&quot;/>&lt;prop v=&quot;solid&quot; k=&quot;line_style&quot;/>&lt;prop v=&quot;0.3&quot; k=&quot;line_width&quot;/>&lt;prop v=&quot;MM&quot; k=&quot;line_width_unit&quot;/>&lt;prop v=&quot;0&quot; k=&quot;offset&quot;/>&lt;prop v=&quot;3x:0,0,0,0,0,0&quot; k=&quot;offset_map_unit_scale&quot;/>&lt;prop v=&quot;MM&quot; k=&quot;offset_unit&quot;/>&lt;prop v=&quot;0&quot; k=&quot;ring_filter&quot;/>&lt;prop v=&quot;0&quot; k=&quot;trim_distance_end&quot;/>&lt;prop v=&quot;3x:0,0,0,0,0,0&quot; k=&quot;trim_distance_end_map_unit_scale&quot;/>&lt;prop v=&quot;MM&quot; k=&quot;trim_distance_end_unit&quot;/>&lt;prop v=&quot;0&quot; k=&quot;trim_distance_start&quot;/>&lt;prop v=&quot;3x:0,0,0,0,0,0&quot; k=&quot;trim_distance_start_map_unit_scale&quot;/>&lt;prop v=&quot;MM&quot; k=&quot;trim_distance_start_unit&quot;/>&lt;prop v=&quot;0&quot; k=&quot;tweak_dash_pattern_on_corners&quot;/>&lt;prop v=&quot;0&quot; k=&quot;use_custom_dash&quot;/>&lt;prop v=&quot;3x:0,0,0,0,0,0&quot; k=&quot;width_map_unit_scale&quot;/>&lt;data_defined_properties>&lt;Option type=&quot;Map&quot;>&lt;Option name=&quot;name&quot; type=&quot;QString&quot; value=&quot;&quot;/>&lt;Option name=&quot;properties&quot;/>&lt;Option name=&quot;type&quot; type=&quot;QString&quot; value=&quot;collection&quot;/>&lt;/Option>&lt;/data_defined_properties>&lt;/layer>&lt;/symbol>"/>
+              <Option name="lineSymbol" type="QString" value="&lt;symbol name=&quot;symbol&quot; type=&quot;line&quot; alpha=&quot;1&quot; force_rhr=&quot;0&quot; clip_to_extent=&quot;1&quot;>&lt;data_defined_properties>&lt;Option type=&quot;Map&quot;>&lt;Option name=&quot;name&quot; type=&quot;QString&quot; value=&quot;&quot;/>&lt;Option name=&quot;properties&quot;/>&lt;Option name=&quot;type&quot; type=&quot;QString&quot; value=&quot;collection&quot;/>&lt;/Option>&lt;/data_defined_properties>&lt;layer pass=&quot;0&quot; class=&quot;SimpleLine&quot; enabled=&quot;1&quot; locked=&quot;0&quot;>&lt;Option type=&quot;Map&quot;>&lt;Option name=&quot;align_dash_pattern&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;capstyle&quot; type=&quot;QString&quot; value=&quot;square&quot;/>&lt;Option name=&quot;customdash&quot; type=&quot;QString&quot; value=&quot;5;2&quot;/>&lt;Option name=&quot;customdash_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;customdash_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;dash_pattern_offset&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;dash_pattern_offset_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;dash_pattern_offset_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;draw_inside_polygon&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;joinstyle&quot; type=&quot;QString&quot; value=&quot;bevel&quot;/>&lt;Option name=&quot;line_color&quot; type=&quot;QString&quot; value=&quot;60,60,60,255&quot;/>&lt;Option name=&quot;line_style&quot; type=&quot;QString&quot; value=&quot;solid&quot;/>&lt;Option name=&quot;line_width&quot; type=&quot;QString&quot; value=&quot;0.3&quot;/>&lt;Option name=&quot;line_width_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;offset&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;offset_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;offset_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;ring_filter&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;trim_distance_end&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;trim_distance_end_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;trim_distance_end_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;trim_distance_start&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;trim_distance_start_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;trim_distance_start_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;tweak_dash_pattern_on_corners&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;use_custom_dash&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;width_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;/Option>&lt;prop k=&quot;align_dash_pattern&quot; v=&quot;0&quot;/>&lt;prop k=&quot;capstyle&quot; v=&quot;square&quot;/>&lt;prop k=&quot;customdash&quot; v=&quot;5;2&quot;/>&lt;prop k=&quot;customdash_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;customdash_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;dash_pattern_offset&quot; v=&quot;0&quot;/>&lt;prop k=&quot;dash_pattern_offset_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;dash_pattern_offset_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;draw_inside_polygon&quot; v=&quot;0&quot;/>&lt;prop k=&quot;joinstyle&quot; v=&quot;bevel&quot;/>&lt;prop k=&quot;line_color&quot; v=&quot;60,60,60,255&quot;/>&lt;prop k=&quot;line_style&quot; v=&quot;solid&quot;/>&lt;prop k=&quot;line_width&quot; v=&quot;0.3&quot;/>&lt;prop k=&quot;line_width_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;offset&quot; v=&quot;0&quot;/>&lt;prop k=&quot;offset_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;offset_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;ring_filter&quot; v=&quot;0&quot;/>&lt;prop k=&quot;trim_distance_end&quot; v=&quot;0&quot;/>&lt;prop k=&quot;trim_distance_end_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;trim_distance_end_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;trim_distance_start&quot; v=&quot;0&quot;/>&lt;prop k=&quot;trim_distance_start_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;trim_distance_start_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;tweak_dash_pattern_on_corners&quot; v=&quot;0&quot;/>&lt;prop k=&quot;use_custom_dash&quot; v=&quot;0&quot;/>&lt;prop k=&quot;width_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;data_defined_properties>&lt;Option type=&quot;Map&quot;>&lt;Option name=&quot;name&quot; type=&quot;QString&quot; value=&quot;&quot;/>&lt;Option name=&quot;properties&quot;/>&lt;Option name=&quot;type&quot; type=&quot;QString&quot; value=&quot;collection&quot;/>&lt;/Option>&lt;/data_defined_properties>&lt;/layer>&lt;/symbol>"/>
               <Option name="minLength" type="double" value="0"/>
               <Option name="minLengthMapUnitScale" type="QString" value="3x:0,0,0,0,0,0"/>
               <Option name="minLengthUnit" type="QString" value="MM"/>
@@ -882,14 +882,14 @@
           </callout>
         </settings>
       </rule>
-      <rule description="projektowane" filter="try(&quot;status&quot;) is  'p'" key="{b2b2d19c-a5e5-48f7-890b-860458b66851}">
+      <rule description="projektowane" filter="try(&quot;status&quot;) is  'p'" key="{5e9a0190-ec43-4ee8-af9d-bb33d677593d}">
         <settings calloutType="simple">
-          <text-style fontKerning="1" fontWeight="50" fontUnderline="0" allowHtml="0" isExpression="1" fontFamily="Arial" fieldName="'proj.' + regexp_substr(  &quot;rodzajSieci&quot; , '([a-zA-Z,]+)')&#xa;" textOrientation="horizontal" multilineHeight="1" fontSizeMapUnitScale="3x:0,0,0,0,0,0" textOpacity="1" namedStyle="Normal" textColor="0,0,0,255" fontItalic="0" previewBkgrdColor="255,255,255,255" capitalization="0" useSubstitutions="0" legendString="Aa" fontStrikeout="0" fontLetterSpacing="0" fontSizeUnit="MapUnit" fontSize="1.0417000000000001" blendMode="0" fontWordSpacing="0">
+          <text-style fontKerning="1" previewBkgrdColor="255,255,255,255" allowHtml="0" namedStyle="Normal" legendString="Aa" fontWordSpacing="0" textOpacity="1" fontFamily="Arial" fieldName="'proj.' + regexp_substr(  &quot;rodzajSieci&quot; , '([a-zA-Z,]+)')&#xa;" fontSizeUnit="MapUnit" fontStrikeout="0" capitalization="0" fontWeight="50" blendMode="0" fontSize="1.0417000000000001" fontSizeMapUnitScale="3x:0,0,0,0,0,0" useSubstitutions="0" textOrientation="horizontal" textColor="0,0,0,255" fontUnderline="0" fontLetterSpacing="0" fontItalic="0" multilineHeight="1" isExpression="1">
             <families/>
-            <text-buffer bufferSizeUnits="MM" bufferJoinStyle="128" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferColor="255,255,255,255" bufferBlendMode="0" bufferDraw="0" bufferSize="1" bufferOpacity="1" bufferNoFill="1"/>
-            <text-mask maskJoinStyle="128" maskSizeUnits="MM" maskedSymbolLayers="" maskSize="1.5" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskType="0" maskOpacity="1" maskEnabled="0"/>
-            <background shapeSizeY="0" shapeRadiiX="0" shapeFillColor="255,255,255,255" shapeRadiiY="0" shapeSVGFile="" shapeRadiiMapUnitScale="3x:0,0,0,0,0,0" shapeBorderWidthMapUnitScale="3x:0,0,0,0,0,0" shapeOffsetUnit="MM" shapeSizeX="0" shapeDraw="0" shapeBorderWidth="0" shapeBorderWidthUnit="MM" shapeType="0" shapeBlendMode="0" shapeBorderColor="128,128,128,255" shapeOffsetMapUnitScale="3x:0,0,0,0,0,0" shapeRadiiUnit="MM" shapeSizeType="0" shapeOffsetY="0" shapeSizeUnit="MM" shapeOpacity="1" shapeRotation="0" shapeRotationType="0" shapeSizeMapUnitScale="3x:0,0,0,0,0,0" shapeOffsetX="0" shapeJoinStyle="64">
-              <symbol name="markerSymbol" force_rhr="0" type="marker" clip_to_extent="1" alpha="1">
+            <text-buffer bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferSizeUnits="MM" bufferColor="255,255,255,255" bufferJoinStyle="128" bufferOpacity="1" bufferBlendMode="0" bufferNoFill="1" bufferSize="1" bufferDraw="0"/>
+            <text-mask maskSizeUnits="MM" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskJoinStyle="128" maskSize="1.5" maskType="0" maskEnabled="0" maskOpacity="1" maskedSymbolLayers=""/>
+            <background shapeSVGFile="" shapeType="0" shapeRadiiUnit="MM" shapeRotationType="0" shapeJoinStyle="64" shapeOffsetMapUnitScale="3x:0,0,0,0,0,0" shapeDraw="0" shapeBorderColor="128,128,128,255" shapeOffsetY="0" shapeBorderWidthUnit="MM" shapeRadiiMapUnitScale="3x:0,0,0,0,0,0" shapeBorderWidthMapUnitScale="3x:0,0,0,0,0,0" shapeOffsetUnit="MM" shapeSizeType="0" shapeBorderWidth="0" shapeRadiiX="0" shapeSizeX="0" shapeSizeY="0" shapeSizeUnit="MM" shapeRadiiY="0" shapeSizeMapUnitScale="3x:0,0,0,0,0,0" shapeOffsetX="0" shapeOpacity="1" shapeBlendMode="0" shapeRotation="0" shapeFillColor="255,255,255,255">
+              <symbol name="markerSymbol" type="marker" alpha="1" force_rhr="0" clip_to_extent="1">
                 <data_defined_properties>
                   <Option type="Map">
                     <Option name="name" type="QString" value=""/>
@@ -897,7 +897,7 @@
                     <Option name="type" type="QString" value="collection"/>
                   </Option>
                 </data_defined_properties>
-                <layer pass="0" locked="0" class="SimpleMarker" enabled="1">
+                <layer pass="0" class="SimpleMarker" enabled="1" locked="0">
                   <Option type="Map">
                     <Option name="angle" type="QString" value="0"/>
                     <Option name="cap_style" type="QString" value="square"/>
@@ -919,25 +919,25 @@
                     <Option name="size_unit" type="QString" value="MM"/>
                     <Option name="vertical_anchor_point" type="QString" value="1"/>
                   </Option>
-                  <prop v="0" k="angle"/>
-                  <prop v="square" k="cap_style"/>
-                  <prop v="243,166,178,255" k="color"/>
-                  <prop v="1" k="horizontal_anchor_point"/>
-                  <prop v="bevel" k="joinstyle"/>
-                  <prop v="circle" k="name"/>
-                  <prop v="0,0" k="offset"/>
-                  <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
-                  <prop v="MM" k="offset_unit"/>
-                  <prop v="35,35,35,255" k="outline_color"/>
-                  <prop v="solid" k="outline_style"/>
-                  <prop v="0" k="outline_width"/>
-                  <prop v="3x:0,0,0,0,0,0" k="outline_width_map_unit_scale"/>
-                  <prop v="MM" k="outline_width_unit"/>
-                  <prop v="diameter" k="scale_method"/>
-                  <prop v="2" k="size"/>
-                  <prop v="3x:0,0,0,0,0,0" k="size_map_unit_scale"/>
-                  <prop v="MM" k="size_unit"/>
-                  <prop v="1" k="vertical_anchor_point"/>
+                  <prop k="angle" v="0"/>
+                  <prop k="cap_style" v="square"/>
+                  <prop k="color" v="243,166,178,255"/>
+                  <prop k="horizontal_anchor_point" v="1"/>
+                  <prop k="joinstyle" v="bevel"/>
+                  <prop k="name" v="circle"/>
+                  <prop k="offset" v="0,0"/>
+                  <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+                  <prop k="offset_unit" v="MM"/>
+                  <prop k="outline_color" v="35,35,35,255"/>
+                  <prop k="outline_style" v="solid"/>
+                  <prop k="outline_width" v="0"/>
+                  <prop k="outline_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+                  <prop k="outline_width_unit" v="MM"/>
+                  <prop k="scale_method" v="diameter"/>
+                  <prop k="size" v="2"/>
+                  <prop k="size_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+                  <prop k="size_unit" v="MM"/>
+                  <prop k="vertical_anchor_point" v="1"/>
                   <data_defined_properties>
                     <Option type="Map">
                       <Option name="name" type="QString" value=""/>
@@ -947,7 +947,7 @@
                   </data_defined_properties>
                 </layer>
               </symbol>
-              <symbol name="fillSymbol" force_rhr="0" type="fill" clip_to_extent="1" alpha="1">
+              <symbol name="fillSymbol" type="fill" alpha="1" force_rhr="0" clip_to_extent="1">
                 <data_defined_properties>
                   <Option type="Map">
                     <Option name="name" type="QString" value=""/>
@@ -955,7 +955,7 @@
                     <Option name="type" type="QString" value="collection"/>
                   </Option>
                 </data_defined_properties>
-                <layer pass="0" locked="0" class="SimpleFill" enabled="1">
+                <layer pass="0" class="SimpleFill" enabled="1" locked="0">
                   <Option type="Map">
                     <Option name="border_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
                     <Option name="color" type="QString" value="255,255,255,255"/>
@@ -969,17 +969,17 @@
                     <Option name="outline_width_unit" type="QString" value="MM"/>
                     <Option name="style" type="QString" value="solid"/>
                   </Option>
-                  <prop v="3x:0,0,0,0,0,0" k="border_width_map_unit_scale"/>
-                  <prop v="255,255,255,255" k="color"/>
-                  <prop v="bevel" k="joinstyle"/>
-                  <prop v="0,0" k="offset"/>
-                  <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
-                  <prop v="MM" k="offset_unit"/>
-                  <prop v="128,128,128,255" k="outline_color"/>
-                  <prop v="no" k="outline_style"/>
-                  <prop v="0" k="outline_width"/>
-                  <prop v="MM" k="outline_width_unit"/>
-                  <prop v="solid" k="style"/>
+                  <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+                  <prop k="color" v="255,255,255,255"/>
+                  <prop k="joinstyle" v="bevel"/>
+                  <prop k="offset" v="0,0"/>
+                  <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+                  <prop k="offset_unit" v="MM"/>
+                  <prop k="outline_color" v="128,128,128,255"/>
+                  <prop k="outline_style" v="no"/>
+                  <prop k="outline_width" v="0"/>
+                  <prop k="outline_width_unit" v="MM"/>
+                  <prop k="style" v="solid"/>
                   <data_defined_properties>
                     <Option type="Map">
                       <Option name="name" type="QString" value=""/>
@@ -990,7 +990,7 @@
                 </layer>
               </symbol>
             </background>
-            <shadow shadowDraw="0" shadowRadiusUnit="MM" shadowOpacity="0.69999999999999996" shadowOffsetDist="1" shadowOffsetMapUnitScale="3x:0,0,0,0,0,0" shadowRadiusAlphaOnly="0" shadowOffsetUnit="MM" shadowUnder="0" shadowRadius="1.5" shadowScale="100" shadowOffsetAngle="135" shadowColor="0,0,0,255" shadowOffsetGlobal="1" shadowRadiusMapUnitScale="3x:0,0,0,0,0,0" shadowBlendMode="6"/>
+            <shadow shadowRadiusAlphaOnly="0" shadowScale="100" shadowUnder="0" shadowOpacity="0.69999999999999996" shadowBlendMode="6" shadowRadiusMapUnitScale="3x:0,0,0,0,0,0" shadowOffsetMapUnitScale="3x:0,0,0,0,0,0" shadowRadius="1.5" shadowRadiusUnit="MM" shadowColor="0,0,0,255" shadowOffsetAngle="135" shadowOffsetDist="1" shadowOffsetUnit="MM" shadowDraw="0" shadowOffsetGlobal="1"/>
             <dd_properties>
               <Option type="Map">
                 <Option name="name" type="QString" value=""/>
@@ -1000,9 +1000,9 @@
             </dd_properties>
             <substitutions/>
           </text-style>
-          <text-format reverseDirectionSymbol="0" decimals="3" formatNumbers="0" plussign="0" placeDirectionSymbol="0" multilineAlign="3" rightDirectionSymbol=">" addDirectionSymbol="0" wrapChar="" leftDirectionSymbol="&lt;" autoWrapLength="0" useMaxLineLengthForAutoWrap="1"/>
-          <placement overrunDistanceMapUnitScale="3x:0,0,0,0,0,0" overrunDistance="0" centroidWhole="0" placementFlags="10" lineAnchorPercent="0.5" repeatDistance="0" offsetUnits="MM" distMapUnitScale="3x:0,0,0,0,0,0" geometryGeneratorType="PointGeometry" labelOffsetMapUnitScale="3x:0,0,0,0,0,0" yOffset="0" rotationAngle="0" predefinedPositionOrder="TR,TL,BR,BL,R,L,TSR,BSR" centroidInside="0" repeatDistanceMapUnitScale="3x:0,0,0,0,0,0" overrunDistanceUnit="MM" maxCurvedCharAngleOut="-25" quadOffset="4" dist="0" offsetType="1" preserveRotation="1" placement="6" distUnits="MM" lineAnchorType="0" polygonPlacementFlags="2" fitInPolygonOnly="0" geometryGenerator="" layerType="PointGeometry" rotationUnit="AngleDegrees" xOffset="0" geometryGeneratorEnabled="0" maxCurvedCharAngleIn="25" priority="5" lineAnchorClipping="0" repeatDistanceUnits="MM"/>
-          <rendering scaleMin="0" displayAll="1" obstacleType="1" scaleMax="0" fontMaxPixelSize="10000" fontLimitPixelSize="0" drawLabels="1" zIndex="0" obstacleFactor="1" unplacedVisibility="0" minFeatureSize="0" limitNumLabels="0" fontMinPixelSize="3" labelPerPart="0" obstacle="1" maxNumLabels="2000" mergeLines="0" scaleVisibility="0" upsidedownLabels="0"/>
+          <text-format placeDirectionSymbol="0" useMaxLineLengthForAutoWrap="1" decimals="3" formatNumbers="0" plussign="0" autoWrapLength="0" leftDirectionSymbol="&lt;" multilineAlign="3" rightDirectionSymbol=">" reverseDirectionSymbol="0" wrapChar="" addDirectionSymbol="0"/>
+          <placement repeatDistanceMapUnitScale="3x:0,0,0,0,0,0" centroidInside="0" dist="0" rotationAngle="0" yOffset="0" quadOffset="4" labelOffsetMapUnitScale="3x:0,0,0,0,0,0" offsetType="1" placement="6" maxCurvedCharAngleOut="-25" predefinedPositionOrder="TR,TL,BR,BL,R,L,TSR,BSR" offsetUnits="MM" xOffset="0" preserveRotation="1" repeatDistance="0" overrunDistance="0" geometryGeneratorType="PointGeometry" placementFlags="10" fitInPolygonOnly="0" centroidWhole="0" distMapUnitScale="3x:0,0,0,0,0,0" lineAnchorPercent="0.5" polygonPlacementFlags="2" geometryGenerator="" lineAnchorType="0" rotationUnit="AngleDegrees" maxCurvedCharAngleIn="25" repeatDistanceUnits="MM" lineAnchorClipping="0" overrunDistanceUnit="MM" overrunDistanceMapUnitScale="3x:0,0,0,0,0,0" priority="5" distUnits="MM" geometryGeneratorEnabled="0" layerType="PointGeometry"/>
+          <rendering scaleVisibility="0" fontMaxPixelSize="10000" scaleMax="0" obstacleType="1" scaleMin="0" displayAll="1" obstacle="1" mergeLines="0" unplacedVisibility="0" minFeatureSize="0" fontLimitPixelSize="0" upsidedownLabels="0" zIndex="0" obstacleFactor="1" fontMinPixelSize="3" labelPerPart="0" drawLabels="1" limitNumLabels="0" maxNumLabels="2000"/>
           <dd_properties>
             <Option type="Map">
               <Option name="name" type="QString" value=""/>
@@ -1033,7 +1033,7 @@
               <Option name="drawToAllParts" type="bool" value="false"/>
               <Option name="enabled" type="QString" value="0"/>
               <Option name="labelAnchorPoint" type="QString" value="point_on_exterior"/>
-              <Option name="lineSymbol" type="QString" value="&lt;symbol name=&quot;symbol&quot; force_rhr=&quot;0&quot; type=&quot;line&quot; clip_to_extent=&quot;1&quot; alpha=&quot;1&quot;>&lt;data_defined_properties>&lt;Option type=&quot;Map&quot;>&lt;Option name=&quot;name&quot; type=&quot;QString&quot; value=&quot;&quot;/>&lt;Option name=&quot;properties&quot;/>&lt;Option name=&quot;type&quot; type=&quot;QString&quot; value=&quot;collection&quot;/>&lt;/Option>&lt;/data_defined_properties>&lt;layer pass=&quot;0&quot; locked=&quot;0&quot; class=&quot;SimpleLine&quot; enabled=&quot;1&quot;>&lt;Option type=&quot;Map&quot;>&lt;Option name=&quot;align_dash_pattern&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;capstyle&quot; type=&quot;QString&quot; value=&quot;square&quot;/>&lt;Option name=&quot;customdash&quot; type=&quot;QString&quot; value=&quot;5;2&quot;/>&lt;Option name=&quot;customdash_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;customdash_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;dash_pattern_offset&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;dash_pattern_offset_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;dash_pattern_offset_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;draw_inside_polygon&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;joinstyle&quot; type=&quot;QString&quot; value=&quot;bevel&quot;/>&lt;Option name=&quot;line_color&quot; type=&quot;QString&quot; value=&quot;60,60,60,255&quot;/>&lt;Option name=&quot;line_style&quot; type=&quot;QString&quot; value=&quot;solid&quot;/>&lt;Option name=&quot;line_width&quot; type=&quot;QString&quot; value=&quot;0.3&quot;/>&lt;Option name=&quot;line_width_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;offset&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;offset_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;offset_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;ring_filter&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;trim_distance_end&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;trim_distance_end_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;trim_distance_end_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;trim_distance_start&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;trim_distance_start_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;trim_distance_start_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;tweak_dash_pattern_on_corners&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;use_custom_dash&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;width_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;/Option>&lt;prop v=&quot;0&quot; k=&quot;align_dash_pattern&quot;/>&lt;prop v=&quot;square&quot; k=&quot;capstyle&quot;/>&lt;prop v=&quot;5;2&quot; k=&quot;customdash&quot;/>&lt;prop v=&quot;3x:0,0,0,0,0,0&quot; k=&quot;customdash_map_unit_scale&quot;/>&lt;prop v=&quot;MM&quot; k=&quot;customdash_unit&quot;/>&lt;prop v=&quot;0&quot; k=&quot;dash_pattern_offset&quot;/>&lt;prop v=&quot;3x:0,0,0,0,0,0&quot; k=&quot;dash_pattern_offset_map_unit_scale&quot;/>&lt;prop v=&quot;MM&quot; k=&quot;dash_pattern_offset_unit&quot;/>&lt;prop v=&quot;0&quot; k=&quot;draw_inside_polygon&quot;/>&lt;prop v=&quot;bevel&quot; k=&quot;joinstyle&quot;/>&lt;prop v=&quot;60,60,60,255&quot; k=&quot;line_color&quot;/>&lt;prop v=&quot;solid&quot; k=&quot;line_style&quot;/>&lt;prop v=&quot;0.3&quot; k=&quot;line_width&quot;/>&lt;prop v=&quot;MM&quot; k=&quot;line_width_unit&quot;/>&lt;prop v=&quot;0&quot; k=&quot;offset&quot;/>&lt;prop v=&quot;3x:0,0,0,0,0,0&quot; k=&quot;offset_map_unit_scale&quot;/>&lt;prop v=&quot;MM&quot; k=&quot;offset_unit&quot;/>&lt;prop v=&quot;0&quot; k=&quot;ring_filter&quot;/>&lt;prop v=&quot;0&quot; k=&quot;trim_distance_end&quot;/>&lt;prop v=&quot;3x:0,0,0,0,0,0&quot; k=&quot;trim_distance_end_map_unit_scale&quot;/>&lt;prop v=&quot;MM&quot; k=&quot;trim_distance_end_unit&quot;/>&lt;prop v=&quot;0&quot; k=&quot;trim_distance_start&quot;/>&lt;prop v=&quot;3x:0,0,0,0,0,0&quot; k=&quot;trim_distance_start_map_unit_scale&quot;/>&lt;prop v=&quot;MM&quot; k=&quot;trim_distance_start_unit&quot;/>&lt;prop v=&quot;0&quot; k=&quot;tweak_dash_pattern_on_corners&quot;/>&lt;prop v=&quot;0&quot; k=&quot;use_custom_dash&quot;/>&lt;prop v=&quot;3x:0,0,0,0,0,0&quot; k=&quot;width_map_unit_scale&quot;/>&lt;data_defined_properties>&lt;Option type=&quot;Map&quot;>&lt;Option name=&quot;name&quot; type=&quot;QString&quot; value=&quot;&quot;/>&lt;Option name=&quot;properties&quot;/>&lt;Option name=&quot;type&quot; type=&quot;QString&quot; value=&quot;collection&quot;/>&lt;/Option>&lt;/data_defined_properties>&lt;/layer>&lt;/symbol>"/>
+              <Option name="lineSymbol" type="QString" value="&lt;symbol name=&quot;symbol&quot; type=&quot;line&quot; alpha=&quot;1&quot; force_rhr=&quot;0&quot; clip_to_extent=&quot;1&quot;>&lt;data_defined_properties>&lt;Option type=&quot;Map&quot;>&lt;Option name=&quot;name&quot; type=&quot;QString&quot; value=&quot;&quot;/>&lt;Option name=&quot;properties&quot;/>&lt;Option name=&quot;type&quot; type=&quot;QString&quot; value=&quot;collection&quot;/>&lt;/Option>&lt;/data_defined_properties>&lt;layer pass=&quot;0&quot; class=&quot;SimpleLine&quot; enabled=&quot;1&quot; locked=&quot;0&quot;>&lt;Option type=&quot;Map&quot;>&lt;Option name=&quot;align_dash_pattern&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;capstyle&quot; type=&quot;QString&quot; value=&quot;square&quot;/>&lt;Option name=&quot;customdash&quot; type=&quot;QString&quot; value=&quot;5;2&quot;/>&lt;Option name=&quot;customdash_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;customdash_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;dash_pattern_offset&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;dash_pattern_offset_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;dash_pattern_offset_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;draw_inside_polygon&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;joinstyle&quot; type=&quot;QString&quot; value=&quot;bevel&quot;/>&lt;Option name=&quot;line_color&quot; type=&quot;QString&quot; value=&quot;60,60,60,255&quot;/>&lt;Option name=&quot;line_style&quot; type=&quot;QString&quot; value=&quot;solid&quot;/>&lt;Option name=&quot;line_width&quot; type=&quot;QString&quot; value=&quot;0.3&quot;/>&lt;Option name=&quot;line_width_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;offset&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;offset_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;offset_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;ring_filter&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;trim_distance_end&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;trim_distance_end_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;trim_distance_end_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;trim_distance_start&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;trim_distance_start_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;Option name=&quot;trim_distance_start_unit&quot; type=&quot;QString&quot; value=&quot;MM&quot;/>&lt;Option name=&quot;tweak_dash_pattern_on_corners&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;use_custom_dash&quot; type=&quot;QString&quot; value=&quot;0&quot;/>&lt;Option name=&quot;width_map_unit_scale&quot; type=&quot;QString&quot; value=&quot;3x:0,0,0,0,0,0&quot;/>&lt;/Option>&lt;prop k=&quot;align_dash_pattern&quot; v=&quot;0&quot;/>&lt;prop k=&quot;capstyle&quot; v=&quot;square&quot;/>&lt;prop k=&quot;customdash&quot; v=&quot;5;2&quot;/>&lt;prop k=&quot;customdash_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;customdash_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;dash_pattern_offset&quot; v=&quot;0&quot;/>&lt;prop k=&quot;dash_pattern_offset_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;dash_pattern_offset_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;draw_inside_polygon&quot; v=&quot;0&quot;/>&lt;prop k=&quot;joinstyle&quot; v=&quot;bevel&quot;/>&lt;prop k=&quot;line_color&quot; v=&quot;60,60,60,255&quot;/>&lt;prop k=&quot;line_style&quot; v=&quot;solid&quot;/>&lt;prop k=&quot;line_width&quot; v=&quot;0.3&quot;/>&lt;prop k=&quot;line_width_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;offset&quot; v=&quot;0&quot;/>&lt;prop k=&quot;offset_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;offset_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;ring_filter&quot; v=&quot;0&quot;/>&lt;prop k=&quot;trim_distance_end&quot; v=&quot;0&quot;/>&lt;prop k=&quot;trim_distance_end_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;trim_distance_end_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;trim_distance_start&quot; v=&quot;0&quot;/>&lt;prop k=&quot;trim_distance_start_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;trim_distance_start_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;tweak_dash_pattern_on_corners&quot; v=&quot;0&quot;/>&lt;prop k=&quot;use_custom_dash&quot; v=&quot;0&quot;/>&lt;prop k=&quot;width_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;data_defined_properties>&lt;Option type=&quot;Map&quot;>&lt;Option name=&quot;name&quot; type=&quot;QString&quot; value=&quot;&quot;/>&lt;Option name=&quot;properties&quot;/>&lt;Option name=&quot;type&quot; type=&quot;QString&quot; value=&quot;collection&quot;/>&lt;/Option>&lt;/data_defined_properties>&lt;/layer>&lt;/symbol>"/>
               <Option name="minLength" type="double" value="0"/>
               <Option name="minLengthMapUnitScale" type="QString" value="3x:0,0,0,0,0,0"/>
               <Option name="minLengthUnit" type="QString" value="MM"/>
@@ -1063,11 +1063,11 @@
   <featureBlendMode>0</featureBlendMode>
   <layerOpacity>1</layerOpacity>
   <SingleCategoryDiagramRenderer attributeLegend="1" diagramType="Histogram">
-    <DiagramCategory barWidth="5" penAlpha="255" penWidth="0" sizeScale="3x:0,0,0,0,0,0" opacity="1" lineSizeScale="3x:0,0,0,0,0,0" backgroundAlpha="255" lineSizeType="MM" showAxis="1" backgroundColor="#ffffff" maxScaleDenominator="1e+08" labelPlacementMethod="XHeight" minScaleDenominator="0" direction="0" diagramOrientation="Up" height="15" minimumSize="0" scaleBasedVisibility="0" scaleDependency="Area" width="15" spacing="5" penColor="#000000" spacingUnitScale="3x:0,0,0,0,0,0" enabled="0" rotationOffset="270" spacingUnit="MM" sizeType="MM">
-      <fontProperties style="" description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0"/>
-      <attribute label="" color="#000000" field=""/>
+    <DiagramCategory showAxis="1" sizeScale="3x:0,0,0,0,0,0" spacingUnit="MM" opacity="1" scaleBasedVisibility="0" enabled="0" sizeType="MM" rotationOffset="270" lineSizeType="MM" width="15" penAlpha="255" lineSizeScale="3x:0,0,0,0,0,0" penColor="#000000" scaleDependency="Area" direction="0" backgroundAlpha="255" labelPlacementMethod="XHeight" diagramOrientation="Up" penWidth="0" barWidth="5" maxScaleDenominator="1e+08" spacingUnitScale="3x:0,0,0,0,0,0" height="15" backgroundColor="#ffffff" spacing="5" minimumSize="0" minScaleDenominator="0">
+      <fontProperties description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0" style=""/>
+      <attribute label="" field="" color="#000000"/>
       <axisSymbol>
-        <symbol name="" force_rhr="0" type="line" clip_to_extent="1" alpha="1">
+        <symbol name="" type="line" alpha="1" force_rhr="0" clip_to_extent="1">
           <data_defined_properties>
             <Option type="Map">
               <Option name="name" type="QString" value=""/>
@@ -1075,7 +1075,7 @@
               <Option name="type" type="QString" value="collection"/>
             </Option>
           </data_defined_properties>
-          <layer pass="0" locked="0" class="SimpleLine" enabled="1">
+          <layer pass="0" class="SimpleLine" enabled="1" locked="0">
             <Option type="Map">
               <Option name="align_dash_pattern" type="QString" value="0"/>
               <Option name="capstyle" type="QString" value="square"/>
@@ -1105,33 +1105,33 @@
               <Option name="use_custom_dash" type="QString" value="0"/>
               <Option name="width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
             </Option>
-            <prop v="0" k="align_dash_pattern"/>
-            <prop v="square" k="capstyle"/>
-            <prop v="5;2" k="customdash"/>
-            <prop v="3x:0,0,0,0,0,0" k="customdash_map_unit_scale"/>
-            <prop v="MM" k="customdash_unit"/>
-            <prop v="0" k="dash_pattern_offset"/>
-            <prop v="3x:0,0,0,0,0,0" k="dash_pattern_offset_map_unit_scale"/>
-            <prop v="MM" k="dash_pattern_offset_unit"/>
-            <prop v="0" k="draw_inside_polygon"/>
-            <prop v="bevel" k="joinstyle"/>
-            <prop v="35,35,35,255" k="line_color"/>
-            <prop v="solid" k="line_style"/>
-            <prop v="0.26" k="line_width"/>
-            <prop v="MM" k="line_width_unit"/>
-            <prop v="0" k="offset"/>
-            <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
-            <prop v="MM" k="offset_unit"/>
-            <prop v="0" k="ring_filter"/>
-            <prop v="0" k="trim_distance_end"/>
-            <prop v="3x:0,0,0,0,0,0" k="trim_distance_end_map_unit_scale"/>
-            <prop v="MM" k="trim_distance_end_unit"/>
-            <prop v="0" k="trim_distance_start"/>
-            <prop v="3x:0,0,0,0,0,0" k="trim_distance_start_map_unit_scale"/>
-            <prop v="MM" k="trim_distance_start_unit"/>
-            <prop v="0" k="tweak_dash_pattern_on_corners"/>
-            <prop v="0" k="use_custom_dash"/>
-            <prop v="3x:0,0,0,0,0,0" k="width_map_unit_scale"/>
+            <prop k="align_dash_pattern" v="0"/>
+            <prop k="capstyle" v="square"/>
+            <prop k="customdash" v="5;2"/>
+            <prop k="customdash_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+            <prop k="customdash_unit" v="MM"/>
+            <prop k="dash_pattern_offset" v="0"/>
+            <prop k="dash_pattern_offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+            <prop k="dash_pattern_offset_unit" v="MM"/>
+            <prop k="draw_inside_polygon" v="0"/>
+            <prop k="joinstyle" v="bevel"/>
+            <prop k="line_color" v="35,35,35,255"/>
+            <prop k="line_style" v="solid"/>
+            <prop k="line_width" v="0.26"/>
+            <prop k="line_width_unit" v="MM"/>
+            <prop k="offset" v="0"/>
+            <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+            <prop k="offset_unit" v="MM"/>
+            <prop k="ring_filter" v="0"/>
+            <prop k="trim_distance_end" v="0"/>
+            <prop k="trim_distance_end_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+            <prop k="trim_distance_end_unit" v="MM"/>
+            <prop k="trim_distance_start" v="0"/>
+            <prop k="trim_distance_start_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+            <prop k="trim_distance_start_unit" v="MM"/>
+            <prop k="tweak_dash_pattern_on_corners" v="0"/>
+            <prop k="use_custom_dash" v="0"/>
+            <prop k="width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
             <data_defined_properties>
               <Option type="Map">
                 <Option name="name" type="QString" value=""/>
@@ -1144,7 +1144,7 @@
       </axisSymbol>
     </DiagramCategory>
   </SingleCategoryDiagramRenderer>
-  <DiagramLayerSettings zIndex="0" priority="0" showAll="1" linePlacementFlags="18" obstacle="0" dist="0" placement="0">
+  <DiagramLayerSettings priority="0" showAll="1" linePlacementFlags="18" placement="0" zIndex="0" obstacle="0" dist="0">
     <properties>
       <Option type="Map">
         <Option name="name" type="QString" value=""/>
@@ -1157,130 +1157,137 @@
     <activeChecks/>
     <checkConfiguration/>
   </geometryOptions>
-  <legend showLabelLegend="0" type="default-vector"/>
+  <legend type="default-vector" showLabelLegend="0"/>
   <referencedLayers/>
   <fieldConfiguration>
-    <field configurationFlags="None" name="fid">
+    <field name="fid" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="gml_id">
+    <field name="gml_id" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="lokalnyId">
+    <field name="lokalnyId" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="przestrzenNazw">
+    <field name="przestrzenNazw" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="wersjaId">
+    <field name="wersjaId" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="startObiekt">
+    <field name="startObiekt" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="startWersjaObiekt">
+    <field name="startWersjaObiekt" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="zrodlo">
+    <field name="zrodlo" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="numerOperatu">
+    <field name="numerOperatu" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="status">
+    <field name="status" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="eksploatacja">
+    <field name="eksploatacja" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="wladajacy">
+    <field name="rodzajUrzadzenia" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="rodzajUrzadzenia">
+    <field name="rodzajSieci" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="rodzajSieci">
+    <field name="wladajacy" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="informacjaDodatkowa">
+    <field name="ksztaltUrzadzenia" configurationFlags="None">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="ksztaltUrzadzenia">
-      <editWidget type="TextEdit">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field configurationFlags="None" name="koniecWersjaObiekt">
+    <field name="koniecWersjaObiekt" configurationFlags="None">
       <editWidget type="DateTime">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="None" name="koniecObiekt">
+    <field name="koniecObiekt" configurationFlags="None">
       <editWidget type="DateTime">
+        <config>
+          <Option/>
+        </config>
+      </editWidget>
+    </field>
+    <field name="GES_PrezentacjaGraficzna_0_gml_id" configurationFlags="None">
+      <editWidget type="TextEdit">
+        <config>
+          <Option/>
+        </config>
+      </editWidget>
+    </field>
+    <field name="GES_PrezentacjaGraficzna_0_katObrotu" configurationFlags="None">
+      <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
@@ -1288,110 +1295,115 @@
     </field>
   </fieldConfiguration>
   <aliases>
-    <alias index="0" name="" field="fid"/>
-    <alias index="1" name="" field="gml_id"/>
-    <alias index="2" name="" field="lokalnyId"/>
-    <alias index="3" name="" field="przestrzenNazw"/>
-    <alias index="4" name="" field="wersjaId"/>
-    <alias index="5" name="" field="startObiekt"/>
-    <alias index="6" name="" field="startWersjaObiekt"/>
-    <alias index="7" name="" field="zrodlo"/>
-    <alias index="8" name="" field="numerOperatu"/>
-    <alias index="9" name="" field="status"/>
-    <alias index="10" name="" field="eksploatacja"/>
-    <alias index="11" name="" field="wladajacy"/>
-    <alias index="12" name="" field="rodzajUrzadzenia"/>
-    <alias index="13" name="" field="rodzajSieci"/>
-    <alias index="14" name="" field="informacjaDodatkowa"/>
-    <alias index="15" name="" field="ksztaltUrzadzenia"/>
-    <alias index="16" name="" field="koniecWersjaObiekt"/>
-    <alias index="17" name="" field="koniecObiekt"/>
+    <alias name="" index="0" field="fid"/>
+    <alias name="" index="1" field="gml_id"/>
+    <alias name="" index="2" field="lokalnyId"/>
+    <alias name="" index="3" field="przestrzenNazw"/>
+    <alias name="" index="4" field="wersjaId"/>
+    <alias name="" index="5" field="startObiekt"/>
+    <alias name="" index="6" field="startWersjaObiekt"/>
+    <alias name="" index="7" field="zrodlo"/>
+    <alias name="" index="8" field="numerOperatu"/>
+    <alias name="" index="9" field="status"/>
+    <alias name="" index="10" field="eksploatacja"/>
+    <alias name="" index="11" field="rodzajUrzadzenia"/>
+    <alias name="" index="12" field="rodzajSieci"/>
+    <alias name="" index="13" field="wladajacy"/>
+    <alias name="" index="14" field="ksztaltUrzadzenia"/>
+    <alias name="" index="15" field="koniecWersjaObiekt"/>
+    <alias name="" index="16" field="koniecObiekt"/>
+    <alias name="" index="17" field="GES_PrezentacjaGraficzna_0_gml_id"/>
+    <alias name="" index="18" field="GES_PrezentacjaGraficzna_0_katObrotu"/>
   </aliases>
   <defaults>
-    <default applyOnUpdate="0" expression="" field="fid"/>
-    <default applyOnUpdate="0" expression="" field="gml_id"/>
-    <default applyOnUpdate="0" expression="" field="lokalnyId"/>
-    <default applyOnUpdate="0" expression="" field="przestrzenNazw"/>
-    <default applyOnUpdate="0" expression="" field="wersjaId"/>
-    <default applyOnUpdate="0" expression="" field="startObiekt"/>
-    <default applyOnUpdate="0" expression="" field="startWersjaObiekt"/>
-    <default applyOnUpdate="0" expression="" field="zrodlo"/>
-    <default applyOnUpdate="0" expression="" field="numerOperatu"/>
-    <default applyOnUpdate="0" expression="" field="status"/>
-    <default applyOnUpdate="0" expression="" field="eksploatacja"/>
-    <default applyOnUpdate="0" expression="" field="wladajacy"/>
-    <default applyOnUpdate="0" expression="" field="rodzajUrzadzenia"/>
-    <default applyOnUpdate="0" expression="" field="rodzajSieci"/>
-    <default applyOnUpdate="0" expression="" field="informacjaDodatkowa"/>
-    <default applyOnUpdate="0" expression="" field="ksztaltUrzadzenia"/>
-    <default applyOnUpdate="0" expression="" field="koniecWersjaObiekt"/>
-    <default applyOnUpdate="0" expression="" field="koniecObiekt"/>
+    <default field="fid" expression="" applyOnUpdate="0"/>
+    <default field="gml_id" expression="" applyOnUpdate="0"/>
+    <default field="lokalnyId" expression="" applyOnUpdate="0"/>
+    <default field="przestrzenNazw" expression="" applyOnUpdate="0"/>
+    <default field="wersjaId" expression="" applyOnUpdate="0"/>
+    <default field="startObiekt" expression="" applyOnUpdate="0"/>
+    <default field="startWersjaObiekt" expression="" applyOnUpdate="0"/>
+    <default field="zrodlo" expression="" applyOnUpdate="0"/>
+    <default field="numerOperatu" expression="" applyOnUpdate="0"/>
+    <default field="status" expression="" applyOnUpdate="0"/>
+    <default field="eksploatacja" expression="" applyOnUpdate="0"/>
+    <default field="rodzajUrzadzenia" expression="" applyOnUpdate="0"/>
+    <default field="rodzajSieci" expression="" applyOnUpdate="0"/>
+    <default field="wladajacy" expression="" applyOnUpdate="0"/>
+    <default field="ksztaltUrzadzenia" expression="" applyOnUpdate="0"/>
+    <default field="koniecWersjaObiekt" expression="" applyOnUpdate="0"/>
+    <default field="koniecObiekt" expression="" applyOnUpdate="0"/>
+    <default field="GES_PrezentacjaGraficzna_0_gml_id" expression="" applyOnUpdate="0"/>
+    <default field="GES_PrezentacjaGraficzna_0_katObrotu" expression="" applyOnUpdate="0"/>
   </defaults>
   <constraints>
-    <constraint exp_strength="0" unique_strength="1" notnull_strength="1" constraints="3" field="fid"/>
-    <constraint exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0" field="gml_id"/>
-    <constraint exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0" field="lokalnyId"/>
-    <constraint exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0" field="przestrzenNazw"/>
-    <constraint exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0" field="wersjaId"/>
-    <constraint exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0" field="startObiekt"/>
-    <constraint exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0" field="startWersjaObiekt"/>
-    <constraint exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0" field="zrodlo"/>
-    <constraint exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0" field="numerOperatu"/>
-    <constraint exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0" field="status"/>
-    <constraint exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0" field="eksploatacja"/>
-    <constraint exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0" field="wladajacy"/>
-    <constraint exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0" field="rodzajUrzadzenia"/>
-    <constraint exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0" field="rodzajSieci"/>
-    <constraint exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0" field="informacjaDodatkowa"/>
-    <constraint exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0" field="ksztaltUrzadzenia"/>
-    <constraint exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0" field="koniecWersjaObiekt"/>
-    <constraint exp_strength="0" unique_strength="0" notnull_strength="0" constraints="0" field="koniecObiekt"/>
+    <constraint field="fid" unique_strength="1" constraints="3" exp_strength="0" notnull_strength="1"/>
+    <constraint field="gml_id" unique_strength="0" constraints="0" exp_strength="0" notnull_strength="0"/>
+    <constraint field="lokalnyId" unique_strength="0" constraints="0" exp_strength="0" notnull_strength="0"/>
+    <constraint field="przestrzenNazw" unique_strength="0" constraints="0" exp_strength="0" notnull_strength="0"/>
+    <constraint field="wersjaId" unique_strength="0" constraints="0" exp_strength="0" notnull_strength="0"/>
+    <constraint field="startObiekt" unique_strength="0" constraints="0" exp_strength="0" notnull_strength="0"/>
+    <constraint field="startWersjaObiekt" unique_strength="0" constraints="0" exp_strength="0" notnull_strength="0"/>
+    <constraint field="zrodlo" unique_strength="0" constraints="0" exp_strength="0" notnull_strength="0"/>
+    <constraint field="numerOperatu" unique_strength="0" constraints="0" exp_strength="0" notnull_strength="0"/>
+    <constraint field="status" unique_strength="0" constraints="0" exp_strength="0" notnull_strength="0"/>
+    <constraint field="eksploatacja" unique_strength="0" constraints="0" exp_strength="0" notnull_strength="0"/>
+    <constraint field="rodzajUrzadzenia" unique_strength="0" constraints="0" exp_strength="0" notnull_strength="0"/>
+    <constraint field="rodzajSieci" unique_strength="0" constraints="0" exp_strength="0" notnull_strength="0"/>
+    <constraint field="wladajacy" unique_strength="0" constraints="0" exp_strength="0" notnull_strength="0"/>
+    <constraint field="ksztaltUrzadzenia" unique_strength="0" constraints="0" exp_strength="0" notnull_strength="0"/>
+    <constraint field="koniecWersjaObiekt" unique_strength="0" constraints="0" exp_strength="0" notnull_strength="0"/>
+    <constraint field="koniecObiekt" unique_strength="0" constraints="0" exp_strength="0" notnull_strength="0"/>
+    <constraint field="GES_PrezentacjaGraficzna_0_gml_id" unique_strength="0" constraints="0" exp_strength="0" notnull_strength="0"/>
+    <constraint field="GES_PrezentacjaGraficzna_0_katObrotu" unique_strength="0" constraints="0" exp_strength="0" notnull_strength="0"/>
   </constraints>
   <constraintExpressions>
-    <constraint desc="" exp="" field="fid"/>
-    <constraint desc="" exp="" field="gml_id"/>
-    <constraint desc="" exp="" field="lokalnyId"/>
-    <constraint desc="" exp="" field="przestrzenNazw"/>
-    <constraint desc="" exp="" field="wersjaId"/>
-    <constraint desc="" exp="" field="startObiekt"/>
-    <constraint desc="" exp="" field="startWersjaObiekt"/>
-    <constraint desc="" exp="" field="zrodlo"/>
-    <constraint desc="" exp="" field="numerOperatu"/>
-    <constraint desc="" exp="" field="status"/>
-    <constraint desc="" exp="" field="eksploatacja"/>
-    <constraint desc="" exp="" field="wladajacy"/>
-    <constraint desc="" exp="" field="rodzajUrzadzenia"/>
-    <constraint desc="" exp="" field="rodzajSieci"/>
-    <constraint desc="" exp="" field="informacjaDodatkowa"/>
-    <constraint desc="" exp="" field="ksztaltUrzadzenia"/>
-    <constraint desc="" exp="" field="koniecWersjaObiekt"/>
-    <constraint desc="" exp="" field="koniecObiekt"/>
+    <constraint exp="" field="fid" desc=""/>
+    <constraint exp="" field="gml_id" desc=""/>
+    <constraint exp="" field="lokalnyId" desc=""/>
+    <constraint exp="" field="przestrzenNazw" desc=""/>
+    <constraint exp="" field="wersjaId" desc=""/>
+    <constraint exp="" field="startObiekt" desc=""/>
+    <constraint exp="" field="startWersjaObiekt" desc=""/>
+    <constraint exp="" field="zrodlo" desc=""/>
+    <constraint exp="" field="numerOperatu" desc=""/>
+    <constraint exp="" field="status" desc=""/>
+    <constraint exp="" field="eksploatacja" desc=""/>
+    <constraint exp="" field="rodzajUrzadzenia" desc=""/>
+    <constraint exp="" field="rodzajSieci" desc=""/>
+    <constraint exp="" field="wladajacy" desc=""/>
+    <constraint exp="" field="ksztaltUrzadzenia" desc=""/>
+    <constraint exp="" field="koniecWersjaObiekt" desc=""/>
+    <constraint exp="" field="koniecObiekt" desc=""/>
+    <constraint exp="" field="GES_PrezentacjaGraficzna_0_gml_id" desc=""/>
+    <constraint exp="" field="GES_PrezentacjaGraficzna_0_katObrotu" desc=""/>
   </constraintExpressions>
   <expressionfields/>
   <attributeactions>
     <defaultAction value="{00000000-0000-0000-0000-000000000000}" key="Canvas"/>
   </attributeactions>
-  <attributetableconfig sortExpression="" sortOrder="0" actionWidgetStyle="dropDown">
+  <attributetableconfig actionWidgetStyle="dropDown" sortOrder="0" sortExpression="">
     <columns>
-      <column width="-1" name="fid" type="field" hidden="0"/>
-      <column width="-1" name="gml_id" type="field" hidden="0"/>
-      <column width="-1" name="lokalnyId" type="field" hidden="0"/>
-      <column width="-1" name="przestrzenNazw" type="field" hidden="0"/>
-      <column width="-1" name="wersjaId" type="field" hidden="0"/>
-      <column width="-1" name="startObiekt" type="field" hidden="0"/>
-      <column width="-1" name="startWersjaObiekt" type="field" hidden="0"/>
-      <column width="-1" name="zrodlo" type="field" hidden="0"/>
-      <column width="-1" name="numerOperatu" type="field" hidden="0"/>
-      <column width="-1" name="status" type="field" hidden="0"/>
-      <column width="-1" name="eksploatacja" type="field" hidden="0"/>
-      <column width="-1" name="wladajacy" type="field" hidden="0"/>
-      <column width="-1" name="rodzajUrzadzenia" type="field" hidden="0"/>
-      <column width="-1" name="rodzajSieci" type="field" hidden="0"/>
-      <column width="-1" name="informacjaDodatkowa" type="field" hidden="0"/>
-      <column width="-1" name="ksztaltUrzadzenia" type="field" hidden="0"/>
-      <column width="-1" name="koniecWersjaObiekt" type="field" hidden="0"/>
-      <column width="-1" name="koniecObiekt" type="field" hidden="0"/>
-      <column width="-1" type="actions" hidden="1"/>
+      <column name="fid" type="field" width="-1" hidden="0"/>
+      <column name="gml_id" type="field" width="-1" hidden="0"/>
+      <column name="lokalnyId" type="field" width="-1" hidden="0"/>
+      <column name="przestrzenNazw" type="field" width="-1" hidden="0"/>
+      <column name="wersjaId" type="field" width="-1" hidden="0"/>
+      <column name="startObiekt" type="field" width="-1" hidden="0"/>
+      <column name="startWersjaObiekt" type="field" width="-1" hidden="0"/>
+      <column name="zrodlo" type="field" width="-1" hidden="0"/>
+      <column name="numerOperatu" type="field" width="-1" hidden="0"/>
+      <column name="status" type="field" width="-1" hidden="0"/>
+      <column name="eksploatacja" type="field" width="-1" hidden="0"/>
+      <column name="wladajacy" type="field" width="-1" hidden="0"/>
+      <column name="rodzajUrzadzenia" type="field" width="-1" hidden="0"/>
+      <column name="rodzajSieci" type="field" width="-1" hidden="0"/>
+      <column name="ksztaltUrzadzenia" type="field" width="-1" hidden="0"/>
+      <column name="koniecWersjaObiekt" type="field" width="-1" hidden="0"/>
+      <column name="koniecObiekt" type="field" width="-1" hidden="0"/>
+      <column name="GES_PrezentacjaGraficzna_0_gml_id" type="field" width="-1" hidden="0"/>
+      <column name="GES_PrezentacjaGraficzna_0_katObrotu" type="field" width="-1" hidden="0"/>
+      <column type="actions" width="-1" hidden="1"/>
     </columns>
   </attributetableconfig>
   <conditionalstyles>
@@ -1423,6 +1435,8 @@ def my_form_open(dialog, layer, feature):
   <featformsuppress>0</featformsuppress>
   <editorlayout>generatedlayout</editorlayout>
   <editable>
+    <field name="GES_PrezentacjaGraficzna_0_gml_id" editable="0"/>
+    <field name="GES_PrezentacjaGraficzna_0_katObrotu" editable="0"/>
     <field name="eksploatacja" editable="1"/>
     <field name="fid" editable="1"/>
     <field name="gml_id" editable="1"/>
@@ -1444,6 +1458,8 @@ def my_form_open(dialog, layer, feature):
     <field name="zrodlo" editable="1"/>
   </editable>
   <labelOnTop>
+    <field name="GES_PrezentacjaGraficzna_0_gml_id" labelOnTop="0"/>
+    <field name="GES_PrezentacjaGraficzna_0_katObrotu" labelOnTop="0"/>
     <field name="eksploatacja" labelOnTop="0"/>
     <field name="fid" labelOnTop="0"/>
     <field name="gml_id" labelOnTop="0"/>
@@ -1465,6 +1481,8 @@ def my_form_open(dialog, layer, feature):
     <field name="zrodlo" labelOnTop="0"/>
   </labelOnTop>
   <reuseLastValue>
+    <field name="GES_PrezentacjaGraficzna_0_gml_id" reuseLastValue="0"/>
+    <field name="GES_PrezentacjaGraficzna_0_katObrotu" reuseLastValue="0"/>
     <field name="eksploatacja" reuseLastValue="0"/>
     <field name="fid" reuseLastValue="0"/>
     <field name="gml_id" reuseLastValue="0"/>

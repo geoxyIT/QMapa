@@ -129,13 +129,13 @@ def appropriate_scale(spacing: int, scale: int) -> float:
         return spacing
 
 
-def fill_with_color(fill_dict: Dict, scale: int, set: str):
+def fill_with_color(fill_dict: Dict, scale: int, set: str, layers):
     """Metodyka nadawania kreskowań dla symboli w oparciu o zadany plik konfiguracyjny xlsm
     :param scale: wartosc tekstowa brana z combobox'a current_scale
     :param set: aktualnie nadawany zbior danych - EGIB, BDOT, GESUT
     """
     # przejscie po warstwach
-    layers = list(QgsProject.instance().mapLayers().values())
+    #layers = list(QgsProject.instance().mapLayers().values())
     for layer in layers:
         if layer.type() == QgsMapLayerType.VectorLayer and layer.geometryType() == 2:  # warstwa poligonowa
             renderer = layer.renderer()
@@ -405,10 +405,10 @@ def fill_with_color(fill_dict: Dict, scale: int, set: str):
     iface.mapCanvas().refreshAllLayers()
 
 
-def fill(excel_path, scale, set):
+def fill(excel_path, scale, set, layers):
     """Nadanie wypelniania w oparciu o plik Excel"""
     fill_dict = excel_to_dict(excel_path)
-    fill_with_color(fill_dict, scale, set)
+    fill_with_color(fill_dict, scale, set, layers)
 
 
 def open_fill_xlsm(path: str):

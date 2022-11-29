@@ -215,6 +215,11 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         name, ext = dial.getOpenFileName(self, caption='Wybierz wejściowy plik GML',
                                                 filter='gml (*.gml)')
 
+        '''try:
+            iface.mapCanvas().scaleChanged.connect(self.setLegendScale)
+        except:
+            pass'''
+
         if name != '':
             mod_gml_path, gpkg_path, report_path = self.paths(name)  # pobranie sciezek importu
             if mod_gml_path != '' and gpkg_path != '' and report_path != '':
@@ -342,6 +347,11 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.setLegendScale()
 
         self.signal_of_import = False
+
+        '''try:
+            iface.mapCanvas().scaleChanged.disconnect()
+        except:
+            pass'''
 
     def on_cmbStylization_currentTextChanged(self):
         """ustaw stylizację wybraną w comboboxie"""
@@ -877,7 +887,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
             # przejscie po zaznaczonych zbiorach i nadanie wypelnien
             for set in self.active_sets:
-                fill(excel_path=FILL_PARAMETERS, scale=current_scale, set=set)
+                fill(excel_path=FILL_PARAMETERS, scale=current_scale, set=set, layers = self.list_or_canvas(self.signal_of_import))
 
             self.setLegendScale()
 
@@ -940,5 +950,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         print('zmiana skali')
         for layer in layers:
-            layer.triggerRepaint()
-            iface.layerTreeView().refreshLayerSymbology(layer.id())
+            #layer.triggerRepaint()
+            #iface.layerTreeView().refreshLayerSymbology(layer.id())
+            pass
