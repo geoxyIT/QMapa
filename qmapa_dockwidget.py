@@ -612,7 +612,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.gbShowWers.setEnabled(False)
         QCoreApplication.processEvents()
         self.disp_wers()
-        time.sleep(2)
         if state:
             # uncheck dla wersji, dodanie zeby nie wracalo wtedy do poprzedniego qml przy uncheck (bo inaczej robi sie 2 razy)
             self.back_fill = False
