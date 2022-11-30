@@ -32,7 +32,7 @@ from datetime import datetime
 import webbrowser
 
 from qgis.PyQt import QtGui, QtWidgets, uic
-from qgis.PyQt.QtCore import Qt, QVariant, QDateTime, QSize, pyqtSignal, pyqtSlot
+from qgis.PyQt.QtCore import Qt, QVariant, QDateTime, QSize, pyqtSignal, pyqtSlot, QCoreApplication
 from qgis.PyQt.QtWidgets import QFileDialog, QPushButton, QDialog
 from qgis.PyQt.QtCore import pyqtSignal, pyqtSlot, QVariant, QDateTime
 from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox
@@ -209,16 +209,10 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     @pyqtSlot()
     def on_pbImport_clicked(self):
         """Zaimportowanie pliku GML z konwersją do GPKG oraz nadaniem grup warstw"""
-        #print(iface.layerTreeView().layerTreeModel().legendMapViewData())
 
         dial = QFileDialog(self)
         name, ext = dial.getOpenFileName(self, caption='Wybierz wejściowy plik GML',
                                                 filter='gml (*.gml)')
-
-        '''try:
-            iface.mapCanvas().scaleChanged.connect(self.setLegendScale)
-        except:
-            pass'''
 
         if name != '':
             mod_gml_path, gpkg_path, report_path = self.paths(name)  # pobranie sciezek importu
@@ -230,16 +224,20 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 self.progressBar.setValue(1)
                 self.gml_mod = GmlModify(name, mod_gml_path)
                 self.gml_mod.run()  # przerobienie pliku gml i zapisanie do nowego pliku
+
                 self.progressBar.setValue(10)
                 print('czas 10%:', datetime.now() - start_2)
+                #QCoreApplication.processEvents()
 
                 # utworzenie gpkg z gml
                 ogr2ogr.main(["", "-f", "GPKG", gpkg_path, mod_gml_path])
                 self.progressBar.setValue(20)
                 print('czas 20%:', datetime.now() - start_2)
+                #QCoreApplication.processEvents()
                 load_gpkg(gpkg_path)
                 self.progressBar.setValue(30)
                 print('czas 30%:', datetime.now() - start_2)
+                #QCoreApplication.processEvents()
                 self.vec_layers_list, gr_dict = Main().create_groups(gpkg_path)
                 self.vec_layers_list = Main().checkLayers(self.vec_layers_list)
 
@@ -249,17 +247,20 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 set_new_order(order_list_new)
                 self.progressBar.setValue(40)
                 print('czas 40%:', datetime.now() - start_2)
+                #QCoreApplication.processEvents()
 
                 # utworzenie raportu
                 counting_dict = Main().generateReport(gr_dict)
                 report().run(counting_dict, name, report_path)
                 self.progressBar.setValue(50)
                 print('czas 50%:', datetime.now() - start_2)
+                #QCoreApplication.processEvents()
 
                 # nadanie zlaczen
                 self.set_joins(self.vec_layers_list)
                 self.progressBar.setValue(60)
                 print('czas 60%:', datetime.now() - start_2)
+                #QCoreApplication.processEvents()
 
                 # usuniecie pliku
                 try:
@@ -268,6 +269,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                     print("Problem z usunieciem pliku modyfikowanego gml")
                 self.progressBar.setValue(70)
                 print('czas 70%:', datetime.now() - start_2)
+                #QCoreApplication.processEvents()
 
                 # nadanie stylizacji
                 current_style = self.cmbStylization.currentText()
@@ -275,6 +277,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 self.back_to_qml_symb()
                 self.progressBar.setValue(80)
                 print('czas 80%:', datetime.now() - start_2)
+                #QCoreApplication.processEvents()
 
                 # self.set_labels(self.vec_layers_list)
                 '''self.wyswWg()  # sprawdzenie i nadanie wyswietlania wersji, statusu'''
@@ -284,6 +287,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                     self.fill_select_set()  # sprawdzenie i nadanie fillowania
                 self.progressBar.setValue(90)
                 print('czas 90%:', datetime.now() - start_2)
+                #QCoreApplication.processEvents()
 
                 # obliczenie kreskowania dla skarp, sciany, schodow i wstawienie geometrii do atrybutow
                 scales = ['500', '1000']
@@ -605,14 +609,17 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.disp_settings()
 
     def on_gbShowWers_toggled(self,state):
+        self.gbShowWers.setEnabled(False)
+        QCoreApplication.processEvents()
         self.disp_wers()
+        time.sleep(2)
         if state:
-            # uncheck dla wersji, dodanie zeby nie wracalo wtedy do poprzedniego gml przy uncheck (bo inaczej robi sie 2 razy)
+            # uncheck dla wersji, dodanie zeby nie wracalo wtedy do poprzedniego qml przy uncheck (bo inaczej robi sie 2 razy)
             self.back_fill = False
             self.gbFill.setChecked(False)
             self.gbFill.setCollapsed(True)
         self.back_fill = True
-
+        self.gbShowWers.setEnabled(True)
 
     def back_to_qml_symb(self):
         """Wczytanie stylizacji QML"""
@@ -813,7 +820,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             # definicja przyciskow
             btn_fill = QPushButton(self.right_click_dlg)
             btn_fill.setAutoDefault(False)
-            btn_fill.setText("Nadaj kolorystyke wypełnień")
+            btn_fill.setText("Nadaj wypełnienia")
             # powrot do stylizacji
             # btn_fill.clicked.connect(self.back_to_qml_symb)
             # btn_fill.clicked.connect(self.disp_wers)
@@ -823,7 +830,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
             btn_close_fill = QPushButton(self.right_click_dlg)
             btn_close_fill.setAutoDefault(False)
-            btn_close_fill.setText("Wyłącz wypełnianie")
+            btn_close_fill.setText("Wyłącz wypełnienia")
             btn_close_fill.move(0, 30)
             btn_close_fill.clicked.connect(lambda: self.set_fill_checked(state=False))
             #btn_close_fill.clicked.connect(self.back_to_qml_symb)
@@ -893,6 +900,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     def on_gbFill_toggled(self, state):
         """GroupBox dla fillowania w zaleznosci od wyswietlanego zbioru danych"""
+        self.gbFill.setEnabled(False)
+        QCoreApplication.processEvents()
         self.fill_select_set()
         if state is True:
             # uncheck dla wersji, dodanie zeby nie wracalo wtedy do poprzedniego gml przy uncheck (bo inaczej robi sie 2 razy)
@@ -900,6 +909,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             self.gbShowWers.setChecked(False)
             self.gbShowWers.setCollapsed(True)
         self.back_wers = True
+        self.gbFill.setEnabled(True)
 
 
     def on_chbFillBDOT_stateChanged(self):
@@ -948,8 +958,3 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         iface.layerTreeView().layerTreeModel().setLegendMapViewData(mupp, dpi, scale)
 
-        print('zmiana skali')
-        for layer in layers:
-            #layer.triggerRepaint()
-            #iface.layerTreeView().refreshLayerSymbology(layer.id())
-            pass
