@@ -227,17 +227,17 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
                 self.progressBar.setValue(10)
                 print('czas 10%:', datetime.now() - start_2)
-                #QCoreApplication.processEvents()
+                QCoreApplication.processEvents()
 
                 # utworzenie gpkg z gml
                 ogr2ogr.main(["", "-f", "GPKG", gpkg_path, mod_gml_path])
                 self.progressBar.setValue(20)
                 print('czas 20%:', datetime.now() - start_2)
-                #QCoreApplication.processEvents()
+                QCoreApplication.processEvents()
                 load_gpkg(gpkg_path)
                 self.progressBar.setValue(30)
                 print('czas 30%:', datetime.now() - start_2)
-                #QCoreApplication.processEvents()
+                QCoreApplication.processEvents()
                 self.vec_layers_list, gr_dict = Main().create_groups(gpkg_path)
                 self.vec_layers_list = Main().checkLayers(self.vec_layers_list)
 
@@ -247,20 +247,20 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 set_new_order(order_list_new)
                 self.progressBar.setValue(40)
                 print('czas 40%:', datetime.now() - start_2)
-                #QCoreApplication.processEvents()
+                QCoreApplication.processEvents()
 
                 # utworzenie raportu
                 counting_dict = Main().generateReport(gr_dict)
                 report().run(counting_dict, name, report_path)
                 self.progressBar.setValue(50)
                 print('czas 50%:', datetime.now() - start_2)
-                #QCoreApplication.processEvents()
+                QCoreApplication.processEvents()
 
                 # nadanie zlaczen
                 self.set_joins(self.vec_layers_list)
                 self.progressBar.setValue(60)
                 print('czas 60%:', datetime.now() - start_2)
-                #QCoreApplication.processEvents()
+                QCoreApplication.processEvents()
 
                 # usuniecie pliku
                 try:
@@ -269,7 +269,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                     print("Problem z usunieciem pliku modyfikowanego gml")
                 self.progressBar.setValue(70)
                 print('czas 70%:', datetime.now() - start_2)
-                #QCoreApplication.processEvents()
+                QCoreApplication.processEvents()
 
                 # nadanie stylizacji
                 current_style = self.cmbStylization.currentText()
@@ -277,7 +277,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 self.back_to_qml_symb()
                 self.progressBar.setValue(80)
                 print('czas 80%:', datetime.now() - start_2)
-                #QCoreApplication.processEvents()
+                QCoreApplication.processEvents()
 
                 # self.set_labels(self.vec_layers_list)
                 '''self.wyswWg()  # sprawdzenie i nadanie wyswietlania wersji, statusu'''
@@ -287,7 +287,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                     self.fill_select_set()  # sprawdzenie i nadanie fillowania
                 self.progressBar.setValue(90)
                 print('czas 90%:', datetime.now() - start_2)
-                #QCoreApplication.processEvents()
+                QCoreApplication.processEvents()
 
                 # obliczenie kreskowania dla skarp, sciany, schodow i wstawienie geometrii do atrybutow
                 scales = ['500', '1000']
