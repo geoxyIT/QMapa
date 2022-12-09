@@ -43,7 +43,7 @@ def pokaz_wersje(date_compare, sett_pierwsze, sett_modyfikowane, sett_archiwalne
         show = sett_zamkniete[0]
         wers = 'zamkniete'
         
-    if date_compare != 0:
+    if date_compare != '0':
         if wers == 'pierwsze' and start_obiekt <= date_compare:
             show = sett_wczesniejsze[0]
         elif wers == 'modyfikowane' and start_wersja <= date_compare:

@@ -43,7 +43,7 @@ def kolor_wersji(date_compare, sett_pierwsze, sett_modyfikowane, sett_archiwalne
         if sett_zamkniete[1]: color = sett_zamkniete[2]
         wers = 'zamkniete'
         
-    if date_compare != 0:
+    if date_compare != '0':
         if wers == 'pierwsze' and start_obiekt <= date_compare:
             color = sett_wczesniejsze[2]
         elif wers == 'modyfikowane' and start_wersja <= date_compare:

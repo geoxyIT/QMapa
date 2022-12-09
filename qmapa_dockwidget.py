@@ -64,8 +64,7 @@ FORM_CLASS, _ = uic.loadUiType(os.path.join(
 
 PLUGIN_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 
-#FILL_PARAMETERS = os.path.join(PLUGIN_DIRECTORY, 'fill', 'QMapa_wypelnieniaObszarow_2022-10-26.xlsm')
-FILL_PARAMETERS = os.path.join(PLUGIN_DIRECTORY, 'fill', 'QMapa_wypelnieniaObszarow_2022-11-17.xlsm')
+FILL_PARAMETERS = os.path.join(PLUGIN_DIRECTORY, 'fill', 'QMapa_wypelnieniaObszarow.xlsm')
 
 class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     closingPlugin = pyqtSignal()
@@ -111,7 +110,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Wczesniejsze',
                                                      [0, 0, 0])
 
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'DateCompare', 0)
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'DateCompare', '0')
 
         iface.mapCanvas().refreshAllLayers()
 
@@ -217,6 +216,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         if name != '':
             mod_gml_path, gpkg_path, report_path = self.paths(name)  # pobranie sciezek importu
             if mod_gml_path != '' and gpkg_path != '' and report_path != '':
+                print('start importu pliku:', name)
                 start_2 = datetime.now()
 
                 self.signal_of_import = True
@@ -308,8 +308,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                         egb_polyline_layer_id = ll.id()
 
                 for sc in scales:
-                    self.progressBar.setValue(90 + int((nr / len(scales)) * 10))
-                    print('czas ' + str(90 + int((nr / len(scales)) * 10)) + '%:', datetime.now() - start_2)
                     nr += 1
                     for lay in self.vec_layers_list:
                         if 'skarpa' in lay.name().lower():
@@ -333,8 +331,11 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                             if 'rzedna' in lay.name().lower():
                                 Main().remove_all_joins(lay)
                             Main().add_obligatory_fields(lay)
-                self.progressBar.setValue(100)
-                print('czas 100%:', datetime.now() - start_2)
+                    if nr < len(scales):
+                        self.progressBar.setValue(90 + int((nr / len(scales)) * 10))
+                        print('czas ' + str(90 + int((nr / len(scales)) * 10)) + '%:', datetime.now() - start_2)
+
+
                 self.progressBar.hide()
                 if report_path.startswith('/'):  # przypadek dla linuksa kiedy sciezka zaczyna sie od slasha
                     report_path = report_path.lstrip('/')
@@ -342,20 +343,22 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                                                '<a href="file:///' + report_path + '">' + report_path + '</a>',
                                                level=Qgis.Success, duration=0)
 
-        # nadanie wyswietlania ilosci obiektow
-        allLayers = QgsProject.instance().layerTreeRoot().findLayers()
-        QgsProject.instance().reloadAllLayers()
-        for (layer) in allLayers:
-            layer.setCustomProperty("showFeatureCount", True)
+                # nadanie wyswietlania ilosci obiektow
+                allLayers = QgsProject.instance().layerTreeRoot().findLayers()
+                QgsProject.instance().reloadAllLayers()
+                excluded_layers = ['OT_etykieta', 'OT_odnosnik', 'OT_poczatekGorySkarpy',  'OT_koniecGorySkarpy', 'OT_poliliniaKierunkowa', 'EGB_etykieta', 'EGB_odnosnik', 'EGB_poliliniaKierunkowa', 'GES_etykieta', 'GES_odnosnik']
+                for (layer) in allLayers:
+                    if layer.name() not in excluded_layers:
+                        layer.setCustomProperty("showFeatureCount", True)
 
-        self.setLegendScale()
+                self.setLegendScale()
+                self.progressBar.setValue(100)
+                print('czas 100%:', datetime.now() - start_2)
+                print('koniec importu pliku:', name)
 
         self.signal_of_import = False
 
-        '''try:
-            iface.mapCanvas().scaleChanged.disconnect()
-        except:
-            pass'''
+
 
     def on_cmbStylization_currentTextChanged(self):
         """ustaw stylizację wybraną w comboboxie"""
@@ -510,14 +513,14 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     def set_red_labels(self):
         if 'auto' in self.cmbReda.currentText().lower():
-            auto = 1
-            karto = 0
+            auto = '1'
+            karto = '0'
         elif 'karto' in self.cmbReda.currentText().lower():
-            auto = 0
-            karto = 1
+            auto = '0'
+            karto = '1'
         else:
-            auto = 0
-            karto = 0
+            auto = '0'
+            karto = '0'
         QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Auto', auto)
         QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Karto', karto)
 
@@ -683,11 +686,11 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             else:
                 self.colPierwsze.setEnabled(False)
                 set_color_Pierwsze = False
-                color_Pierwsze = 0
+                color_Pierwsze = '0'
         else:
             set_color_Pierwsze = False
             vis_Pierwsze = False
-            color_Pierwsze = 0
+            color_Pierwsze = '0'
             self.chbColorPierwsze.setEnabled(False)
             self.colPierwsze.setEnabled(False)
 
@@ -703,11 +706,11 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             else:
                 self.colModyfikowane.setEnabled(False)
                 set_color_Modyfikowane = False
-                color_Modyfikowane = 0
+                color_Modyfikowane = '0'
         else:
             set_color_Modyfikowane = False
             vis_Modyfikowane = False
-            color_Modyfikowane = 0
+            color_Modyfikowane = '0'
             self.chbColorModyfikowane.setEnabled(False)
             self.colModyfikowane.setEnabled(False)
 
@@ -723,11 +726,11 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             else:
                 self.colArchiwalne.setEnabled(False)
                 set_color_Archiwalne = False
-                color_Archiwalne = 0
+                color_Archiwalne = '0'
         else:
             set_color_Archiwalne = False
             vis_Archiwalne = False
-            color_Archiwalne = 0
+            color_Archiwalne = '0'
             self.chbColorArchiwalne.setEnabled(False)
             self.colArchiwalne.setEnabled(False)
 
@@ -743,11 +746,11 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             else:
                 self.colZamkniete.setEnabled(False)
                 set_color_Zamkniete = False
-                color_Zamkniete = 0
+                color_Zamkniete = '0'
         else:
             set_color_Zamkniete = False
             vis_Zamkniete = False
-            color_Zamkniete = 0
+            color_Zamkniete = '0'
             self.chbColorZamkniete.setEnabled(False)
             self.colZamkniete.setEnabled(False)
 
@@ -769,23 +772,23 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 else:
                     self.colWczesniejsze.setEnabled(False)
                     set_color_Wczesniejsze = False
-                    color_Wczesniejsze = 0
+                    color_Wczesniejsze = '0'
             else:
                 set_color_Wczesniejsze = False
                 vis_Wczesniejsze = False
-                color_Wczesniejsze = 0
+                color_Wczesniejsze = '0'
                 self.chbColorWczesniejsze.setEnabled(False)
                 self.colWczesniejsze.setEnabled(False)
 
         else:
             self.dteZnacznik.setEnabled(False)
-            date_to_compare = 0
+            date_to_compare = '0'
 
             # wczesniejsze cd
             self.chbShowWczesniejsze.setEnabled(False)
             set_color_Wczesniejsze = False
             vis_Wczesniejsze = False
-            color_Wczesniejsze = 0
+            color_Wczesniejsze = '0'
             self.chbColorWczesniejsze.setEnabled(False)
             self.colWczesniejsze.setEnabled(False)
 
