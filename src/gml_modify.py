@@ -34,7 +34,6 @@ class GmlModify:
 
         # sciezka do pliku gml
         self.file_path = file_path
-        self.file = open(file_path, 'r', encoding='utf-8')
         self.output_path = output_path
 
         # zmienna z root
@@ -293,6 +292,7 @@ class GmlModify:
 
 
     def run(self):
+        self.file = open(self.file_path, 'r', encoding='utf-8')
         self.extract_namespaces(file=self.file)
 
         #pref_list = ['{ewidencjaGruntowIBudynkow:1.0}', '{bazaDanychObiektowTopograficznych500:1.0}',
@@ -332,10 +332,5 @@ class GmlModify:
 
         self.check_is_correct(self.root, self.pref_name_list, self.pref_tag_dict)
         self.save_gml()
+        self.file.close()
 
-
-if __name__ == '__main__':
-    gml_mod = GmlModify(
-        file_path=r'')
-    # cProfile.run('gml_mod.run()')
-    gml_mod.run()

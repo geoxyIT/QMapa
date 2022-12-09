@@ -118,6 +118,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         self.setLegendScale()
 
+        iface.layerTreeView().layerTreeModel().setAutoCollapseLegendNodes(20)
+
 
     def closeEvent(self, event):
         self.closingPlugin.emit()
