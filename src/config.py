@@ -78,6 +78,14 @@ correct_layers = ['EGB_JednostkaEwidencyjna',
                           'EGB_Dokument',
                           'EGB_OperatTechniczny']
 
+additional_layers = ['EGB_odnosnik',
+                     'OT_odnosnik',
+                     'GES_odnosnik',
+                     'EGB_poliliniaKierunkowa',
+                     'OT_poliliniaKierunkowa',
+                     'OT_poczatekGorySkarpy',
+                     'OT_koniecGorySkarpy']
+
 pts_list = [1, 4, 2001, 2004, 3001, 3004, -2147483647, -2147483644]
 
 line_list = [2, 5, 8, 9, 11, 13, 101, 1008, 1009, 1011, 1013, 2002, 2005, 2008, 2009, 2011, 2013, 3002, 3005,

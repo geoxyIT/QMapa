@@ -10,7 +10,8 @@ from qgis.core import *
 
 from osgeo import ogr
 
-from .config import correct_layers, pts_list, line_list, polygon_list, incompatible_pref, incompatible_pref_friendly_name
+from .config import correct_layers, additional_layers, pts_list, line_list, polygon_list, incompatible_pref,\
+    incompatible_pref_friendly_name
 from .express_yourself import ExpressYourself
 from .create_report_file import report
 
@@ -346,14 +347,13 @@ class Main:
                 if layname.startswith('EGB_'):
                     base_name = 'EGiB'
                 elif layname.startswith('GES_'):
-                    base_name =  'GESUT'
+                    base_name = 'GESUT'
                 elif layname.startswith('OT_'):
                     base_name = 'BDOT500'
                 elif layname.startswith(incompatible_pref):
                     base_name = incompatible_pref_friendly_name + layname.split('_')[2]
                 else:
                     base_name = 'NIE WIADOMO CO TO'
-
                 if base_name in type_groups_dict:
                     type_groups_dict[base_name].append(layy)
                     pass
@@ -361,16 +361,23 @@ class Main:
                     type_groups_dict[base_name] = [layy]
             return type_groups_dict
 
-        type_groups_dict = sort_by_base_type(layers_with_type)
-        type_groups_dict_table = sort_by_base_type(table_layers_list)
+        type_groups_dict = sort_by_base_type(layers_with_type)  # wszystkie warstwy
+        type_groups_dict_table = sort_by_base_type(table_layers_list)  # warstwy tekstowe
 
         root = QgsProject.instance().layerTreeRoot()
         main_group = QgsLayerTreeGroup(str(main_group_name))
         root.addChildNode(main_group)
 
+        # utworzenie grup dla baz
         for group_name, group_layers_with_type in type_groups_dict.items():
             main_group.insertGroup(1, group_name)
             specified_group = main_group.findGroup(group_name)
+
+            # utworzenie grupy Pomocnicze elementy redakcyjne
+            specified_group.insertGroup(-1, 'Pomocnicze elementy redakcyjne')
+            # przejecie do grupy pomocnicznych elementow
+            additional_group = specified_group.findGroup('Pomocnicze elementy redakcyjne')
+            # przeniesienie z grupy specified do grupy pomocniczych elementow redakcyjnych
 
             # posortowanie listy warstw z typami na podstawie listy z kolejnoscia oraz jej nadmienienie
             for idx, layer in enumerate(group_layers_with_type):
@@ -381,18 +388,21 @@ class Main:
                     group_layers_with_type[idx].append(out_list_index+1)
 
             group_layers_with_type.sort(key=lambda x: x[2])  # posortowanie
-
-
             # wstawianie z geometria do grupy z zachowaniem kolejnosci
             for idx, layer in enumerate(group_layers_with_type):
                 # zmiana koncowek nazw warstw z _0 _1 _2 itp na puste
                 if layer[1].sourceName()[-1].isdigit():
                     replaced_name = layer[1].sourceName().replace(layer[1].sourceName()[-2:], '')
                     layer[1].setName(replaced_name)
-                specified_group.insertChildNode(idx, QgsLayerTreeLayer(layer[1]))
-                root.removeLayer(layer[1])
+                # jezeli warstwa nalezy do grupy elementow redakcyjnych to ją tam dodaj
+                if layer[1].sourceName() in additional_layers:
+                    additional_group.insertChildNode(idx, QgsLayerTreeLayer(layer[1]))
+                    root.removeLayer(layer[1])
+                else:
+                    specified_group.insertChildNode(idx, QgsLayerTreeLayer(layer[1]))
+                    root.removeLayer(layer[1])
 
-        #dodawanie warstw tekstowych (tabele bez geometrii)
+        # dodawanie warstw tekstowych (tabele bez geometrii)
         for table_group_name, table_group_layers_with_type in type_groups_dict_table.items():
             found_group = main_group.findGroup(table_group_name)
             if not found_group:
