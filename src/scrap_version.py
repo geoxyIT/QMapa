@@ -18,7 +18,7 @@ def get_local_ver(path):
 
 def reg_ver(text):
     """Regex dla wyszukania wersji w pliku metadata"""
-    pattern = 'version=\d+.\d.\d'
+    pattern = r'version=\d+.\d.\d'
     results = re.search(pattern, text)
     ver = results.group().lstrip('version=')
     return ver
