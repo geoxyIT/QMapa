@@ -142,7 +142,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def on_pbLogo_clicked(self):
         """Przycisk wywolania strony po nacisnieciu Logo GEOXY"""
         webbrowser.open('http://www.geoxy.pl/')
-        print(QgsProject.instance().clear())
 
         #todo : usunac to ponizej: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         self.saveStylization(self.cmbStylization.currentText())
