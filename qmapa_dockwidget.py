@@ -118,7 +118,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         self.setLegendScale()
 
-        iface.layerTreeView().layerTreeModel().setAutoCollapseLegendNodes(20)
+        #iface.layerTreeView().layerTreeModel().setAutoCollapseLegendNodes(1)
 
 
     def closeEvent(self, event):
@@ -143,6 +143,9 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         """Przycisk wywolania strony po nacisnieciu Logo GEOXY"""
         webbrowser.open('http://www.geoxy.pl/')
         print(QgsProject.instance().clear())
+
+        #todo : usunac to ponizej: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        self.saveStylization(self.cmbStylization.currentText())
 
     def paths(self, gml_path):
         """utworzenie sciezek plikow importu i raportu, sprawdzenie czy juz istnieja i czy jest do nich dostep, zapytanie czy nadpisac"""
@@ -216,6 +219,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                                                 filter='gml (*.gml)')
 
         if name != '':
+            iface.layerTreeView().layerTreeModel().setAutoCollapseLegendNodes(1)
             mod_gml_path, gpkg_path, report_path = self.paths(name)  # pobranie sciezek importu
             if mod_gml_path != '' and gpkg_path != '' and report_path != '':
                 print('start importu pliku:', name)
@@ -359,6 +363,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 print('koniec importu pliku:', name)
 
         self.signal_of_import = False
+        iface.layerTreeView().layerTreeModel().setAutoCollapseLegendNodes(-1)
 
 
 
@@ -961,4 +966,46 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         mupp = (2.54*scale)/(100*dpi)
 
         iface.layerTreeView().layerTreeModel().setLegendMapViewData(mupp, dpi, scale)
+
+
+
+
+
+    def saveStylization(self, sty_name):
+        """Zapisywanie stylizacji o podanej nazwie ,warstw w plikach qml w folderze wtyczki stylization"""
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        sty_path = dir_path + r'\stylization'
+        # pobranie nazw istniejących stylizacji
+        stylizations = [f for f in os.listdir(sty_path) if os.path.isdir(os.path.join(sty_path, f))]
+
+        stylization_dir = sty_path + r'\\' + str(sty_name)
+
+        # Tworzenie folderu do zapisu stylizacji o wybranej nazwie
+        if sty_name in stylizations:
+            # os.rmdir(stylization_dir)
+            # os.mkdir(stylization_dir)
+            pass
+        else:
+            os.mkdir(stylization_dir)
+            os.mkdir(stylization_dir + r'\point')
+            os.mkdir(stylization_dir + r'\line')
+            os.mkdir(stylization_dir + r'\polygon')
+
+        layers = self.getLayers()
+        for layer in layers:
+            """zapis stylizacji wybranych warstw w folderze stylizacji do plików qml podzielonych na foldery
+            w zaleznosci od geometrii warstwy"""
+            layerType = layer.type()
+            if layerType == QgsMapLayerType.VectorLayer:
+                if layer.geometryType() == 0:
+                    geom_type = (r'\point')
+                elif layer.geometryType() == 1:
+                    geom_type = (r'\line')
+                elif layer.geometryType() == 2:
+                    geom_type = (r'\polygon')
+                else:
+                    geom_type = ''
+                name = layer.name()
+                pathqml = stylization_dir + geom_type + r'\\' + str(name) + '.qml'
+                layer.saveNamedStyle(pathqml)
 
