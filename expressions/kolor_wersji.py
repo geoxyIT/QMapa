@@ -9,6 +9,11 @@ def kolor_wersji(date_compare, sett_pierwsze, sett_modyfikowane, sett_archiwalne
     #start_obiekt, start_wersja, koniec_obiekt, koniec_wersja,
     
     #obi = feature.attribute('koniecWersjaObiekt')
+    sett_pierwsze = eval(sett_pierwsze)
+    sett_modyfikowane = eval(sett_modyfikowane)
+    sett_archiwalne = eval(sett_archiwalne)
+    sett_zamkniete = eval(sett_zamkniete)
+    sett_wczesniejsze = eval(sett_wczesniejsze)
 
     color = False
 

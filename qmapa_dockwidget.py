@@ -98,8 +98,10 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.rel_times = 0
 
         self.set_red_labels()
+        self.disp_settings()
 
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Pierwsze',
+
+        '''QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Pierwsze',
                                                      [0, 0, 0])
         QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Modyfikowane',
                                                      [0, 0, 0])
@@ -110,7 +112,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Wczesniejsze',
                                                      [0, 0, 0])
 
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'DateCompare', '0')
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'DateCompare', '0')'''
 
         iface.mapCanvas().refreshAllLayers()
 
@@ -283,6 +285,10 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
                 # self.set_labels(self.vec_layers_list)
                 '''self.wyswWg()  # sprawdzenie i nadanie wyswietlania wersji, statusu'''
+                self.set_red_labels()
+                self.disp_settings()
+                self.back_wers = False
+                self.back_fill = False
                 if self.gbShowWers.isChecked():
                     self.disp_wers()  # sprawdzenie i nadanie wyswietlania wersji
                 if self.gbFill.isChecked():
@@ -354,12 +360,14 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                         layer.setCustomProperty("showFeatureCount", True)
 
                 self.setLegendScale()
+                iface.layerTreeView().layerTreeModel().setAutoCollapseLegendNodes(-1)
+
                 self.progressBar.setValue(100)
                 print('czas 100%:', datetime.now() - start_2)
                 print('koniec importu pliku:', name)
 
         self.signal_of_import = False
-        iface.layerTreeView().layerTreeModel().setAutoCollapseLegendNodes(-1)
+
 
 
 
@@ -628,6 +636,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     def back_to_qml_symb(self):
         """Wczytanie stylizacji QML"""
+        print("back")
         current_style = self.cmbStylization.currentText()
         Main().setStyling(self.list_or_canvas(self.signal_of_import), current_style)
         expression = ExpressYourself('', '')
@@ -646,8 +655,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         if on:
             self.disp_settings()
-            expr_show = " with_variable( 'show', pokaz_wersje(@DateCompare, @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(" + '"startObiekt"' + ", ''),concat(" + '"startWersjaObiekt"' + ", ''),concat(" + '"koniecObiekt"' + ", ''),concat(" + '"koniecWersjaObiekt"' + ", '')),  if( var('show'), 1111, var('show')))"
-            expr_color = " with_variable( 'color', kolor_wersji(@DateCompare, @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(" + '"startObiekt"' + ", ''),concat(" + '"startWersjaObiekt"' + ", ''),concat(" + '"koniecObiekt"' + ", ''),concat(" + '"koniecWersjaObiekt"' + ", '')),  if( var('color'), var('color'), 1111))"
+            expr_show = " with_variable( 'show', pokaz_wersje(if (@DateCompare is '0', @DateCompare, to_datetime(@DateCompare)), @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(" + '"startObiekt"' + ", ''),concat(" + '"startWersjaObiekt"' + ", ''),concat(" + '"koniecObiekt"' + ", ''),concat(" + '"koniecWersjaObiekt"' + ", '')),  if( var('show'), 1111, var('show')))"
+            expr_color = " with_variable( 'color', kolor_wersji(if (@DateCompare is '0', @DateCompare, to_datetime(@DateCompare)), @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(" + '"startObiekt"' + ", ''),concat(" + '"startWersjaObiekt"' + ", ''),concat(" + '"koniecObiekt"' + ", ''),concat(" + '"koniecWersjaObiekt"' + ", '')),  if( var('color'), var('color'), 1111))"
 
             expression = ExpressYourself(expr_color, expr_show)
             expression.set_symbol_expression(self.list_or_canvas(self.signal_of_import))
@@ -796,15 +805,15 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             self.colWczesniejsze.setEnabled(False)
 
         QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Pierwsze',
-                                                     [vis_Pierwsze, set_color_Pierwsze, color_Pierwsze])
+                                                     str([vis_Pierwsze, set_color_Pierwsze, color_Pierwsze]))
         QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Modyfikowane',
-                                                     [vis_Modyfikowane, set_color_Modyfikowane, color_Modyfikowane])
+                                                     str([vis_Modyfikowane, set_color_Modyfikowane, color_Modyfikowane]))
         QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Archiwalne',
-                                                     [vis_Archiwalne, set_color_Archiwalne, color_Archiwalne])
+                                                     str([vis_Archiwalne, set_color_Archiwalne, color_Archiwalne]))
         QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Zamkniete',
-                                                     [vis_Zamkniete, set_color_Zamkniete, color_Zamkniete])
+                                                     str([vis_Zamkniete, set_color_Zamkniete, color_Zamkniete]))
         QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Wczesniejsze',
-                                                     [vis_Wczesniejsze, set_color_Wczesniejsze, color_Wczesniejsze])
+                                                     str([vis_Wczesniejsze, set_color_Wczesniejsze, color_Wczesniejsze]))
 
         QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'DateCompare', date_to_compare)
 
