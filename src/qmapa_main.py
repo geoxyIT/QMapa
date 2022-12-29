@@ -26,13 +26,13 @@ class Main:
         for join in joins_info:
             layer.removeJoin(join.joinLayerId())
 
-    def add_obligatory_fields(self, layer):
-        obligatory_fields = ['startObiekt', 'startWersjaObiekt', 'koniecWersjaObiekt', 'koniecObiekt']
+    def add_obligatory_fields(self, layer, fields_list):
+        #obligatory_fields = ['startObiekt', 'startWersjaObiekt', 'koniecWersjaObiekt', 'koniecObiekt']
 
-        for field_name in obligatory_fields:
+        for field_name in fields_list:
             field_index = layer.fields().indexFromName(field_name)
             if field_index == -1:
-                field = QgsField(field_name, QVariant.DateTime)
+                field = QgsField(field_name, QVariant.String)
                 layer.startEditing()
                 layer.addAttribute(field)
                 #layer.updateFields()

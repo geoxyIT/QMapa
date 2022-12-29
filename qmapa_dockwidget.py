@@ -100,27 +100,12 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.set_red_labels()
         self.disp_settings()
 
-
-        '''QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Pierwsze',
-                                                     [0, 0, 0])
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Modyfikowane',
-                                                     [0, 0, 0])
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Archiwalne',
-                                                     [0, 0, 0])
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Zamkniete',
-                                                     [0, 0, 0])
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Wczesniejsze',
-                                                     [0, 0, 0])
-
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'DateCompare', '0')'''
-
         iface.mapCanvas().refreshAllLayers()
 
         iface.mapCanvas().scaleChanged.connect(self.setLegendScale)
 
         self.setLegendScale()
 
-        #iface.layerTreeView().layerTreeModel().setAutoCollapseLegendNodes(1)
 
 
     def closeEvent(self, event):
@@ -338,7 +323,35 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                         if 'etykieta' not in lay.name().lower() and 'prezentacja' not in lay.name().lower() and sc == '1000':
                             if 'rzedna' in lay.name().lower():
                                 Main().remove_all_joins(lay)
-                            Main().add_obligatory_fields(lay)
+                            Main().add_obligatory_fields(lay, ['startObiekt', 'startWersjaObiekt', 'koniecWersjaObiekt', 'koniecObiekt'])
+                        #todo: usunac:
+                        '''if 'ges_etykieta' in lay.name().lower() and sc == '1000':
+
+                            fields_list_ges = ['GES_PrzewodWodociagowy_1_zrodlo','GES_UrzadzeniaSiecWodociagowa_0_zrodlo','GES_UrzadzeniaSiecWodociagowa_1_zrodlo','GES_UrzadzeniaSiecWodociagowa_2_zrodlo',
+                                               'GES_PrzewodKanalizacyjny_1_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo',
+                                               'GES_PrzewodElektroenergetyczny_1_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_1_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo',
+                                               'GES_PrzewodGazowy_1_zrodlo','GES_UrzadzeniaSiecGazowa_0_zrodlo','GES_UrzadzeniaSiecGazowa_1_zrodlo','GES_UrzadzeniaSiecGazowa_2_zrodlo',
+                                               'GES_PrzewodCieplowniczy_1_zrodlo','GES_UrzadzeniaSiecCieplownicza_0_zrodlo','GES_UrzadzeniaSiecCieplownicza_1_zrodlo','GES_UrzadzeniaSiecCieplownicza_2_zrodlo',
+                                               'GES_PrzewodTelekomunikacyjny_1_zrodlo','GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo','GES_UrzadzeniaSiecTelekomunikacyjna_1_zrodlo','GES_UrzadzeniaSiecTelekomunikacyjna_2_zrodlo',
+                                               'GES_PrzewodSpecjalny_1_zrodlo','GES_UrzadzeniaTechniczneSieciSpecjalnej_0_zrodlo','GES_UrzadzeniaTechniczneSieciSpecjalnej_1_zrodlo','GES_UrzadzeniaTechniczneSieciSpecjalnej_2_zrodlo',
+                                               'GES_PrzewodNiezidentyfikowany_1_zrodlo','GES_UrzadzenieNiezidentyfikowane_0_zrodlo','GES_UrzadzenieNiezidentyfikowane_1_zrodlo','GES_UrzadzenieNiezidentyfikowane_2_zrodlo',
+                                               'GES_UrzadzeniaTowarzyszczaceLiniowe_1_zrodlo','GES_UrzadzeniaTowarzyszaceLiniowe_1_zrodlo','GES_InneUrzadzeniaTowarzyszace_0_zrodlo','GES_InneUrzadzeniaTowarzyszace_1_zrodlo','GES_InneUrzadzeniaTowarzyszace_2_zrodlo','GES_Rzedna_0_zrodlo']
+
+                            Main().add_obligatory_fields(lay, fields_list_ges)
+
+                        if 'ot_etykieta' in lay.name().lower() and sc == '1000':
+
+                            fields_list_ot = ['OT_Rzedna_0_zrodlo_zrodlo','OT_BudynekNiewykazanyWEGIB_2_zrodlo','OT_BlokBudynku_2_zrodlo','OT_ObiektTrwaleZwiazanyZBudynkami_2_zrodlo',
+                                              'OT_Budowle_0_zrodlo','OT_Budowle_1_zrodlo','OT_Budowle_2_zrodlo',
+                                              'OT_Komunikacja_1_zrodlo','OT_Komunikacja_2_zrodlo','OT_SportIRekreacja_2_zrodlo',
+                                              'OT_ZagospodarowanieTerenu_0_zrodlo','OT_ZagospodarowanieTerenu_1_zrodlo','OT_ZagospodarowanieTerenu_2_zrodlo',
+                                              'OT_Wody_1_zrodlo','OT_Wody_2_zrodlo']
+                            Main().add_obligatory_fields(lay, fields_list_ot)'''
+
+                        if 'egb_etykieta' in lay.name().lower() and sc == '1000':
+
+                            fields_list_egb = []
+                            Main().add_obligatory_fields(lay, fields_list_egb)
                     if nr < len(scales):
                         self.progressBar.setValue(90 + int((nr / len(scales)) * 10))
                         print('czas ' + str(90 + int((nr / len(scales)) * 10)) + '%:', datetime.now() - start_2)
@@ -636,7 +649,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     def back_to_qml_symb(self):
         """Wczytanie stylizacji QML"""
-        print("back")
         current_style = self.cmbStylization.currentText()
         Main().setStyling(self.list_or_canvas(self.signal_of_import), current_style)
         expression = ExpressYourself('', '')

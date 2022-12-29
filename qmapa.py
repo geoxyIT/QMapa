@@ -30,6 +30,7 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QToolButton
 from qgis.core import QgsExpression
 from qgis.utils import iface, qgsfunction
+from .src.fill_with_color import open_fill_xlsm, open_fill_xlsm_loc
 
 # Import expressions
 from .expressions import connect_points, get_half_line, kreskowanie, skarpy, recalculate_justification, pokaz_wersje, kolor_wersji
@@ -42,6 +43,12 @@ from .qmapa_dockwidget import QMapaDockWidget
 import os.path
 from .src.help import Help
 
+from .src.fill_with_color import open_fill_xlsm, open_fill_xlsm_loc
+
+PLUGIN_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
+
+FILL_PARAMETERS = os.path.join(PLUGIN_DIRECTORY, 'fill', 'QMapa_wypelnieniaObszarow.xlsm')
+FILL_PARAMETERS_DIR = os.path.join(PLUGIN_DIRECTORY, 'fill')
 
 class QMapa:
     """QGIS Plugin Implementation."""
@@ -230,9 +237,10 @@ class QMapa:
         """Stworzenie rozwijanego toolbuttona"""
         icon_path = ':/plugins/qmapa/icons/icon.png'
         icon_help_path = ':/plugins/qmapa/icons/help.png'
+        icon_fill_sett = ':/plugins/qmapa/icons/fill_settings.png'
 
         # stworzenie toolbuttona
-        self.toolButton = QToolButton()
+        tool_button = QToolButton()
         # nadanie akcji
         action = QAction(icon=QIcon(icon_path), text=u'QMapa', parent=self.iface.mainWindow())
 
@@ -240,34 +248,39 @@ class QMapa:
         self.actions.append(action)
 
         #ustawienie akcji
-        self.toolButton.setDefaultAction(action)
+        tool_button.setDefaultAction(action)
         
         # dodanie pluginu do menu glownego
         self.iface.addPluginToMenu(self.menu, action)
         
         # dodanie reakcji po kliknieciu
         action.triggered.connect(self.run)
-        self.toolButton.clicked.connect(self.run)
+        tool_button.clicked.connect(self.run)
         
-        # dodanie kolejnych akcji
-        self.toolbarAction(icon_path=icon_help_path, text=self.tr(u'Pomoc'), callback=self.help)
+        # dodanie kolejnych akcji do tool button
+        tool_button = self.toolbarAction(tool_button=tool_button, icon_path=icon_help_path,
+                                             text=self.tr(u'Pomoc'), callback=self.help)
+        tool_button = self.toolbarAction(tool_button=tool_button, icon_path=icon_help_path,
+                                             text=self.tr(u'Parametry wypełniania obszarów '), callback=lambda: open_fill_xlsm(path=FILL_PARAMETERS))
+        tool_button = self.toolbarAction(tool_button=tool_button, icon_path=icon_path,
+                                         text=self.tr(u'Otwórz lokalizację pliku xlsm'), callback=lambda: open_fill_xlsm_loc(path=FILL_PARAMETERS_DIR))
 
-    def toolbarAction(self, icon_path, text, callback):
+        # dodanie toolbutton do toolbara
+        self.toolbar.addWidget(tool_button)
+    def toolbarAction(self, tool_button, icon_path, text, callback):
         """Utworzenie akcji dla toolbara"""
         # toolbutton jest rozwijalny
-        self.toolButton.setPopupMode(QToolButton.MenuButtonPopup)
+        tool_button.setPopupMode(QToolButton.MenuButtonPopup)
         # utworzenie akcji
         action = QAction(icon=QIcon(icon_path),
                          text=text, parent=self.iface.mainWindow())
         action.triggered.connect(callback)
         self.actions.append(action)
         # dodanie akcji do toolbuttona
-        self.toolButton.addAction(action)
+        tool_button.addAction(action)
         # dodanie akcji do menu glownego
         self.iface.addPluginToMenu(self.menu, action)
-        # dodanie toolbutton do toolbara
-        self.toolbar.addWidget(self.toolButton)
-        return action
+        return tool_button
 
     def onClosePlugin(self):
         """Cleanup necessary items here when plugin dockwidget is closed"""
