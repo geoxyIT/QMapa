@@ -237,7 +237,8 @@ class QMapa:
         """Stworzenie rozwijanego toolbuttona"""
         icon_path = ':/plugins/qmapa/icons/icon.png'
         icon_help_path = ':/plugins/qmapa/icons/help.png'
-        icon_fill_sett = ':/plugins/qmapa/icons/fill_settings.png'
+        icon_fill_sett_path = ':/plugins/qmapa/icons/fill_settings.png'
+        icon_fill_directory_path = ':/plugins/qmapa/icons/fill_directory.png'
 
         # stworzenie toolbuttona
         tool_button = QToolButton()
@@ -258,12 +259,13 @@ class QMapa:
         tool_button.clicked.connect(self.run)
         
         # dodanie kolejnych akcji do tool button
-        tool_button = self.toolbarAction(tool_button=tool_button, icon_path=icon_help_path,
-                                             text=self.tr(u'Pomoc'), callback=self.help)
-        tool_button = self.toolbarAction(tool_button=tool_button, icon_path=icon_help_path,
+
+        tool_button = self.toolbarAction(tool_button=tool_button, icon_path=icon_fill_sett_path,
                                              text=self.tr(u'Parametry wypełniania obszarów '), callback=lambda: open_fill_xlsm(path=FILL_PARAMETERS))
-        tool_button = self.toolbarAction(tool_button=tool_button, icon_path=icon_path,
-                                         text=self.tr(u'Otwórz lokalizację pliku xlsm'), callback=lambda: open_fill_xlsm_loc(path=FILL_PARAMETERS_DIR))
+        tool_button = self.toolbarAction(tool_button=tool_button, icon_path=icon_fill_directory_path,
+                                         text=self.tr(u'Otwórz lokalizację pliku xlsm z parametrami wypełnień'), callback=lambda: open_fill_xlsm_loc(path=FILL_PARAMETERS_DIR))
+        tool_button = self.toolbarAction(tool_button=tool_button, icon_path=icon_help_path,
+                                         text=self.tr(u'Pomoc'), callback=self.help)
 
         # dodanie toolbutton do toolbara
         self.toolbar.addWidget(tool_button)

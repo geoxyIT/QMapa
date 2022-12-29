@@ -3,5 +3,7 @@
         <file>icon.png</file>
         <file>help.png</file>
         <file>logo_geoxy.png</file>
+		<file>fill_settings.png</file>
+		<file>fill_directory.png</file>
     </qresource>
 </RCC>

@@ -303,22 +303,22 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 for sc in scales:
                     nr += 1
                     for lay in self.vec_layers_list:
-                        if 'skarpa' in lay.name().lower():
-                            Main().calculate_hatching(lay, 'skarpa', sc, [start_point_layer_id, end_point_layer_id])
-                        elif 'ot_obiekttrwalezwiazany' in lay.name().lower():
+                        if 'ot_obiekttrwalezwiazany' in lay.name().lower():
                             Main().calculate_hatching(lay, 'schody', sc, ot_polyline_layer_id)
                         elif 'egb_obiekttrwalezwiazany' in lay.name().lower():
                             Main().calculate_hatching(lay, 'schody', sc, egb_polyline_layer_id)
                         elif 'budowle' in lay.name().lower():
                             Main().calculate_hatching(lay, 'sciana', sc, ot_polyline_layer_id)
-                        elif 'wody' in lay.name().lower():
-                            Main().calculate_hatching(lay, 'wody', sc, [start_point_layer_id, end_point_layer_id])
                         elif 'komunikacja' in lay.name().lower():
                             Main().calculate_hatching(lay, 'schody', sc, ot_polyline_layer_id)
 
                         if sc == '500':
-                            if 'ges_rzedna' in lay.name().lower() and sc == '500':
+                            if 'ges_rzedna' in lay.name().lower():
                                 Main().calculate_colors(lay, 'color')
+                            elif 'wody' in lay.name().lower():
+                                Main().calculate_hatching(lay, 'wody', sc, [start_point_layer_id, end_point_layer_id])
+                            elif 'skarpa' in lay.name().lower():
+                                Main().calculate_hatching(lay, 'skarpa', sc, [start_point_layer_id, end_point_layer_id])
 
                         if 'etykieta' not in lay.name().lower() and 'prezentacja' not in lay.name().lower() and sc == '1000':
                             if 'rzedna' in lay.name().lower():
@@ -831,7 +831,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         iface.mapCanvas().refreshAllLayers()
 
-    def mousePressEvent(self, QMouseEvent):
+    '''def mousePressEvent(self, QMouseEvent):
         """Przejecie prawego przycisku pod wyswietlanie opcji fillowania"""
         if QMouseEvent.button() == Qt.RightButton:
             # pobranie aktualnej pozycji kursora w czasie klikniecia
@@ -885,7 +885,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             # przesuniecie okna do pozycji kursora
 
             self.right_click_dlg.move(cur_pos)
-            self.right_click_dlg.show()
+            self.right_click_dlg.show()'''
 
     def close_dialog(self):
         """Zamykanie okna dialogu po wywolaniu funkcji"""
