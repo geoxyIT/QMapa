@@ -422,7 +422,40 @@ def open_fill_xlsm_loc(path: str):
     # webbrowser.open(path)
     Main().os_open(path)
 
-'''def set_min(layers):
+def set_min(layers):
     for layer in layers:
-        for child in layer.renderer().rootRule().children():
+        renderer = layer.renderer()
+        if renderer != None:
+            if renderer.type() == 'singleSymbol':
+                symbols = layer.renderer().symbol().symbolLayers()
+                for symb in symbols:
+                    sc = symb.mapUnitScale()
+                    sc.minScale = 3000
+                    sc.minSizeMMEnabled = 1
+                    sc.minSizeMM = 0.03
+                    symb.setMapUnitScale(sc)
+
+                    print(symb)
+                    print(symb.mapUnitScale().minSizeMM)
+            elif renderer.type() == 'RuleRenderer':
+                for child in layer.renderer().rootRule().children():
+                    for symbol_list in child.symbols():
+                        symbols = symbol_list.symbolLayers()
+
+                        for symb in symbols:
+                            sc = symb.mapUnitScale()
+                            sc.minScale = 3000
+                            sc.minSizeMMEnabled = 1
+                            sc.minSizeMM = 0.03
+                            symb.setMapUnitScale(sc)
+
+                            print(symb)
+                            print(symb.mapUnitScale().minSizeMM)
+        # odswiezenie layer tree
+        iface.layerTreeView().refreshLayerSymbology(layer.id())
+
+        # odswiezenie wszystkich warstw canvy
+    iface.mapCanvas().refreshAllLayers()
+
+    '''for child in layer.renderer().rootRule().children():
             a=1'''

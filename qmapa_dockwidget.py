@@ -52,7 +52,7 @@ from .src.config import correct_layers
 from .src.scrap_version import *
 from .src.config import correct_layers
 from .src.express_yourself import ExpressYourself
-from .src.fill_with_color import fill, open_fill_xlsm, open_fill_xlsm_loc
+from .src.fill_with_color import fill, open_fill_xlsm, open_fill_xlsm_loc, set_min
 from openpyxl import Workbook
 from .src.create_report_file import report
 
@@ -131,7 +131,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         """Przycisk wywolania strony po nacisnieciu Logo GEOXY"""
         webbrowser.open('http://www.geoxy.pl/')
 
-        canvas = iface.mapCanvas()
+        set_min(self.getLayers())
+
 
     def paths(self, gml_path):
         """utworzenie sciezek plikow importu i raportu, sprawdzenie czy juz istnieja i czy jest do nich dostep, zapytanie czy nadpisac"""
