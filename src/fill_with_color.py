@@ -430,7 +430,7 @@ def set_min(layers):
                 symbols = layer.renderer().symbol().symbolLayers()
                 for symb in symbols:
                     sc = symb.mapUnitScale()
-                    sc.minScale = 3000
+                    sc.minScale = 60000
                     sc.minSizeMMEnabled = 1
                     sc.minSizeMM = 0.03
                     symb.setMapUnitScale(sc)
@@ -444,7 +444,7 @@ def set_min(layers):
 
                         for symb in symbols:
                             sc = symb.mapUnitScale()
-                            sc.minScale = 3000
+                            sc.minScale = 60000
                             sc.minSizeMMEnabled = 1
                             sc.minSizeMM = 0.03
                             symb.setMapUnitScale(sc)
