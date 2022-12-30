@@ -133,6 +133,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         set_min(self.getLayers())
 
+        self.saveStylization(self.cmbStylization.currentText())
+
 
     def paths(self, gml_path):
         """utworzenie sciezek plikow importu i raportu, sprawdzenie czy juz istnieja i czy jest do nich dostep, zapytanie czy nadpisac"""
@@ -968,7 +970,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
 
     #todo: usunac !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    '''def saveStylization(self, sty_name):
+    def saveStylization(self, sty_name):
         """Zapisywanie stylizacji o podanej nazwie ,warstw w plikach qml w folderze wtyczki stylization"""
         dir_path = os.path.dirname(os.path.realpath(__file__))
         sty_path = dir_path + r'\stylization'
@@ -1004,5 +1006,5 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                     geom_type = ''
                 name = layer.name()
                 pathqml = stylization_dir + geom_type + r'\\' + str(name) + '.qml'
-                layer.saveNamedStyle(pathqml)'''
+                layer.saveNamedStyle(pathqml)
 
