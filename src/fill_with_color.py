@@ -421,3 +421,8 @@ def open_fill_xlsm_loc(path: str):
     """Otwarcie lokalizacji w której znajduje się plik xlsx"""
     # webbrowser.open(path)
     Main().os_open(path)
+
+'''def set_min(layers):
+    for layer in layers:
+        for child in layer.renderer().rootRule().children():
+            a=1'''

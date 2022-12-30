@@ -1,0 +1,1 @@
+pyrcc5 icons\resources.qrc -o src\resources.py

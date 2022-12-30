@@ -38,6 +38,7 @@ from qgis.PyQt.QtCore import pyqtSignal, pyqtSlot, QVariant, QDateTime
 from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox
 from qgis.utils import iface
 from qgis.core import *
+from qgis.gui import *
 
 from qgis.gui import QgsLayerTreeView
 
@@ -129,6 +130,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def on_pbLogo_clicked(self):
         """Przycisk wywolania strony po nacisnieciu Logo GEOXY"""
         webbrowser.open('http://www.geoxy.pl/')
+
+        canvas = iface.mapCanvas()
 
     def paths(self, gml_path):
         """utworzenie sciezek plikow importu i raportu, sprawdzenie czy juz istnieja i czy jest do nich dostep, zapytanie czy nadpisac"""
@@ -324,29 +327,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                             if 'rzedna' in lay.name().lower():
                                 Main().remove_all_joins(lay)
                             Main().add_obligatory_fields(lay, ['startObiekt', 'startWersjaObiekt', 'koniecWersjaObiekt', 'koniecObiekt'])
-                        #todo: usunac:
-                        '''if 'ges_etykieta' in lay.name().lower() and sc == '1000':
-
-                            fields_list_ges = ['GES_PrzewodWodociagowy_1_zrodlo','GES_UrzadzeniaSiecWodociagowa_0_zrodlo','GES_UrzadzeniaSiecWodociagowa_1_zrodlo','GES_UrzadzeniaSiecWodociagowa_2_zrodlo',
-                                               'GES_PrzewodKanalizacyjny_1_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo',
-                                               'GES_PrzewodElektroenergetyczny_1_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_1_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo',
-                                               'GES_PrzewodGazowy_1_zrodlo','GES_UrzadzeniaSiecGazowa_0_zrodlo','GES_UrzadzeniaSiecGazowa_1_zrodlo','GES_UrzadzeniaSiecGazowa_2_zrodlo',
-                                               'GES_PrzewodCieplowniczy_1_zrodlo','GES_UrzadzeniaSiecCieplownicza_0_zrodlo','GES_UrzadzeniaSiecCieplownicza_1_zrodlo','GES_UrzadzeniaSiecCieplownicza_2_zrodlo',
-                                               'GES_PrzewodTelekomunikacyjny_1_zrodlo','GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo','GES_UrzadzeniaSiecTelekomunikacyjna_1_zrodlo','GES_UrzadzeniaSiecTelekomunikacyjna_2_zrodlo',
-                                               'GES_PrzewodSpecjalny_1_zrodlo','GES_UrzadzeniaTechniczneSieciSpecjalnej_0_zrodlo','GES_UrzadzeniaTechniczneSieciSpecjalnej_1_zrodlo','GES_UrzadzeniaTechniczneSieciSpecjalnej_2_zrodlo',
-                                               'GES_PrzewodNiezidentyfikowany_1_zrodlo','GES_UrzadzenieNiezidentyfikowane_0_zrodlo','GES_UrzadzenieNiezidentyfikowane_1_zrodlo','GES_UrzadzenieNiezidentyfikowane_2_zrodlo',
-                                               'GES_UrzadzeniaTowarzyszczaceLiniowe_1_zrodlo','GES_UrzadzeniaTowarzyszaceLiniowe_1_zrodlo','GES_InneUrzadzeniaTowarzyszace_0_zrodlo','GES_InneUrzadzeniaTowarzyszace_1_zrodlo','GES_InneUrzadzeniaTowarzyszace_2_zrodlo','GES_Rzedna_0_zrodlo']
-
-                            Main().add_obligatory_fields(lay, fields_list_ges)
-
-                        if 'ot_etykieta' in lay.name().lower() and sc == '1000':
-
-                            fields_list_ot = ['OT_Rzedna_0_zrodlo_zrodlo','OT_BudynekNiewykazanyWEGIB_2_zrodlo','OT_BlokBudynku_2_zrodlo','OT_ObiektTrwaleZwiazanyZBudynkami_2_zrodlo',
-                                              'OT_Budowle_0_zrodlo','OT_Budowle_1_zrodlo','OT_Budowle_2_zrodlo',
-                                              'OT_Komunikacja_1_zrodlo','OT_Komunikacja_2_zrodlo','OT_SportIRekreacja_2_zrodlo',
-                                              'OT_ZagospodarowanieTerenu_0_zrodlo','OT_ZagospodarowanieTerenu_1_zrodlo','OT_ZagospodarowanieTerenu_2_zrodlo',
-                                              'OT_Wody_1_zrodlo','OT_Wody_2_zrodlo']
-                            Main().add_obligatory_fields(lay, fields_list_ot)'''
 
                         if 'egb_etykieta' in lay.name().lower() and sc == '1000':
 
@@ -831,6 +811,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         iface.mapCanvas().refreshAllLayers()
 
+    #todo: usunac !!!
     '''def mousePressEvent(self, QMouseEvent):
         """Przejecie prawego przycisku pod wyswietlanie opcji fillowania"""
         if QMouseEvent.button() == Qt.RightButton:
