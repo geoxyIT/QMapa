@@ -5,5 +5,6 @@
         <file>logo_geoxy.png</file>
 		<file>fill_settings.png</file>
 		<file>fill_directory.png</file>
+		<file>donate.png</file>
     </qresource>
 </RCC>

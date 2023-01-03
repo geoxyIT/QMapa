@@ -52,7 +52,7 @@ from .src.config import correct_layers
 from .src.scrap_version import *
 from .src.config import correct_layers
 from .src.express_yourself import ExpressYourself
-from .src.fill_with_color import fill, open_fill_xlsm, open_fill_xlsm_loc, set_min
+from .src.fill_with_color import fill, open_fill_xlsm, open_fill_xlsm_loc #, set_min
 from openpyxl import Workbook
 from .src.create_report_file import report
 
@@ -131,9 +131,14 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         """Przycisk wywolania strony po nacisnieciu Logo GEOXY"""
         webbrowser.open('http://www.geoxy.pl/')
 
-        set_min(self.getLayers())
+        '''set_min(self.getLayers(), self.cmbStylization.currentText())
 
-        self.saveStylization(self.cmbStylization.currentText())
+        self.saveStylization(self.cmbStylization.currentText())'''
+
+    @pyqtSlot()
+    def on_pbDonate_clicked(self):
+        """Przycisk wywolania strony po nacisnieciu Logo GEOXY"""
+        webbrowser.open('https://buycoffee.to/qmapa/')
 
 
     def paths(self, gml_path):
@@ -331,9 +336,32 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                                 Main().remove_all_joins(lay)
                             Main().add_obligatory_fields(lay, ['startObiekt', 'startWersjaObiekt', 'koniecWersjaObiekt', 'koniecObiekt'])
 
+                        # tutaj dowawane sa pola ktore moga nie wystapic w pliku gml a sa uzywane w etykietach -
+                        # dzieki temu szybciej sie rendreruja
+                        if 'ges_etykieta' in lay.name().lower() and sc == '1000':
+                            fields_list_ges = ['GES_PrzewodWodociagowy_1_zrodlo','GES_UrzadzeniaSiecWodociagowa_0_zrodlo','GES_UrzadzeniaSiecWodociagowa_1_zrodlo','GES_UrzadzeniaSiecWodociagowa_2_zrodlo',
+                                               'GES_PrzewodKanalizacyjny_1_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo',
+                                               'GES_PrzewodElektroenergetyczny_1_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_1_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo',
+                                               'GES_PrzewodGazowy_1_zrodlo','GES_UrzadzeniaSiecGazowa_0_zrodlo','GES_UrzadzeniaSiecGazowa_1_zrodlo','GES_UrzadzeniaSiecGazowa_2_zrodlo',
+                                               'GES_PrzewodCieplowniczy_1_zrodlo','GES_UrzadzeniaSiecCieplownicza_0_zrodlo','GES_UrzadzeniaSiecCieplownicza_1_zrodlo','GES_UrzadzeniaSiecCieplownicza_2_zrodlo',
+                                               'GES_PrzewodTelekomunikacyjny_1_zrodlo','GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo','GES_UrzadzeniaSiecTelekomunikacyjna_1_zrodlo','GES_UrzadzeniaSiecTelekomunikacyjna_2_zrodlo',
+                                               'GES_PrzewodSpecjalny_1_zrodlo','GES_UrzadzeniaTechniczneSieciSpecjalnej_0_zrodlo','GES_UrzadzeniaTechniczneSieciSpecjalnej_1_zrodlo','GES_UrzadzeniaTechniczneSieciSpecjalnej_2_zrodlo',
+                                               'GES_PrzewodNiezidentyfikowany_1_zrodlo','GES_UrzadzenieNiezidentyfikowane_0_zrodlo','GES_UrzadzenieNiezidentyfikowane_1_zrodlo','GES_UrzadzenieNiezidentyfikowane_2_zrodlo',
+                                               'GES_UrzadzeniaTowarzyszczaceLiniowe_1_zrodlo','GES_UrzadzeniaTowarzyszaceLiniowe_1_zrodlo','GES_InneUrzadzeniaTowarzyszace_0_zrodlo','GES_InneUrzadzeniaTowarzyszace_1_zrodlo','GES_InneUrzadzeniaTowarzyszace_2_zrodlo','GES_Rzedna_0_zrodlo']
+                            Main().add_obligatory_fields(lay, fields_list_ges)
+                        if 'ot_etykieta' in lay.name().lower() and sc == '1000':
+                            fields_list_ot = ['OT_Rzedna_0_zrodlo_zrodlo','OT_BudynekNiewykazanyWEGIB_2_zrodlo','OT_BlokBudynku_2_zrodlo','OT_ObiektTrwaleZwiazanyZBudynkami_2_zrodlo',
+                                              'OT_Budowle_0_zrodlo','OT_Budowle_1_zrodlo','OT_Budowle_2_zrodlo',
+                                              'OT_Komunikacja_1_zrodlo','OT_Komunikacja_2_zrodlo','OT_SportIRekreacja_2_zrodlo',
+                                              'OT_ZagospodarowanieTerenu_0_zrodlo','OT_ZagospodarowanieTerenu_1_zrodlo','OT_ZagospodarowanieTerenu_2_zrodlo',
+                                              'OT_Wody_1_zrodlo','OT_Wody_2_zrodlo']
+                            Main().add_obligatory_fields(lay, fields_list_ot)
                         if 'egb_etykieta' in lay.name().lower() and sc == '1000':
 
-                            fields_list_egb = []
+                            fields_list_egb = ['EGB_DzialkaEwidencyjna_2_lokalnyId', 'EGB_KonturUzytkuGruntowego_2_lokalnyId',
+                                               'EGB_KonturKlasyfikacyjny_2_lokalnyId', 'EGB_Budynek_2_lokalnyId',
+                                               'EGB_BlokBudynku_2_lokalnyId', 'EGB_ObiektTrwaleZwiazanyZBudynkiem_2_lokalnyId',
+                                               'EGB_ObrebEwidencyjny_2_lokalnyId', 'EGB_JednostkaEwidencyjna_2_lokalnyId']
                             Main().add_obligatory_fields(lay, fields_list_egb)
                     if nr < len(scales):
                         self.progressBar.setValue(90 + int((nr / len(scales)) * 10))
@@ -970,7 +998,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
 
     #todo: usunac !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    def saveStylization(self, sty_name):
+    '''def saveStylization(self, sty_name):
         """Zapisywanie stylizacji o podanej nazwie ,warstw w plikach qml w folderze wtyczki stylization"""
         dir_path = os.path.dirname(os.path.realpath(__file__))
         sty_path = dir_path + r'\stylization'
@@ -1006,5 +1034,5 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                     geom_type = ''
                 name = layer.name()
                 pathqml = stylization_dir + geom_type + r'\\' + str(name) + '.qml'
-                layer.saveNamedStyle(pathqml)
+                layer.saveNamedStyle(pathqml)'''
 

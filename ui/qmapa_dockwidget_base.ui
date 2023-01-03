@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>249</width>
-    <height>374</height>
+    <width>228</width>
+    <height>424</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -67,8 +67,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>237</width>
-            <height>301</height>
+            <width>216</width>
+            <height>351</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout_5">
@@ -81,35 +81,18 @@
            <property name="rightMargin">
             <number>5</number>
            </property>
-           <item row="12" column="0">
-            <widget class="QProgressBar" name="progressBar">
-             <property name="value">
-              <number>24</number>
+           <item row="3" column="0">
+            <widget class="Line" name="line_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
              </property>
             </widget>
            </item>
-           <item row="15" column="0">
-            <widget class="QWidget" name="widget_3" native="true">
-             <layout class="QGridLayout" name="gridLayout_4">
-              <property name="leftMargin">
-               <number>0</number>
-              </property>
-              <property name="topMargin">
-               <number>0</number>
-              </property>
-              <property name="rightMargin">
-               <number>0</number>
-              </property>
-              <property name="bottomMargin">
-               <number>0</number>
-              </property>
-              <property name="horizontalSpacing">
-               <number>4</number>
-              </property>
-              <property name="verticalSpacing">
-               <number>0</number>
-              </property>
-             </layout>
+           <item row="1" column="0">
+            <widget class="Line" name="line">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
             </widget>
            </item>
            <item row="4" column="0">
@@ -169,7 +152,7 @@
                  </size>
                 </property>
                 <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pierwsze utworzone wersje obiektu, które nie były nigdy zmieniane i są nadal aktualne.&lt;/p&gt;&lt;p&gt;Warunek: startWersjaObiekt = startObiekt, brak koniecWersjaObiekt i koniecObiekt.&lt;/p&gt;&lt;p&gt;Gdy znacznik czasu: Z powyższych filtruje utworzone po tym znaczniku (startObiekt &amp;gt; znacznik czasu).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string/>
                 </property>
                 <property name="accessibleDescription">
                  <string>jkjkjkgggggggk</string>
@@ -197,7 +180,7 @@
                  </size>
                 </property>
                 <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wersje, które zostały zmienione i są nadal aktualne.&lt;/p&gt;&lt;p&gt;Warunek: startWersjaObiekt &amp;gt; startObiekt, brak koniecWersjaObiekt i koniecObiekt.&lt;/p&gt;&lt;p&gt;Gdy znacznik czasu: Z powyższych filtruje zmienione po tym znaczniku (startWersjaObiekt &amp;gt; znacznik czasu).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string/>
                 </property>
                 <property name="text">
                  <string>GESUT</string>
@@ -222,7 +205,7 @@
                  </size>
                 </property>
                 <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wersje, które zostały zarchiwizowane ale nie zamknięte.&lt;/p&gt;&lt;p&gt;Warunek: istnieje koniecWersjaObiekt, brak koniecObiekt.&lt;/p&gt;&lt;p&gt;Gdy znacznik czasu: Z powyższych filtruje zarchiwizowane po tym znaczniku (koniecWersjaObiekt &amp;gt; znacznik czasu).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string/>
                 </property>
                 <property name="text">
                  <string>BDOT500</string>
@@ -248,22 +231,130 @@
              </layout>
             </widget>
            </item>
-           <item row="11" column="0">
-            <widget class="QPushButton" name="pbLogo">
+           <item row="8" column="0">
+            <widget class="Line" name="line_3">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="30" column="0">
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="0">
+            <widget class="QWidget" name="widget_2" native="true">
+             <layout class="QGridLayout" name="gridLayout_7">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <property name="horizontalSpacing">
+               <number>4</number>
+              </property>
+              <property name="verticalSpacing">
+               <number>7</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_4">
+                <property name="minimumSize">
+                 <size>
+                  <width>83</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Skala mapy&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_5">
+                <property name="minimumSize">
+                 <size>
+                  <width>83</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Redakcja&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QComboBox" name="cmbStylization">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>77</width>
+                  <height>0</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QComboBox" name="cmbReda">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>77</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>KARTO</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>AUTO</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="15" column="0">
+            <widget class="QLabel" name="lbVersion">
+             <property name="autoFillBackground">
+              <bool>true</bool>
+             </property>
              <property name="text">
               <string/>
              </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>../icons/logo_geoxy.png</normaloff>../icons/logo_geoxy.png</iconset>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
              </property>
-             <property name="iconSize">
-              <size>
-               <width>84</width>
-               <height>19</height>
-              </size>
-             </property>
-             <property name="flat">
+             <property name="wordWrap">
               <bool>true</bool>
              </property>
             </widget>
@@ -878,66 +969,9 @@
              </layout>
             </widget>
            </item>
-           <item row="3" column="0">
-            <widget class="Line" name="line_2">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="27" column="0">
-            <spacer name="verticalSpacer">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="13" column="0">
-            <widget class="QLabel" name="lbVersion">
-             <property name="autoFillBackground">
-              <bool>true</bool>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-             <property name="wordWrap">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QPushButton" name="pbImport">
-             <property name="text">
-              <string>Importuj plik GML</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="Line" name="line">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="8" column="0">
-            <widget class="Line" name="line_3">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QWidget" name="widget_2" native="true">
-             <layout class="QGridLayout" name="gridLayout_7">
+           <item row="18" column="0">
+            <widget class="QWidget" name="widget_3" native="true">
+             <layout class="QGridLayout" name="gridLayout_4">
               <property name="leftMargin">
                <number>0</number>
               </property>
@@ -954,76 +988,8 @@
                <number>4</number>
               </property>
               <property name="verticalSpacing">
-               <number>7</number>
+               <number>0</number>
               </property>
-              <item row="0" column="0">
-               <widget class="QLabel" name="label_4">
-                <property name="minimumSize">
-                 <size>
-                  <width>83</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Skala mapy&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="label_5">
-                <property name="minimumSize">
-                 <size>
-                  <width>83</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Redakcja&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QComboBox" name="cmbStylization">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>77</width>
-                  <height>0</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QComboBox" name="cmbReda">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>77</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <item>
-                 <property name="text">
-                  <string>KARTO</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>AUTO</string>
-                 </property>
-                </item>
-               </widget>
-              </item>
              </layout>
             </widget>
            </item>
@@ -1031,6 +997,60 @@
             <widget class="Line" name="line_4">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="11" column="0">
+            <widget class="QPushButton" name="pbLogo">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>../icons/logo_geoxy.png</normaloff>../icons/logo_geoxy.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>84</width>
+               <height>19</height>
+              </size>
+             </property>
+             <property name="flat">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QPushButton" name="pbImport">
+             <property name="text">
+              <string>Importuj plik GML</string>
+             </property>
+            </widget>
+           </item>
+           <item row="13" column="0">
+            <widget class="QProgressBar" name="progressBar">
+             <property name="value">
+              <number>24</number>
+             </property>
+            </widget>
+           </item>
+           <item row="31" column="0">
+            <widget class="QPushButton" name="pbDonate">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>../icons/donate.png</normaloff>../icons/donate.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>150</width>
+               <height>36</height>
+              </size>
+             </property>
+             <property name="flat">
+              <bool>true</bool>
              </property>
             </widget>
            </item>

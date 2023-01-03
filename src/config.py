@@ -78,7 +78,10 @@ correct_layers = ['EGB_JednostkaEwidencyjna',
                           'EGB_Dokument',
                           'EGB_OperatTechniczny']
 
-additional_layers = ['EGB_odnosnik',
+additional_layers = ['EGB_PrezentacjaGraficzna',
+                     'GES_PrezentacjaGraficzna',
+                     'OT_PrezentacjaGraficzna',
+                     'EGB_odnosnik',
                      'OT_odnosnik',
                      'GES_odnosnik',
                      'EGB_poliliniaKierunkowa',
