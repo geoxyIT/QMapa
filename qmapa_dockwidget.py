@@ -179,7 +179,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                     try:
                         os.remove(path)
                     except:
-                        iface.messageBar().pushMessage("import nie został wykonany: ", "brak dostępu do pliku " + path,
+                        iface.messageBar().pushMessage("Import nie został wykonany: ", "brak dostępu do pliku " + path,
                                                        level=2, duration=0)
                         QMessageBox.critical(iface.mainWindow(), 'Błąd: brak dostępu do pliku',
                                          'Brak dostępu do pliku, sprawdż czy plik nie jest używany przez inny program. \n' + path, buttons=QMessageBox.Ok)
@@ -191,7 +191,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                         report_path = ''
                         break
             else:
-                iface.messageBar().pushMessage("import nie został wykonany: ", "nie zezwolono na nadpisanie", level = Qgis.Info, duration = 0)
+                iface.messageBar().pushMessage("Import nie został wykonany: ", "nie zezwolono na nadpisanie", level = Qgis.Info, duration = 0)
                 mod_gml_path = ''
                 gpkg_path = ''
                 report_path = ''
@@ -368,7 +368,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 self.progressBar.hide()
                 if report_path.startswith('/'):  # przypadek dla linuksa kiedy sciezka zaczyna sie od slasha
                     report_path = report_path.lstrip('/')
-                iface.messageBar().pushMessage("raport z importu",
+                iface.messageBar().pushMessage("Raport z importu",
                                                '<a href="file:///' + report_path + '">' + report_path + '</a>',
                                                level=Qgis.Success, duration=0)
 
