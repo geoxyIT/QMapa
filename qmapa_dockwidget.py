@@ -131,13 +131,31 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         """Przycisk wywolania strony po nacisnieciu Logo GEOXY"""
         webbrowser.open('http://www.geoxy.pl/')
 
-        '''set_min(self.getLayers(), self.cmbStylization.currentText())
+        '''# nadanie minimalnych skal dla labeling
+        scale = self.cmbStylization.currentText()
+        for lay in self.getLayers():
+            try:
+                labb = lay.labeling()
+                for prov_id in labb.subProviders():
+                    se = labb.settings(prov_id)
+                    lab_format = se.format()
+                    sca = lab_format.sizeMapUnitScale()
+                    sca.minScale = int(scale) * 5
+                    lab_format.setSizeMapUnitScale(sca)
+                    se.setFormat(lab_format)
+                    labb.setSettings(se, prov_id)
+                iface.layerTreeView().refreshLayerSymbology(lay.id())
+            except:
+                print(lay.name())
+        iface.mapCanvas().refreshAllLayers()
+
+        #set_min(self.getLayers(), self.cmbStylization.currentText())
 
         self.saveStylization(self.cmbStylization.currentText())'''
 
     @pyqtSlot()
     def on_pbDonate_clicked(self):
-        """Przycisk wywolania strony po nacisnieciu Logo GEOXY"""
+        """Przycisk wywolania strony po nacisnieciu przycisku postaw kawe"""
         webbrowser.open('https://buycoffee.to/qmapa/')
 
 
@@ -312,57 +330,62 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                         egb_polyline_layer_id = ll.id()
 
                 for sc in scales:
+                    print('scale:', sc)
                     nr += 1
                     for lay in self.vec_layers_list:
                         if 'ot_obiekttrwalezwiazany' in lay.name().lower():
                             Main().calculate_hatching(lay, 'schody', sc, ot_polyline_layer_id)
                         elif 'egb_obiekttrwalezwiazany' in lay.name().lower():
                             Main().calculate_hatching(lay, 'schody', sc, egb_polyline_layer_id)
-                        elif 'budowle' in lay.name().lower():
-                            Main().calculate_hatching(lay, 'sciana', sc, ot_polyline_layer_id)
                         elif 'komunikacja' in lay.name().lower():
                             Main().calculate_hatching(lay, 'schody', sc, ot_polyline_layer_id)
+                        elif 'budowle' in lay.name().lower():
+                            Main().calculate_hatching(lay, 'sciana', sc, ot_polyline_layer_id)
 
                         if sc == '500':
                             if 'ges_rzedna' in lay.name().lower():
+                                stt = datetime.now()
                                 Main().calculate_colors(lay, 'color')
+                                print('rzrz', datetime.now() - stt)
                             elif 'wody' in lay.name().lower():
                                 Main().calculate_hatching(lay, 'wody', sc, [start_point_layer_id, end_point_layer_id])
                             elif 'skarpa' in lay.name().lower():
                                 Main().calculate_hatching(lay, 'skarpa', sc, [start_point_layer_id, end_point_layer_id])
 
-                        if 'etykieta' not in lay.name().lower() and 'prezentacja' not in lay.name().lower() and sc == '1000':
-                            if 'rzedna' in lay.name().lower():
-                                Main().remove_all_joins(lay)
-                            Main().add_obligatory_fields(lay, ['startObiekt', 'startWersjaObiekt', 'koniecWersjaObiekt', 'koniecObiekt'])
+                        elif sc == '1000':
+                            if 'etykieta' not in lay.name().lower() and 'prezentacja' not in lay.name().lower():
+                                if 'rzedna' in lay.name().lower():
+                                    Main().remove_all_joins(lay)
+                                Main().add_obligatory_fields(lay, ['startObiekt', 'startWersjaObiekt', 'koniecWersjaObiekt', 'koniecObiekt'])
 
-                        # tutaj dowawane sa pola ktore moga nie wystapic w pliku gml a sa uzywane w etykietach -
-                        # dzieki temu szybciej sie rendreruja
-                        if 'ges_etykieta' in lay.name().lower() and sc == '1000':
-                            fields_list_ges = ['GES_PrzewodWodociagowy_1_zrodlo','GES_UrzadzeniaSiecWodociagowa_0_zrodlo','GES_UrzadzeniaSiecWodociagowa_1_zrodlo','GES_UrzadzeniaSiecWodociagowa_2_zrodlo',
-                                               'GES_PrzewodKanalizacyjny_1_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo',
-                                               'GES_PrzewodElektroenergetyczny_1_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_1_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo',
-                                               'GES_PrzewodGazowy_1_zrodlo','GES_UrzadzeniaSiecGazowa_0_zrodlo','GES_UrzadzeniaSiecGazowa_1_zrodlo','GES_UrzadzeniaSiecGazowa_2_zrodlo',
-                                               'GES_PrzewodCieplowniczy_1_zrodlo','GES_UrzadzeniaSiecCieplownicza_0_zrodlo','GES_UrzadzeniaSiecCieplownicza_1_zrodlo','GES_UrzadzeniaSiecCieplownicza_2_zrodlo',
-                                               'GES_PrzewodTelekomunikacyjny_1_zrodlo','GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo','GES_UrzadzeniaSiecTelekomunikacyjna_1_zrodlo','GES_UrzadzeniaSiecTelekomunikacyjna_2_zrodlo',
-                                               'GES_PrzewodSpecjalny_1_zrodlo','GES_UrzadzeniaTechniczneSieciSpecjalnej_0_zrodlo','GES_UrzadzeniaTechniczneSieciSpecjalnej_1_zrodlo','GES_UrzadzeniaTechniczneSieciSpecjalnej_2_zrodlo',
-                                               'GES_PrzewodNiezidentyfikowany_1_zrodlo','GES_UrzadzenieNiezidentyfikowane_0_zrodlo','GES_UrzadzenieNiezidentyfikowane_1_zrodlo','GES_UrzadzenieNiezidentyfikowane_2_zrodlo',
-                                               'GES_UrzadzeniaTowarzyszczaceLiniowe_1_zrodlo','GES_UrzadzeniaTowarzyszaceLiniowe_1_zrodlo','GES_InneUrzadzeniaTowarzyszace_0_zrodlo','GES_InneUrzadzeniaTowarzyszace_1_zrodlo','GES_InneUrzadzeniaTowarzyszace_2_zrodlo','GES_Rzedna_0_zrodlo']
-                            Main().add_obligatory_fields(lay, fields_list_ges)
-                        if 'ot_etykieta' in lay.name().lower() and sc == '1000':
-                            fields_list_ot = ['OT_Rzedna_0_zrodlo_zrodlo','OT_BudynekNiewykazanyWEGIB_2_zrodlo','OT_BlokBudynku_2_zrodlo','OT_ObiektTrwaleZwiazanyZBudynkami_2_zrodlo',
-                                              'OT_Budowle_0_zrodlo','OT_Budowle_1_zrodlo','OT_Budowle_2_zrodlo',
-                                              'OT_Komunikacja_1_zrodlo','OT_Komunikacja_2_zrodlo','OT_SportIRekreacja_2_zrodlo',
-                                              'OT_ZagospodarowanieTerenu_0_zrodlo','OT_ZagospodarowanieTerenu_1_zrodlo','OT_ZagospodarowanieTerenu_2_zrodlo',
-                                              'OT_Wody_1_zrodlo','OT_Wody_2_zrodlo']
-                            Main().add_obligatory_fields(lay, fields_list_ot)
-                        if 'egb_etykieta' in lay.name().lower() and sc == '1000':
 
-                            fields_list_egb = ['EGB_DzialkaEwidencyjna_2_lokalnyId', 'EGB_KonturUzytkuGruntowego_2_lokalnyId',
-                                               'EGB_KonturKlasyfikacyjny_2_lokalnyId', 'EGB_Budynek_2_lokalnyId',
-                                               'EGB_BlokBudynku_2_lokalnyId', 'EGB_ObiektTrwaleZwiazanyZBudynkiem_2_lokalnyId',
-                                               'EGB_ObrebEwidencyjny_2_lokalnyId', 'EGB_JednostkaEwidencyjna_2_lokalnyId']
-                            Main().add_obligatory_fields(lay, fields_list_egb)
+                            # tutaj dowawane sa pola ktore moga nie wystapic w pliku gml a sa uzywane w etykietach -
+                            # dzieki temu szybciej sie rendreruja
+                            if 'ges_etykieta' in lay.name().lower():
+                                fields_list_ges = ['GES_PrzewodWodociagowy_1_zrodlo','GES_UrzadzeniaSiecWodociagowa_0_zrodlo','GES_UrzadzeniaSiecWodociagowa_1_zrodlo','GES_UrzadzeniaSiecWodociagowa_2_zrodlo',
+                                                   'GES_PrzewodKanalizacyjny_1_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo',
+                                                   'GES_PrzewodElektroenergetyczny_1_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_1_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo',
+                                                   'GES_PrzewodGazowy_1_zrodlo','GES_UrzadzeniaSiecGazowa_0_zrodlo','GES_UrzadzeniaSiecGazowa_1_zrodlo','GES_UrzadzeniaSiecGazowa_2_zrodlo',
+                                                   'GES_PrzewodCieplowniczy_1_zrodlo','GES_UrzadzeniaSiecCieplownicza_0_zrodlo','GES_UrzadzeniaSiecCieplownicza_1_zrodlo','GES_UrzadzeniaSiecCieplownicza_2_zrodlo',
+                                                   'GES_PrzewodTelekomunikacyjny_1_zrodlo','GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo','GES_UrzadzeniaSiecTelekomunikacyjna_1_zrodlo','GES_UrzadzeniaSiecTelekomunikacyjna_2_zrodlo',
+                                                   'GES_PrzewodSpecjalny_1_zrodlo','GES_UrzadzeniaTechniczneSieciSpecjalnej_0_zrodlo','GES_UrzadzeniaTechniczneSieciSpecjalnej_1_zrodlo','GES_UrzadzeniaTechniczneSieciSpecjalnej_2_zrodlo',
+                                                   'GES_PrzewodNiezidentyfikowany_1_zrodlo','GES_UrzadzenieNiezidentyfikowane_0_zrodlo','GES_UrzadzenieNiezidentyfikowane_1_zrodlo','GES_UrzadzenieNiezidentyfikowane_2_zrodlo',
+                                                   'GES_UrzadzeniaTowarzyszczaceLiniowe_1_zrodlo','GES_UrzadzeniaTowarzyszaceLiniowe_1_zrodlo','GES_InneUrzadzeniaTowarzyszace_0_zrodlo','GES_InneUrzadzeniaTowarzyszace_1_zrodlo','GES_InneUrzadzeniaTowarzyszace_2_zrodlo','GES_Rzedna_0_zrodlo']
+                                Main().add_obligatory_fields(lay, fields_list_ges)
+                            elif 'ot_etykieta' in lay.name().lower():
+                                fields_list_ot = ['OT_Rzedna_0_zrodlo_zrodlo','OT_BudynekNiewykazanyWEGIB_2_zrodlo','OT_BlokBudynku_2_zrodlo','OT_ObiektTrwaleZwiazanyZBudynkami_2_zrodlo',
+                                                  'OT_Budowle_0_zrodlo','OT_Budowle_1_zrodlo','OT_Budowle_2_zrodlo',
+                                                  'OT_Komunikacja_1_zrodlo','OT_Komunikacja_2_zrodlo','OT_SportIRekreacja_2_zrodlo',
+                                                  'OT_ZagospodarowanieTerenu_0_zrodlo','OT_ZagospodarowanieTerenu_1_zrodlo','OT_ZagospodarowanieTerenu_2_zrodlo',
+                                                  'OT_Wody_1_zrodlo','OT_Wody_2_zrodlo']
+                                Main().add_obligatory_fields(lay, fields_list_ot)
+                            elif 'egb_etykieta' in lay.name().lower():
+
+                                fields_list_egb = ['EGB_DzialkaEwidencyjna_2_lokalnyId', 'EGB_KonturUzytkuGruntowego_2_lokalnyId',
+                                                   'EGB_KonturKlasyfikacyjny_2_lokalnyId', 'EGB_Budynek_2_lokalnyId',
+                                                   'EGB_BlokBudynku_2_lokalnyId', 'EGB_ObiektTrwaleZwiazanyZBudynkiem_2_lokalnyId',
+                                                   'EGB_ObrebEwidencyjny_2_lokalnyId', 'EGB_JednostkaEwidencyjna_2_lokalnyId']
+                                Main().add_obligatory_fields(lay, fields_list_egb)
                     if nr < len(scales):
                         self.progressBar.setValue(90 + int((nr / len(scales)) * 10))
                         print('czas ' + str(90 + int((nr / len(scales)) * 10)) + '%:', datetime.now() - start_2)

@@ -62,7 +62,6 @@ class Main:
                     expression = QgsExpression("with_variable('gora_skarpy', skarpy($geometry,  aggregate('" + pocz + "', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('" + kon + "', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'), geom_to_wkt( try(collect_geometries(kreskowanie(@gora_skarpy, buffer($geometry,0.001), $area / (length(@gora_skarpy)), 50, 90,0,1),kreskowanie(@gora_skarpy,buffer($geometry,0.001), $area / (length(@gora_skarpy)), 50, 90, $area / (length(@gora_skarpy)*2),0.5)))))")
 
             elif type.lower() == 'schody':
-
                 if scale == '500':
                     expression = QgsExpression("geom_to_wkt(kreskowanie( geometry(get_feature( '" + ids + "',  'gml_id' ,  " + ''"gml_id"'' + ")), $geometry, 0.5, 100, 90, 0, 1))")
                 elif scale == '1000':
@@ -167,7 +166,6 @@ class Main:
                           "'0,0,0,255'"
                           " end")
 
-
         start = datetime.datetime.now()
         field_index = layer.fields().indexFromName(column_name)
         if field_index == -1:
@@ -190,7 +188,7 @@ class Main:
             out_text = expression.evaluate(context)
 
             attribute_map.update({feature.id(): {cum_sum_index: out_text}})
-
+        
         layer.dataProvider().changeAttributeValues(attribute_map)
 
     def setStyling(self, layers, style_name):
