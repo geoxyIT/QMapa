@@ -14,14 +14,6 @@ class ExpressYourself:
         self.enable_expression = enable_expression
         self.temp_enable_expression = enable_expression
 
-    '''def create_property(expression: str):
-        """Utworzenie wlasciwosci dla symboli"""
-        property = QgsProperty()
-        property.setExpressionString(expression)
-        property.setActive(True)
-
-        return property'''
-
     def symbol_recursion(self, sub_symbols):
         """Rekurencja po symbolach - nadawane sa wlasciwosci az do ostatniego
         symbolu, ktory ma subSymbol"""

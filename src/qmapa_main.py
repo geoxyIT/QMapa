@@ -587,9 +587,6 @@ class Main:
                     obj_nd += lay_obj_nd
                     counting_dict[group_name][layer_simple_name] = [lay_obj_nd]
 
-        #print('suma: ', obj_first+obj_modified+obj_closed+obj_archival+obj_nd, counting_dict)
-        #print(counting_dict)
-        #print('czas policzenia wersji w main: ', datetime.datetime.now() - start)
 
         return counting_dict
 

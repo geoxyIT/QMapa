@@ -168,15 +168,9 @@ class report:
                 if group_name in ['EGiB', 'GESUT', 'BDOT500'] :
                     key_frame = group_name
                     last_column = 8
-                    '''rows = 3
-                    sheet = self.pasteRange(1, start_paste_row, last_column, start_paste_row+rows -1, sheet, header_egib_data, header_egib_style, header_egib_merged)
-                    start_paste_row += rows'''
                 else:
                     key_frame = 'other'
                     last_column = 3
-                    '''rows = 3
-                    sheet = self.pasteRange(1, start_paste_row, last_column, start_paste_row+rows -1, sheet, header_other_data, header_other_style, header_other_merged)
-                    start_paste_row += rows'''
 
                 header_data = dict_copied_frame[key_frame]['header'][0]
                 header_style = dict_copied_frame[key_frame]['header'][1]

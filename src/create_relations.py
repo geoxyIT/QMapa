@@ -39,7 +39,7 @@ class CreateRelations:
             # stworzenie relacji wiele do jednej
             # jezeli type jest stringiem "many-to-one"
             elif type == 'many-to-one':
-                print('probuje sie zrobic')
+                #print('probuje sie zrobic')
 
                 for layer in self.layers:
                     if layer.name().startswith(referenced_layer_name[:3]):
@@ -68,8 +68,3 @@ class CreateRelations:
     def remove_relations(self):
         QgsProject.instance().relationManager().clear()
 
-# relations = CreateRelations()
-# relations.remove_relations()
-# relations.set_relations('GES_Rzedna', 'relacja', 'lokalnyId', 'relation_no_')
-# relations.set_relations('GES_PrezentacjaGraficzna', 'obiektPrzedstawiany', 'gml_id', 'relation_no_')
-# relations.set_relations('GES_etykieta', 'obiektPrzedstawiany', 'gml_id', 'relation_no_')

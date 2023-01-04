@@ -47,20 +47,6 @@ def hatching(rotation_formula, spacing_formula, width_formula, color_formula, la
     # ABY NADAWAC OFFSET KONIECZNE JEST WEJSCIE W SUBSYMBOL i ustawienie offsetu dla linii
 
     # nadanie symbolu oraz wejscie w subsymbol dla symboli single oraz rule
-    '''feature = layer.getFeature(1)
-    print(layer.name(), layer.renderer().legendKeysForFeature(feature, QgsRenderContext()))
-    layer.renderer().checkLegendSymbolItem(key='{e5e65104-337a-4815-b02f-0ddfff356ac4}', state=False)
-    '''
-    '''symbs = layer.renderer().legendSymbolItems()
-    i = 0
-    for symb in symbs:
-        if i == 0:
-            first_sym = symb.symbol()
-            print(first_sym)
-        else:
-            symb.setSymbol(first_sym)
-        i += 1'''
-
     if single is True and layer is not None:
         layer.renderer().symbol().insertSymbolLayer(1, line_pattern)
         internal_pattern_line = layer.renderer().symbol().symbolLayers()[-1].subSymbol().symbolLayers()[0]  # subsymbol
@@ -422,37 +408,3 @@ def open_fill_xlsm_loc(path: str):
     # webbrowser.open(path)
     Main().os_open(path)
 
-'''def set_min(layers, scale):
-    for layer in layers:
-        renderer = layer.renderer()
-        if renderer != None:
-            if renderer.type() == 'singleSymbol':
-                symbols = layer.renderer().symbol().symbolLayers()
-                for symb in symbols:
-                    sc = symb.mapUnitScale()
-                    sc.minScale = int(scale)*5
-                    sc.minSizeMMEnabled = 0
-                    #sc.minSizeMM = 0.03
-                    symb.setMapUnitScale(sc)
-
-                    print(symb)
-                    print(symb.mapUnitScale().minSizeMM)
-            elif renderer.type() == 'RuleRenderer':
-                for child in layer.renderer().rootRule().children():
-                    for symbol_list in child.symbols():
-                        symbols = symbol_list.symbolLayers()
-
-                        for symb in symbols:
-                            sc = symb.mapUnitScale()
-                            sc.minScale = int(scale)*5
-                            sc.minSizeMMEnabled = 0
-                            #sc.minSizeMM = 0.03
-                            symb.setMapUnitScale(sc)
-
-                            print(symb)
-                            print(symb.mapUnitScale().minSizeMM)
-        # odswiezenie layer tree
-        iface.layerTreeView().refreshLayerSymbology(layer.id())
-
-        # odswiezenie wszystkich warstw canvy
-    iface.mapCanvas().refreshAllLayers()'''

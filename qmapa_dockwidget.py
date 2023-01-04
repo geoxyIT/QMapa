@@ -27,7 +27,6 @@
 """
 
 import os
-import time
 from datetime import datetime
 import webbrowser
 
@@ -52,8 +51,7 @@ from .src.config import correct_layers
 from .src.scrap_version import *
 from .src.config import correct_layers
 from .src.express_yourself import ExpressYourself
-from .src.fill_with_color import fill, open_fill_xlsm, open_fill_xlsm_loc #, set_min
-from openpyxl import Workbook
+from .src.fill_with_color import fill, open_fill_xlsm, open_fill_xlsm_loc
 from .src.create_report_file import report
 
 
@@ -130,28 +128,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def on_pbLogo_clicked(self):
         """Przycisk wywolania strony po nacisnieciu Logo GEOXY"""
         webbrowser.open('http://www.geoxy.pl/')
-
-        '''# nadanie minimalnych skal dla labeling
-        scale = self.cmbStylization.currentText()
-        for lay in self.getLayers():
-            try:
-                labb = lay.labeling()
-                for prov_id in labb.subProviders():
-                    se = labb.settings(prov_id)
-                    lab_format = se.format()
-                    sca = lab_format.sizeMapUnitScale()
-                    sca.minScale = int(scale) * 5
-                    lab_format.setSizeMapUnitScale(sca)
-                    se.setFormat(lab_format)
-                    labb.setSettings(se, prov_id)
-                iface.layerTreeView().refreshLayerSymbology(lay.id())
-            except:
-                print(lay.name())
-        iface.mapCanvas().refreshAllLayers()
-
-        #set_min(self.getLayers(), self.cmbStylization.currentText())
-
-        self.saveStylization(self.cmbStylization.currentText())'''
 
     @pyqtSlot()
     def on_pbDonate_clicked(self):
@@ -865,63 +841,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         iface.mapCanvas().refreshAllLayers()
 
-    #todo: usunac !!!
-    '''def mousePressEvent(self, QMouseEvent):
-        """Przejecie prawego przycisku pod wyswietlanie opcji fillowania"""
-        if QMouseEvent.button() == Qt.RightButton:
-            # pobranie aktualnej pozycji kursora w czasie klikniecia
-            cursor = QtGui.QCursor()
-            cur_pos = cursor.pos()
-
-            self.right_click_dlg = QDialog()
-            self.right_click_dlg.setWindowFlag(Qt.WindowContextHelpButtonHint, False)  # This removes it
-            #self.right_click_dlg.setFixedSize(QSize(220, 90))
-            self.right_click_dlg.setWindowTitle("Okno wypełnień")
-
-            # definicja przyciskow
-            btn_fill = QPushButton(self.right_click_dlg)
-            btn_fill.setAutoDefault(False)
-            btn_fill.setText("Nadaj wypełnienia")
-            # powrot do stylizacji
-            # btn_fill.clicked.connect(self.back_to_qml_symb)
-            # btn_fill.clicked.connect(self.disp_wers)
-            btn_fill.clicked.connect(lambda: self.set_fill_checked(state = True))
-            #btn_fill.clicked.connect(self.fill_select_set)  # nadanie symboli w oparciu o zbior danych
-            btn_fill.clicked.connect(self.close_dialog)
-
-            btn_close_fill = QPushButton(self.right_click_dlg)
-            btn_close_fill.setAutoDefault(False)
-            btn_close_fill.setText("Wyłącz wypełnienia")
-            btn_close_fill.move(0, 30)
-            btn_close_fill.clicked.connect(lambda: self.set_fill_checked(state=False))
-            #btn_close_fill.clicked.connect(self.back_to_qml_symb)
-            btn_close_fill.clicked.connect(self.close_dialog)
-
-            btn_fill_xlsm = QPushButton(self.right_click_dlg)
-            btn_fill_xlsm.setAutoDefault(False)
-            btn_fill_xlsm.setText("Otwórz plik xlsm z parametrami wypełnień")
-            btn_fill_xlsm.move(0, 60)
-            btn_fill_xlsm.clicked.connect(lambda: open_fill_xlsm(path=FILL_PARAMETERS))
-            btn_fill_xlsm.clicked.connect(self.close_dialog)
-
-            btn_fill_loc = QPushButton(self.right_click_dlg)
-            btn_fill_loc.setAutoDefault(False)
-            btn_fill_loc.setText("Otwórz lokalizacje pliku wypełnień")
-            btn_fill_loc.move(0, 90)
-            btn_fill_loc.clicked.connect(lambda: open_fill_xlsm_loc(path=os.path.join(PLUGIN_DIRECTORY, 'fill')))
-            btn_fill_loc.clicked.connect(self.close_dialog)
-
-            # nadanie rozmiaru przyciskow
-            btn_fill.setFixedSize(btn_fill_xlsm.sizeHint().width(), 30)
-            btn_close_fill.setFixedSize(btn_fill_xlsm.sizeHint().width(), 30)
-            btn_fill_xlsm.setFixedSize(btn_fill_xlsm.sizeHint().width(), 30)
-            btn_fill_loc.setFixedSize(btn_fill_xlsm.sizeHint().width(), 30)
-
-            # przesuniecie okna do pozycji kursora
-
-            self.right_click_dlg.move(cur_pos)
-            self.right_click_dlg.show()'''
-
     def close_dialog(self):
         """Zamykanie okna dialogu po wywolaniu funkcji"""
         self.right_click_dlg.close()
@@ -1018,44 +937,3 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         mupp = (2.54*scale)/(100*dpi)
 
         iface.layerTreeView().layerTreeModel().setLegendMapViewData(mupp, dpi, scale)
-
-
-    #todo: usunac !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    '''def saveStylization(self, sty_name):
-        """Zapisywanie stylizacji o podanej nazwie ,warstw w plikach qml w folderze wtyczki stylization"""
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-        sty_path = dir_path + r'\stylization'
-        # pobranie nazw istniejących stylizacji
-        stylizations = [f for f in os.listdir(sty_path) if os.path.isdir(os.path.join(sty_path, f))]
-
-        stylization_dir = sty_path + r'\\' + str(sty_name)
-
-        # Tworzenie folderu do zapisu stylizacji o wybranej nazwie
-        if sty_name in stylizations:
-            # os.rmdir(stylization_dir)
-            # os.mkdir(stylization_dir)
-            pass
-        else:
-            os.mkdir(stylization_dir)
-            os.mkdir(stylization_dir + r'\point')
-            os.mkdir(stylization_dir + r'\line')
-            os.mkdir(stylization_dir + r'\polygon')
-
-        layers = self.getLayers()
-        for layer in layers:
-            """zapis stylizacji wybranych warstw w folderze stylizacji do plików qml podzielonych na foldery
-            w zaleznosci od geometrii warstwy"""
-            layerType = layer.type()
-            if layerType == QgsMapLayerType.VectorLayer:
-                if layer.geometryType() == 0:
-                    geom_type = (r'\point')
-                elif layer.geometryType() == 1:
-                    geom_type = (r'\line')
-                elif layer.geometryType() == 2:
-                    geom_type = (r'\polygon')
-                else:
-                    geom_type = ''
-                name = layer.name()
-                pathqml = stylization_dir + geom_type + r'\\' + str(name) + '.qml'
-                layer.saveNamedStyle(pathqml)'''
-

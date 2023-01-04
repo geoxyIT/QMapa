@@ -9,46 +9,6 @@ def load_gpkg(gpkg_path):
     """funkcja odpowiadaja za edycje warstw z geometria UNKNOW - typ wg. wkb = 0
     jezeli taka geometria istnieje, jest rozbijana i sortowana na 3 rodzaje geometrii
     tj. point, curve, surface"""
-
-    def get_version(start_object, start_version, end_object, end_version):
-        '''version = 'no recognized'
-        if type(start_object) is str:
-            if '.' in start_object:
-                format = "yyyy-MM-dd'T'hh:mm:ss.z"
-            else:
-                format = "yyyy-MM-dd'T'hh:mm:ss"
-            start_object = QDateTime.fromString(start_object, format)
-        if type(start_version) is str:
-            if '.' in start_version:
-                format = "yyyy-MM-dd'T'hh:mm:ss.z"
-            else:
-                format = "yyyy-MM-dd'T'hh:mm:ss"
-            start_version = QDateTime.fromString(start_version, format)
-        if type(end_object) is str:
-            if '.' in end_object:
-                format = "yyyy-MM-dd'T'hh:mm:ss.z"
-            else:
-                format = "yyyy-MM-dd'T'hh:mm:ss"
-            end_object = QDateTime.fromString(end_object, format)
-        if type(end_version) is str:
-            if '.' in end_version:
-                format = "yyyy-MM-dd'T'hh:mm:ss.z"
-            else:
-                format = "yyyy-MM-dd'T'hh:mm:ss"
-            end_version = QDateTime.fromString(end_version, format)
-
-        if end_version.isNull() and end_object.isNull() and start_version == start_object:
-            version = 'first'
-        elif end_version.isNull() and end_object.isNull() and start_version > start_object:
-            version = 'modified'
-        elif end_version.isNull() is False and end_object.isNull():
-            version = 'archival'
-        elif end_object.isNull() is False:
-            version = 'closed'
-
-        return version'''
-
-
     data = ogr.Open(r'%s' % gpkg_path, 1)
 
     #curve_line_list = [8, 9, 11, 13, 1009, 1011, 1013, 2009, 2011, 2013, 3009, 3011, 3013]
@@ -61,82 +21,6 @@ def load_gpkg(gpkg_path):
                  3003, 3006, 3010, 3012, 3014, 3015, 3016, 3017, -2147483645, -2147483642]
 
     layers_to_delete = []
-
-    obj_first = 0
-    obj_modified = 0
-    obj_archival = 0
-    obj_closed = 0
-
-    counting_list = []
-    counting_dict = {}
-
-    dict_split_by_type = {}
-
-    '''start =datetime.datetime.now()
-    for layer in data:
-        layer_simple_name = layer.GetName()
-        #print(layer_simple_name)
-        if layer_simple_name in correct_layers: # is layer correct : True
-            if layer_simple_name in counting_dict:
-                values = counting_dict[layer_simple_name]
-                lay_obj_first = values[0]
-                lay_obj_modified = values[1]
-                lay_obj_archival = values[2]
-                lay_obj_closed = values[3]
-            else:
-                lay_obj_first = 0
-                lay_obj_modified = 0
-                lay_obj_archival = 0
-                lay_obj_closed = 0
-
-            for feature in layer:
-                try:
-                    start_ob = feature.GetField("startObiekt")
-                except :
-                    start_ob = ''
-                try:
-                    start_vers =  feature.GetField("startWersjaObiekt")
-                except :
-                    start_vers = ''
-                try:
-                    end_ob = feature.GetField("koniecObiekt")
-                except :
-                    end_ob = ''
-                try:
-                    end_vers = feature.GetField("koniecWersjaObiekt")
-                except:
-                    end_vers = ''
-
-                feature_version = get_version(start_object=start_ob, start_version=start_vers, end_object=end_ob, end_version=end_vers)
-
-                if feature_version == 'first':
-                    lay_obj_first += 1
-                elif feature_version == 'modified':
-                    lay_obj_modified += 1
-                elif feature_version == 'archival':
-                    lay_obj_archival += 1
-                elif feature_version == 'closed':
-                    lay_obj_closed += 1
-
-                counting_dict[layer_simple_name] = [lay_obj_first, lay_obj_modified, lay_obj_archival, lay_obj_closed]
-
-            #print(layer.GetName(), lay_obj_open, lay_obj_closed, lay_obj_archival)
-            obj_first += lay_obj_first
-            obj_modified += lay_obj_modified
-            obj_archival += lay_obj_archival
-            obj_closed += lay_obj_closed
-
-        else: # is layer correct : False
-            if layer_simple_name in counting_dict:
-                lay_obj = counting_dict[layer_simple_name]
-            else:
-                lay_obj = 0
-
-            for feature in layer:
-                lay_obj += 1
-
-            counting_dict[layer_simple_name] = lay_obj
-    print('czas policzenia wersji: ', datetime.datetime.now() - start)'''
 
     data_layers = [lay for lay in data]
 
