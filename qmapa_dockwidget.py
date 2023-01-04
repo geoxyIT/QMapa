@@ -306,7 +306,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                         egb_polyline_layer_id = ll.id()
 
                 for sc in scales:
-                    print('scale:', sc)
                     nr += 1
                     for lay in self.vec_layers_list:
                         if 'ot_obiekttrwalezwiazany' in lay.name().lower():
@@ -322,7 +321,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                             if 'ges_rzedna' in lay.name().lower():
                                 stt = datetime.now()
                                 Main().calculate_colors(lay, 'color')
-                                print('rzrz', datetime.now() - stt)
                             elif 'wody' in lay.name().lower():
                                 Main().calculate_hatching(lay, 'wody', sc, [start_point_layer_id, end_point_layer_id])
                             elif 'skarpa' in lay.name().lower():
@@ -390,8 +388,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 print('koniec importu pliku:', name)
 
         self.signal_of_import = False
-
-
 
 
     def on_cmbStylization_currentTextChanged(self):
