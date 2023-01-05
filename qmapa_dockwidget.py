@@ -129,6 +129,47 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         """Przycisk wywolania strony po nacisnieciu Logo GEOXY"""
         webbrowser.open('http://www.geoxy.pl/')
 
+    def addOrtoOsm(self):
+        name_osm = 'Open Street Map'
+        name_orto = 'Ortofotomapa Geoportal'
+
+        if len(QgsProject.instance().mapLayersByName(name_osm)) == 0:
+            urlWithParams_osm = 'type=xyz' \
+                                '&url=https://a.tile.openstreetmap.org/%7Bz%7D/%7Bx%7D/%7By%7D.png' \
+                                '&zmax=19' \
+                                '&zmin=0' \
+                                '&crs=EPSG3857'
+
+            rlayerOsm = QgsRasterLayer(urlWithParams_osm, name_osm, 'wms')
+
+            if rlayerOsm.isValid():
+                root = QgsProject.instance().layerTreeRoot()
+                QgsProject.instance().addMapLayer(rlayerOsm, False)
+                root.insertLayer(0, rlayerOsm)
+                QgsProject.instance().layerTreeRoot().findLayer(rlayerOsm.id()).setItemVisibilityChecked(False)
+            else:
+                print('invalid layer osm')
+
+        if len(QgsProject.instance().mapLayersByName(name_orto)) == 0:
+            urlWithParams_orto = 'contextualWMSLegend=0' \
+                                 '&crs=EPSG:2180' \
+                                 '&dpiMode=7' \
+                                 '&featureCount=10' \
+                                 '&format=image/jpeg' \
+                                 '&layers=Raster' \
+                                 '&styles' \
+                                 '&url=https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMS/StandardResolution'
+
+            rlayerOrto = QgsRasterLayer(urlWithParams_orto, name_orto, 'wms')
+
+            if rlayerOrto.isValid():
+                root = QgsProject.instance().layerTreeRoot()
+                QgsProject.instance().addMapLayer(rlayerOrto, False)
+                root.insertLayer(0, rlayerOrto)
+                QgsProject.instance().layerTreeRoot().findLayer(rlayerOrto.id()).setItemVisibilityChecked(False)
+            else:
+                print('invalid layer orto')
+
     @pyqtSlot()
     def on_pbDonate_clicked(self):
         """Przycisk wywolania strony po nacisnieciu przycisku postaw kawe"""
@@ -382,6 +423,9 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
                 self.setLegendScale()
                 iface.layerTreeView().layerTreeModel().setAutoCollapseLegendNodes(-1)
+
+                # dodanie warstw rastrowych openstreetmap i ortofotomapy z geoportalu
+                self.addOrtoOsm()
 
                 self.progressBar.setValue(100)
                 print('czas 100%:', datetime.now() - start_2)

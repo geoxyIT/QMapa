@@ -373,6 +373,9 @@ class Main:
             specified_group.insertGroup(-1, 'Pomocnicze elementy redakcyjne')
             # przejecie do grupy pomocnicznych elementow
             additional_group = specified_group.findGroup('Pomocnicze elementy redakcyjne')
+            print(additional_group)
+            additional_group.setItemVisibilityChecked(False)
+            additional_group.setExpanded(False)
             # przeniesienie z grupy specified do grupy pomocniczych elementow redakcyjnych
 
             # posortowanie listy warstw z typami na podstawie listy z kolejnoscia oraz jej nadmienienie
@@ -405,8 +408,8 @@ class Main:
                 main_group.insertGroup(-1, table_group_name)
                 found_group = main_group.findGroup(table_group_name)
 
-            found_group.insertGroup(-1, 'Warstwy Tekstowe')  # dodanie grupy na koncu
-            group = found_group.findGroup('Warstwy Tekstowe')
+            found_group.insertGroup(-1, 'Część opisowa')  # dodanie grupy na koncu
+            group = found_group.findGroup('Część opisowa')
             for layer in table_group_layers_with_type:
                 # zmiana koncowek nazw warstw z _0 _1 _2 itp na puste
                 if layer[1].sourceName()[-1].isdigit():

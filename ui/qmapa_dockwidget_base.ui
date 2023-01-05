@@ -104,7 +104,7 @@
               </size>
              </property>
              <property name="title">
-              <string>Nadaj wypełnienia</string>
+              <string>Wypełnij kolorami</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -158,7 +158,7 @@
                  <string>jkjkjkgggggggk</string>
                 </property>
                 <property name="text">
-                 <string>EGIB</string>
+                 <string>EGiB</string>
                 </property>
                 <property name="checked">
                  <bool>true</bool>
@@ -546,7 +546,7 @@
                  </size>
                 </property>
                 <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wersje, które zostały zarchiwizowane ale nie zamknięte.&lt;/p&gt;&lt;p&gt;Warunek: istnieje koniecWersjaObiekt, brak koniecObiekt.&lt;/p&gt;&lt;p&gt;Gdy znacznik czasu: Z powyższych filtruje zarchiwizowane po tym znaczniku (koniecWersjaObiekt &amp;gt; znacznik czasu).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Warunek: istnieje koniecWersjaObiekt, brak koniecObiekt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="text">
                  <string>archiwalne</string>
@@ -663,7 +663,7 @@
                  </size>
                 </property>
                 <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wersje, które zostały zamknięte.&lt;/p&gt;&lt;p&gt;Warunek: istnieje koniecObiekt.&lt;/p&gt;&lt;p&gt;Gdy znacznik czasu: Z powyższych filtruje zamknięte po tym znaczniku (koniecObiekt &amp;gt; znacznik czasu).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Warunek: istnieje koniecObiekt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="whatsThis">
                  <string/>
@@ -748,7 +748,7 @@
                  </size>
                 </property>
                 <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wersje, które zostały zmienione i są nadal aktualne.&lt;/p&gt;&lt;p&gt;Warunek: startWersjaObiekt &amp;gt; startObiekt, brak koniecWersjaObiekt i koniecObiekt.&lt;/p&gt;&lt;p&gt;Gdy znacznik czasu: Z powyższych filtruje zmienione po tym znaczniku (startWersjaObiekt &amp;gt; znacznik czasu).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Warunek: startWersjaObiekt &amp;gt; startObiekt, brak koniecWersjaObiekt i koniecObiekt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="text">
                  <string>modyfikowane</string>
@@ -857,7 +857,7 @@
                  </size>
                 </property>
                 <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wszystkie wersje, które nie spełniły warunków znacznika czasu z poprzednich opcji.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string/>
                 </property>
                 <property name="text">
                  <string>wcześniejsze</string>
@@ -943,7 +943,7 @@
                  </size>
                 </property>
                 <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pierwsze utworzone wersje obiektu, które nie były nigdy zmieniane i są nadal aktualne.&lt;/p&gt;&lt;p&gt;Warunek: startWersjaObiekt = startObiekt, brak koniecWersjaObiekt i koniecObiekt.&lt;/p&gt;&lt;p&gt;Gdy znacznik czasu: Z powyższych filtruje utworzone po tym znaczniku (startObiekt &amp;gt; znacznik czasu).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Warunek: startWersjaObiekt = startObiekt, brak koniecWersjaObiekt i koniecObiekt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="accessibleDescription">
                  <string>jkjkjkgggggggk</string>
