@@ -373,7 +373,6 @@ class Main:
             specified_group.insertGroup(-1, 'Pomocnicze elementy redakcyjne')
             # przejecie do grupy pomocnicznych elementow
             additional_group = specified_group.findGroup('Pomocnicze elementy redakcyjne')
-            print(additional_group)
             additional_group.setItemVisibilityChecked(False)
             additional_group.setExpanded(False)
             # przeniesienie z grupy specified do grupy pomocniczych elementow redakcyjnych
