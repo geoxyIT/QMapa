@@ -140,9 +140,9 @@ def fill_with_color(fill_dict: Dict, scale: int, set: str, layers):
                                          single_dict['Transparentnosc'] * 255 / 100
                             hatching_list = [v for k, v in single_dict.items() if
                                              k.startswith(('Obrot', 'Odstep', 'Grubosc'))]
-                            hR, hG, hB, hT = single_dict['Rkreskowanie'], single_dict['Gkreskowanie'], single_dict[
-                                'Bkreskowanie'], \
-                                             single_dict['Tkreskowanie'] * 255 / 100
+                            hR, hG, hB, hT = single_dict['Rkreskowania'], single_dict['Gkreskowania'], single_dict[
+                                'Bkreskowania'], \
+                                             single_dict['Tkreskowania'] * 255 / 100
                             # wyjatek - wystapienie bledu w kolorze, brak ktorejs ze skladowych dla wypelnien
                             fill_no_color = [el for el in [R, G, B, T] if math.isnan(el) is True]
                             if len(fill_no_color) == 0:
@@ -179,9 +179,9 @@ def fill_with_color(fill_dict: Dict, scale: int, set: str, layers):
                                          single_dict['Transparentnosc'] * 255 / 100
                             hatching_list = [v for k, v in single_dict.items() if
                                              k.startswith(('Obrot', 'Odstep', 'Grubosc'))]
-                            hR, hG, hB, hT = single_dict['Rkreskowanie'], single_dict['Gkreskowanie'], single_dict[
-                                'Bkreskowanie'], \
-                                             single_dict['Tkreskowanie'] * 255 / 100
+                            hR, hG, hB, hT = single_dict['Rkreskowania'], single_dict['Gkreskowania'], single_dict[
+                                'Bkreskowania'], \
+                                             single_dict['Tkreskowania'] * 255 / 100
                             # wyjatek - wystapienie bledu w kolorze, brak ktorejs ze skladowych dla wypelnien
                             fill_no_color = [el for el in [R, G, B, T] if math.isnan(el) is True]
                             if len(fill_no_color) == 0:
@@ -265,9 +265,9 @@ def fill_with_color(fill_dict: Dict, scale: int, set: str, layers):
                                              single_dict['Transparentnosc'] * 255 / 100
                                 hatching_list = [v for k, v in single_dict.items() if
                                                  k.startswith(('Obrot', 'Odstep', 'Grubosc'))]
-                                hR, hG, hB, hT = single_dict['Rkreskowanie'], single_dict['Gkreskowanie'], single_dict[
-                                    'Bkreskowanie'], \
-                                                 single_dict['Tkreskowanie'] * 255 / 100
+                                hR, hG, hB, hT = single_dict['Rkreskowania'], single_dict['Gkreskowania'], single_dict[
+                                    'Bkreskowania'], \
+                                                 single_dict['Tkreskowania'] * 255 / 100
                                 # wyjatek - wystapienie bledu w kolorze, brak ktorejs ze skladowych dla wypelnien
                                 fill_no_color = [el for el in [R, G, B, T] if math.isnan(el) is True]
                                 if len(fill_no_color) == 0:
@@ -298,22 +298,31 @@ def fill_with_color(fill_dict: Dict, scale: int, set: str, layers):
                             # przypadek jezeli wykorzystywane sa atrybuty zawarte w tabeli atrybutow
                             elif layer.name() == single_dict['KlasaObiektu']:
                                 basic_atr = single_dict['AtrybutPodstawowy']
+                                additional_atr = single_dict['AtrybutDodatkowy']
+                                print('ddd', additional_atr, type(additional_atr))
                                 ap_value = single_dict['WartoscAP']
+                                ad_value = single_dict['WartoscAD']
                                 R, G, B, T = single_dict['R'], single_dict['G'], single_dict['B'], \
                                              single_dict['Transparentnosc'] * 255 / 100
                                 hatching_list = [v for k, v in single_dict.items() if
                                                  k.startswith(('Obrot', 'Odstep', 'Grubosc'))]
-                                hR, hG, hB, hT = single_dict['Rkreskowanie'], single_dict['Gkreskowanie'], single_dict[
-                                    'Bkreskowanie'], \
-                                                 single_dict['Tkreskowanie'] * 255 / 100
+                                hR, hG, hB, hT = single_dict['Rkreskowania'], single_dict['Gkreskowania'], single_dict[
+                                    'Bkreskowania'], \
+                                                 single_dict['Tkreskowania'] * 255 / 100
                                 # wyjatek - wystapienie bledu w kolorze, brak ktorejs ze skladowych dla wypelnien
                                 fill_no_color = [el for el in [R, G, B, T] if math.isnan(el) is True]
                                 if len(fill_no_color) == 0:
-                                    if ap_value == '*':  # przypadek dla wielosieciowych
-                                        formula += f"""when array_contains( (string_to_array(\"{basic_atr}\", '')),',') then \'{int(R)},{int(G)},{int(B)},{int(T)}\' """
-                                    else:
-                                        formula += f"""when array_contains( (string_to_array(\"{basic_atr}\", '')),\'{ap_value}\') then \'{int(R)},{int(G)},{int(B)},{int(T)}\' """
-                                        #formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(R)},{int(G)},{int(B)},{int(T)}\' '
+                                    if type(additional_atr) is not str: # przypadek jezeli nie ma dodatkowego atrybutu
+                                        if ap_value == '*':  # przypadek dla wielosieciowych
+                                            formula += f"""when array_contains( (string_to_array(\"{basic_atr}\", '')),',') then \'{int(R)},{int(G)},{int(B)},{int(T)}\' """
+                                        else:
+                                            formula += f"""when array_contains( (string_to_array(\"{basic_atr}\", '')),\'{ap_value}\') then \'{int(R)},{int(G)},{int(B)},{int(T)}\' """
+                                            #formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(R)},{int(G)},{int(B)},{int(T)}\' '
+                                    else:  # jest dodatkowy atrybut - AtrybutDodatkowy
+                                        if ad_value == '*':  # przypadek dla wielosieciowych
+                                            formula += f"""when array_contains( (string_to_array(\"{basic_atr}\", '')),\'{ap_value}\') and array_contains( (string_to_array(\"{additional_atr}\", '')),',') then \'{int(R)},{int(G)},{int(B)},{int(T)}\' """
+                                        else:
+                                            formula += f"""when array_contains( (string_to_array(\"{basic_atr}\", '')),\'{ap_value}\') and array_contains( (string_to_array(\"{additional_atr}\", '')),\'{ad_value}\') then \'{int(R)},{int(G)},{int(B)},{int(T)}\' """
                                 else:
                                     R, G, B, T = 0, 0, 0, 0
                                     formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(R)},{int(G)},{int(B)},{int(T)}\' '
