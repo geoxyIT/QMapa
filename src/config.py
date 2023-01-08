@@ -2,8 +2,6 @@
 
 # zmienna zawierajaca warstwy zgodne z rozporzadzeniem 2021
 # warstwy w zmiennej są ulozone w kolejnosci zgodnej z reprezentacja graficzna
-
-
 correct_layers = ['EGB_JednostkaEwidencyjna',
                           'EGB_ObrebEwidencyjny',
                           'EGB_DzialkaEwidencyjna',
@@ -88,6 +86,10 @@ additional_layers = ['EGB_PrezentacjaGraficzna',
                      'OT_poliliniaKierunkowa',
                      'OT_poczatekGorySkarpy',
                      'OT_koniecGorySkarpy']
+
+prefix_of_bases = {'OT': 'BDOT500',
+                    'EGB': 'EGiB',
+                    'GES': 'GESUT'}
 
 pts_list = [1, 4, 2001, 2004, 3001, 3004, -2147483647, -2147483644]
 

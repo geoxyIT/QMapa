@@ -299,7 +299,6 @@ def fill_with_color(fill_dict: Dict, scale: int, set: str, layers):
                             elif layer.name() == single_dict['KlasaObiektu']:
                                 basic_atr = single_dict['AtrybutPodstawowy']
                                 additional_atr = single_dict['AtrybutDodatkowy']
-                                print('ddd', additional_atr, type(additional_atr))
                                 ap_value = single_dict['WartoscAP']
                                 ad_value = single_dict['WartoscAD']
                                 R, G, B, T = single_dict['R'], single_dict['G'], single_dict['B'], \

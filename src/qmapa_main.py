@@ -11,7 +11,7 @@ from qgis.core import *
 from osgeo import ogr
 
 from .config import correct_layers, additional_layers, pts_list, line_list, polygon_list, incompatible_pref,\
-    incompatible_pref_friendly_name
+    incompatible_pref_friendly_name, prefix_of_bases
 from .express_yourself import ExpressYourself
 from .create_report_file import report
 
@@ -349,7 +349,7 @@ class Main:
                 elif layname.startswith(incompatible_pref):
                     base_name = incompatible_pref_friendly_name + layname.split('_')[2]
                 else:
-                    base_name = 'NIE WIADOMO CO TO'
+                    base_name = 'BAZA NIEZGODNA Z ROZPORZĄDZENIEM'
                 if base_name in type_groups_dict:
                     type_groups_dict[base_name].append(layy)
                     pass
@@ -369,8 +369,16 @@ class Main:
             main_group.insertGroup(1, group_name)
             specified_group = main_group.findGroup(group_name)
 
+            # dodanie prefixu OT_Pomocznice elementy...
+            try:
+                prefix = [k for k, v in prefix_of_bases.items() if v == group_name][0]
+            except:
+                prefix = ''
+
+            editorial_elements = prefix + '_' + 'Pomocnicze elementy redakcyjne'
+
             # utworzenie grupy Pomocnicze elementy redakcyjne
-            specified_group.insertGroup(-1, 'Pomocnicze elementy redakcyjne')
+            specified_group.insertGroup(-1, editorial_elements)
             # przejecie do grupy pomocnicznych elementow
             additional_group = specified_group.findGroup('Pomocnicze elementy redakcyjne')
             additional_group.setItemVisibilityChecked(False)
