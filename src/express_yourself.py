@@ -136,7 +136,7 @@ class ExpressYourself:
         """Nadanie wyrazenia etykietom na warstwie"""
         for layer in layers:
             labeling = layer.labeling()
-            if labeling != None:
+            if labeling != None and 'goryskarpy' not in layer.name().lower() and 'poliliniakierunkowa' not in layer.name().lower() and 'odnosnik' not in layer.name().lower():
                 if labeling.type() == 'simple':
                     settings = labeling.settings()
 
