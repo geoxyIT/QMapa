@@ -380,9 +380,10 @@ class Main:
             # utworzenie grupy Pomocnicze elementy redakcyjne
             specified_group.insertGroup(-1, editorial_elements)
             # przejecie do grupy pomocnicznych elementow
-            additional_group = specified_group.findGroup('Pomocnicze elementy redakcyjne')
-            additional_group.setItemVisibilityChecked(False)
-            additional_group.setExpanded(False)
+            additional_group = specified_group.findGroup(editorial_elements)
+            if additional_group is not None:
+                additional_group.setItemVisibilityChecked(False)
+                additional_group.setExpanded(False)
             # przeniesienie z grupy specified do grupy pomocniczych elementow redakcyjnych
 
             # posortowanie listy warstw z typami na podstawie listy z kolejnoscia oraz jej nadmienienie
