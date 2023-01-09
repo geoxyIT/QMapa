@@ -375,7 +375,7 @@ class Main:
             except:
                 prefix = ''
 
-            editorial_elements = prefix + '_' + 'Pomocnicze elementy redakcyjne'
+            editorial_elements = prefix + '_' + 'pomocniczeElementyKARTO'
 
             # utworzenie grupy Pomocnicze elementy redakcyjne
             specified_group.insertGroup(-1, editorial_elements)

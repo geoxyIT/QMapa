@@ -130,25 +130,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         webbrowser.open('http://www.geoxy.pl/')
 
     def addOrtoOsm(self):
+        name_orto = 'Geoportal ORTO'
         name_osm = 'Open Street Map'
-        name_orto = 'Ortofotomapa Geoportal'
-
-        if len(QgsProject.instance().mapLayersByName(name_osm)) == 0:
-            urlWithParams_osm = 'type=xyz' \
-                                '&url=https://a.tile.openstreetmap.org/%7Bz%7D/%7Bx%7D/%7By%7D.png' \
-                                '&zmax=19' \
-                                '&zmin=0' \
-                                '&crs=EPSG3857'
-
-            rlayerOsm = QgsRasterLayer(urlWithParams_osm, name_osm, 'wms')
-
-            if rlayerOsm.isValid():
-                root = QgsProject.instance().layerTreeRoot()
-                QgsProject.instance().addMapLayer(rlayerOsm, False)
-                root.insertLayer(0, rlayerOsm)
-                QgsProject.instance().layerTreeRoot().findLayer(rlayerOsm.id()).setItemVisibilityChecked(False)
-            else:
-                print('invalid layer osm')
 
         if len(QgsProject.instance().mapLayersByName(name_orto)) == 0:
             urlWithParams_orto = 'contextualWMSLegend=0' \
@@ -169,6 +152,23 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 QgsProject.instance().layerTreeRoot().findLayer(rlayerOrto.id()).setItemVisibilityChecked(False)
             else:
                 print('invalid layer orto')
+
+        if len(QgsProject.instance().mapLayersByName(name_osm)) == 0:
+            urlWithParams_osm = 'type=xyz' \
+                                '&url=https://a.tile.openstreetmap.org/%7Bz%7D/%7Bx%7D/%7By%7D.png' \
+                                '&zmax=19' \
+                                '&zmin=0' \
+                                '&crs=EPSG3857'
+
+            rlayerOsm = QgsRasterLayer(urlWithParams_osm, name_osm, 'wms')
+
+            if rlayerOsm.isValid():
+                root = QgsProject.instance().layerTreeRoot()
+                QgsProject.instance().addMapLayer(rlayerOsm, False)
+                root.insertLayer(0, rlayerOsm)
+                QgsProject.instance().layerTreeRoot().findLayer(rlayerOsm.id()).setItemVisibilityChecked(False)
+            else:
+                print('invalid layer osm')
 
     @pyqtSlot()
     def on_pbDonate_clicked(self):

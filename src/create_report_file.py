@@ -120,45 +120,48 @@ class report:
         return sheet
     def run(self, dict, file_path, out_path):
         main_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-        template_path = os.path.join(main_dir, 'raport', 'szablon_raport_importu.xlsx')
+        template_path = os.path.join(main_dir, 'raport', 'szablon_raport_z_importu.xlsx')
 
         control_sum_sha256 = self.control_sum(file_path)
 
-        start_paste_row = 7
+        start_paste_row = 9
         template_wb = load_workbook(filename=template_path)
 
 
         sheet = template_wb['QMapa_import']
+        header_egib_data, header_egib_style, header_egib_merged = self.copyRange(1,9,8,12,sheet)
+        body_egib_data, body_egib_style, body_egib_merged = self.copyRange(1,13,8,13,sheet)
+        bottom_egib_data, bottom_egib_style, bottom_egib_merged = self.copyRange(1,14,9,14,sheet)
+        prez_egib_data, prez_egib_style, prez_egib_merged = self.copyRange(1,15,9,16,sheet)
 
-        header_egib_data, header_egib_style, header_egib_merged = self.copyRange(1,7,8,9,sheet)
-        body_egib_data, body_egib_style, body_egib_merged = self.copyRange(1,10,8,10,sheet)
-        bottom_egib_data, bottom_egib_style, bottom_egib_merged = self.copyRange(1,11,9,11,sheet)
-        prez_egib_data, prez_egib_style, prez_egib_merged = self.copyRange(1,12,9,13,sheet)
-
-        header_gesut_data, header_gesut_style, header_gesut_merged = self.copyRange(1,15,8,17,sheet)
-        body_gesut_data, body_gesut_style, body_gesut_merged = self.copyRange(1,18,8,18,sheet)
-        bottom_gesut_data, bottom_gesut_style, bottom_gesut_merged = self.copyRange(1,19,8,19,sheet)
-        prez_gesut_data, prez_gesut_style, prez_gesut_merged = self.copyRange(1,20,9,21,sheet)
-
-
-        header_bdot500_data, header_bdot500_style, header_bdot500_merged = self.copyRange(1,23,8,25,sheet)
-        body_bdot500_data, body_bdot500_style, body_bdot500_merged = self.copyRange(1,26,8,26,sheet)
-        bottom_bdot500_data, bottom_bdot500_style, bottom_bdot500_merged = self.copyRange(1,27,8,27,sheet)
-        prez_bdot500_data, prez_bdot500_style, prez_bdot500_merged = self.copyRange(1,28,9,29,sheet)
+        header_gesut_data, header_gesut_style, header_gesut_merged = self.copyRange(1,18,8,21,sheet)
+        body_gesut_data, body_gesut_style, body_gesut_merged = self.copyRange(1,22,8,22,sheet)
+        bottom_gesut_data, bottom_gesut_style, bottom_gesut_merged = self.copyRange(1,23,8,23,sheet)
+        prez_gesut_data, prez_gesut_style, prez_gesut_merged = self.copyRange(1,24,9,25,sheet)
 
 
-        header_other_data, header_other_style, header_other_merged = self.copyRange(1,31,3,33,sheet)
-        body_other_data, body_other_style, body_other_merged = self.copyRange(1,34,3,34,sheet)
-        bottom_other_data, bottom_other_style, bottom_other_merged = self.copyRange(1,35,3,35,sheet)
+        header_bdot500_data, header_bdot500_style, header_bdot500_merged = self.copyRange(1,27,8,30,sheet)
+        body_bdot500_data, body_bdot500_style, body_bdot500_merged = self.copyRange(1,31,8,31,sheet)
+        bottom_bdot500_data, bottom_bdot500_style, bottom_bdot500_merged = self.copyRange(1,32,8,32,sheet)
+        prez_bdot500_data, prez_bdot500_style, prez_bdot500_merged = self.copyRange(1,33,9,34,sheet)
+
+
+        header_other_data, header_other_style, header_other_merged = self.copyRange(1,36,3,38,sheet)
+        body_other_data, body_other_style, body_other_merged = self.copyRange(1,39,3,39,sheet)
+        bottom_other_data, bottom_other_style, bottom_other_merged = self.copyRange(1,40,3,40,sheet)
 
         dict_copied_frame = {'EGiB':{'header':[header_egib_data,header_egib_style,header_egib_merged],'body':[body_egib_data,body_egib_style,body_egib_merged],'bottom':[bottom_egib_data,bottom_egib_style,bottom_egib_merged], 'prez':[prez_egib_data,prez_egib_style,prez_egib_merged]},'GESUT':{'header':[header_gesut_data,header_gesut_style,header_gesut_merged],'body':[body_gesut_data,body_gesut_style,body_gesut_merged],'bottom':[bottom_gesut_data,bottom_gesut_style,bottom_gesut_merged], 'prez': [prez_egib_data, prez_gesut_style, prez_gesut_merged]},'BDOT500':{'header':[header_bdot500_data,header_bdot500_style,header_bdot500_merged],'body':[body_bdot500_data,body_bdot500_style,body_bdot500_merged],'bottom':[bottom_bdot500_data,bottom_bdot500_style,bottom_bdot500_merged], 'prez': [prez_bdot500_data, prez_bdot500_style, prez_bdot500_merged]},'other':{'header':[header_other_data,header_other_style,header_other_merged],'body':[body_other_data,body_other_style,body_other_merged],'bottom':[bottom_other_data,bottom_other_style,bottom_other_merged]}}
 
-        sheet = self.remove_merged(1,7,9,36,sheet)
-        sheet.delete_rows(7,36)
+        sheet = self.remove_merged(1,9,9,41,sheet)
+        sheet.delete_rows(9,41)
 
-        sheet['A3'] = sheet['A3'].value + str(os.path.split(file_path)[1])
+        '''sheet['A3'] = sheet['A3'].value + str(os.path.split(file_path)[1])
         sheet['A4'] = sheet['A4'].value + str(control_sum_sha256.hexdigest())
-        sheet['A5'] = sheet['A5'].value + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        sheet['A5'] = sheet['A5'].value + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')'''
+
+        sheet['C5'] = str(os.path.split(file_path)[1])
+        sheet['C6'] = str(control_sum_sha256.hexdigest())
+        sheet['C7'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
         prez_layers = ['EGB_PrezentacjaGraficzna', 'OT_PrezentacjaGraficzna', 'GES_PrezentacjaGraficzna']
 
@@ -168,9 +171,11 @@ class report:
                 if group_name in ['EGiB', 'GESUT', 'BDOT500'] :
                     key_frame = group_name
                     last_column = 8
+                    rows = 4  # header
                 else:
                     key_frame = 'other'
                     last_column = 3
+                    rows = 3  # header
 
                 header_data = dict_copied_frame[key_frame]['header'][0]
                 header_style = dict_copied_frame[key_frame]['header'][1]
@@ -184,7 +189,7 @@ class report:
                 bottom_style = dict_copied_frame[key_frame]['bottom'][1]
                 bottom_merged = dict_copied_frame[key_frame]['bottom'][2]
 
-                rows = 3
+                #rows = 4
                 sheet = self.pasteRange(1, start_paste_row, last_column, start_paste_row + rows - 1, sheet,
                                         header_data, header_style, header_merged)
 
@@ -208,6 +213,7 @@ class report:
                         i += 1
                         rows = 1
                         sheet = self.pasteRange(1, start_paste_row, last_column, start_paste_row+rows -1, sheet, body_data, body_style, body_merged)
+                        print(start_paste_row)
                         sheet.cell(column=1, row=start_paste_row).value = i
 
                         if key_frame == "other":
@@ -260,7 +266,7 @@ class report:
                     sheet = self.pasteRange(1, start_paste_row, last_column, start_paste_row + rows - 1, sheet,
                                             prez_data, prez_style, prez_merged)
                     sheet.cell(column = 2, row = start_paste_row + 1).value = prez_name
-                    sheet.cell(column=3, row=start_paste_row + 1).value = prez_info[0]
+                    sheet.cell(column = 8, row=start_paste_row + 1).value = prez_info[0]
                     start_paste_row += rows
 
                 start_paste_row += 1 #zrobienie odstepu 1 wiersza
