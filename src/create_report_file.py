@@ -213,7 +213,6 @@ class report:
                         i += 1
                         rows = 1
                         sheet = self.pasteRange(1, start_paste_row, last_column, start_paste_row+rows -1, sheet, body_data, body_style, body_merged)
-                        print(start_paste_row)
                         sheet.cell(column=1, row=start_paste_row).value = i
 
                         if key_frame == "other":

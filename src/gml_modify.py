@@ -5,6 +5,8 @@ import re
 import cProfile
 import datetime
 from .config import correct_layers, pts_list, line_list, polygon_list, incompatible_pref, incompatible_pref_friendly_name
+from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox
+from qgis.utils import iface
 
 class GMLIncorrect(Exception):
     """Exception raised when gml is incorrect.
@@ -141,15 +143,19 @@ class GmlModify:
 
         for val in self.root.iter(parent_id):
             for child in val.findall(child_id):
-                tag = child.tag
-                value = next(v for (k, v) in child.attrib.items() if 'href' in k)
-                # usuniecie # gdy jest w relacji
-                if value.startswith('#'):
-                    value = value[1:]
-                val.remove(child)
-                added = ET.SubElement(val, tag)
-                added.text = value
-                added.tail = '\n'
+                try:
+                    tag = child.tag
+                    value = next(v for (k, v) in child.attrib.items() if 'href' in k)
+                    # usuniecie # gdy jest w relacji
+                    if value.startswith('#'):
+                        value = value[1:]
+                    val.remove(child)
+                    added = ET.SubElement(val, tag)
+                    added.text = value
+                    added.tail = '\n'
+                except StopIteration as e:
+                    val.remove(child)
+                    self.err_number += 1
 
     def extract_all(self, root, pref_name, pref_tag_dict, split_list):
         pref = pref_name
@@ -266,17 +272,19 @@ class GmlModify:
 
     def check_is_correct(self, root, pref_name_list, tag_dict):
         for main_child in root:
-            m_ch_tag = main_child[0].tag
-            for pref_name in pref_name_list:
-                if m_ch_tag.startswith(pref_name):
-                    class_name = pref_name.join(m_ch_tag.split(pref_name)[1:])
-                    if pref_name not in tag_dict or class_name not in correct_layers:
-                        if pref_name[1:-1] in self.namespaces_dict:
-                            name_of_base = self.namespaces_dict[pref_name[1:-1]]
-                        else:
-                            name_of_base = 'NotRecognized'
-                        main_child[0].tag = pref_name + incompatible_pref + name_of_base + '_' + class_name
-
+            try:
+                m_ch_tag = main_child[0].tag
+                for pref_name in pref_name_list:
+                    if m_ch_tag.startswith(pref_name):
+                        class_name = pref_name.join(m_ch_tag.split(pref_name)[1:])
+                        if pref_name not in tag_dict or class_name not in correct_layers:
+                            if pref_name[1:-1] in self.namespaces_dict:
+                                name_of_base = self.namespaces_dict[pref_name[1:-1]]
+                            else:
+                                name_of_base = 'NotRecognized'
+                            main_child[0].tag = pref_name + incompatible_pref + name_of_base + '_' + class_name
+            except:
+                pass
 
     def run(self):
         self.file = open(self.file_path, 'r', encoding='utf-8')
@@ -287,6 +295,7 @@ class GmlModify:
 
         split_list = ['poliliniaKierunkowa', 'poczatekGorySkarpy', 'koniecGorySkarpy', 'etykieta']
 
+        self.err_number = 0
         for pref_name in self.pref_name_list:
             # relacja dla obiekt przedstawiany
             self.attr_to_text(pref_name + 'PrezentacjaGraficzna',
@@ -294,28 +303,19 @@ class GmlModify:
 
             self.get_relations(pref_name)
 
-            """if pref_name == '{bazaDanychObiektowTopograficznych500:1.0}':
-                self.iterate_and_add(pref_name, pref_name + "OT_Rzedna")
-            elif pref_name == '{geodezyjnaEwidencjaSieciUzbrojeniaTerenu:1.0}':
-                self.iterate_and_add(pref_name, pref_name + "GES_Rzedna")"""
-
             for nm in ["OT_Rzedna", "GES_Rzedna"]:
                 self.iterate_and_add(pref_name, pref_name + nm)
 
-            '''# cProfiler
-            if self.pref_name == '{bazaDanychObiektowTopograficznych500:1.0}':
-                cProfile.runctx('self.iterate_and_add(self.pref_name, self.pref_name+"OT_Rzedna")', globals(),locals())
-            elif self.pref_name == '{geodezyjnaEwidencjaSieciUzbrojeniaTerenu:1.0}':
-                cProfile.runctx('self.iterate_and_add(self.pref_name, self.pref_name+"GES_Rzedna")', globals(),locals())'''
-
             self.extract_all(self.root, pref_name, self.pref_tag_dict, split_list)
 
-            """if pref_name in self.pref_tag_dict:
-                pref_tag = self.pref_tag_dict[pref_name]
-                self.label_relations(pref_name, pref_tag)
-            else:
-                pref_tag = ''
-                self.label_relations(pref_name, pref_tag)"""
+        if self.err_number > 0:
+            print("Blad: Nie wszystkie obiekty zostaną zaimportowane, lub zostaną zaimportowanie niepoprawnie - błąd w relacjach w pliku GML, liczba błędow: " + str(self.err_number))
+            iface.messageBar().pushMessage("Błąd importu: ",
+                                           "Nie wszystkie obiekty zostaną zaimportowane, lub zostaną zaimportowanie niepoprawnie - błąd w relacjach w pliku GML, liczba błędow: " + str(self.err_number),
+                                           level=1, duration=0)
+            QMessageBox.warning(iface.mainWindow(), 'Błąd importu',
+                                 'Niepoprawny plik GML - \nnie wszystkie obiekty zostaną zaimportowane',
+                                 buttons=QMessageBox.Ok)
 
         self.check_is_correct(self.root, self.pref_name_list, self.pref_tag_dict)
         self.save_gml()
