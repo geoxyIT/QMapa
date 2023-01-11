@@ -1,4 +1,4 @@
-2.0.0 2023.01.05
+2.0.0 2023.01.11
 -Optymalizacja importu i renderowania
 -Dodanie generowania raportu z importu
 -Dodanie obsługi importu plików zawierających kilka baz, obiekty które są niezgodne z modelami BDOT, EGiB i GESUT 2021 są wczytywane, ale nie jest obsługiwana ich odpowiednia wizualizacja
@@ -8,9 +8,14 @@
 -Poprawa symbolu przewodu elektroenergetycznego
 -Poprawa symbolu ekranu akustycznego
 -Poprawa generowania kreskowania dla skarp, schodów, grobli, wałów, ścian oporowych
--Dodanie symbolu EGB_odnosnik
 -Poprawa etykiet
 -Poprawa kodowania na utf-8 w modyfikowanym pliku GML
+-Przy oddaleniu symbole zmniejszane sa maksymalnie 5 krotnie - przy duźym oddaleniu lepiej widac zawartość
+-Automatyczne dodawanie warstw ortofotomapy i openstreetmap przy imporcie
+-Dodanie opcji postawienia kawy
+-Poprawienie grupowania warstw w widoku drzewa
+-Sprawdzenie czy pliki, które maja byc utworzone przy imporcie, już nie istnieją
+-Dodanie opcji wypełniania obiektów powierzchniowych kolorami w celu lepszej widoczności
 1.1.1 2022.08.01
 -Dodanie obslugi bledu przy nieprawidlowym namespace w gml
 -Poprawa etykietowania przy imporcie
