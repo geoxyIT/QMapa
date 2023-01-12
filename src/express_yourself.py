@@ -166,9 +166,9 @@ class ExpressYourself:
                     for label in root.children():
                         settings = label.settings()
 
-                        # jezeli jest to warstwa etykieta
+                        # jezeli jest to warstwa etykiety (opisykarto)
                         # zmien dla niej expression w locie
-                        if 'etykieta' in layer.name():
+                        if 'opisyKARTO' in layer.name():
                             # print('warstwa: ', layer.name())
                             # print('filtr: ', label.filterExpression())
                             filter_exp = label.filterExpression()  # tu wyciagac wartosci

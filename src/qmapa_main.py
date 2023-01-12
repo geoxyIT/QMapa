@@ -509,7 +509,7 @@ class Main:
         obj_nd = 0
 
         counting_dict = {'EGiB':{}, 'GESUT':{}, 'BDOT500':{}}
-        techn_layers = ['EGB_poliliniaKierunkowa', 'OT_poliliniaKierunkowa', 'OT_etykieta', 'GES_etykieta', 'EGB_etykieta', 'OT_poczatekGorySkarpy', 'OT_koniecGorySkarpy', 'EGB_odnosnik', 'OT_odnosnik', 'GES_odnosnik']
+        techn_layers = ['EGB_poliliniaKierunkowa', 'OT_poliliniaKierunkowa', 'OT_opisykarto', 'GES_opisykarto', 'EGB_opisykarto', 'OT_poczatekGorySkarpy', 'OT_koniecGorySkarpy', 'EGB_odnosnik', 'OT_odnosnik', 'GES_odnosnik']
         prez_layers = ['EGB_PrezentacjaGraficzna', 'OT_PrezentacjaGraficzna', 'GES_PrezentacjaGraficzna']
 
         dict_split_by_type = {}

@@ -127,7 +127,7 @@ class GmlModify:
         """Iteracja po pliku, wyciagniecie relacji z etykiet do obiektow, oraz wstawienie w te obiekty
         id etykiet"""
         gml_id_list = list()
-        for feature_member in self.root.iter(pref_name + pref_tag +'etykieta'):
+        for feature_member in self.root.iter(pref_name + pref_tag +'opisyKARTO'):
             for feature in feature_member.findall(pref_name+'obiektPrzedstawiany'):
                 gml_id_list.append(feature.text)
                 # text_do_wstawienia = './/{ges}GES_Rzedna[@{xd}id="{f_t}"]'.format(ges=gml_namespace_val, xd = gml, f_t = feature.text)
@@ -218,11 +218,15 @@ class GmlModify:
                     copy_feat = copy.deepcopy(f_ob)
 
                     # zmiana nazwy (tagu)
-                    new_tag = obj_to_save.split('}')[0] + '}' + pref_tag + obj_to_save.split('}')[1]
+                    if 'etykieta' in obj_to_save:
+                        #zmiana nazwy 'etykieta' na 'opisyKARTO'
+                        new_tag = obj_to_save.split('}')[0] + '}' + pref_tag + obj_to_save.split('}')[1].replace('etykieta', 'opisyKARTO')
+                    else:
+                        new_tag = obj_to_save.split('}')[0] + '}' + pref_tag + obj_to_save.split('}')[1]
                     copy_feat[0].tag = new_tag
 
                     # dla etykiet usuwanie pierwszej justyfikacji (tej oryginalnie w atrybucie prezentacji graficznej)
-                    if 'etykieta' in new_tag:
+                    if 'opisyKARTO' in new_tag:
                         for katObr in copy_feat[0].findall(pref + 'katObrotu'):
                             copy_feat[0].remove(katObr)
 
@@ -231,7 +235,7 @@ class GmlModify:
                     for found in copy_feat[0].findall(obj_to_save):
                         if i_ins != i:
                             copy_feat[0].remove(found)
-                        elif 'etykieta' in new_tag:
+                        elif 'opisyKARTO' in new_tag:
                             gml_id = copy_feat[0].attrib[f'{{{self.gml_namespace_val}}}id'] + '_pos_' + str(i_ins)
                             copy_feat[0].attrib[f'{{{self.gml_namespace_val}}}id'] = gml_id
                         i_ins += 1

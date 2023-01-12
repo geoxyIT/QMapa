@@ -388,15 +388,15 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                                 Main().calculate_hatching(lay, 'skarpa', sc, [start_point_layer_id, end_point_layer_id])
 
                         elif sc == '1000':
-                            if 'etykieta' not in lay.name().lower() and 'prezentacja' not in lay.name().lower():
+                            if 'opisykarto' not in lay.name().lower() and 'prezentacja' not in lay.name().lower():
                                 if 'rzedna' in lay.name().lower():
                                     Main().remove_all_joins(lay)
                                 Main().add_obligatory_fields(lay, ['startObiekt', 'startWersjaObiekt', 'koniecWersjaObiekt', 'koniecObiekt'])
 
 
-                            # tutaj dowawane sa pola ktore moga nie wystapic w pliku gml a sa uzywane w etykietach -
+                            # tutaj dowawane sa pola ktore moga nie wystapic w pliku gml a sa uzywane w etykietach (opisykarto)-
                             # dzieki temu szybciej sie rendreruja
-                            if 'ges_etykieta' in lay.name().lower():
+                            if 'ges_opisykarto' in lay.name().lower():
                                 fields_list_ges = ['GES_PrzewodWodociagowy_1_zrodlo','GES_UrzadzeniaSiecWodociagowa_0_zrodlo','GES_UrzadzeniaSiecWodociagowa_1_zrodlo','GES_UrzadzeniaSiecWodociagowa_2_zrodlo',
                                                    'GES_PrzewodKanalizacyjny_1_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo',
                                                    'GES_PrzewodElektroenergetyczny_1_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_1_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo',
@@ -407,14 +407,14 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                                                    'GES_PrzewodNiezidentyfikowany_1_zrodlo','GES_UrzadzenieNiezidentyfikowane_0_zrodlo','GES_UrzadzenieNiezidentyfikowane_1_zrodlo','GES_UrzadzenieNiezidentyfikowane_2_zrodlo',
                                                    'GES_UrzadzeniaTowarzyszczaceLiniowe_1_zrodlo','GES_UrzadzeniaTowarzyszaceLiniowe_1_zrodlo','GES_InneUrzadzeniaTowarzyszace_0_zrodlo','GES_InneUrzadzeniaTowarzyszace_1_zrodlo','GES_InneUrzadzeniaTowarzyszace_2_zrodlo','GES_Rzedna_0_zrodlo']
                                 Main().add_obligatory_fields(lay, fields_list_ges)
-                            elif 'ot_etykieta' in lay.name().lower():
+                            elif 'ot_opisykarto' in lay.name().lower():
                                 fields_list_ot = ['OT_Rzedna_0_zrodlo_zrodlo','OT_BudynekNiewykazanyWEGIB_2_zrodlo','OT_BlokBudynku_2_zrodlo','OT_ObiektTrwaleZwiazanyZBudynkami_2_zrodlo',
                                                   'OT_Budowle_0_zrodlo','OT_Budowle_1_zrodlo','OT_Budowle_2_zrodlo',
                                                   'OT_Komunikacja_1_zrodlo','OT_Komunikacja_2_zrodlo','OT_SportIRekreacja_2_zrodlo',
                                                   'OT_ZagospodarowanieTerenu_0_zrodlo','OT_ZagospodarowanieTerenu_1_zrodlo','OT_ZagospodarowanieTerenu_2_zrodlo',
                                                   'OT_Wody_1_zrodlo','OT_Wody_2_zrodlo']
                                 Main().add_obligatory_fields(lay, fields_list_ot)
-                            elif 'egb_etykieta' in lay.name().lower():
+                            elif 'egb_opisykarto' in lay.name().lower():
 
                                 fields_list_egb = ['EGB_DzialkaEwidencyjna_2_lokalnyId', 'EGB_KonturUzytkuGruntowego_2_lokalnyId',
                                                    'EGB_KonturKlasyfikacyjny_2_lokalnyId', 'EGB_Budynek_2_lokalnyId',
@@ -436,7 +436,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 # nadanie wyswietlania ilosci obiektow
                 allLayers = QgsProject.instance().layerTreeRoot().findLayers()
                 QgsProject.instance().reloadAllLayers()
-                excluded_layers = ['OT_etykieta', 'OT_odnosnik', 'OT_poczatekGorySkarpy',  'OT_koniecGorySkarpy', 'OT_poliliniaKierunkowa', 'EGB_etykieta', 'EGB_odnosnik', 'EGB_poliliniaKierunkowa', 'GES_etykieta', 'GES_odnosnik']
+                excluded_layers = ['OT_opisyKARTO', 'OT_odnosnik', 'OT_poczatekGorySkarpy',  'OT_koniecGorySkarpy', 'OT_poliliniaKierunkowa', 'EGB_opisyKARTO', 'EGB_odnosnik', 'EGB_poliliniaKierunkowa', 'GES_opisyKARTO', 'GES_odnosnik']
                 for (layer) in allLayers:
                     if layer.name() not in excluded_layers:
                         layer.setCustomProperty("showFeatureCount", True)
@@ -484,7 +484,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                                        'GES_UrzadzeniaTechniczneSieciSpecjalnej': ['relacja', 'lokalnyId', ['zrodlo']],
                                        'GES_UrzadzenieNiezidentyfikowane': ['relacja', 'lokalnyId', ['zrodlo']]
                                        },
-                        'OT_etykieta': {'OT_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
+                        'OT_opisyKARTO': {'OT_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
                                         'OT_BudynekNiewykazanyWEGIB': ['obiektPrzedstawiany', 'gml_id', []],
                                         'OT_BlokBudynku': ['obiektPrzedstawiany', 'gml_id', []],
                                         'OT_ObiektTrwaleZwiazanyZBudynkami': ['obiektPrzedstawiany', 'gml_id', []],
@@ -494,7 +494,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                                         'OT_ZagospodarowanieTerenu': ['obiektPrzedstawiany', 'gml_id', []],
                                         'OT_Wody': ['obiektPrzedstawiany', 'gml_id', []],
                                         'OT_Rzedna': ['obiektPrzedstawiany', 'gml_id', []]},
-                        'EGB_etykieta': {'EGB_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
+                        'EGB_opisyKARTO': {'EGB_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
                                          'EGB_JednostkaEwidencyjna': ['obiektPrzedstawiany', 'gml_id', []],
                                          'EGB_ObrebEwidencyjny': ['obiektPrzedstawiany', 'gml_id', []],
                                          'EGB_DzialkaEwidencyjna': ['obiektPrzedstawiany', 'gml_id', []],
@@ -505,7 +505,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                                          'EGB_KonturUzytkuGruntowego': ['obiektPrzedstawiany', 'gml_id', []],
                                          'EGB_KonturKlasyfikacyjny': ['obiektPrzedstawiany', 'gml_id', []]},
 
-                        'GES_etykieta': {'GES_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
+                        'GES_opisyKARTO': {'GES_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
                                          'GES_InneUrzadzeniaTowarzyszace': ['obiektPrzedstawiany', 'gml_id', []],
                                          'GES_UrzadzeniaTowarzyszczaceLiniowe': ['obiektPrzedstawiany', 'gml_id', []],
                                          'GES_UrzadzeniaTowarzyszaceLiniowe': ['obiektPrzedstawiany', 'gml_id', []],
