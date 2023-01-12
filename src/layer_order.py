@@ -34,7 +34,7 @@ def set_new_order(layer_new_order: List):
     for layer in new_order:
         # warstwa musi byc zgodna punktowa - wtedy rzuca na gore
         if layer.type() == QgsMapLayerType.VectorLayer and layer.name() in layer_new_order:
-            if layer.geometryType() == 0 and 'goryskarpy' not in layer.name().lower():
+            if layer.geometryType() == 0 and 'goryskarpy' not in layer.name().lower() and 'prezentacjagraficzna' not in layer.name().lower() :
                 new_order.insert(0, new_order.pop(new_order.index(layer)))
         else:
             pass
