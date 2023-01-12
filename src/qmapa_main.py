@@ -416,8 +416,8 @@ class Main:
                 main_group.insertGroup(-1, table_group_name)
                 found_group = main_group.findGroup(table_group_name)
 
-            found_group.insertGroup(-1, 'Część opisowa')  # dodanie grupy na koncu
-            group = found_group.findGroup('Część opisowa')
+            found_group.insertGroup(-1, 'Część OPISOWA')  # dodanie grupy na koncu
+            group = found_group.findGroup('Część OPISOWA')
             for layer in table_group_layers_with_type:
                 # zmiana koncowek nazw warstw z _0 _1 _2 itp na puste
                 if layer[1].sourceName()[-1].isdigit():
