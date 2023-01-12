@@ -924,7 +924,7 @@
               <item row="9" column="0" colspan="4">
                <widget class="QCheckBox" name="chbZnacznik">
                 <property name="text">
-                 <string>zastosuj znacznik czasu:</string>
+                 <string>zastosuj filtr znacznikCzasu:</string>
                 </property>
                </widget>
               </item>
