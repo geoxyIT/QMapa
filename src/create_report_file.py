@@ -68,7 +68,7 @@ class report:
 
     def pasteRange(self, startCol, startRow, endCol, endRow, sheetReceiving, copiedData, style, mergedCells=[],
                    include_value=True):
-        """funckaj do wklejania zakresu komorek"""
+        """funkcja do wklejania zakresu komorek"""
         # Paste range
         # Paste data from copyRange into template sheet
 

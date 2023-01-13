@@ -63,7 +63,7 @@ class CreateRelations:
 
 
         except:
-            print('BLAD RELACJA - nie da sie stworzyc takiej relacji dla: ', referenced_layer)
+            print('BŁĄD RELACJI - nie da się stworzyć takiej relacji dla: ', referenced_layer)
 
     def remove_relations(self):
         QgsProject.instance().relationManager().clear()

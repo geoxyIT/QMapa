@@ -121,9 +121,9 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             local_ver = reg_ver(get_local_ver(local_path))
             compare_versions(self.lbVersion, hub_ver, local_ver)
         except Exception as e:
-            print('Blad sprawdzania aktualnosci wersji')
+            print('Błąd sprawdzania aktualności wersji')
             print(e)
-            print('Nawiaż polaczenie z internetem')
+            print('Nawiąż połączenie z internetem')
 
     @pyqtSlot()
     def on_pbLogo_clicked(self):
@@ -267,7 +267,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             iface.layerTreeView().layerTreeModel().setAutoCollapseLegendNodes(1)
             mod_gml_path, gpkg_path, report_path = self.paths(name)  # pobranie sciezek importu
             if mod_gml_path != '' and gpkg_path != '' and report_path != '':
-                print('start importu pliku:', name)
+                print('Start importu pliku:', name)
                 start_2 = datetime.now()
 
                 self.signal_of_import = True
@@ -277,17 +277,17 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 self.gml_mod.run()  # przerobienie pliku gml i zapisanie do nowego pliku
 
                 self.progressBar.setValue(10)
-                print('czas 10%:', datetime.now() - start_2)
+                print('Czas 10%:', datetime.now() - start_2)
                 QCoreApplication.processEvents()
 
                 # utworzenie gpkg z gml
                 ogr2ogr.main(["", "-f", "GPKG", gpkg_path, mod_gml_path])
                 self.progressBar.setValue(20)
-                print('czas 20%:', datetime.now() - start_2)
+                print('Czas 20%:', datetime.now() - start_2)
                 QCoreApplication.processEvents()
                 load_gpkg(gpkg_path)
                 self.progressBar.setValue(30)
-                print('czas 30%:', datetime.now() - start_2)
+                print('Czas 30%:', datetime.now() - start_2)
                 QCoreApplication.processEvents()
                 self.vec_layers_list, gr_dict = Main().create_groups(gpkg_path)
                 self.vec_layers_list = Main().checkLayers(self.vec_layers_list)
@@ -297,29 +297,29 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 # ustalenie nowej kolejnosci
                 set_new_order(order_list_new)
                 self.progressBar.setValue(40)
-                print('czas 40%:', datetime.now() - start_2)
+                print('Czas 40%:', datetime.now() - start_2)
                 QCoreApplication.processEvents()
 
                 # utworzenie raportu
                 counting_dict = Main().generateReport(gr_dict)
                 report().run(counting_dict, name, report_path)
                 self.progressBar.setValue(50)
-                print('czas 50%:', datetime.now() - start_2)
+                print('Czas 50%:', datetime.now() - start_2)
                 QCoreApplication.processEvents()
 
                 # nadanie zlaczen
                 self.set_joins(self.vec_layers_list)
                 self.progressBar.setValue(60)
-                print('czas 60%:', datetime.now() - start_2)
+                print('Czas 60%:', datetime.now() - start_2)
                 QCoreApplication.processEvents()
 
                 # usuniecie pliku
                 try:
                     os.remove(mod_gml_path)
                 except:
-                    print("Problem z usunieciem pliku modyfikowanego gml")
+                    print("Problem z usunięciem pliku modyfikowanego gml")
                 self.progressBar.setValue(70)
-                print('czas 70%:', datetime.now() - start_2)
+                print('Czas 70%:', datetime.now() - start_2)
                 QCoreApplication.processEvents()
 
                 # nadanie stylizacji
@@ -327,7 +327,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 # Main().setStyling(self.vec_layers_list, current_style)
                 self.back_to_qml_symb()
                 self.progressBar.setValue(80)
-                print('czas 80%:', datetime.now() - start_2)
+                print('Czas 80%:', datetime.now() - start_2)
                 QCoreApplication.processEvents()
 
                 # self.set_labels(self.vec_layers_list)
@@ -341,7 +341,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 if self.gbFill.isChecked():
                     self.fill_select_set()  # sprawdzenie i nadanie fillowania
                 self.progressBar.setValue(90)
-                print('czas 90%:', datetime.now() - start_2)
+                print('Czas 90%:', datetime.now() - start_2)
                 QCoreApplication.processEvents()
 
                 # obliczenie kreskowania dla skarp, sciany, schodow i wstawienie geometrii do atrybutow
@@ -419,7 +419,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                                 Main().add_obligatory_fields(lay, fields_list_egb)
                     if nr < len(scales):
                         self.progressBar.setValue(90 + int((nr / len(scales)) * 10))
-                        print('czas ' + str(90 + int((nr / len(scales)) * 10)) + '%:', datetime.now() - start_2)
+                        print('Czas ' + str(90 + int((nr / len(scales)) * 10)) + '%:', datetime.now() - start_2)
 
 
                 self.progressBar.hide()
@@ -441,8 +441,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 iface.layerTreeView().layerTreeModel().setAutoCollapseLegendNodes(-1)
 
                 self.progressBar.setValue(100)
-                print('czas 100%:', datetime.now() - start_2)
-                print('koniec importu pliku:', name)
+                print('Czas 100%:', datetime.now() - start_2)
+                print('Koniec importu pliku:', name)
 
         self.signal_of_import = False
 

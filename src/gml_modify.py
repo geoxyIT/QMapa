@@ -313,7 +313,7 @@ class GmlModify:
             self.extract_all(self.root, pref_name, self.pref_tag_dict, split_list)
 
         if self.err_number > 0:
-            print("Blad: Nie wszystkie obiekty zostaną zaimportowane, lub zostaną zaimportowanie niepoprawnie - błąd w relacjach w pliku GML, liczba błędow: " + str(self.err_number))
+            print("Błąd: Nie wszystkie obiekty zostaną zaimportowane, lub zostaną zaimportowanie niepoprawnie - błąd w relacjach w pliku GML, liczba błędow: " + str(self.err_number))
             iface.messageBar().pushMessage("Błąd importu: ",
                                            "Nie wszystkie obiekty zostaną zaimportowane, lub zostaną zaimportowanie niepoprawnie - błąd w relacjach w pliku GML, liczba błędow: " + str(self.err_number),
                                            level=1, duration=0)
