@@ -20,7 +20,7 @@ class Help(wnd, cls):
         date = reg_date(get_local_ver(metadata_path))
         self.lb_date.setText(date)
 
-        instr_file = (os.path.join(os.path.dirname(__file__), '..', 'instrukcje', 'Instrukcja_uzytkowania_QMapa_GML_2021_1.1.1.pdf'))
+        instr_file = (os.path.join(os.path.dirname(__file__), '..', 'instrukcje', 'Instrukcja_uzytkowania_QMapa_GML_2021_2.0.0.pdf'))
 
         html_text = '<html><head/><body><p><a href="' + 'file:///' + instr_file + '"><span style=" text-decoration: underline; color:#0000ff;">Instrukcja użytkowania</span></a></p></body></html>'
         self.label_15.setText(html_text)

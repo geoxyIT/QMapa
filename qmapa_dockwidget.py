@@ -123,32 +123,18 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         except Exception as e:
             print('Blad sprawdzania aktualnosci wersji')
             print(e)
-            print('Nawiaz polaczenie z internetem')
+            print('Nawiaż polaczenie z internetem')
 
     @pyqtSlot()
     def on_pbLogo_clicked(self):
         """Przycisk wywolania strony po nacisnieciu Logo GEOXY"""
         webbrowser.open('http://www.geoxy.pl/')
 
-    '''def req_website(self, url):
-        """Sprawdzenie połączenia ze stroną"""
-        try:
-            content = requests.get(url, timeout=2.5)
-        except:
-            content = None
-
-        return content'''
-
     def addOrtoOsm(self, service_type):
         """Dodanie serwerów OSM i Geoportal ORTO jako warstwa do QGIS"""
         name_orto = 'Geoportal ORTO'
         name_osm = 'Open Street Map'
         orto_url = 'https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMS/StandardResolution'
-        # osm_url = 'https://a.tile.openstreetmap.org'
-
-        # timeout dla łączenia z portalami osm, orto
-        '''orto_req = self.req_website(url=orto_url)
-        osm_req = self.req_website(url=osm_url)'''
 
         if service_type == 'GEOPORTAL_ORTO':
             if len(QgsProject.instance().mapLayersByName(name_orto)) == 0:
@@ -171,7 +157,12 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 else:
                     print(f'Nieprawidłowa warstwa {name_orto}')
             else:
-                print(f'Nie udało się połączyć z {name_orto}. Brak odpowiedzi ze strony serwera.')
+                print(f'Warstwa z serwisem o takiej nawie już istnieje')
+                QMessageBox.critical(iface.mainWindow(), 'Dodanie serwisu nie powiodło się',
+                                     'Warstwa z serwisem o takiej nazwie już istnieje.',
+                                     buttons=QMessageBox.Ok)
+
+
         elif service_type == 'OSM':
             if len(QgsProject.instance().mapLayersByName(name_osm)) == 0:
                 urlWithParams_osm = 'type=xyz' \
@@ -190,7 +181,10 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 else:
                     print(f'Nieprawidłowa warstwa {name_osm}')
             else:
-                print(f'Nie udało się połączyć z {name_osm}. Brak odpowiedzi ze strony serwera.')
+                print(f'Warstwa z serwisem o takiej nawie już istnieje')
+                QMessageBox.critical(iface.mainWindow(), 'Dodanie serwisu nie powiodło się',
+                                     'Warstwa z serwisem o takiej nazwie już istnieje.',
+                                     buttons=QMessageBox.Ok)
 
     @pyqtSlot()
     def on_pbDonate_clicked(self):
