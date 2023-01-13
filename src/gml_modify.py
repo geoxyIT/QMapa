@@ -46,6 +46,7 @@ class GmlModify:
         self.pref_name = None
 
         self.relations = dict()
+        self.incompatible_found = False
 
     def extract_namespaces(self, file):
         """odczytanie przestrzeni nazw z pliku pierwotnego i nadanie tej przestrzeni
@@ -282,6 +283,7 @@ class GmlModify:
                     if m_ch_tag.startswith(pref_name):
                         class_name = pref_name.join(m_ch_tag.split(pref_name)[1:])
                         if pref_name not in tag_dict or class_name not in correct_layers:
+                            self.incompatible_found = True
                             if pref_name[1:-1] in self.namespaces_dict:
                                 name_of_base = self.namespaces_dict[pref_name[1:-1]]
                             else:
@@ -324,4 +326,9 @@ class GmlModify:
         self.check_is_correct(self.root, self.pref_name_list, self.pref_tag_dict)
         self.save_gml()
         self.file.close()
-
+        print(self.incompatible_found)
+        if self.incompatible_found is True:
+            print("Wykryto obiekty niezgodne z modelem 2021")
+            iface.messageBar().pushMessage("Wykryto obiekty niezgodne z modelami BDOT, EGiB, GESUT 2021: ",
+                                           "Niezgodne obiekty zostaną zaimportowane z przedrostkiem NIESTANDARDOWE",
+                                           level=0, duration=0)
