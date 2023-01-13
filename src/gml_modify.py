@@ -258,7 +258,8 @@ class GmlModify:
 
                                 # usuwanie geometrii i zmiana tagu dla odnosnika
                                 to_del_geom = copy_feat2[0][ch_nr][0].find(pref + 'geometria')
-                                copy_feat2[0][ch_nr][0].remove(to_del_geom)
+                                if to_del_geom is not None:
+                                    copy_feat2[0][ch_nr][0].remove(to_del_geom)
                                 copy_feat2[0].tag = pref + pref_tag + 'odnosnik'
 
                                 new_list.append(copy.deepcopy(copy_feat2))

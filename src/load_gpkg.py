@@ -50,13 +50,13 @@ def load_gpkg(gpkg_path):
                 layer_2.CreateField(lyr_def.GetFieldDefn(i))
 
             for feature in layer:
-
-                if feature.geometry().GetGeometryType() in pts_list:
-                    layer_0.CreateFeature(feature)
-                elif feature.geometry().GetGeometryType() in line_list:
-                    layer_1.CreateFeature(feature)
-                elif feature.geometry().GetGeometryType() in polygon_list:
-                    layer_2.CreateFeature(feature)
+                if feature.geometry() is not None:
+                    if feature.geometry().GetGeometryType() in pts_list:
+                        layer_0.CreateFeature(feature)
+                    elif feature.geometry().GetGeometryType() in line_list:
+                        layer_1.CreateFeature(feature)
+                    elif feature.geometry().GetGeometryType() in polygon_list:
+                        layer_2.CreateFeature(feature)
             layers_to_delete.append(main_layer.GetName())
 
         elif layer.GetGeomType() in pts_list:
@@ -75,10 +75,6 @@ def load_gpkg(gpkg_path):
             main_layer = data.GetLayer(layer.GetName())
             data.ExecuteSQL(f'ALTER TABLE {main_layer.GetName()} RENAME TO {main_layer.GetName() + "_9"}')
 
-
-    '''print(obj_first,obj_modified,obj_archival,obj_closed)
-    print(counting_list)
-    print(counting_dict)'''
 
     # usuniecie warstw glownych
     [data.DeleteLayer(layer_name) for layer_name in layers_to_delete]
