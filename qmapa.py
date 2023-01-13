@@ -27,13 +27,13 @@
 """
 from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication, Qt
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction, QToolButton
+from qgis.PyQt.QtWidgets import QAction, QToolButton, QMenu
 from qgis.core import QgsExpression
 from qgis.utils import iface, qgsfunction
-from .src.fill_with_color import open_fill_xlsm, open_fill_xlsm_loc
 
 # Import expressions
-from .expressions import connect_points, get_half_line, kreskowanie, skarpy, recalculate_justification, pokaz_wersje, kolor_wersji
+from .expressions import connect_points, get_half_line, kreskowanie, skarpy, recalculate_justification, pokaz_wersje, \
+    kolor_wersji
 
 # Initialize Qt resources from file resources.py
 from .src.resources import *
@@ -43,12 +43,13 @@ from .qmapa_dockwidget import QMapaDockWidget
 import os.path
 from .src.help import Help
 
-from .src.fill_with_color import open_fill_xlsm, open_fill_xlsm_loc
+from .src.fill_with_color import open_fill_xlsm_loc  # open_fill_xlsm,
 
 PLUGIN_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 
 FILL_PARAMETERS = os.path.join(PLUGIN_DIRECTORY, 'fill', 'QMapa_wypelnieniaObszarow.xlsm')
 FILL_PARAMETERS_DIR = os.path.join(PLUGIN_DIRECTORY, 'fill')
+
 
 class QMapa:
     """QGIS Plugin Implementation."""
@@ -90,11 +91,10 @@ class QMapa:
         self.toolbar = self.iface.addToolBar(u'QMapa')
         self.toolbar.setObjectName(u'QMapa')
 
-        #print "** INITIALIZING QMapa"
+        # print "** INITIALIZING QMapa"
 
         self.pluginIsActive = False
         self.dockwidget = None
-
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
@@ -111,18 +111,17 @@ class QMapa:
         # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
         return QCoreApplication.translate('QMapa', message)
 
-
     def add_action(
-        self,
-        icon_path,
-        text,
-        callback,
-        enabled_flag=True,
-        add_to_menu=True,
-        add_to_toolbar=True,
-        status_tip=None,
-        whats_this=None,
-        parent=None):
+            self,
+            icon_path,
+            text,
+            callback,
+            enabled_flag=True,
+            add_to_menu=True,
+            add_to_toolbar=True,
+            status_tip=None,
+            whats_this=None,
+            parent=None):
         """Add a toolbar icon to the toolbar.
 
         :param icon_path: Path to the icon for this action. Can be a resource
@@ -185,12 +184,10 @@ class QMapa:
 
         return action
 
-
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
 
         self.tryUnregister()
-
 
         # inizjalizacja funkcji z folderu expressions
         QgsExpression.registerFunction(kreskowanie.kreskowanie)
@@ -239,42 +236,52 @@ class QMapa:
         icon_help_path = ':/plugins/qmapa/icons/help.png'
         # icon_fill_sett_path = ':/plugins/qmapa/icons/fill_settings.png'
         icon_fill_directory_path = ':/plugins/qmapa/icons/fill_directory.png'
+        raster_icon = ':/plugins/qmapa/icons/raster.png'
 
         # stworzenie toolbuttona
         tool_button = QToolButton()
+        # toolbutton jest rozwijalny
+        tool_button.setPopupMode(QToolButton.MenuButtonPopup)
         # nadanie akcji
         action = QAction(icon=QIcon(icon_path), text=u'QMapa', parent=self.iface.mainWindow())
 
-        #dodanie akcji do listy
+        # dodanie akcji do listy
         self.actions.append(action)
 
-        #ustawienie akcji
+        # ustawienie akcji
         tool_button.setDefaultAction(action)
-        
+
         # dodanie pluginu do menu glownego
         self.iface.addPluginToMenu(self.menu, action)
-        
+
         # dodanie reakcji po kliknieciu
         action.triggered.connect(self.run)
         tool_button.clicked.connect(self.run)
-        
+
         # dodanie kolejnych akcji do tool button
         # tool_button = self.toolbarAction(tool_button=tool_button, icon_path=icon_fill_sett_path,
-                                             # text=self.tr(u'Parametry wypełniania obszarów '),
-                                             # callback=lambda: open_fill_xlsm(path=FILL_PARAMETERS))
-        tool_button = self.toolbarAction(tool_button=tool_button, icon_path=icon_fill_directory_path,
-                                         text=self.tr(u'Paleta kolorów wypełnień'),
-                                         callback=lambda: open_fill_xlsm_loc(path=FILL_PARAMETERS_DIR))
-        tool_button = self.toolbarAction(tool_button=tool_button, icon_path=icon_help_path,
-                                         text=self.tr(u'Informacje o wtyczce'), callback=self.help)
+        # text=self.tr(u'Parametry wypełniania obszarów '),
+        # callback=lambda: open_fill_xlsm(path=FILL_PARAMETERS))
+        self.toolbarAction(tool_button=tool_button, icon_path=icon_fill_directory_path,
+                           text=self.tr(u'Paleta kolorów wypełnień'),
+                           callback=lambda: open_fill_xlsm_loc(path=FILL_PARAMETERS_DIR))
+
+        self.toolbarAction(tool_button=tool_button, icon_path=raster_icon,
+                           text=self.tr(u'Dodaj serwis Open Street Map'),
+                           callback=lambda: QMapaDockWidget().addOrtoOsm('OSM'))
+
+        self.toolbarAction(tool_button=tool_button, icon_path=raster_icon,
+                           text=self.tr(u'Dodaj serwis Geoportal ORTO'),
+                           callback=lambda: QMapaDockWidget().addOrtoOsm('GEOPORTAL_ORTO'))
+
+        self.toolbarAction(tool_button=tool_button, icon_path=icon_help_path,
+                           text=self.tr(u'Informacje o wtyczce'), callback=self.help)
 
         # dodanie toolbutton do toolbara
         self.toolbar.addWidget(tool_button)
 
     def toolbarAction(self, tool_button, icon_path, text, callback):
         """Utworzenie akcji dla toolbara"""
-        # toolbutton jest rozwijalny
-        tool_button.setPopupMode(QToolButton.MenuButtonPopup)
         # utworzenie akcji
         action = QAction(icon=QIcon(icon_path),
                          text=text, parent=self.iface.mainWindow())
@@ -282,14 +289,15 @@ class QMapa:
         self.actions.append(action)
         # dodanie akcji do toolbuttona
         tool_button.addAction(action)
+
         # dodanie akcji do menu glownego
         self.iface.addPluginToMenu(self.menu, action)
-        return tool_button
+        # return tool_button
 
     def onClosePlugin(self):
         """Cleanup necessary items here when plugin dockwidget is closed"""
 
-        #print "** CLOSING QMapa"
+        # print "** CLOSING QMapa"
 
         # disconnects
         self.dockwidget.closingPlugin.disconnect(self.onClosePlugin)
@@ -305,18 +313,18 @@ class QMapa:
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
 
-        #print "** UNLOAD QMapa"
+        # print "** UNLOAD QMapa"
 
         for action in self.actions:
             self.iface.removePluginMenu(
                 self.tr(u'&QMapa GML 2021'),
                 action)
             self.iface.removeToolBarIcon(action)
-        
+
         # remove the toolbar
         del self.toolbar
 
-    #--------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
 
     def run(self):
         """Run method that loads and starts the plugin"""
@@ -334,7 +342,7 @@ class QMapa:
         if not self.pluginIsActive:
             self.pluginIsActive = True
 
-            #fpath "** STARTING QMapa"
+            # fpath "** STARTING QMapa"
 
             # dockwidget may not exist if:
             #    first run of plugin

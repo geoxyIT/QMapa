@@ -29,30 +29,30 @@
 import os
 from datetime import datetime
 import webbrowser
-import requests
+# import requests
 
 from qgis.PyQt import QtGui, QtWidgets, uic
 from qgis.PyQt.QtCore import Qt, QVariant, QDateTime, QSize, pyqtSignal, pyqtSlot, QCoreApplication
-from qgis.PyQt.QtWidgets import QFileDialog, QPushButton, QDialog
+# from qgis.PyQt.QtWidgets import QFileDialog, QPushButton, QDialog
 from qgis.PyQt.QtCore import pyqtSignal, pyqtSlot, QVariant, QDateTime
 from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox
 from qgis.utils import iface
 from qgis.core import *
 from qgis.gui import *
 
-from qgis.gui import QgsLayerTreeView
+# from qgis.gui import QgsLayerTreeView
 
 # import z folderu src
-from .src.create_relations import CreateRelations
+# from .src.create_relations import CreateRelations
 from .src.gml_modify import GmlModify
 from .src.layer_order import set_new_order
 from .src.load_gpkg import load_gpkg
 from .src.qmapa_main import Main
-from .src.config import correct_layers
+# from .src.config import correct_layers
 from .src.scrap_version import *
 from .src.config import correct_layers
 from .src.express_yourself import ExpressYourself
-from .src.fill_with_color import fill, open_fill_xlsm, open_fill_xlsm_loc
+from .src.fill_with_color import fill
 from .src.create_report_file import report
 
 
@@ -130,65 +130,67 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         """Przycisk wywolania strony po nacisnieciu Logo GEOXY"""
         webbrowser.open('http://www.geoxy.pl/')
 
-    def req_website(self, url):
+    '''def req_website(self, url):
         """Sprawdzenie połączenia ze stroną"""
         try:
             content = requests.get(url, timeout=2.5)
         except:
             content = None
 
-        return content
+        return content'''
 
-    def addOrtoOsm(self):
+    def addOrtoOsm(self, service_type):
+        """Dodanie serwerów OSM i Geoportal ORTO jako warstwa do QGIS"""
         name_orto = 'Geoportal ORTO'
         name_osm = 'Open Street Map'
         orto_url = 'https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMS/StandardResolution'
-        osm_url = 'https://a.tile.openstreetmap.org'
+        # osm_url = 'https://a.tile.openstreetmap.org'
 
+        # timeout dla łączenia z portalami osm, orto
+        '''orto_req = self.req_website(url=orto_url)
+        osm_req = self.req_website(url=osm_url)'''
 
-        orto_req = self.req_website(url=orto_url)
-        osm_req = self.req_website(url=osm_url)
+        if service_type == 'GEOPORTAL_ORTO':
+            if len(QgsProject.instance().mapLayersByName(name_orto)) == 0:
+                urlWithParams_orto = 'contextualWMSLegend=0' \
+                                     '&crs=EPSG:2180' \
+                                     '&dpiMode=7' \
+                                     '&featureCount=10' \
+                                     '&format=image/jpeg' \
+                                     '&layers=Raster' \
+                                     '&styles' \
+                                     f'&url={orto_url}'
 
-        if len(QgsProject.instance().mapLayersByName(name_orto)) == 0 and orto_req is not None:
-            urlWithParams_orto = 'contextualWMSLegend=0' \
-                                 '&crs=EPSG:2180' \
-                                 '&dpiMode=7' \
-                                 '&featureCount=10' \
-                                 '&format=image/jpeg' \
-                                 '&layers=Raster' \
-                                 '&styles' \
-                                 f'&url={orto_url}'
+                rlayerOrto = QgsRasterLayer(urlWithParams_orto, name_orto, 'wms')
 
-            rlayerOrto = QgsRasterLayer(urlWithParams_orto, name_orto, 'wms')
-
-            if rlayerOrto.isValid():
-                root = QgsProject.instance().layerTreeRoot()
-                QgsProject.instance().addMapLayer(rlayerOrto, False)
-                root.insertLayer(0, rlayerOrto)
-                QgsProject.instance().layerTreeRoot().findLayer(rlayerOrto.id()).setItemVisibilityChecked(False)
+                if rlayerOrto.isValid():
+                    root = QgsProject.instance().layerTreeRoot()
+                    QgsProject.instance().addMapLayer(rlayerOrto, False)
+                    root.insertLayer(0, rlayerOrto)
+                    QgsProject.instance().layerTreeRoot().findLayer(rlayerOrto.id()).setItemVisibilityChecked(False)
+                else:
+                    print(f'Nieprawidłowa warstwa {name_orto}')
             else:
-                print(f'Nieprawidłowa warstwa {name_orto}')
-        else:
-            print(f'Nie udało się połączyć z {name_orto}. Brak odpowiedzi ze strony serwera.')
+                print(f'Nie udało się połączyć z {name_orto}. Brak odpowiedzi ze strony serwera.')
+        elif service_type == 'OSM':
+            if len(QgsProject.instance().mapLayersByName(name_osm)) == 0:
+                urlWithParams_osm = 'type=xyz' \
+                                    '&url=https://a.tile.openstreetmap.org/%7Bz%7D/%7Bx%7D/%7By%7D.png' \
+                                    '&zmax=19' \
+                                    '&zmin=0' \
+                                    '&crs=EPSG3857'
 
-        if len(QgsProject.instance().mapLayersByName(name_osm)) == 0 and osm_req is not None:
-            urlWithParams_osm = 'type=xyz' \
-                                '&url=https://a.tile.openstreetmap.org/%7Bz%7D/%7Bx%7D/%7By%7D.png' \
-                                '&zmax=19' \
-                                '&zmin=0' \
-                                '&crs=EPSG3857'
+                rlayerOsm = QgsRasterLayer(urlWithParams_osm, name_osm, 'wms')
 
-            rlayerOsm = QgsRasterLayer(urlWithParams_osm, name_osm, 'wms')
-
-            if rlayerOsm.isValid():
-                root = QgsProject.instance().layerTreeRoot()
-                QgsProject.instance().addMapLayer(rlayerOsm, False)
-                root.insertLayer(0, rlayerOsm)
-                QgsProject.instance().layerTreeRoot().findLayer(rlayerOsm.id()).setItemVisibilityChecked(False)
+                if rlayerOsm.isValid():
+                    root = QgsProject.instance().layerTreeRoot()
+                    QgsProject.instance().addMapLayer(rlayerOsm, False)
+                    root.insertLayer(0, rlayerOsm)
+                    QgsProject.instance().layerTreeRoot().findLayer(rlayerOsm.id()).setItemVisibilityChecked(False)
+                else:
+                    print(f'Nieprawidłowa warstwa {name_osm}')
             else:
-                print(f'Nieprawidłowa warstwa {name_osm}')
-        else:
-            print(f'Nie udało się połączyć z {name_osm}. Brak odpowiedzi ze strony serwera.')
+                print(f'Nie udało się połączyć z {name_osm}. Brak odpowiedzi ze strony serwera.')
 
     @pyqtSlot()
     def on_pbDonate_clicked(self):
@@ -443,9 +445,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
                 self.setLegendScale()
                 iface.layerTreeView().layerTreeModel().setAutoCollapseLegendNodes(-1)
-
-                # dodanie warstw rastrowych openstreetmap i ortofotomapy z geoportalu
-                self.addOrtoOsm()
 
                 self.progressBar.setValue(100)
                 print('czas 100%:', datetime.now() - start_2)

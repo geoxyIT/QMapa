@@ -106,10 +106,10 @@ def hatching_only_values(rotation, spacing, width, color_formula, layer=None, ch
 def appropriate_scale(spacing: int, scale: int) -> float:
     """Ustawienie odpowiednich parametrów kreskowań w zależności od zadanej skali"""
     if scale == 500:
-        new_spacing = spacing * 1.33
+        new_spacing = spacing * 0.5
         return new_spacing
     elif scale == 2000:
-        new_spacing = spacing * 1.5
+        new_spacing = spacing * 2
         return new_spacing
     else:
         return spacing
