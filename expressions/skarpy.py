@@ -95,6 +95,8 @@ def skarpy(geometry, top_start_point, top_end_point, side = 'top', feature = Non
 
                     #jesli wsp wierzcholka == wsp konca
                     if (str(point_x) + ' ' + str(point_y)) == (str(end_x) + ' ' + str(end_y)):
+                        """DLACZEGO TUTAJ TO JEST ZROBIONE W TEN SPOSOB????
+                        ZAPYTAC KAMILA!!!"""
                         end_find = True
                         if start_first is False:
                             points_break = points_prev.copy()

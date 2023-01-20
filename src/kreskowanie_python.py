@@ -3,47 +3,58 @@ from qgis.gui import *
 import math
 import datetime
 
+
 def line_to_multi_segments(line_geometry):
-    multi_segments = QgsMultiLineString()
-    line_geometry_points = line_geometry.points()  # lista punktow w danej linii
-    for i in range(0, len(line_geometry.points())):
-        if i < len(line_geometry_points)-1:
-            segment = QgsLineString([line_geometry_points[i], line_geometry_points[i+1]])
-            multi_segments.addGeometry(segment)
+    if line_geometry.isMultipart() is False:
+        multi_segments = QgsMultiLineString()
+        line_geometry = QgsLineString(line_geometry.asPolyline())
+        line_geometry_points = line_geometry.points()  # lista punktow w danej linii
+        for i in range(0, len(line_geometry.points())):
+            if i < len(line_geometry_points) - 1:
+                segment = QgsLineString([line_geometry_points[i], line_geometry_points[i + 1]])
+                multi_segments.addGeometry(segment)
+    else:
+        multi_segments = QgsMultiLineString()
+        line_geometry = QgsLineString(line_geometry.asMultiPolyline())
+        line_geometry_points = line_geometry.points()  # lista punktow w danej linii
+        for i in range(0, len(line_geometry.points())):
+            if i < len(line_geometry_points) - 1:
+                segment = QgsLineString([line_geometry_points[i], line_geometry_points[i + 1]])
+                multi_segments.addGeometry(segment)
     return multi_segments
 
-#Generate list of QgsPoints from input geometry ( can be point, line, or polygon )
+
+# Generate list of QgsPoints from input geometry ( can be point, line, or polygon )
 def extractPoints(geom):
     multi_geom = QgsGeometry()
     temp_geom = []
-    if geom.type() == 0: # it's a point
+    if geom.type() == 0:  # it's a point
         if geom.isMultipart():
             temp_geom = geom.asMultiPoint()
         else:
             temp_geom.append(geom.asPoint())
-    elif geom.type() == 1: # it's a line
+    elif geom.type() == 1:  # it's a line
         if geom.isMultipart():
-            multi_geom = geom.asMultiPolyline() #multi_geog is a multiline
-            for i in multi_geom: #i is a line
-                temp_geom.extend( i )
+            multi_geom = geom.asMultiPolyline()  # multi_geog is a multiline
+            for i in multi_geom:  # i is a line
+                temp_geom.extend(i)
         else:
             temp_geom = geom.asPolyline()
-    elif geom.type() == 2: # it's a polygon
+    elif geom.type() == 2:  # it's a polygon
         if geom.isMultipart():
-            multi_geom = geom.asMultiPolygon() #multi_geom is a multipolygon
-            for i in multi_geom: #i is a polygon
-                for j in i: #j is a line
-                    temp_geom.extend( j )
+            multi_geom = geom.asMultiPolygon()  # multi_geom is a multipolygon
+            for i in multi_geom:  # i is a polygon
+                for j in i:  # j is a line
+                    temp_geom.extend(j)
         else:
-            multi_geom = geom.asPolygon() #multi_geom is a polygon
-            for i in multi_geom: #i is a line
-                temp_geom.extend( i )
+            multi_geom = geom.asPolygon()  # multi_geom is a polygon
+            for i in multi_geom:  # i is a line
+                temp_geom.extend(i)
     # FIXME - if there is none of know geoms (point, line, polygon) show an warning message
     return temp_geom
 
 
-def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle=90, offset=0, multiply=1, feature=None,
-                parent=None):
+def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle=90, offset=0, multiply=1):
     """test(geometry, geometry_limit, spacing, distance, rotate_angle, offset, multiply)
     geometry - geometria polilinii kierunkowej,
     geometry_limit - geometria poligonowa ograniczajaca zasieg,
@@ -57,8 +68,8 @@ def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle=90, of
 
     geometry_limit = QgsGeometry.fromWkt(geometry_limit.asWkt(3))
 
-    context = QgsExpressionContext()
-    context.setFeature(feature)
+    # context = QgsExpressionContext()
+    # context.setFeature(feature)
     geom_wkt = geometry.asWkt(3)
 
     points_num = len([x for x in geometry.vertices()])
@@ -69,7 +80,7 @@ def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle=90, of
 
     # obliczanie dwusiecznych:
     start_dw = datetime.datetime.now()
-    for i in range(points_num):
+    for i in range(points_num-2):
         ind = i + 1
         if ind != 1 and points_num > 1 and ind == points_num and geometry.vertexAt(points_num - 1) == geometry.vertexAt(
                 0):
@@ -81,7 +92,6 @@ def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle=90, of
 
         if ind_next:
             ind_prev = ind - 1
-
 
             first_point = extractPoints(geometry)[ind]
             second_point = extractPoints(geometry)[ind_prev]
@@ -100,14 +110,13 @@ def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle=90, of
                 ind) + "), point_n( geom_from_wkt('" + geom_wkt + "')," + str(ind_next) + ")))/2")
             angle = angle_exp.evaluate(context)'''
 
-
             # make line to teraz
             # line = QgsGeometry().fromPolyline([QgsPoint(3, 2), QgsPoint(3, 5), QgsPoint(10, 2)])
 
             # geometry_n to teraz
             # specific_geom_from_collection = geom_col.geometryN(1)
 
-            bisect_exp = QgsExpression(
+            '''bisect_exp = QgsExpression(
                 "make_line(project(point_n( geom_from_wkt('" + geom_wkt + "')," + str(ind) + ")," + str(
                     distance * 5) + "," +
                 str(angle) + "+ radians(180)" +
@@ -115,39 +124,37 @@ def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle=90, of
                 str(ind) +
                 ")," + str(distance * 5) + "," +
                 str(angle) +
-                "))")
+                "))")'''
 
-            first_line =
-            second_line = 
+            first_line = extractPoints(geometry)[ind].project(distance * 5, angle + 180)
+            second_line = extractPoints(geometry)[ind].project(distance * 5, angle)
 
-            bisect_exp = QgsGeometry().fromPolyline([])
+            bis = QgsGeometry().fromPolylineXY([first_line, second_line])
 
-
-
-            bis = bisect_exp.evaluate(context)
+            # bis = bisect_exp.evaluate(context)
             bis_int = bis.intersection(geometry_limit)
-            #bis_int_lines = QgsExpression("segments_to_lines(geom_from_wkt('" + bis_int.asWkt(3) + "'))").evaluate(
-                #context)
+
+            # bis_int_lines = QgsExpression("segments_to_lines(geom_from_wkt('" + bis_int.asWkt(3) + "'))").evaluate(
+            # context)
 
             bis_int_lines = line_to_multi_segments(bis_int)
-
             # geom_num = QgsExpression("num_geometries(geom_from_wkt('" + bis_int_lines.asWkt(3) + "'))").evaluate(
-                # context)
+            # context)
 
             geom_num = bis_int_lines.numGeometries()
 
+            # point_buff = QgsExpression("point_n( geom_from_wkt('" + geom_wkt + "')," + str(ind) + ")").evaluate(
+            # context).buffer(0.01, 4)
 
-            #point_buff = QgsExpression("point_n( geom_from_wkt('" + geom_wkt + "')," + str(ind) + ")").evaluate(
-                #context).buffer(0.01, 4)
-
-            point_buff = extractPoints(geometry)[ind]
+            point_buff = QgsGeometry().fromPointXY(extractPoints(geometry)[ind]).buffer(0.01, 4)
 
             for b_i in range(geom_num):
                 b_ind = b_i + 1
-                #bisection = QgsExpression(
+                # bisection = QgsExpression(
                 #    "geometry_n(  geom_from_wkt('" + bis_int_lines.asWkt(3) + "'), " + str(b_ind) + ")").evaluate(
                 #    context)
-                bisection = bis_int_lines.geometryN(b_ind)
+                bisection = bis_int_lines.geometryN(0)
+                bisection = QgsGeometry().fromPolyline(bisection)
                 if bisection.intersects(point_buff):
                     bis_list.append(bisection)
     if bis_list != []:
@@ -159,26 +166,31 @@ def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle=90, of
     start_ind = datetime.datetime.now()
 
     def project_point(start_point, proj_distance, proj_azimuth_radians):
+        # TO PRAWDOPODOBNIE USUNAC!!! -- sprawdzic to
+
         # print('start: ',start_point, distance, proj_azimuth_radians)
         x_proj = round(round(start_point.x(), 5) + proj_distance * math.sin(proj_azimuth_radians), 4)
         y_proj = round(round(start_point.y(), 5) + proj_distance * math.cos(proj_azimuth_radians), 4)
         point_projected = QgsPoint(x_proj, y_proj)
         return point_projected
 
-
-
     # zamieniam
     # orig_geom_lines_exp = QgsExpression("segments_to_lines(geom_from_wkt('" + geom_wkt + "'))")
     # orig_geom_lines = orig_geom_lines_exp.evaluate(context)
     # orig_geom_list = orig_geom_lines.asGeometryCollection()
 
+    print('dddd')
+
     orig_geom_list = line_to_multi_segments(geometry)
+    orig_geom_list = orig_geom_list.asGeometryCollection()
+    # orig_geom_list = geometry ----------
 
 
     new_geom_list = []
     prev_residue = offset
 
     for part in orig_geom_list:
+        print(part)
         parts_list = []
         new_part_1 = part.singleSidedBuffer(distance, 1, Qgis.BufferSide(0), Qgis.JoinStyle(1), 1)
         new_part_2 = part.singleSidedBuffer(distance, 1, Qgis.BufferSide(1), Qgis.JoinStyle(1), 1)

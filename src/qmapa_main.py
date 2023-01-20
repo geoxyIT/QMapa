@@ -14,6 +14,7 @@ from .config import correct_layers, additional_layers, pts_list, line_list, poly
     incompatible_pref_friendly_name, prefix_of_bases
 from .express_yourself import ExpressYourself
 from .create_report_file import report
+from .kreskowanie_python import kreskowanie
 
 
 class Main:
@@ -39,7 +40,7 @@ class Main:
                 layer.commitChanges()
 
 
-    def calculate_hatching(self, layer, type, scale, ref_lay_ids):
+    def calculate_hatching(self, layer, object_type, scale, ref_lay_ids):
         """funkcja przelicza kreskowanie i wstawia ta geometrie w formacie wkt do atrybutow
         type: 'skarpa' or 'schody' or 'sciana' or 'wody' """
 
@@ -54,25 +55,26 @@ class Main:
         ids = ref_lay_ids
         if ref_lay_ids:
             expression = None
-            if type.lower() == 'skarpa' or type.lower() == 'wody':
+            if object_type.lower() == 'skarpa' or object_type.lower() == 'wody':
                 pocz = str(ref_lay_ids[0])
                 kon = str(ref_lay_ids[1])
 
-                if scale == '500':
-                    expression = QgsExpression("with_variable('gora_skarpy', skarpy($geometry,  aggregate('" + pocz + "', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('" + kon + "', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top'), geom_to_wkt( try(collect_geometries(kreskowanie(@gora_skarpy, buffer($geometry,0.001), $area / (length(@gora_skarpy)), 50, 90,0,1),kreskowanie(@gora_skarpy,buffer($geometry,0.001), $area / (length(@gora_skarpy)), 50, 90, $area / (length(@gora_skarpy)*2),0.5)))))")
+                context = QgsExpressionContext()
+                context.appendScopes(QgsExpressionContextUtils.globalProjectLayerScopes(layer))
 
-            elif type.lower() == 'schody':
+
+            elif object_type.lower() == 'schody':
                 if scale == '500':
                     expression = QgsExpression("geom_to_wkt(kreskowanie( geometry(get_feature( '" + ids + "',  'gml_id' ,  " + ''"gml_id"'' + ")), $geometry, 0.5, 100, 90, 0, 1))")
                 elif scale == '1000':
                     expression = QgsExpression("geom_to_wkt(kreskowanie( geometry(get_feature( '" + ids + "',  'gml_id' ,  " + ''"gml_id"'' + ")), $geometry, 0.75, 100, 90, 0, 1))")
-            elif type.lower() == 'sciana':
+            elif object_type.lower() == 'sciana':
                 if scale == '500':
                     expression = QgsExpression("geom_to_wkt( collect_geometries(kreskowanie( geometry(get_feature( '" + ids + "',  'gml_id' , " + '"gml_id"' + " )), $geometry, 5.5, 100, 45, 3.5, 1), kreskowanie( geometry(get_feature( '" + ids + "',  'gml_id' , " + '"gml_id"' + " )), $geometry, 5.5, 100, 45, 3, 1)))")
                 elif scale == '1000':
                     expression = QgsExpression("geom_to_wkt( collect_geometries(kreskowanie( geometry(get_feature( '" + ids + "',  'gml_id' , " + '"gml_id"' + " )), $geometry, 8.25, 100, 45, 4.25 , 1), kreskowanie( geometry(get_feature( '" + ids + "',  'gml_id' , " + '"gml_id"' + " )), $geometry, 8.25, 100, 45, 5, 1)))")
 
-            if expression is not None and layer.geometryType() == 2:
+            if layer.geometryType() == 2:
                 # rozpoczecie edycji warstwy
 
                 def get_feats():
@@ -113,15 +115,49 @@ class Main:
 
                     field_index = layer.fields().indexFromName(column_name)
                     attribute_map = {}
+                    attribute_map_python = {}
 
                     if field_index >= 0:
                         features = get_feats()  #tutaj jest pobierany iterator poniewaz gdy jest wczesniej to nie zawsze dobrze dziala
                         start_f = datetime.datetime.now()
                         for feature in features:
                             context.setFeature(feature)
-                            outText = expression.evaluate(context)
-                            attribute_map.update({feature.id(): {field_index: outText}})
+                            #outText = expression.evaluate(context)
+                            gora_exp = QgsExpression(
+                                "skarpy($geometry,  aggregate('" + pocz + "', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('" + kon + "', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top')")
+                            gora = gora_exp.evaluate(context)
+                            print('gora', gora)
+                            #print('gora', type(gora))
+                            print('gora exp', gora_exp)
+
+                            if gora.isNull() is False:
+                                #print('robie', gora.asWkt(3))
+                                buffer = gora.buffer(0.001, 3)
+                                area = gora.area()
+                                length = gora.length()
+
+                                first_kreskowanie = kreskowanie(gora, buffer, area / length, 50, 90, 0, 1)
+                                print(first_kreskowanie)
+                                second_kreskowanie = kreskowanie(gora, buffer, area / length, 50, 90, area / length * 2,
+                                                                 0.5)
+
+                                if scale == '500':
+                                    expression_python = QgsGeometry.collectGeometry(
+                                        [first_kreskowanie, second_kreskowanie]).asWkt(3)
+                                    print('f', first_kreskowanie)
+                                    print('s', second_kreskowanie)
+                            else:
+                                expression_python = ''
+
+
+                            outText = expression_python
+                            #attribute_map.update({feature.id(): {field_index: outText}})
+                            attribute_map_python.update({feature.id(): {field_index: outText}})
+
+
+
                         layer.dataProvider().changeAttributeValues(attribute_map)
+                        layer.dataProvider().changeAttributeValues(attribute_map_python)
 
 
     def calculate_colors(self, layer, column_name):
