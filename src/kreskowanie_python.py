@@ -53,7 +53,7 @@ def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle=90, of
     """
     start_time = datetime.datetime.now()
 
-    geometry_limit = QgsGeometry.fromWkt(geometry_limit.asWkt(3))
+    #geometry_limit = QgsGeometry.fromWkt(geometry_limit.asWkt(3))
 
     # context = QgsExpressionContext()
     # context.setFeature(feature)
@@ -166,13 +166,9 @@ def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle=90, of
     # orig_geom_lines = orig_geom_lines_exp.evaluate(context)
     # orig_geom_list = orig_geom_lines.asGeometryCollection()
 
-    print('moja geom', geometry)
-
     orig_geom_list = line_to_multi_segments(geometry)
     orig_geom_list = QgsGeometry(orig_geom_list).asGeometryCollection()
     # orig_geom_list = geometry ----------
-
-    print('dddd', orig_geom_list)
 
     new_geom_list = []
     prev_residue = offset
@@ -183,6 +179,7 @@ def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle=90, of
         new_part_2 = part.singleSidedBuffer(distance, 1, Qgis.BufferSide(1), Qgis.JoinStyle(1), 1)
         new_part = new_part_1.combine(new_part_2)
         new_part_lim = new_part.intersection(geometry_limit)
+
         if bis_list != [] and bisections:
             new_part_prz = new_part_lim.difference(bisections.buffer(0.01, 1))
         else:
@@ -195,7 +192,9 @@ def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle=90, of
 
         part_length = part.length()
         spacing_sum = spacing - prev_residue
+
         while spacing_sum < part_length:
+            #print(spacing_sum, part_length)
 
             point_interp = part.interpolate(spacing_sum)
             azym = part.interpolateAngle(spacing_sum)
@@ -205,7 +204,6 @@ def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle=90, of
             point_proj2 = project_point(point_interp.vertexAt(0), distance,
                                         azym + ((180 - rotate_angle) * (math.pi / 180)))
             step2 = QgsGeometry.fromPolyline([point_interp.vertexAt(0), point_proj2])
-
             step = QgsGeometry.collectGeometry([step1, step2])
             step_cut = step.intersection(parts_geom)
             if step_cut is not None and not step_cut.isEmpty():

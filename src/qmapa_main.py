@@ -43,7 +43,7 @@ class Main:
     def calculate_hatching(self, layer, object_type, scale, ref_lay_ids):
         """funkcja przelicza kreskowanie i wstawia ta geometrie w formacie wkt do atrybutow
         type: 'skarpa' or 'schody' or 'sciana' or 'wody' """
-
+        nowe = False
         # wstawianie kolumny z geometria - jesto to konieczne zeby bylo robione zawsze, unikamy w ten sposob error w symbolach
         column_name = 'obliczona_geometria' + '_' + scale
         field_index = layer.fields().indexFromName(column_name)
@@ -58,12 +58,10 @@ class Main:
             if object_type.lower() == 'skarpa' or object_type.lower() == 'wody':
                 pocz = str(ref_lay_ids[0])
                 kon = str(ref_lay_ids[1])
-
-                context = QgsExpressionContext()
-                context.appendScopes(QgsExpressionContextUtils.globalProjectLayerScopes(layer))
-
+                nowe = True
 
             elif object_type.lower() == 'schody':
+                nowe = False
                 if scale == '500':
                     expression = QgsExpression("geom_to_wkt(kreskowanie( geometry(get_feature( '" + ids + "',  'gml_id' ,  " + ''"gml_id"'' + ")), $geometry, 0.5, 100, 90, 0, 1))")
                 elif scale == '1000':
@@ -117,48 +115,56 @@ class Main:
                     attribute_map = {}
                     attribute_map_python = {}
 
-                    if field_index >= 0:
+                    if field_index >= 0 and nowe is True:
                         features = get_feats()  #tutaj jest pobierany iterator poniewaz gdy jest wczesniej to nie zawsze dobrze dziala
                         start_f = datetime.datetime.now()
                         for feature in features:
+                            #print('feature', feature)
                             context.setFeature(feature)
                             #outText = expression.evaluate(context)
+
                             gora_exp = QgsExpression(
                                 "skarpy($geometry,  aggregate('" + pocz + "', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('" + kon + "', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top')")
                             gora = gora_exp.evaluate(context)
-                            print('gora', gora)
+                            #print('gora', gora)
                             #print('gora', type(gora))
-                            print('gora exp', gora_exp)
+                            #print('gora exp', gora_exp)
 
                             if gora.isNull() is False:
                                 #print('robie', gora.asWkt(3))
-                                buffer = gora.buffer(0.001, 3)
-                                area = gora.area()
+                                buffer = feature.geometry().buffer(0.001, 0)
+                                area = feature.geometry().area()
                                 length = gora.length()
-
                                 first_kreskowanie = kreskowanie(gora, buffer, area / length, 50, 90, 0, 1)
-                                print(first_kreskowanie)
+                                #print('ffff', first_kreskowanie)
                                 second_kreskowanie = kreskowanie(gora, buffer, area / length, 50, 90, area / length * 2,
                                                                  0.5)
 
                                 if scale == '500':
-                                    expression_python = QgsGeometry.collectGeometry(
-                                        [first_kreskowanie, second_kreskowanie]).asWkt(3)
-                                    print('f', first_kreskowanie)
-                                    print('s', second_kreskowanie)
+                                    expression_python = QgsGeometry.collectGeometry([first_kreskowanie, second_kreskowanie]).asWkt(3)
+                                    #print('f', first_kreskowanie)
+                                    #print('s', second_kreskowanie)
                             else:
                                 expression_python = ''
 
 
-                            outText = expression_python
+                            outText_py = expression_python
+                            # outText = expression.evaluate(context)
                             #attribute_map.update({feature.id(): {field_index: outText}})
-                            attribute_map_python.update({feature.id(): {field_index: outText}})
+                            attribute_map_python.update({feature.id(): {field_index: outText_py}})
 
 
 
-                        layer.dataProvider().changeAttributeValues(attribute_map)
+                        #layer.dataProvider().changeAttributeValues(attribute_map)
                         layer.dataProvider().changeAttributeValues(attribute_map_python)
-
+                    elif field_index >= 0 and nowe is False:
+                        features = get_feats()  # tutaj jest pobierany iterator poniewaz gdy jest wczesniej to nie zawsze dobrze dziala
+                        start_f = datetime.datetime.now()
+                        for feature in features:
+                            context.setFeature(feature)
+                            outText = expression.evaluate(context)
+                            attribute_map.update({feature.id(): {field_index: outText}})
+                        layer.dataProvider().changeAttributeValues(attribute_map)
 
     def calculate_colors(self, layer, column_name):
         expr_raw = ("case "
