@@ -63,14 +63,88 @@ class Main:
             elif object_type.lower() == 'schody':
                 nowe = False
                 if scale == '500':
+                    context = QgsExpressionContext()
+                    context.appendScopes(QgsExpressionContextUtils.globalProjectLayerScopes(layer))
                     expression = QgsExpression("geom_to_wkt(kreskowanie( geometry(get_feature( '" + ids + "',  'gml_id' ,  " + ''"gml_id"'' + ")), $geometry, 0.5, 100, 90, 0, 1))")
+                    exp_schody_500 = expression.evaluate(context)
+                    print('exp_schody_500', expression)
+
+                    # python
+                    layer = QgsProject.instance().mapLayers(ids)[0]
+
+                    column_name = 'gml_id'
+                    column_value = 'id tego feature z petli ponizej'
+
+                    # create the feature request
+                    request = QgsFeatureRequest().setFilterExpression(f"{column_name} = '{column_value}'")
+
+                    # get the features
+                    feature = [f for f in layer.getFeatures(request)][0]
+
+                    # pobranie polilini
+                    for feature in layer.getFeatures():
+                        feature_geom = feature.geometry()
+                        kresk = kreskowanie(feature, this_feature_geom, 0.5, 100, 90, 0, 1)
+
                 elif scale == '1000':
                     expression = QgsExpression("geom_to_wkt(kreskowanie( geometry(get_feature( '" + ids + "',  'gml_id' ,  " + ''"gml_id"'' + ")), $geometry, 0.75, 100, 90, 0, 1))")
-            elif object_type.lower() == 'sciana':
+
+                    # python
+                    layer = QgsProject.instance().mapLayers(ids)[0]
+
+                    column_name = 'gml_id'
+                    column_value = 'id tego feature z petli ponizej'
+
+                    # create the feature request
+                    request = QgsFeatureRequest().setFilterExpression(f"{column_name} = '{column_value}'")
+
+                    # get the features
+                    feature = [f for f in layer.getFeatures(request)][0]
+
+                    # pobranie polilini
+                    for feature in layer.getFeatures():
+                        feature_geom = feature.geometry()
+                        kresk = kreskowanie(feature_geom, this_feature_geom, 0.75, 100, 90, 0, 1)
+
+           elif object_type.lower() == 'sciana':
                 if scale == '500':
                     expression = QgsExpression("geom_to_wkt( collect_geometries(kreskowanie( geometry(get_feature( '" + ids + "',  'gml_id' , " + '"gml_id"' + " )), $geometry, 5.5, 100, 45, 3.5, 1), kreskowanie( geometry(get_feature( '" + ids + "',  'gml_id' , " + '"gml_id"' + " )), $geometry, 5.5, 100, 45, 3, 1)))")
+
+                    # python
+                    layer = QgsProject.instance().mapLayers(ids)[0]
+
+                    column_name = 'gml_id'
+                    column_value = 'id tego feature z petli ponizej'
+
+                    # create the feature request
+                    request = QgsFeatureRequest().setFilterExpression(f"{column_name} = '{column_value}'")
+
+                    # pobranie polilini
+                    feature = [f for f in layer.getFeatures(request)][0]
+
+                    feature_geom = feature.geometry()
+                    first_kreskowanie = kreskowanie(feature_geom, this_feature_geom, 5.5, 100, 45, 3.5, 1)
+                    second_kreskowanie = kreskowanie(feature_geom, this_feature_geom, 5.5, 100, 45, 3, 1)
+                    expression_python = QgsGeometry.collectGeometry([first_kreskowanie, second_kreskowanie]).asWkt(3)
+
                 elif scale == '1000':
                     expression = QgsExpression("geom_to_wkt( collect_geometries(kreskowanie( geometry(get_feature( '" + ids + "',  'gml_id' , " + '"gml_id"' + " )), $geometry, 8.25, 100, 45, 4.25 , 1), kreskowanie( geometry(get_feature( '" + ids + "',  'gml_id' , " + '"gml_id"' + " )), $geometry, 8.25, 100, 45, 5, 1)))")
+
+                    # python
+                    layer = QgsProject.instance().mapLayers(ids)[0]
+
+                    column_name = 'gml_id'
+                    column_value = 'id tego feature z petli ponizej'
+
+                    # create the feature request
+                    request = QgsFeatureRequest().setFilterExpression(f"{column_name} = '{column_value}'")
+
+                    # pobranie polilini
+                    feature = [f for f in layer.getFeatures(request)][0]
+                    feature_geom = feature.geometry()
+                    first_kreskowanie = kreskowanie(feature_geom, this_feature_geom, 8.25, 100, 45, 4.25 , 1)
+                    second_kreskowanie = kreskowanie(feature_geom, this_feature_geom, 8.25, 100, 45, 5, 1)
+                    expression_python = QgsGeometry.collectGeometry([first_kreskowanie, second_kreskowanie]).asWkt(3)
 
             if layer.geometryType() == 2:
                 # rozpoczecie edycji warstwy
@@ -159,7 +233,6 @@ class Main:
                         layer.dataProvider().changeAttributeValues(attribute_map_python)
                     elif field_index >= 0 and nowe is False:
                         features = get_feats()  # tutaj jest pobierany iterator poniewaz gdy jest wczesniej to nie zawsze dobrze dziala
-                        start_f = datetime.datetime.now()
                         for feature in features:
                             context.setFeature(feature)
                             outText = expression.evaluate(context)
