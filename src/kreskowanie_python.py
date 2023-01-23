@@ -3,27 +3,6 @@ from qgis.gui import *
 import math
 import datetime
 
-
-def line_to_multi_segments(line_geometry):
-    if line_geometry.isMultipart() is False:
-        multi_segments = QgsMultiLineString()
-        line_geometry = QgsLineString(line_geometry.asPolyline())
-        line_geometry_points = line_geometry.points()  # lista punktow w danej linii
-        for i in range(0, len(line_geometry.points())):
-            if i < len(line_geometry_points) - 1:
-                segment = QgsLineString([line_geometry_points[i], line_geometry_points[i + 1]])
-                multi_segments.addGeometry(segment)
-    else:
-        multi_segments = QgsMultiLineString()
-        line_geometry = QgsLineString(line_geometry.asMultiPolyline())
-        line_geometry_points = line_geometry.points()  # lista punktow w danej linii
-        for i in range(0, len(line_geometry.points())):
-            if i < len(line_geometry_points) - 1:
-                segment = QgsLineString([line_geometry_points[i], line_geometry_points[i + 1]])
-                multi_segments.addGeometry(segment)
-    return multi_segments
-
-
 # Generate list of QgsPoints from input geometry ( can be point, line, or polygon )
 def extractPoints(geom):
     multi_geom = QgsGeometry()
@@ -53,6 +32,14 @@ def extractPoints(geom):
     # FIXME - if there is none of know geoms (point, line, polygon) show an warning message
     return temp_geom
 
+def line_to_multi_segments(line_geometry):
+    multi_segments = QgsMultiLineString()
+    pts = extractPoints(line_geometry)
+    for i in range(0, len(pts)):
+        if i < len(pts) - 1:
+            segment = QgsLineString([pts[i], pts[i + 1]])
+            multi_segments.addGeometry(segment)
+    return multi_segments
 
 def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle=90, offset=0, multiply=1):
     """test(geometry, geometry_limit, spacing, distance, rotate_angle, offset, multiply)
@@ -179,18 +166,18 @@ def kreskowanie(geometry, geometry_limit, spacing, distance, rotate_angle=90, of
     # orig_geom_lines = orig_geom_lines_exp.evaluate(context)
     # orig_geom_list = orig_geom_lines.asGeometryCollection()
 
-    print('dddd')
+    print('moja geom', geometry)
 
     orig_geom_list = line_to_multi_segments(geometry)
-    orig_geom_list = orig_geom_list.asGeometryCollection()
+    orig_geom_list = QgsGeometry(orig_geom_list).asGeometryCollection()
     # orig_geom_list = geometry ----------
 
+    print('dddd', orig_geom_list)
 
     new_geom_list = []
     prev_residue = offset
 
     for part in orig_geom_list:
-        print(part)
         parts_list = []
         new_part_1 = part.singleSidedBuffer(distance, 1, Qgis.BufferSide(0), Qgis.JoinStyle(1), 1)
         new_part_2 = part.singleSidedBuffer(distance, 1, Qgis.BufferSide(1), Qgis.JoinStyle(1), 1)
