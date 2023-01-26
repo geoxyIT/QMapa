@@ -308,7 +308,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 QCoreApplication.processEvents()
 
                 # nadanie zlaczen
-                self.set_joins(self.vec_layers_list)
+                # self.set_joins(self.vec_layers_list)
                 self.progressBar.setValue(60)
                 print('Czas 60%:', datetime.now() - start_2)
                 QCoreApplication.processEvents()
@@ -378,6 +378,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                             if 'ges_rzedna' in lay.name().lower():
                                 stt = datetime.now()
                                 Main().calculate_colors(lay, 'color')
+                                print('stt', datetime.now()-stt)
                             elif 'wody' in lay.name().lower():
                                 Main().calculate_hatching(lay, 'wody', sc, [start_point_layer_id, end_point_layer_id])
                             elif 'skarpa' in lay.name().lower():
