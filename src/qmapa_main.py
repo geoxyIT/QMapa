@@ -10,8 +10,8 @@ from qgis.core import *
 
 from osgeo import ogr
 
-from .config import correct_layers, additional_layers, pts_list, line_list, polygon_list, incompatible_pref,\
-    incompatible_pref_friendly_name, prefix_of_bases
+from .config import correct_layers, additional_layers, incompatible_pref,\
+    incompatible_pref_friendly_name, prefix_of_bases, ges_colors
 from .express_yourself import ExpressYourself
 from .create_report_file import report
 from .kreskowanie_python import kreskowanie
@@ -255,6 +255,11 @@ class Main:
             x()
 
     def calculate_colors(self, layer, column_name):
+        """
+        :param layer: warstwa ges rzedna
+        :param column_name: nazwa kolumny wyjsciowej do ktorej wstawiane sa kolory
+
+        """
         def y():
             expr_raw = ("case "
                               " when "
@@ -318,9 +323,60 @@ class Main:
                 out_text = expression.evaluate(context)
 
                 attribute_map.update({feature.id(): {cum_sum_index: out_text}})
-
             layer.dataProvider().changeAttributeValues(attribute_map)
         self.profil(y, path=r'C:\Users\Geoxy\Desktop\output_kolorowanie.txt')
+
+    def calculate_colors_python(self, main_layer, column_name):
+        """
+        :param main_layer: warstwa ges rzedna
+        :param column_name: nazwa kolumny wyjsciowej do ktorej wstawiane sa kolory
+        """
+
+        # te co maja 0,0,0 to domyslny kolor w else
+        # jezeli jest kilka rodzajow sieci to wtedy nadawac kolor czarny
+        # rozdzielanie przypadkow (1:e), (2:k, f)
+
+        # pobranie dostępnych warstw
+        layers = iface.mapCanvas().layers()
+
+        # dodanie kolumny
+        field_index = main_layer.fields().indexFromName(column_name)
+        if field_index == -1:
+            field = QgsField(column_name, QVariant.String)
+            main_layer.dataProvider().addAttributes([field])
+            main_layer.updateFields()
+
+        # pobranie kolumny
+        cum_sum_index = main_layer.fields().indexFromName(column_name)
+        attribute_map_python = {}
+        features = main_layer.getFeatures()
+
+
+        # iteracja po obiektach
+        for feature in features:
+            # iteracja po słowniku warstw GESUT tj.przewody, urządzenia
+            for ges_layer_name in ges_colors.items():
+                # pobranie id dla warstwy
+                id = [layer.id() for layer in layers if layer.name() == ges_layer_name][0]
+                warstwa_przewodow = QgsProject.instance().mapLayers()[id]
+
+                column_name = 'lokalnyId'
+                column_value = feature.attribute('relacja')
+                try:
+                    # sprawdzić czas końcowy dla request z geometria i bez
+                    #request = QgsFeatureRequest().setFlags(QgsFeatureRequest.NoGeometry)
+                    request = QgsFeatureRequest().setFilterExpression(f"{column_name} = '{column_value}'")
+
+                    # pobranie obiektu z warstw ges_przewod itd..
+                    ges_object = [f for f in warstwa_przewodow.getFeatures(request)][0]
+                    # pobranie indeksu kolumny
+                    column_index = ges_object.fieldNameIndex('zrodlo')
+                    out_text_python = ges_object.attributes()[column_index]
+                    print('output_text', out_text_python)
+                except:
+                    out_text_python = ''
+                attribute_map_python.update({feature.id(): {cum_sum_index: out_text_python}})
+            main_layer.dataProvider().changeAttributeValues(attribute_map_python)
 
     def setStyling(self, layers, style_name):
         """ustawianie wybranej stylizacji dla wybranych warstw na mapie, z plików qml"""

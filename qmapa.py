@@ -190,10 +190,10 @@ class QMapa:
         self.tryUnregister()
 
         # inizjalizacja funkcji z folderu expressions
-        QgsExpression.registerFunction(kreskowanie.kreskowanie)
+        # QgsExpression.registerFunction(kreskowanie.kreskowanie)
         QgsExpression.registerFunction(connect_points.connect_points)
         QgsExpression.registerFunction(get_half_line.get_half_line)
-        QgsExpression.registerFunction(skarpy.skarpy)
+        # QgsExpression.registerFunction(skarpy.skarpy)
         QgsExpression.registerFunction(recalculate_justification.recalculate_justification)
         QgsExpression.registerFunction(pokaz_wersje.pokaz_wersje)
         QgsExpression.registerFunction(kolor_wersji.kolor_wersji)
@@ -331,10 +331,10 @@ class QMapa:
         self.tryUnregister()
 
         # inizjalizacja funkcji z folderu expressions
-        QgsExpression.registerFunction(kreskowanie.kreskowanie)
+        # QgsExpression.registerFunction(kreskowanie.kreskowanie)
         QgsExpression.registerFunction(connect_points.connect_points)
         QgsExpression.registerFunction(get_half_line.get_half_line)
-        QgsExpression.registerFunction(skarpy.skarpy)
+        # QgsExpression.registerFunction(skarpy.skarpy)
         QgsExpression.registerFunction(recalculate_justification.recalculate_justification)
         QgsExpression.registerFunction(pokaz_wersje.pokaz_wersje)
         QgsExpression.registerFunction(kolor_wersji.kolor_wersji)

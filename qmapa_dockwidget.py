@@ -48,7 +48,6 @@ from .src.gml_modify import GmlModify
 from .src.layer_order import set_new_order
 from .src.load_gpkg import load_gpkg
 from .src.qmapa_main import Main
-# from .src.config import correct_layers
 from .src.scrap_version import *
 from .src.config import correct_layers
 from .src.express_yourself import ExpressYourself
@@ -105,8 +104,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         iface.mapCanvas().scaleChanged.connect(self.setLegendScale)
 
         self.setLegendScale()
-
-
 
     def closeEvent(self, event):
         self.closingPlugin.emit()
@@ -308,7 +305,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 QCoreApplication.processEvents()
 
                 # nadanie zlaczen
-                # self.set_joins(self.vec_layers_list)
+                self.set_joins(self.vec_layers_list)
                 self.progressBar.setValue(60)
                 print('Czas 60%:', datetime.now() - start_2)
                 QCoreApplication.processEvents()
@@ -378,6 +375,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                             if 'ges_rzedna' in lay.name().lower():
                                 stt = datetime.now()
                                 Main().calculate_colors(lay, 'color')
+                                Main().calculate_colors_python(lay, 'color_python')
                                 print('stt', datetime.now()-stt)
                             elif 'wody' in lay.name().lower():
                                 Main().calculate_hatching(lay, 'wody', sc, [start_point_layer_id, end_point_layer_id])
