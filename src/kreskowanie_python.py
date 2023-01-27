@@ -119,8 +119,8 @@ def kreskowanie(polyline_geometry, geometry_limit, spacing, distance, rotate_ang
     too_short = offset
     length_top = polyline_geometry.length()
     if spacing > length_top and fix_short:
-        too_short = -length_top/2
-        print('too', too_short, too_short)
+        too_short = length_top/2
+        print('too', too_short, spacing)
 
     for part in orig_geom_list:
         parts_list = []
