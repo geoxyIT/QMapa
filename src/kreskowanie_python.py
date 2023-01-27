@@ -44,7 +44,7 @@ def line_to_multi_segments(multi_line_geometry):
     return multi_segments
 
 
-def kreskowanie(polyline_geometry, geometry_limit, spacing, distance, rotate_angle=90, offset=0, multiply=1):
+def kreskowanie(polyline_geometry, geometry_limit, spacing, distance, rotate_angle=90, offset=0, multiply=1, fix_short=True):
     """test(geometry, geometry_limit, spacing, distance, rotate_angle, offset, multiply)
     geometry - geometria polilinii kierunkowej,
     geometry_limit - geometria poligonowa ograniczajaca zasieg,
@@ -120,7 +120,6 @@ def kreskowanie(polyline_geometry, geometry_limit, spacing, distance, rotate_ang
     length_top = polyline_geometry.length()
     if spacing > length_top and fix_short:
         too_short = length_top/2
-        print('too', too_short, spacing)
 
     for part in orig_geom_list:
         parts_list = []

@@ -150,7 +150,7 @@ class Main:
                                     if gora.isNull() is False:
                                         area = feature_geom.area()
                                         length = gora.length()
-                                        first_kreskowanie = kreskowanie(gora, feature_geom, area / length, 50, 90, 0, 1)
+                                        first_kreskowanie = kreskowanie(gora, feature_geom, area / length, 50, 90, area / (length), 1, False)
                                         #print('ffff', first_kreskowanie)
                                         second_kreskowanie = kreskowanie(gora, feature_geom, area / length, 50, 90, area / (length * 2),
                                                                          0.5)
@@ -217,8 +217,8 @@ class Main:
                                             polyline = [f for f in poly_layer.getFeatures(request)][0]
 
                                             polyline_geom = polyline.geometry()
-                                            first_kreskowanie = kreskowanie(polyline_geom, feature_geom, 5.5, 100, 45, 3.5, 1)
-                                            second_kreskowanie = kreskowanie(polyline_geom, feature_geom, 5.5, 100, 45, 3, 1)
+                                            first_kreskowanie = kreskowanie(polyline_geom, feature_geom, 5.5, 100, 45, 3.5, 1, False)
+                                            second_kreskowanie = kreskowanie(polyline_geom, feature_geom, 5.5, 100, 45, 3, 1, False)
                                             expression_python = QgsGeometry.collectGeometry(
                                                 [first_kreskowanie, second_kreskowanie]).asWkt(3)
                                         except:
@@ -250,7 +250,7 @@ class Main:
                                 attribute_map.update({feature.id(): {field_index: expression_python}})
                             layer.dataProvider().changeAttributeValues(attribute_map)
         if object_type == 'skarpa':
-            self.profil(x, path=r'C:\Users\Geoxy\Desktop\x\output_kreskowanie.txt')
+            self.profil(x, path=r'C:\Users\Geoxy\Desktop\output_kreskowanie.txt')
         else:
             x()
 
@@ -320,7 +320,7 @@ class Main:
                 attribute_map.update({feature.id(): {cum_sum_index: out_text}})
 
             layer.dataProvider().changeAttributeValues(attribute_map)
-        self.profil(y, path=r'C:\Users\Geoxy\Desktop\x\output_kolorowanie.txt')
+        self.profil(y, path=r'C:\Users\Geoxy\Desktop\output_kolorowanie.txt')
 
     def setStyling(self, layers, style_name):
         """ustawianie wybranej stylizacji dla wybranych warstw na mapie, z plików qml"""
