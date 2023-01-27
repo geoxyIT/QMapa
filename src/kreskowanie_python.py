@@ -2,6 +2,7 @@ from qgis.core import *
 from qgis.gui import *
 import math
 
+
 # Generate list of QgsPoints from input geometry ( can be point, line, or polygon )
 def extractPoints(geom):
     multi_geom = QgsGeometry()
@@ -31,6 +32,7 @@ def extractPoints(geom):
     # FIXME - if there is none of know geoms (point, line, polygon) show an warning message
     return temp_geom
 
+
 def line_to_multi_segments(multi_line_geometry):
     multi_segments = QgsMultiLineString()
     for line_geometry in multi_line_geometry.asGeometryCollection():
@@ -41,7 +43,8 @@ def line_to_multi_segments(multi_line_geometry):
                 multi_segments.addGeometry(segment)
     return multi_segments
 
-def kreskowanie(polyline_geometry, geometry_limit, spacing, distance, rotate_angle=90, offset=0, multiply=1, fix_short=True):
+
+def kreskowanie(polyline_geometry, geometry_limit, spacing, distance, rotate_angle=90, offset=0, multiply=1):
     """test(geometry, geometry_limit, spacing, distance, rotate_angle, offset, multiply)
     geometry - geometria polilinii kierunkowej,
     geometry_limit - geometria poligonowa ograniczajaca zasieg,
@@ -62,9 +65,10 @@ def kreskowanie(polyline_geometry, geometry_limit, spacing, distance, rotate_ang
     # iteracja po czesciach z multi polilinie kierunowerj (gory skarpy):
     for part_from_multi in polyline_geometry.asGeometryCollection():
         points_num = len([x for x in part_from_multi.vertices()])
-        #iteracja po kazdym punkcie w polilinii - liczenie w nim azymutu i rysowanie dwusiecznej:
-        for ind in range(points_num ):
-            if ind != 0 and points_num > 1 and ind == points_num - 1 and part_from_multi.vertexAt(points_num - 1) == part_from_multi.vertexAt(
+        # iteracja po kazdym punkcie w polilinii - liczenie w nim azymutu i rysowanie dwusiecznej:
+        for ind in range(points_num):
+            if ind != 0 and points_num > 1 and ind == points_num - 1 and part_from_multi.vertexAt(
+                    points_num - 1) == part_from_multi.vertexAt(
                     0):
                 ind_next = 1
             elif ind != 0 and ind != points_num - 1:

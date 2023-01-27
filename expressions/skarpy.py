@@ -15,6 +15,9 @@ def skarpy(geometry, top_start_point, top_end_point, side = 'top', feature = Non
     #  na exterior ring jesli jest tam poczatek gory skarpy
     #  lub na wszystkich interior ringach jesli na ktorymkolwiek z nich jest poczatek gory skarpy
 
+    print('start pt', top_start_point)
+    print('end pt', top_end_point)
+
     start_time = datetime.datetime.now()
 
     context = QgsExpressionContext()
@@ -40,12 +43,14 @@ def skarpy(geometry, top_start_point, top_end_point, side = 'top', feature = Non
             int_ring_exp = QgsExpression("interior_ring_n(geom_from_wkt('" + geomet.asWkt() + "')," + str(id_int_ring) + ")")
             int_ring = int_ring_exp.evaluate(context)
             rings_list.append(int_ring)
-
+        print('rings_list', rings_list)
+        print('rings_list len', len(rings_list))
         # iteracja po poligonach z multipoligonu
         for x in [1]:
             for geom in rings_list:
                 points_num_exp = QgsExpression("num_points(geom_from_wkt('" + geom.asWkt() + "'))")
                 points_num = points_num_exp.evaluate(context)
+                print('points_num', points_num)
                 coord_top_start = top_start_point.intersection(geom).vertexAt(0)
                 coord_top_end = top_end_point.intersection(geom).vertexAt(0)
                 listka.append(top_end_point.intersection(geom))
