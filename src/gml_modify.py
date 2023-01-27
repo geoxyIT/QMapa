@@ -128,8 +128,8 @@ class GmlModify:
         """Iteracja po pliku, wyciagniecie relacji z etykiet do obiektow, oraz wstawienie w te obiekty
         id etykiet"""
         gml_id_list = list()
-        for feature_member in self.root.iter(pref_name + pref_tag +'opisyKARTO'):
-            for feature in feature_member.findall(pref_name+'obiektPrzedstawiany'):
+        for feature_member in self.root.iter(pref_name + pref_tag + 'opisyKARTO'):
+            for feature in feature_member.findall(pref_name + 'obiektPrzedstawiany'):
                 gml_id_list.append(feature.text)
                 # text_do_wstawienia = './/{ges}GES_Rzedna[@{xd}id="{f_t}"]'.format(ges=gml_namespace_val, xd = gml, f_t = feature.text)
         for main_child in self.root:
@@ -158,6 +158,16 @@ class GmlModify:
                     val.remove(child)
                     self.err_number += 1
 
+    def get_crs_epsg(self):
+        """rozpoznanie ukladu wspolrzednych danych. Jezeli jest kilka, to bierze pierwszy jaki znajdzie"""
+        crs = None
+        for feature_member in self.root:
+            geometry_with_srs = feature_member.find('.//*[@srsName]')
+            if geometry_with_srs is not None:
+                crs = geometry_with_srs.attrib['srsName']
+                break
+        return crs
+
     def extract_all(self, root, pref_name, pref_tag_dict, split_list):
         pref = pref_name
         list_appending = []
@@ -181,12 +191,11 @@ class GmlModify:
             #print('tag', main_child[0].tag)
             prezentacje = main_child.findall(pref + 'PrezentacjaGraficzna')
             #print(main_child[0].tag)
-            '''for ch in main_child:
-                print(ch.tag, ch.attrib)'''
             for feat in prezentacje:
                 feat.tag = pref + pref_tag + 'PrezentacjaGraficzna'
                 geometry = ET.SubElement(feat, split_pref_0)
                 point = ET.SubElement(geometry, '{http://www.opengis.net/gml/3.2}Point')
+                point.attrib['srsName'] = self.found_crs
                 position = ET.SubElement(point, '{http://www.opengis.net/gml/3.2}pos')
                 position.text = ' '
                 geometry.tail = '\n'
@@ -272,6 +281,26 @@ class GmlModify:
         for child in list_appending:
             root.append(child)
 
+        """for zammm in ['PrezentacjaGraficzna', 'Etykieta', 'etykieta']:
+            for main_child in root:
+                #print('tag', main_child[0].tag)
+                prezentacje = main_child.findall(pref + zammm)
+                #print(main_child[0].tag)
+                '''for ch in main_child:
+                    print(ch.tag, ch.attrib)'''
+                for feat in prezentacje:
+                    feat.tag = pref + pref_tag + zammm
+                    geometry = ET.SubElement(feat, split_pref_0)
+                    point = ET.SubElement(geometry, '{http://www.opengis.net/gml/3.2}Point')
+                    position = ET.SubElement(point, '{http://www.opengis.net/gml/3.2}pos')
+                    position.text = ' '
+                    geometry.tail = '\n'
+
+                    # zmiana kolejnosci atrybutow - geometria ma byc na poczatku
+                    geom = copy.deepcopy(feat[-1])
+                    feat.insert(0, geom)
+                    feat.remove(feat[-1])"""
+
     def save_gml(self):
         """Zapis pliku wynikowego gml"""
         self.tree.write(self.output_path, encoding='utf-8')
@@ -297,12 +326,17 @@ class GmlModify:
         self.file = open(self.file_path, 'r', encoding='utf-8')
         self.extract_namespaces(file=self.file)
 
+        #wynikiem ponizszego teoretycznie moze byc none, wtedy warto by bylo dac domyslna wartosc crs taka zeby byla dobra a nie ''
+        self.found_crs = self.get_crs_epsg()
+        if self.found_crs is None: self.found_crs = ''
+
         #pref_list = ['{ewidencjaGruntowIBudynkow:1.0}', '{bazaDanychObiektowTopograficznych500:1.0}',
                      #'{geodezyjnaEwidencjaSieciUzbrojeniaTerenu:1.0}']
 
-        split_list = ['poliliniaKierunkowa', 'poczatekGorySkarpy', 'koniecGorySkarpy', 'etykieta']
+        split_list = ['poliliniaKierunkowa', 'poczatekGorySkarpy', 'koniecGorySkarpy', 'etykieta', 'poczatekGoryKolejnejSkarpy', 'koniecGoryKolejnejSkarpy']
 
         self.err_number = 0
+
         for pref_name in self.pref_name_list:
             # relacja dla obiekt przedstawiany
             self.attr_to_text(pref_name + 'PrezentacjaGraficzna',
@@ -327,7 +361,6 @@ class GmlModify:
         self.check_is_correct(self.root, self.pref_name_list, self.pref_tag_dict)
         self.save_gml()
         self.file.close()
-        print(self.incompatible_found)
         if self.incompatible_found is True:
             print("Wykryto obiekty niezgodne z modelem 2021")
             iface.messageBar().pushMessage("Wykryto obiekty niezgodne z modelami BDOT, EGiB, GESUT 2021: ",

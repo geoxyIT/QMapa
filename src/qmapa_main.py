@@ -17,6 +17,7 @@ from .create_report_file import report
 from .kreskowanie_python import kreskowanie
 
 
+
 class Main:
     def __init__(self):
         self.current_dir = os.path.dirname(os.path.realpath(__file__))
@@ -132,18 +133,15 @@ class Main:
 
                             if gora.isNull() is False:
                                 #print('robie', gora.asWkt(3))
-                                buffer = feature.geometry().buffer(0.001, 0)
+                                limit = feature.geometry()
                                 area = feature.geometry().area()
                                 length = gora.length()
-                                first_kreskowanie = kreskowanie(gora, buffer, area / length, 50, 90, 0, 1)
+                                first_kreskowanie = kreskowanie(gora, limit, area/length, 50, 90, ((area/length)), 1)
                                 #print('ffff', first_kreskowanie)
-                                second_kreskowanie = kreskowanie(gora, buffer, area / length, 50, 90, area / length * 2,
-                                                                 0.5)
+                                second_kreskowanie = kreskowanie(gora, limit, area/length, 50, 90, ((area/length)/2), 0.5)
 
                                 if scale == '500':
                                     expression_python = QgsGeometry.collectGeometry([first_kreskowanie, second_kreskowanie]).asWkt(3)
-                                    #print('f', first_kreskowanie)
-                                    #print('s', second_kreskowanie)
                             else:
                                 expression_python = ''
 
@@ -230,7 +228,7 @@ class Main:
             out_text = expression.evaluate(context)
 
             attribute_map.update({feature.id(): {cum_sum_index: out_text}})
-        
+
         layer.dataProvider().changeAttributeValues(attribute_map)
 
     def setStyling(self, layers, style_name):
@@ -443,6 +441,10 @@ class Main:
                 if layer[1].sourceName()[-1].isdigit():
                     replaced_name = layer[1].sourceName().replace(layer[1].sourceName()[-2:], '')
                     layer[1].setName(replaced_name)
+                # usuniecie przedrostka niestandardowych
+                if incompatible_pref in layer[1].name():
+                    replaced_2 = '_'.join(layer[1].name().split('_')[3:])
+                    layer[1].setName(replaced_2)
                 # jezeli warstwa nalezy do grupy elementow redakcyjnych to ją tam dodaj
                 if layer[1].sourceName() in additional_layers:
                     additional_group.insertChildNode(idx, QgsLayerTreeLayer(layer[1]))
@@ -457,14 +459,21 @@ class Main:
             if not found_group:
                 main_group.insertGroup(-1, table_group_name)
                 found_group = main_group.findGroup(table_group_name)
-
-            found_group.insertGroup(-1, 'Część OPISOWA')  # dodanie grupy na koncu
-            group = found_group.findGroup('Część OPISOWA')
+            if incompatible_pref_friendly_name in table_group_name:
+                texts_name = 'Warstwy tekstowe'
+            else:
+                texts_name = 'Część OPISOWA'
+            found_group.insertGroup(-1, texts_name)  # dodanie grupy na koncu
+            group = found_group.findGroup(texts_name)
             for layer in table_group_layers_with_type:
                 # zmiana koncowek nazw warstw z _0 _1 _2 itp na puste
                 if layer[1].sourceName()[-1].isdigit():
                     replaced_name = layer[1].sourceName().replace(layer[1].sourceName()[-2:], '')
                     layer[1].setName(replaced_name)
+                # usuniecie przedrostka niestandardowych
+                if incompatible_pref in layer[1].name():
+                    replaced_2 = '_'.join(layer[1].name().split('_')[3:])
+                    layer[1].setName(replaced_2)
                 group.addLayer(layer[1])
                 root.removeLayer(layer[1])
 
@@ -639,7 +648,6 @@ class Main:
 
                     obj_nd += lay_obj_nd
                     counting_dict[group_name][layer_simple_name] = [lay_obj_nd]
-
 
         return counting_dict
 

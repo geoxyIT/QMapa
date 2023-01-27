@@ -10,6 +10,7 @@ from openpyxl import load_workbook
 import datetime
 import os
 import hashlib
+from .config import incompatible_pref
 
 class report:
     """tworzenie raportu z importu"""
@@ -215,7 +216,7 @@ class report:
                         sheet = self.pasteRange(1, start_paste_row, last_column, start_paste_row+rows -1, sheet, body_data, body_style, body_merged)
                         sheet.cell(column=1, row=start_paste_row).value = i
 
-                        if key_frame == "other":
+                        if key_frame == "other" and incompatible_pref in layer_name:
                             # zmiana wstawianej warstwy poprzez usuniecie przedrostka z informacja o niezgodnosci i nazawa bazy
                             name_of_layer = '_'.join(layer_name.split('_')[3:])
                         else:
