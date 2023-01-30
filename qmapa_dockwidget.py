@@ -373,10 +373,12 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
                         if sc == '500':
                             if 'ges_rzedna' in lay.name().lower():
-                                stt = datetime.now()
-                                Main().calculate_colors(lay, 'color')
+                                # stt1 = datetime.now()
+                                # Main().calculate_colors(lay, 'color')
+                                # print('stt1', datetime.now() - stt1)
+                                stt2 = datetime.now()
                                 Main().calculate_colors_python(lay, 'color_python')
-                                print('stt', datetime.now()-stt)
+                                print('stt2', datetime.now()-stt2)
                             elif 'wody' in lay.name().lower():
                                 Main().calculate_hatching(lay, 'wody', sc, [start_point_layer_id, end_point_layer_id])
                             elif 'skarpa' in lay.name().lower():
@@ -456,26 +458,29 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     def set_joins(self, vec_layers_list):
         """nadawanie joinow podczas importu pliku"""
-        joining_dict = {'GES_Rzedna': {'GES_InneUrzadzeniaTowarzyszace': ['relacja', 'lokalnyId', ['rodzajSieci']],
-                                       'GES_UrzadzeniaTowarzyszczaceLiniowe': ['relacja', 'lokalnyId', ['rodzajSieci']],
-                                       'GES_UrzadzeniaTowarzyszaceLiniowe': ['relacja', 'lokalnyId', ['rodzajSieci']],
-                                       'GES_PrzewodWodociagowy': ['relacja', 'lokalnyId', ['zrodlo']],
-                                       'GES_PrzewodKanalizacyjny': ['relacja', 'lokalnyId', ['zrodlo']],
-                                       'GES_PrzewodElektroenergetyczny': ['relacja', 'lokalnyId', ['zrodlo']],
-                                       'GES_PrzewodGazowy': ['relacja', 'lokalnyId', ['zrodlo']],
-                                       'GES_PrzewodCieplowniczy': ['relacja', 'lokalnyId', ['zrodlo']],
-                                       'GES_PrzewodTelekomunikacyjny': ['relacja', 'lokalnyId', ['zrodlo']],
-                                       'GES_PrzewodSpecjalny': ['relacja', 'lokalnyId', ['zrodlo']],
-                                       'GES_PrzewodNiezidentyfikowany': ['relacja', 'lokalnyId', ['zrodlo']],
-                                       'GES_UrzadzeniaSiecWodociagowa': ['relacja', 'lokalnyId', ['zrodlo']],
-                                       'GES_UrzadzeniaSiecKanalizacyjna': ['relacja', 'lokalnyId', ['zrodlo']],
-                                       'GES_UrzadzeniaSiecElektroenergetyczna': ['relacja', 'lokalnyId', ['zrodlo']],
-                                       'GES_UrzadzeniaSiecGazowa': ['relacja', 'lokalnyId', ['zrodlo']],
-                                       'GES_UrzadzeniaSiecCieplownicza': ['relacja', 'lokalnyId', ['zrodlo']],
-                                       'GES_UrzadzeniaSiecTelekomunikacyjna': ['relacja', 'lokalnyId', ['zrodlo']],
-                                       'GES_UrzadzeniaTechniczneSieciSpecjalnej': ['relacja', 'lokalnyId', ['zrodlo']],
-                                       'GES_UrzadzenieNiezidentyfikowane': ['relacja', 'lokalnyId', ['zrodlo']]
-                                       },
+
+        """'GES_Rzedna': {'GES_InneUrzadzeniaTowarzyszace': ['relacja', 'lokalnyId', ['rodzajSieci']],
+                       'GES_UrzadzeniaTowarzyszczaceLiniowe': ['relacja', 'lokalnyId', ['rodzajSieci']],
+                       'GES_UrzadzeniaTowarzyszaceLiniowe': ['relacja', 'lokalnyId', ['rodzajSieci']],
+                       'GES_PrzewodWodociagowy': ['relacja', 'lokalnyId', ['zrodlo']],
+                       'GES_PrzewodKanalizacyjny': ['relacja', 'lokalnyId', ['zrodlo']],
+                       'GES_PrzewodElektroenergetyczny': ['relacja', 'lokalnyId', ['zrodlo']],
+                       'GES_PrzewodGazowy': ['relacja', 'lokalnyId', ['zrodlo']],
+                       'GES_PrzewodCieplowniczy': ['relacja', 'lokalnyId', ['zrodlo']],
+                       'GES_PrzewodTelekomunikacyjny': ['relacja', 'lokalnyId', ['zrodlo']],
+                       'GES_PrzewodSpecjalny': ['relacja', 'lokalnyId', ['zrodlo']],
+                       'GES_PrzewodNiezidentyfikowany': ['relacja', 'lokalnyId', ['zrodlo']],
+                       'GES_UrzadzeniaSiecWodociagowa': ['relacja', 'lokalnyId', ['zrodlo']],
+                       'GES_UrzadzeniaSiecKanalizacyjna': ['relacja', 'lokalnyId', ['zrodlo']],
+                       'GES_UrzadzeniaSiecElektroenergetyczna': ['relacja', 'lokalnyId', ['zrodlo']],
+                       'GES_UrzadzeniaSiecGazowa': ['relacja', 'lokalnyId', ['zrodlo']],
+                       'GES_UrzadzeniaSiecCieplownicza': ['relacja', 'lokalnyId', ['zrodlo']],
+                       'GES_UrzadzeniaSiecTelekomunikacyjna': ['relacja', 'lokalnyId', ['zrodlo']],
+                       'GES_UrzadzeniaTechniczneSieciSpecjalnej': ['relacja', 'lokalnyId', ['zrodlo']],
+                       'GES_UrzadzenieNiezidentyfikowane': ['relacja', 'lokalnyId', ['zrodlo']]
+                       },"""
+
+        joining_dict = {
                         'OT_opisyKARTO': {'OT_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
                                         'OT_BudynekNiewykazanyWEGIB': ['obiektPrzedstawiany', 'gml_id', []],
                                         'OT_BlokBudynku': ['obiektPrzedstawiany', 'gml_id', []],

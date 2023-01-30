@@ -99,29 +99,32 @@ class GmlModify:
                     if idx == 0:
                         self.relations[lokalny_iip] = None
                         relation_list = []
-                    # print(feature)
                     value = next(v for (k, v) in relacja.attrib.items() if 'href' in k)
                     # usuniecie # gdy jest w relacji
                     if value.startswith('#'):
                         value = value[1:]
                     relation_list.append(value)
-                    # print(lista_relacji)
                     self.relations[lokalny_iip] = relation_list
+                    # zmiana na liste z jednym atrybutem, rezygnacja z mozliwosci istnienia kilku relacji
 
     def iterate_and_add(self, pref_name: str, feature_name: str):
         """Przejscie po pliku gml i dodanie atrybutu w konkretne miejsce"""
         # przejscie po pliku gml i dodanie wartosci w tag IIP
-
-        for feature in self.root.iter(feature_name):
-            for item in self.relations.items():
-                iip = item[0]
-                for values in item[1]:
-                    if feature.attrib[f'{{{self.gml_namespace_val}}}id'] == values:
-                        for find in feature.findall(pref_name + 'idIIP'):
-                            for add in find:
-                                add_relation_attr = ET.SubElement(add, pref_name + 'relacja')
-                                add_relation_attr.text = iip
-                                add_relation_attr.tail = '\n'
+        for feature in self.root.iter(feature_name):  # iteracja po rzednych
+            # print('fit', feature)
+            detect_if_more_than_one = 0
+            for item in self.relations.items():     # iteracja po przewodach
+                if detect_if_more_than_one < 1:  # warunek dla nie przechodzenia w kolejny przewód, jeżeli
+                    # relacja została przypisana do więcej niż jednego obiektu
+                    iip = item[0]  # iip przewodu
+                    for values in item[1]:  # iteracja po rzednych obiektu - gml_id rzednej
+                        if feature.attrib[f'{{{self.gml_namespace_val}}}id'] == values:
+                            for iip_element in feature.findall(pref_name + 'idIIP'):
+                                for add in iip_element:
+                                    add_relation_attr = ET.SubElement(add, pref_name + 'relacja')
+                                    add_relation_attr.text = iip
+                                    add_relation_attr.tail = '\n'
+                                    detect_if_more_than_one += 1
 
 
     def label_relations(self, pref_name, pref_tag):

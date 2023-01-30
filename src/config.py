@@ -109,7 +109,7 @@ incompatible_pref_friendly_name = 'NIESTANDARDOWE: '
 # w "c", c - nazwa kolumny w warstwie szukanej "a"
 # d - nazwa kolumny w warstwie "a", której wartość wpływa na wstawiany kolor do kolumny "color" w GES_Rzedna
 # w oparciu o kolor w "e"
-ges_colors = {'GES_InneUrzadzeniaTowarzyszace': ['relacja', 'lokalnyId', 'rodzajSieci'],
+'''ges_colors = {'GES_InneUrzadzeniaTowarzyszace': ['relacja', 'lokalnyId', 'rodzajSieci'],
               'GES_UrzadzeniaTowarzyszczaceLiniowe': ['relacja', 'lokalnyId', 'rodzajSieci'],
               'GES_UrzadzeniaTowarzyszaceLiniowe': ['relacja', 'lokalnyId', 'rodzajSieci'],
               'GES_PrzewodWodociagowy': ['relacja', 'lokalnyId', 'zrodlo', '0,0,255,255'],
@@ -128,6 +128,27 @@ ges_colors = {'GES_InneUrzadzeniaTowarzyszace': ['relacja', 'lokalnyId', 'rodzaj
               'GES_UrzadzeniaSiecTelekomunikacyjna': ['relacja', 'lokalnyId', 'zrodlo', '255,145,0,255'],
               'GES_UrzadzeniaTechniczneSieciSpecjalnej': ['relacja', 'lokalnyId', 'zrodlo'],
               'GES_UrzadzenieNiezidentyfikowane': ['relacja', 'lokalnyId', 'zrodlo']
+              }'''
+
+ges_colors = {'GES_InneUrzadzeniaTowarzyszace': ['relacja', 'lokalnyId', 'rodzajSieci'],
+              'GES_UrzadzeniaTowarzyszczaceLiniowe': ['relacja', 'lokalnyId', 'rodzajSieci'],
+              'GES_UrzadzeniaTowarzyszaceLiniowe': ['relacja', 'lokalnyId', 'rodzajSieci'],
+              'GES_PrzewodWodociagowy': ['relacja', 'lokalnyId', 'zrodlo', '0,0,255,255'],
+              'GES_PrzewodKanalizacyjny': ['relacja', 'lokalnyId', 'zrodlo', '128,51,0,255'],
+              'GES_PrzewodElektroenergetyczny': ['relacja', 'lokalnyId', 'zrodlo', '255,0,0,255'],
+              'GES_PrzewodGazowy': ['relacja', 'lokalnyId', 'zrodlo', '191,191,0,255'],
+              'GES_PrzewodCieplowniczy': ['relacja', 'lokalnyId', 'zrodlo', '210,0,210,255'],
+              'GES_PrzewodTelekomunikacyjny': ['relacja', 'lokalnyId', 'zrodlo', '255,145,0,255'],
+              'GES_PrzewodSpecjalny': ['relacja', 'lokalnyId', 'zrodlo', '255,145,0,255'],
+              'GES_PrzewodNiezidentyfikowany': ['relacja', 'lokalnyId', 'zrodlo', '255,145,0,255'],
+              'GES_UrzadzeniaSiecWodociagowa': ['relacja', 'lokalnyId', 'zrodlo', '0,0,255,255'],
+              'GES_UrzadzeniaSiecKanalizacyjna': ['relacja', 'lokalnyId', 'zrodlo', '128,51,0,255'],
+              'GES_UrzadzeniaSiecElektroenergetyczna': ['relacja', 'lokalnyId', 'zrodlo', '255,0,0,255'],
+              'GES_UrzadzeniaSiecGazowa': ['relacja', 'lokalnyId', 'zrodlo', '191,191,0,255'],
+              'GES_UrzadzeniaSiecCieplownicza': ['relacja', 'lokalnyId', 'zrodlo', '210,0,210,255'],
+              'GES_UrzadzeniaSiecTelekomunikacyjna': ['relacja', 'lokalnyId', 'zrodlo', '255,145,0,255'],
+              'GES_UrzadzeniaTechniczneSieciSpecjalnej': ['relacja', 'lokalnyId', 'zrodlo', '255,145,0,255'],
+              'GES_UrzadzenieNiezidentyfikowane': ['relacja', 'lokalnyId', 'zrodlo', '255,145,0,255']
               }
 
 # rodzaj sieci to wyjatki!!! uwzglednic to
