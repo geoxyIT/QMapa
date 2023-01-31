@@ -109,26 +109,6 @@ incompatible_pref_friendly_name = 'NIESTANDARDOWE: '
 # w "c", c - nazwa kolumny w warstwie szukanej "a"
 # d - nazwa kolumny w warstwie "a", której wartość wpływa na wstawiany kolor do kolumny "color" w GES_Rzedna
 # w oparciu o kolor w "e"
-'''ges_colors = {'GES_InneUrzadzeniaTowarzyszace': ['relacja', 'lokalnyId', 'rodzajSieci'],
-              'GES_UrzadzeniaTowarzyszczaceLiniowe': ['relacja', 'lokalnyId', 'rodzajSieci'],
-              'GES_UrzadzeniaTowarzyszaceLiniowe': ['relacja', 'lokalnyId', 'rodzajSieci'],
-              'GES_PrzewodWodociagowy': ['relacja', 'lokalnyId', 'zrodlo', '0,0,255,255'],
-              'GES_PrzewodKanalizacyjny': ['relacja', 'lokalnyId', 'zrodlo', '128,51,0,255'],
-              'GES_PrzewodElektroenergetyczny': ['relacja', 'lokalnyId', 'zrodlo', '255,0,0,255'],
-              'GES_PrzewodGazowy': ['relacja', 'lokalnyId', 'zrodlo', '191,191,0,255'],
-              'GES_PrzewodCieplowniczy': ['relacja', 'lokalnyId', 'zrodlo', '210,0,210,255'],
-              'GES_PrzewodTelekomunikacyjny': ['relacja', 'lokalnyId', 'zrodlo', '255,145,0,255'],
-              'GES_PrzewodSpecjalny': ['relacja', 'lokalnyId', 'zrodlo'],
-              'GES_PrzewodNiezidentyfikowany': ['relacja', 'lokalnyId', 'zrodlo'],
-              'GES_UrzadzeniaSiecWodociagowa': ['relacja', 'lokalnyId', 'zrodlo', '0,0,255,255'],
-              'GES_UrzadzeniaSiecKanalizacyjna': ['relacja', 'lokalnyId', 'zrodlo', '128,51,0,255'],
-              'GES_UrzadzeniaSiecElektroenergetyczna': ['relacja', 'lokalnyId', 'zrodlo', '255,0,0,255'],
-              'GES_UrzadzeniaSiecGazowa': ['relacja', 'lokalnyId', 'zrodlo', '191,191,0,255'],
-              'GES_UrzadzeniaSiecCieplownicza': ['relacja', 'lokalnyId', 'zrodlo', '210,0,210,255'],
-              'GES_UrzadzeniaSiecTelekomunikacyjna': ['relacja', 'lokalnyId', 'zrodlo', '255,145,0,255'],
-              'GES_UrzadzeniaTechniczneSieciSpecjalnej': ['relacja', 'lokalnyId', 'zrodlo'],
-              'GES_UrzadzenieNiezidentyfikowane': ['relacja', 'lokalnyId', 'zrodlo']
-              }'''
 
 ges_colors = {'GES_InneUrzadzeniaTowarzyszace': ['relacja', 'lokalnyId', 'rodzajSieci'],
               'GES_UrzadzeniaTowarzyszczaceLiniowe': ['relacja', 'lokalnyId', 'rodzajSieci'],
@@ -139,57 +119,18 @@ ges_colors = {'GES_InneUrzadzeniaTowarzyszace': ['relacja', 'lokalnyId', 'rodzaj
               'GES_PrzewodGazowy': ['relacja', 'lokalnyId', 'zrodlo', '191,191,0,255'],
               'GES_PrzewodCieplowniczy': ['relacja', 'lokalnyId', 'zrodlo', '210,0,210,255'],
               'GES_PrzewodTelekomunikacyjny': ['relacja', 'lokalnyId', 'zrodlo', '255,145,0,255'],
-              'GES_PrzewodSpecjalny': ['relacja', 'lokalnyId', 'zrodlo', '255,145,0,255'],
-              'GES_PrzewodNiezidentyfikowany': ['relacja', 'lokalnyId', 'zrodlo', '255,145,0,255'],
               'GES_UrzadzeniaSiecWodociagowa': ['relacja', 'lokalnyId', 'zrodlo', '0,0,255,255'],
               'GES_UrzadzeniaSiecKanalizacyjna': ['relacja', 'lokalnyId', 'zrodlo', '128,51,0,255'],
               'GES_UrzadzeniaSiecElektroenergetyczna': ['relacja', 'lokalnyId', 'zrodlo', '255,0,0,255'],
               'GES_UrzadzeniaSiecGazowa': ['relacja', 'lokalnyId', 'zrodlo', '191,191,0,255'],
               'GES_UrzadzeniaSiecCieplownicza': ['relacja', 'lokalnyId', 'zrodlo', '210,0,210,255'],
               'GES_UrzadzeniaSiecTelekomunikacyjna': ['relacja', 'lokalnyId', 'zrodlo', '255,145,0,255'],
-              'GES_UrzadzeniaTechniczneSieciSpecjalnej': ['relacja', 'lokalnyId', 'zrodlo', '255,145,0,255'],
-              'GES_UrzadzenieNiezidentyfikowane': ['relacja', 'lokalnyId', 'zrodlo', '255,145,0,255']
               }
 
-# rodzaj sieci to wyjatki!!! uwzglednic to
+sewer_colors = {'w': '0,0,255,255',
+                'k': '128,51,0,255',
+                'e': '255,0,0,255',
+                'g': '191,191,0,255',
+                'c': '210,0,210,255',
+                't': '255,145,0,255'}
 
-exp_raw = ("case "
-           " when "
-           "try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci,''), ',')) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci,''), ',')) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci,''), ',')) or try(array_contains( string_to_array(GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci,''), ','))"
-           " then "
-           "'0,0,0,255'"
-           " when "
-           "try((GES_PrzewodWodociagowy_1_zrodlo)) is not null or try((GES_UrzadzeniaSiecWodociagowa_0_zrodlo) is not null) or try((GES_UrzadzeniaSiecWodociagowa_1_zrodlo) is not null) or try((GES_UrzadzeniaSiecWodociagowa_2_zrodlo) is not null) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci,''), 'w')) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci,''), 'w')) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci,''), 'w')) or try(array_contains( string_to_array(GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci,''), 'w'))"
-           " then "
-           "'0,0,255,255'"
-           " when "
-           "try((GES_PrzewodKanalizacyjny_1_zrodlo)) is not null or try((GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo) is not null) or try((GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo) is not null) or try((GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo) is not null) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci,''), 'k')) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci,''), 'k')) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci,''), 'k')) or try(array_contains( string_to_array(GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci,''), 'k'))"
-           " then "
-           "'128,51,0,255'"
-           " when "
-           "try((GES_PrzewodElektroenergetyczny_1_zrodlo)) is not null or try((GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo) is not null) or try((GES_UrzadzeniaSiecElektroenergetyczna_1_zrodlo) is not null) or try((GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo) is not null) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci,''), 'e')) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci,''), 'e')) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci,''), 'e')) or try(array_contains( string_to_array(GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci,''), 'e'))"
-           " then "
-           "'255,0,0,255'"
-           " when "
-           "try((GES_PrzewodGazowy_1_zrodlo)) is not null or try((GES_UrzadzeniaSiecGazowa_0_zrodlo) is not null) or try((GES_UrzadzeniaSiecGazowa_1_zrodlo) is not null) or try((GES_UrzadzeniaSiecGazowa_2_zrodlo) is not null) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci,''), 'g')) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci,''), 'g')) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci,''), 'g')) or try(array_contains( string_to_array(GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci,''), 'g'))"
-           " then "
-           "'191,191,0,255'"
-           " when "
-           "try((GES_PrzewodCieplowniczy_1_zrodlo)) is not null or try((GES_UrzadzeniaSiecCieplownicza_0_zrodlo) is not null) or try((GES_UrzadzeniaSiecCieplownicza_1_zrodlo) is not null) or try((GES_UrzadzeniaSiecCieplownicza_2_zrodlo) is not null) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci,''), 'c')) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci,''), 'c')) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci,''), 'c')) or try(array_contains( string_to_array(GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci,''), 'c'))"
-           " then "
-           "'210,0,210,255'"
-           " when "
-           "try((GES_PrzewodTelekomunikacyjny_1_zrodlo)) is not null or try((GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo) is not null) or try((GES_UrzadzeniaSiecTelekomunikacyjna_1_zrodlo) is not null) or try((GES_UrzadzeniaSiecTelekomunikacyjna_2_zrodlo) is not null) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci,''), 't')) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci,''), 't')) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci,''), 't')) or try(array_contains( string_to_array(GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci,''), 't'))"
-           " then "
-           "'255,145,0,255'"
-           " when "
-           "try((GES_PrzewodSpecjalny_1_zrodlo)) is not null or try((GES_UrzadzeniaSiecSpecjalna_0_zrodlo) is not null) or try((GES_UrzadzeniaSiecSpecjalna_1_zrodlo) is not null) or try((GES_UrzadzeniaSiecSpecjalna_2_zrodlo) is not null) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci,''), 's')) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci,''), 's')) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci,''), 's')) or try(array_contains( string_to_array(GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci,''), 's'))"
-           " then "
-           "'0,0,0,255'"
-           " when "
-           "try((GES_PrzewodNiezidentyfikowany_1_zrodlo)) is not null or try((GES_UrzadzeniaSiecNiezidentyfikowana_0_zrodlo) is not null) or try((GES_UrzadzeniaSiecNiezidentyfikowana_1_zrodlo) is not null) or try((GES_UrzadzeniaSiecNiezidentyfikowana_2_zrodlo) is not null) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_0_rodzajSieci,''), 'x')) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_1_rodzajSieci,''), 'x')) or try(array_contains( string_to_array(GES_InneUrzadzeniaTowarzyszace_2_rodzajSieci,''), 'x')) or try(array_contains( string_to_array(GES_UrzadzeniaTowarzyszczaceLiniowe_1_rodzajSieci,''), 'x'))"
-           " then "
-           "'0,0,0,255'"
-           " else "
-           "'0,0,0,255'"
-           " end")
