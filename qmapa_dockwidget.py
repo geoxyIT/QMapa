@@ -373,7 +373,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
                         if sc == '500':
                             if 'ges_rzedna' in lay.name().lower():
-                                Main().calculate_colors(lay, 'color_python')
+                                Main().calculate_colors(lay, 'color')
                             elif 'wody' in lay.name().lower():
                                 Main().calculate_hatching(lay, 'wody', sc, [start_point_layer_id, end_point_layer_id])
                             elif 'skarpa' in lay.name().lower():
