@@ -73,8 +73,10 @@ class ExpressYourself:
 
     def set_background(self, settings):
         # BACKGROUND
-        background = settings.format().background()
-        symbols = background.fillSymbol().symbolLayers()
+        text_format = settings.format()
+        background = text_format.background()
+        background_fill_symbol = background.fillSymbol()
+        symbols = background_fill_symbol.symbolLayers()
         for symb in symbols:
             # wywolanie funkcji z nadaniem wlasciwosci
             self.symbol_properties(symb)
