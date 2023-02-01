@@ -11,9 +11,6 @@ def load_gpkg(gpkg_path):
     tj. point, curve, surface"""
     data = ogr.Open(r'%s' % gpkg_path, 1)
 
-    #curve_line_list = [8, 9, 11, 13, 1009, 1011, 1013, 2009, 2011, 2013, 3009, 3011, 3013]
-    #curve_poli_list = [10, 1010, 2010, 3010]
-
     pts_list = [1, 4, 2001, 2004, 3001, 3004, -2147483647, -2147483644]
     line_list = [2, 5, 8, 9, 11, 13, 101, 1008, 1009, 1011, 1013, 2002, 2005, 2008, 2009, 2011, 2013, 3002, 3005, 3008,
                  3009, 3011, 3013, -2147483646, -2147483643]
@@ -26,7 +23,8 @@ def load_gpkg(gpkg_path):
 
     for layer in data_layers:
         if layer.GetGeomType() == 0:
-
+            # gdy w jednej warstwie jest kilka rodzajow geometrii
+            # bedzie wykonane wydzielenie obiektow do warstw z odpowiednim typem geometrii
             main_layer = data.GetLayer(layer.GetName())
             spatial_ref = main_layer.GetSpatialRef()
             lyr_def = main_layer.GetLayerDefn()
@@ -44,19 +42,49 @@ def load_gpkg(gpkg_path):
             if layer_2 == None:
                 layer_2 = data.CreateLayer(layer.GetName()+'_2', srs=spatial_ref, geom_type=ogr.wkbMultiSurface)
 
+            # utworzenie kolumn (pola) w nowych warstwach
             for i in range(lyr_def.GetFieldCount()):
                 layer_0.CreateField(lyr_def.GetFieldDefn(i))
                 layer_1.CreateField(lyr_def.GetFieldDefn(i))
                 layer_2.CreateField(lyr_def.GetFieldDefn(i))
 
+            # iteracja po features w celu rozdzielenia ze względu na typ geometrii
+            layer_0_feats = []
+            layer_1_feats = []
+            layer_2_feats = []
             for feature in layer:
                 if feature.geometry() is not None:
                     if feature.geometry().GetGeometryType() in pts_list:
-                        layer_0.CreateFeature(feature)
+                        #layer_0.CreateFeature(feature)
+                        layer_0_feats.append(feature)
+                        pass
                     elif feature.geometry().GetGeometryType() in line_list:
-                        layer_1.CreateFeature(feature)
+                        #layer_1.CreateFeature(feature)
+                        layer_1_feats.append(feature)
+                        pass
                     elif feature.geometry().GetGeometryType() in polygon_list:
-                        layer_2.CreateFeature(feature)
+                        #layer_2.CreateFeature(feature)
+                        layer_2_feats.append(feature)
+                        pass
+
+            # dodanie features do poszczególnych warstw z rozdzieleniem typu geometrii:
+            ogr.UseExceptions()
+            layer_0.StartTransaction()
+            for feat in layer_0_feats:
+                layer_0.CreateFeature(feat)
+            layer_0.CommitTransaction()
+
+            layer_1.StartTransaction()
+            for feat in layer_1_feats:
+                layer_1.CreateFeature(feat)
+            layer_1.CommitTransaction()
+
+            layer_2.StartTransaction()
+            for feat in layer_2_feats:
+                layer_2.CreateFeature(feat)
+            layer_2.CommitTransaction()
+
+            # dodanie warstwy glownej (tej z kilkoma rodzajami geometrii w sobie) do listy warstw do usuniecia
             layers_to_delete.append(main_layer.GetName())
 
         elif layer.GetGeomType() in pts_list:
