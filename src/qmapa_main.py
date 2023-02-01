@@ -311,7 +311,7 @@ class Main:
                         feature_sewer_idx = pipe.fieldNameIndex('rodzajSieci')
                         feature_sewer_val = pipe.attributes()[feature_sewer_idx]
                         # wykrycie przypadku dla wielowartosciowych sieci np. 2:e,k
-                        if ',' in feature_sewer_val:
+                        if feature_sewer_val is str and  ',' in feature_sewer_val:
                             sewer_color = black_sewer
                         else:
                             try:
@@ -664,8 +664,8 @@ class Main:
         obj_nd = 0
 
         counting_dict = {'EGiB': {}, 'GESUT': {}, 'BDOT500': {}}
-        techn_layers = ['EGB_poliliniaKierunkowa', 'OT_poliliniaKierunkowa', 'OT_opisykarto', 'GES_opisykarto',
-                        'EGB_opisykarto', 'OT_poczatekGorySkarpy', 'OT_koniecGorySkarpy', 'EGB_odnosnik', 'OT_odnosnik',
+        techn_layers = ['EGB_poliliniaKierunkowa', 'OT_poliliniaKierunkowa', 'OT_opisyKARTO', 'GES_opisyKARTO',
+                        'EGB_opisyKARTO', 'OT_poczatekGorySkarpy', 'OT_koniecGorySkarpy', 'EGB_odnosnik', 'OT_odnosnik',
                         'GES_odnosnik']
         prez_layers = ['EGB_PrezentacjaGraficzna', 'OT_PrezentacjaGraficzna', 'GES_PrezentacjaGraficzna']
 
