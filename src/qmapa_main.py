@@ -311,15 +311,22 @@ class Main:
                         feature_sewer_idx = pipe.fieldNameIndex('rodzajSieci')
                         feature_sewer_val = pipe.attributes()[feature_sewer_idx]
                         # wykrycie przypadku dla wielowartosciowych sieci np. 2:e,k
-                        if feature_sewer_val is str and  ',' in feature_sewer_val:
-                            sewer_color = black_sewer
-                        else:
-                            try:
-                                feature_sewer_val = feature_sewer_val.rstrip(')').split(':')[1]
-                                sewer_color = sewer_colors[feature_sewer_val]
-                            except:  # jezeli wartosci nie ma w sewer_colors
+                        if type(feature_sewer_val) is str:
+                            if ',' in feature_sewer_val:
                                 sewer_color = black_sewer
-
+                            else:
+                                try:
+                                    feature_sewer_val_stripped = feature_sewer_val.rstrip(')').split(':')
+                                    if len(feature_sewer_val_stripped) > 1:
+                                        feature_sewer_val = feature_sewer_val_stripped[1]
+                                    else:
+                                        feature_sewer_val = feature_sewer_val_stripped[0]
+                                    sewer_color = sewer_colors[feature_sewer_val]
+                                except Exception as e:  # jezeli wartosci nie ma w sewer_colors
+                                    print('blad koloru', e)
+                                    sewer_color = black_sewer
+                        else:  # warunek dla wszystkich dat, wartości null
+                            sewer_color = black_sewer
                         dict_of_colors[feature_local_id] = sewer_color
 
         # iteracja po obiektach - ges_rzedna

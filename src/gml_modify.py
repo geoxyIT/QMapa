@@ -77,7 +77,7 @@ class GmlModify:
 
     def get_relations(self, pref_name):
         """Iteracja po pliku i wyciagniecie relacji do slownika typu
-        {'id':[a,b,c...] gdzie [a,b,c] to lista z id odnosnikow"""
+        {'id':[a,b,c...] gdzie [a,b,c] to lista z id rzednaObiektu"""
 
         for feature_member in self.root.iter('{http://www.opengis.net/gml/3.2}featureMember'):
             for feature in feature_member:
@@ -104,8 +104,10 @@ class GmlModify:
                     if value.startswith('#'):
                         value = value[1:]
                     relation_list.append(value)
+                    # usuniecie duplikatow z listy - przypadek gdy przewod zawieral dwie te same rzedneObiektu
+                    relation_list_set = set(relation_list)
+                    relation_list = list(relation_list_set)
                     self.relations[lokalny_iip] = relation_list
-                    # zmiana na liste z jednym atrybutem, rezygnacja z mozliwosci istnienia kilku relacji
 
     def iterate_and_add(self, pref_name: str, feature_name: str):
         """Przejscie po pliku gml i dodanie atrybutu w konkretne miejsce"""
