@@ -323,7 +323,6 @@ class Main:
                                         feature_sewer_val = feature_sewer_val_stripped[0]
                                     sewer_color = sewer_colors[feature_sewer_val]
                                 except Exception as e:  # jezeli wartosci nie ma w sewer_colors
-                                    print('blad koloru', e)
                                     sewer_color = black_sewer
                         else:  # warunek dla wszystkich dat, wartości null
                             sewer_color = black_sewer
