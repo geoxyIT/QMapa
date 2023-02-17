@@ -25,7 +25,7 @@
  *                                                                         *
  ***************************************************************************/
 """
-
+import copy
 import os
 from datetime import datetime
 import webbrowser
@@ -56,6 +56,9 @@ from .src.create_report_file import report
 
 
 from osgeo_utils.samples import ogr2ogr
+
+# import zapisu stylizacji do plikow qml
+from .src.save_edit_qmls import saveStylization, get_symb_copy, add_copied_symb
 
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -127,6 +130,19 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         """Przycisk wywolania strony po nacisnieciu Logo GEOXY"""
         webbrowser.open('http://www.geoxy.pl/')
 
+        child_copy = get_symb_copy(iface.mapCanvas().layers(), 'nierozp')
+        print('ch_copy', child_copy)
+
+        add_copied_symb(self.getLayers(),child_copy)
+
+    @pyqtSlot()
+    def on_pbDonate_clicked(self):
+        """Przycisk wywolania strony po nacisnieciu przycisku postaw kawe"""
+        # zapis stylizacji
+        saveStylization(self.getLayers(), str(self.getSelectedScale()))
+
+        webbrowser.open('https://buycoffee.to/qmapa/')
+
     def addOrtoOsm(self, service_type):
         """Dodanie serwerów OSM i Geoportal ORTO jako warstwa do QGIS"""
         name_orto = 'Geoportal ORTO'
@@ -150,7 +166,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                     root = QgsProject.instance().layerTreeRoot()
                     QgsProject.instance().addMapLayer(rlayerOrto, False)
                     root.insertLayer(0, rlayerOrto)
-                    QgsProject.instance().layerTreeRoot().findLayer(rlayerOrto.id()).setItemVisibilityChecked(False)
+                    QgsProject.instance().layerTreeRoot().findLayer(rlayerOrto.id()).setItemVisibilityChecked(True)
                 else:
                     print(f'Nieprawidłowa warstwa {name_orto}')
             else:
@@ -174,7 +190,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                     root = QgsProject.instance().layerTreeRoot()
                     QgsProject.instance().addMapLayer(rlayerOsm, False)
                     root.insertLayer(0, rlayerOsm)
-                    QgsProject.instance().layerTreeRoot().findLayer(rlayerOsm.id()).setItemVisibilityChecked(False)
+                    QgsProject.instance().layerTreeRoot().findLayer(rlayerOsm.id()).setItemVisibilityChecked(True)
                 else:
                     print(f'Nieprawidłowa warstwa {name_osm}')
             else:
@@ -182,12 +198,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 QMessageBox.critical(iface.mainWindow(), 'Dodanie serwisu nie powiodło się',
                                      'Warstwa z serwisem o takiej nazwie już istnieje.',
                                      buttons=QMessageBox.Ok)
-
-    @pyqtSlot()
-    def on_pbDonate_clicked(self):
-        """Przycisk wywolania strony po nacisnieciu przycisku postaw kawe"""
-        webbrowser.open('https://buycoffee.to/qmapa/')
-
 
     def paths(self, gml_path):
         """utworzenie sciezek plikow importu i raportu, sprawdzenie czy juz istnieja i czy jest do nich dostep, zapytanie czy nadpisac"""
@@ -282,10 +292,12 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 self.progressBar.setValue(20)
                 print('Czas 20%:', datetime.now() - start_2)
                 QCoreApplication.processEvents()
+
                 load_gpkg(gpkg_path)
                 self.progressBar.setValue(30)
                 print('Czas 30%:', datetime.now() - start_2)
                 QCoreApplication.processEvents()
+
                 self.vec_layers_list, gr_dict = Main().create_groups(gpkg_path)
                 self.vec_layers_list = Main().checkLayers(self.vec_layers_list)
 
@@ -306,8 +318,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
                 # nadanie zlaczen
                 self.set_joins(self.vec_layers_list)
-                self.progressBar.setValue(60)
-                print('Czas 60%:', datetime.now() - start_2)
                 QCoreApplication.processEvents()
 
                 # usuniecie pliku
@@ -315,16 +325,16 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                     os.remove(mod_gml_path)
                 except:
                     print("Problem z usunięciem pliku modyfikowanego gml")
-                self.progressBar.setValue(70)
-                print('Czas 70%:', datetime.now() - start_2)
+                self.progressBar.setValue(60)
+                print('Czas 60%:', datetime.now() - start_2)
                 QCoreApplication.processEvents()
 
                 # nadanie stylizacji
                 current_style = self.cmbStylization.currentText()
                 # Main().setStyling(self.vec_layers_list, current_style)
                 self.back_to_qml_symb()
-                self.progressBar.setValue(80)
-                print('Czas 80%:', datetime.now() - start_2)
+                self.progressBar.setValue(70)
+                print('Czas 70%:', datetime.now() - start_2)
                 QCoreApplication.processEvents()
 
                 # self.set_labels(self.vec_layers_list)
@@ -337,8 +347,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                     self.disp_wers()  # sprawdzenie i nadanie wyswietlania wersji
                 if self.gbFill.isChecked():
                     self.fill_select_set()  # sprawdzenie i nadanie fillowania
-                self.progressBar.setValue(90)
-                print('Czas 90%:', datetime.now() - start_2)
+                self.progressBar.setValue(80)
+                print('Czas 80%:', datetime.now() - start_2)
                 QCoreApplication.processEvents()
 
                 # obliczenie kreskowania dla skarp, sciany, schodow i wstawienie geometrii do atrybutow
@@ -414,9 +424,9 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                                                    'EGB_ObrebEwidencyjny_2_lokalnyId', 'EGB_JednostkaEwidencyjna_2_lokalnyId']
                                 Main().add_obligatory_fields(lay, fields_list_egb)
                     if nr < len(scales):
-                        self.progressBar.setValue(90 + int((nr / len(scales)) * 10))
-                        print('Czas ' + str(90 + int((nr / len(scales)) * 10)) + '%:', datetime.now() - start_2)
-
+                        self.progressBar.setValue(80 + int((nr / len(scales)) * 20))
+                        print('Czas ' + str(80 + int((nr / len(scales)) * 20)) + '%:', datetime.now() - start_2)
+                        QCoreApplication.processEvents()
 
                 self.progressBar.hide()
                 if report_path.startswith('/'):  # przypadek dla linuksa kiedy sciezka zaczyna sie od slasha
@@ -453,27 +463,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     def set_joins(self, vec_layers_list):
         """nadawanie joinow podczas importu pliku"""
-
-        """'GES_Rzedna': {'GES_InneUrzadzeniaTowarzyszace': ['relacja', 'lokalnyId', ['rodzajSieci']],
-                       'GES_UrzadzeniaTowarzyszczaceLiniowe': ['relacja', 'lokalnyId', ['rodzajSieci']],
-                       'GES_UrzadzeniaTowarzyszaceLiniowe': ['relacja', 'lokalnyId', ['rodzajSieci']],
-                       'GES_PrzewodWodociagowy': ['relacja', 'lokalnyId', ['zrodlo']],
-                       'GES_PrzewodKanalizacyjny': ['relacja', 'lokalnyId', ['zrodlo']],
-                       'GES_PrzewodElektroenergetyczny': ['relacja', 'lokalnyId', ['zrodlo']],
-                       'GES_PrzewodGazowy': ['relacja', 'lokalnyId', ['zrodlo']],
-                       'GES_PrzewodCieplowniczy': ['relacja', 'lokalnyId', ['zrodlo']],
-                       'GES_PrzewodTelekomunikacyjny': ['relacja', 'lokalnyId', ['zrodlo']],
-                       'GES_PrzewodSpecjalny': ['relacja', 'lokalnyId', ['zrodlo']],
-                       'GES_PrzewodNiezidentyfikowany': ['relacja', 'lokalnyId', ['zrodlo']],
-                       'GES_UrzadzeniaSiecWodociagowa': ['relacja', 'lokalnyId', ['zrodlo']],
-                       'GES_UrzadzeniaSiecKanalizacyjna': ['relacja', 'lokalnyId', ['zrodlo']],
-                       'GES_UrzadzeniaSiecElektroenergetyczna': ['relacja', 'lokalnyId', ['zrodlo']],
-                       'GES_UrzadzeniaSiecGazowa': ['relacja', 'lokalnyId', ['zrodlo']],
-                       'GES_UrzadzeniaSiecCieplownicza': ['relacja', 'lokalnyId', ['zrodlo']],
-                       'GES_UrzadzeniaSiecTelekomunikacyjna': ['relacja', 'lokalnyId', ['zrodlo']],
-                       'GES_UrzadzeniaTechniczneSieciSpecjalnej': ['relacja', 'lokalnyId', ['zrodlo']],
-                       'GES_UrzadzenieNiezidentyfikowane': ['relacja', 'lokalnyId', ['zrodlo']]
-                       },"""
 
         joining_dict = {
                         'OT_opisyKARTO': {'OT_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
@@ -545,7 +534,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                             'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]}
                         }
 
-        # layers = self.getLayers()
         # tworzenie zlaczen warstw
         for layer in vec_layers_list:
             layer_name = layer.name()
@@ -977,15 +965,13 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             scale = 500
         return scale
 
-    def setLegendScale(self, scale = 500, layers = None):
+    def setLegendScale(self, scale = None):
         """nadawanie skali renderowania symboli w widoku warstw"""
-        if layers is None:
-            layers = self.list_or_canvas(self.signal_of_import)
+        if scale is None:
+            scale = self.getSelectedScale()
 
         current_scale = iface.layerTreeView().layerTreeModel().legendMapViewData()
-
         dpi = current_scale[1]
-        scale = self.getSelectedScale()
         mupp = (2.54*scale)/(100*dpi)
 
         iface.layerTreeView().layerTreeModel().setLegendMapViewData(mupp, dpi, scale)
