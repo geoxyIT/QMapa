@@ -133,8 +133,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     @pyqtSlot()
     def on_pbDonate_clicked(self):
         """Przycisk wywolania strony po nacisnieciu przycisku postaw kawe"""
-        # zapis stylizacji
-        # saveStylization(self.getLayers(), str(self.getSelectedScale()))
 
         webbrowser.open('https://buycoffee.to/qmapa/')
 
@@ -962,7 +960,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     def setLegendScale(self, scale = None):
         """nadawanie skali renderowania symboli w widoku warstw"""
-        print('setScale')
         if scale is None:
             scale = self.getSelectedScale()
 
