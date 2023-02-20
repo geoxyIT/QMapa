@@ -1,20 +1,20 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis simplifyDrawingTol="1" labelsEnabled="0" simplifyAlgorithm="0" version="3.24.0-Tisler" simplifyDrawingHints="1" simplifyLocal="1" simplifyMaxScale="1" styleCategories="AllStyleCategories" minScale="100000000" hasScaleBasedVisibilityFlag="0" maxScale="0" symbologyReferenceScale="-1" readOnly="0">
+<qgis styleCategories="AllStyleCategories" simplifyDrawingTol="1" hasScaleBasedVisibilityFlag="0" simplifyAlgorithm="0" simplifyLocal="1" maxScale="0" symbologyReferenceScale="-1" labelsEnabled="0" simplifyMaxScale="1" readOnly="0" minScale="100000000" version="3.24.0-Tisler" simplifyDrawingHints="1">
   <flags>
     <Identifiable>1</Identifiable>
     <Removable>1</Removable>
     <Searchable>1</Searchable>
     <Private>0</Private>
   </flags>
-  <temporal durationUnit="min" fixedDuration="0" startField="" endField="" accumulate="0" enabled="0" mode="0" limitMode="0" durationField="" startExpression="" endExpression="">
+  <temporal startField="" endExpression="" durationUnit="min" fixedDuration="0" mode="0" limitMode="0" endField="" startExpression="" durationField="" accumulate="0" enabled="0">
     <fixedRange>
       <start></start>
       <end></end>
     </fixedRange>
   </temporal>
-  <renderer-v2 type="singleSymbol" enableorderby="0" symbollevels="0" forceraster="0" referencescale="-1">
+  <renderer-v2 forceraster="0" symbollevels="0" type="singleSymbol" enableorderby="0" referencescale="-1">
     <symbols>
-      <symbol name="0" force_rhr="0" type="line" alpha="1" clip_to_extent="1">
+      <symbol name="0" alpha="1" force_rhr="0" type="line" clip_to_extent="1">
         <data_defined_properties>
           <Option type="Map">
             <Option name="name" type="QString" value=""/>
@@ -22,7 +22,7 @@
             <Option name="type" type="QString" value="collection"/>
           </Option>
         </data_defined_properties>
-        <layer locked="0" enabled="1" pass="0" class="SimpleLine">
+        <layer locked="0" class="SimpleLine" pass="0" enabled="1">
           <Option type="Map">
             <Option name="align_dash_pattern" type="QString" value="1"/>
             <Option name="capstyle" type="QString" value="round"/>
@@ -102,12 +102,12 @@
   <blendMode>0</blendMode>
   <featureBlendMode>0</featureBlendMode>
   <layerOpacity>1</layerOpacity>
-  <SingleCategoryDiagramRenderer attributeLegend="1" diagramType="Histogram">
-    <DiagramCategory sizeScale="3x:0,0,0,0,0,0" spacing="5" opacity="1" sizeType="MM" lineSizeType="MM" barWidth="5" rotationOffset="270" width="15" penColor="#000000" enabled="0" lineSizeScale="3x:0,0,0,0,0,0" penWidth="0" scaleBasedVisibility="0" showAxis="1" direction="0" backgroundAlpha="255" backgroundColor="#ffffff" minimumSize="0" spacingUnitScale="3x:0,0,0,0,0,0" height="15" maxScaleDenominator="1e+08" diagramOrientation="Up" spacingUnit="MM" labelPlacementMethod="XHeight" minScaleDenominator="0" scaleDependency="Area" penAlpha="255">
+  <SingleCategoryDiagramRenderer diagramType="Histogram" attributeLegend="1">
+    <DiagramCategory labelPlacementMethod="XHeight" sizeType="MM" sizeScale="3x:0,0,0,0,0,0" diagramOrientation="Up" enabled="0" spacingUnitScale="3x:0,0,0,0,0,0" direction="0" height="15" minimumSize="0" minScaleDenominator="0" spacingUnit="MM" lineSizeType="MM" barWidth="5" penWidth="0" opacity="1" penColor="#000000" backgroundColor="#ffffff" lineSizeScale="3x:0,0,0,0,0,0" scaleDependency="Area" scaleBasedVisibility="0" width="15" backgroundAlpha="255" rotationOffset="270" maxScaleDenominator="1e+08" penAlpha="255" showAxis="1" spacing="5">
       <fontProperties description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0" style=""/>
-      <attribute field="" color="#000000" label=""/>
+      <attribute color="#000000" label="" field=""/>
       <axisSymbol>
-        <symbol name="" force_rhr="0" type="line" alpha="1" clip_to_extent="1">
+        <symbol name="" alpha="1" force_rhr="0" type="line" clip_to_extent="1">
           <data_defined_properties>
             <Option type="Map">
               <Option name="name" type="QString" value=""/>
@@ -115,7 +115,7 @@
               <Option name="type" type="QString" value="collection"/>
             </Option>
           </data_defined_properties>
-          <layer locked="0" enabled="1" pass="0" class="SimpleLine">
+          <layer locked="0" class="SimpleLine" pass="0" enabled="1">
             <Option type="Map">
               <Option name="align_dash_pattern" type="QString" value="0"/>
               <Option name="capstyle" type="QString" value="square"/>
@@ -184,7 +184,7 @@
       </axisSymbol>
     </DiagramCategory>
   </SingleCategoryDiagramRenderer>
-  <DiagramLayerSettings linePlacementFlags="18" zIndex="0" obstacle="0" priority="0" placement="2" dist="0" showAll="1">
+  <DiagramLayerSettings placement="2" zIndex="0" obstacle="0" dist="0" linePlacementFlags="18" showAll="1" priority="0">
     <properties>
       <Option type="Map">
         <Option name="name" type="QString" value=""/>
@@ -197,7 +197,7 @@
     <activeChecks/>
     <checkConfiguration/>
   </geometryOptions>
-  <legend showLabelLegend="0" type="default-vector"/>
+  <legend type="default-vector" showLabelLegend="0"/>
   <referencedLayers/>
   <fieldConfiguration/>
   <aliases/>
@@ -206,21 +206,21 @@
   <constraintExpressions/>
   <expressionfields/>
   <attributeactions>
-    <defaultAction key="Canvas" value="{00000000-0000-0000-0000-000000000000}"/>
+    <defaultAction value="{00000000-0000-0000-0000-000000000000}" key="Canvas"/>
   </attributeactions>
-  <attributetableconfig sortExpression="" sortOrder="0" actionWidgetStyle="dropDown">
+  <attributetableconfig sortExpression="" actionWidgetStyle="dropDown" sortOrder="0">
     <columns>
-      <column width="-1" name="fid" type="field" hidden="0"/>
-      <column width="-1" name="gml_id" type="field" hidden="0"/>
-      <column width="-1" name="lokalnyId" type="field" hidden="0"/>
-      <column width="-1" name="przestrzenNazw" type="field" hidden="0"/>
-      <column width="-1" name="wersjaId" type="field" hidden="0"/>
-      <column width="-1" name="startObiekt" type="field" hidden="0"/>
-      <column width="-1" name="startWersjaObiekt" type="field" hidden="0"/>
-      <column width="-1" name="rodzajObiektuZwiazanegoZBudynkiem" type="field" hidden="0"/>
-      <column width="-1" name="koniecWersjaObiekt" type="field" hidden="0"/>
-      <column width="-1" name="koniecObiekt" type="field" hidden="0"/>
-      <column width="-1" type="actions" hidden="1"/>
+      <column name="fid" type="field" hidden="0" width="-1"/>
+      <column name="gml_id" type="field" hidden="0" width="-1"/>
+      <column name="lokalnyId" type="field" hidden="0" width="-1"/>
+      <column name="przestrzenNazw" type="field" hidden="0" width="-1"/>
+      <column name="wersjaId" type="field" hidden="0" width="-1"/>
+      <column name="startObiekt" type="field" hidden="0" width="-1"/>
+      <column name="startWersjaObiekt" type="field" hidden="0" width="-1"/>
+      <column name="rodzajObiektuZwiazanegoZBudynkiem" type="field" hidden="0" width="-1"/>
+      <column name="koniecWersjaObiekt" type="field" hidden="0" width="-1"/>
+      <column name="koniecObiekt" type="field" hidden="0" width="-1"/>
+      <column type="actions" hidden="1" width="-1"/>
     </columns>
   </attributetableconfig>
   <conditionalstyles>
@@ -252,40 +252,40 @@ def my_form_open(dialog, layer, feature):
   <featformsuppress>0</featformsuppress>
   <editorlayout>generatedlayout</editorlayout>
   <editable>
-    <field name="fid" editable="1"/>
-    <field name="gml_id" editable="1"/>
-    <field name="koniecObiekt" editable="1"/>
-    <field name="koniecWersjaObiekt" editable="1"/>
-    <field name="lokalnyId" editable="1"/>
-    <field name="przestrzenNazw" editable="1"/>
-    <field name="rodzajObiektuZwiazanegoZBudynkiem" editable="1"/>
-    <field name="startObiekt" editable="1"/>
-    <field name="startWersjaObiekt" editable="1"/>
-    <field name="wersjaId" editable="1"/>
+    <field editable="1" name="fid"/>
+    <field editable="1" name="gml_id"/>
+    <field editable="1" name="koniecObiekt"/>
+    <field editable="1" name="koniecWersjaObiekt"/>
+    <field editable="1" name="lokalnyId"/>
+    <field editable="1" name="przestrzenNazw"/>
+    <field editable="1" name="rodzajObiektuZwiazanegoZBudynkiem"/>
+    <field editable="1" name="startObiekt"/>
+    <field editable="1" name="startWersjaObiekt"/>
+    <field editable="1" name="wersjaId"/>
   </editable>
   <labelOnTop>
-    <field name="fid" labelOnTop="0"/>
-    <field name="gml_id" labelOnTop="0"/>
-    <field name="koniecObiekt" labelOnTop="0"/>
-    <field name="koniecWersjaObiekt" labelOnTop="0"/>
-    <field name="lokalnyId" labelOnTop="0"/>
-    <field name="przestrzenNazw" labelOnTop="0"/>
-    <field name="rodzajObiektuZwiazanegoZBudynkiem" labelOnTop="0"/>
-    <field name="startObiekt" labelOnTop="0"/>
-    <field name="startWersjaObiekt" labelOnTop="0"/>
-    <field name="wersjaId" labelOnTop="0"/>
+    <field labelOnTop="0" name="fid"/>
+    <field labelOnTop="0" name="gml_id"/>
+    <field labelOnTop="0" name="koniecObiekt"/>
+    <field labelOnTop="0" name="koniecWersjaObiekt"/>
+    <field labelOnTop="0" name="lokalnyId"/>
+    <field labelOnTop="0" name="przestrzenNazw"/>
+    <field labelOnTop="0" name="rodzajObiektuZwiazanegoZBudynkiem"/>
+    <field labelOnTop="0" name="startObiekt"/>
+    <field labelOnTop="0" name="startWersjaObiekt"/>
+    <field labelOnTop="0" name="wersjaId"/>
   </labelOnTop>
   <reuseLastValue>
-    <field reuseLastValue="0" name="fid"/>
-    <field reuseLastValue="0" name="gml_id"/>
-    <field reuseLastValue="0" name="koniecObiekt"/>
-    <field reuseLastValue="0" name="koniecWersjaObiekt"/>
-    <field reuseLastValue="0" name="lokalnyId"/>
-    <field reuseLastValue="0" name="przestrzenNazw"/>
-    <field reuseLastValue="0" name="rodzajObiektuZwiazanegoZBudynkiem"/>
-    <field reuseLastValue="0" name="startObiekt"/>
-    <field reuseLastValue="0" name="startWersjaObiekt"/>
-    <field reuseLastValue="0" name="wersjaId"/>
+    <field name="fid" reuseLastValue="0"/>
+    <field name="gml_id" reuseLastValue="0"/>
+    <field name="koniecObiekt" reuseLastValue="0"/>
+    <field name="koniecWersjaObiekt" reuseLastValue="0"/>
+    <field name="lokalnyId" reuseLastValue="0"/>
+    <field name="przestrzenNazw" reuseLastValue="0"/>
+    <field name="rodzajObiektuZwiazanegoZBudynkiem" reuseLastValue="0"/>
+    <field name="startObiekt" reuseLastValue="0"/>
+    <field name="startWersjaObiekt" reuseLastValue="0"/>
+    <field name="wersjaId" reuseLastValue="0"/>
   </reuseLastValue>
   <dataDefinedFieldProperties/>
   <widgets/>

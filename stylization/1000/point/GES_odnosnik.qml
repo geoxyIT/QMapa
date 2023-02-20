@@ -1,20 +1,20 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis version="3.24.0-Tisler" simplifyMaxScale="1" readOnly="0" simplifyDrawingHints="0" symbologyReferenceScale="-1" labelsEnabled="0" simplifyDrawingTol="1" styleCategories="AllStyleCategories" simplifyLocal="1" hasScaleBasedVisibilityFlag="0" maxScale="0" minScale="100000000" simplifyAlgorithm="0">
+<qgis styleCategories="AllStyleCategories" simplifyDrawingTol="1" hasScaleBasedVisibilityFlag="0" simplifyAlgorithm="0" simplifyLocal="1" maxScale="0" symbologyReferenceScale="-1" labelsEnabled="0" simplifyMaxScale="1" readOnly="0" minScale="100000000" version="3.24.0-Tisler" simplifyDrawingHints="0">
   <flags>
     <Identifiable>1</Identifiable>
     <Removable>1</Removable>
     <Searchable>1</Searchable>
     <Private>0</Private>
   </flags>
-  <temporal limitMode="0" durationField="" mode="0" endExpression="" durationUnit="min" fixedDuration="0" enabled="0" startField="" startExpression="" accumulate="0" endField="">
+  <temporal startField="" endExpression="" durationUnit="min" fixedDuration="0" mode="0" limitMode="0" endField="" startExpression="" durationField="" accumulate="0" enabled="0">
     <fixedRange>
       <start></start>
       <end></end>
     </fixedRange>
   </temporal>
-  <renderer-v2 type="singleSymbol" forceraster="0" referencescale="-1" enableorderby="0" symbollevels="0">
+  <renderer-v2 forceraster="0" symbollevels="0" type="singleSymbol" enableorderby="0" referencescale="-1">
     <symbols>
-      <symbol name="0" type="marker" alpha="1" clip_to_extent="1" force_rhr="0">
+      <symbol name="0" alpha="1" force_rhr="0" type="marker" clip_to_extent="1">
         <data_defined_properties>
           <Option type="Map">
             <Option name="name" type="QString" value=""/>
@@ -22,7 +22,7 @@
             <Option name="type" type="QString" value="collection"/>
           </Option>
         </data_defined_properties>
-        <layer pass="0" class="SimpleMarker" locked="0" enabled="1">
+        <layer locked="0" class="SimpleMarker" pass="0" enabled="1">
           <Option type="Map">
             <Option name="angle" type="QString" value="45"/>
             <Option name="cap_style" type="QString" value="square"/>
@@ -79,19 +79,19 @@
   <customproperties>
     <Option type="Map">
       <Option name="embeddedWidgets/count" type="int" value="0"/>
-      <Option name="variableNames"/>
-      <Option name="variableValues"/>
+      <Option name="variableNames" type="invalid"/>
+      <Option name="variableValues" type="invalid"/>
     </Option>
   </customproperties>
   <blendMode>0</blendMode>
   <featureBlendMode>0</featureBlendMode>
   <layerOpacity>1</layerOpacity>
   <SingleCategoryDiagramRenderer diagramType="Histogram" attributeLegend="1">
-    <DiagramCategory penWidth="0" maxScaleDenominator="1e+08" opacity="1" scaleDependency="Area" lineSizeScale="3x:0,0,0,0,0,0" minimumSize="0" diagramOrientation="Up" spacing="5" height="15" penColor="#000000" spacingUnitScale="3x:0,0,0,0,0,0" backgroundColor="#ffffff" spacingUnit="MM" lineSizeType="MM" showAxis="1" penAlpha="255" minScaleDenominator="0" direction="0" enabled="0" barWidth="5" sizeScale="3x:0,0,0,0,0,0" scaleBasedVisibility="0" sizeType="MM" backgroundAlpha="255" labelPlacementMethod="XHeight" rotationOffset="270" width="15">
+    <DiagramCategory labelPlacementMethod="XHeight" sizeType="MM" sizeScale="3x:0,0,0,0,0,0" diagramOrientation="Up" enabled="0" spacingUnitScale="3x:0,0,0,0,0,0" direction="0" height="15" minimumSize="0" minScaleDenominator="0" spacingUnit="MM" lineSizeType="MM" barWidth="5" penWidth="0" opacity="1" penColor="#000000" backgroundColor="#ffffff" lineSizeScale="3x:0,0,0,0,0,0" scaleDependency="Area" scaleBasedVisibility="0" width="15" backgroundAlpha="255" rotationOffset="270" maxScaleDenominator="1e+08" penAlpha="255" showAxis="1" spacing="5">
       <fontProperties description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0" style=""/>
-      <attribute label="" field="" color="#000000"/>
+      <attribute color="#000000" label="" field=""/>
       <axisSymbol>
-        <symbol name="" type="line" alpha="1" clip_to_extent="1" force_rhr="0">
+        <symbol name="" alpha="1" force_rhr="0" type="line" clip_to_extent="1">
           <data_defined_properties>
             <Option type="Map">
               <Option name="name" type="QString" value=""/>
@@ -99,7 +99,7 @@
               <Option name="type" type="QString" value="collection"/>
             </Option>
           </data_defined_properties>
-          <layer pass="0" class="SimpleLine" locked="0" enabled="1">
+          <layer locked="0" class="SimpleLine" pass="0" enabled="1">
             <Option type="Map">
               <Option name="align_dash_pattern" type="QString" value="0"/>
               <Option name="capstyle" type="QString" value="square"/>
@@ -168,7 +168,7 @@
       </axisSymbol>
     </DiagramCategory>
   </SingleCategoryDiagramRenderer>
-  <DiagramLayerSettings zIndex="0" linePlacementFlags="18" priority="0" dist="0" showAll="1" obstacle="0" placement="0">
+  <DiagramLayerSettings placement="0" zIndex="0" obstacle="0" dist="0" linePlacementFlags="18" showAll="1" priority="0">
     <properties>
       <Option type="Map">
         <Option name="name" type="QString" value=""/>
@@ -184,77 +184,14 @@
   <legend type="default-vector" showLabelLegend="0"/>
   <referencedLayers/>
   <fieldConfiguration>
-    <field name="fid" configurationFlags="None">
+    <field configurationFlags="None" name="x">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field name="gml_id" configurationFlags="None">
-      <editWidget type="TextEdit">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="justyfikacja" configurationFlags="None">
-      <editWidget type="Range">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="katObrotu" configurationFlags="None">
-      <editWidget type="TextEdit">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="obiektPrzedstawiany" configurationFlags="None">
-      <editWidget type="TextEdit">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="startObiekt" configurationFlags="None">
-      <editWidget type="TextEdit">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="startWersjaObiekt" configurationFlags="None">
-      <editWidget type="TextEdit">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="koniecWersjaObiekt" configurationFlags="None">
-      <editWidget type="TextEdit">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="koniecObiekt" configurationFlags="None">
-      <editWidget type="TextEdit">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="x" configurationFlags="None">
-      <editWidget type="TextEdit">
-        <config>
-          <Option/>
-        </config>
-      </editWidget>
-    </field>
-    <field name="y" configurationFlags="None">
+    <field configurationFlags="None" name="y">
       <editWidget type="TextEdit">
         <config>
           <Option/>
@@ -263,78 +200,42 @@
     </field>
   </fieldConfiguration>
   <aliases>
-    <alias name="" field="fid" index="0"/>
-    <alias name="" field="gml_id" index="1"/>
-    <alias name="" field="justyfikacja" index="2"/>
-    <alias name="" field="katObrotu" index="3"/>
-    <alias name="" field="obiektPrzedstawiany" index="4"/>
-    <alias name="" field="startObiekt" index="5"/>
-    <alias name="" field="startWersjaObiekt" index="6"/>
-    <alias name="" field="koniecWersjaObiekt" index="7"/>
-    <alias name="" field="koniecObiekt" index="8"/>
-    <alias name="" field="x" index="9"/>
-    <alias name="" field="y" index="10"/>
+    <alias index="0" name="" field="x"/>
+    <alias index="1" name="" field="y"/>
   </aliases>
   <defaults>
-    <default applyOnUpdate="0" field="fid" expression=""/>
-    <default applyOnUpdate="0" field="gml_id" expression=""/>
-    <default applyOnUpdate="0" field="justyfikacja" expression=""/>
-    <default applyOnUpdate="0" field="katObrotu" expression=""/>
-    <default applyOnUpdate="0" field="obiektPrzedstawiany" expression=""/>
-    <default applyOnUpdate="0" field="startObiekt" expression=""/>
-    <default applyOnUpdate="0" field="startWersjaObiekt" expression=""/>
-    <default applyOnUpdate="0" field="koniecWersjaObiekt" expression=""/>
-    <default applyOnUpdate="0" field="koniecObiekt" expression=""/>
     <default applyOnUpdate="0" field="x" expression=""/>
     <default applyOnUpdate="0" field="y" expression=""/>
   </defaults>
   <constraints>
-    <constraint exp_strength="0" unique_strength="1" field="fid" constraints="3" notnull_strength="1"/>
-    <constraint exp_strength="0" unique_strength="0" field="gml_id" constraints="0" notnull_strength="0"/>
-    <constraint exp_strength="0" unique_strength="0" field="justyfikacja" constraints="0" notnull_strength="0"/>
-    <constraint exp_strength="0" unique_strength="0" field="katObrotu" constraints="0" notnull_strength="0"/>
-    <constraint exp_strength="0" unique_strength="0" field="obiektPrzedstawiany" constraints="0" notnull_strength="0"/>
-    <constraint exp_strength="0" unique_strength="0" field="startObiekt" constraints="0" notnull_strength="0"/>
-    <constraint exp_strength="0" unique_strength="0" field="startWersjaObiekt" constraints="0" notnull_strength="0"/>
-    <constraint exp_strength="0" unique_strength="0" field="koniecWersjaObiekt" constraints="0" notnull_strength="0"/>
-    <constraint exp_strength="0" unique_strength="0" field="koniecObiekt" constraints="0" notnull_strength="0"/>
-    <constraint exp_strength="0" unique_strength="0" field="x" constraints="0" notnull_strength="0"/>
-    <constraint exp_strength="0" unique_strength="0" field="y" constraints="0" notnull_strength="0"/>
+    <constraint notnull_strength="0" exp_strength="0" constraints="0" unique_strength="0" field="x"/>
+    <constraint notnull_strength="0" exp_strength="0" constraints="0" unique_strength="0" field="y"/>
   </constraints>
   <constraintExpressions>
-    <constraint desc="" field="fid" exp=""/>
-    <constraint desc="" field="gml_id" exp=""/>
-    <constraint desc="" field="justyfikacja" exp=""/>
-    <constraint desc="" field="katObrotu" exp=""/>
-    <constraint desc="" field="obiektPrzedstawiany" exp=""/>
-    <constraint desc="" field="startObiekt" exp=""/>
-    <constraint desc="" field="startWersjaObiekt" exp=""/>
-    <constraint desc="" field="koniecWersjaObiekt" exp=""/>
-    <constraint desc="" field="koniecObiekt" exp=""/>
-    <constraint desc="" field="x" exp=""/>
-    <constraint desc="" field="y" exp=""/>
+    <constraint exp="" field="x" desc=""/>
+    <constraint exp="" field="y" desc=""/>
   </constraintExpressions>
   <expressionfields>
-    <field name="x" typeName="" type="6" length="0" subType="0" comment="" expression="$x" precision="0"/>
-    <field name="y" typeName="" type="6" length="0" subType="0" comment="" expression="$y" precision="0"/>
+    <field name="x" precision="0" type="6" comment="" typeName="" subType="0" length="0" expression="$x"/>
+    <field name="y" precision="0" type="6" comment="" typeName="" subType="0" length="0" expression="$y"/>
   </expressionfields>
   <attributeactions>
     <defaultAction value="{00000000-0000-0000-0000-000000000000}" key="Canvas"/>
   </attributeactions>
-  <attributetableconfig sortOrder="0" actionWidgetStyle="dropDown" sortExpression="">
+  <attributetableconfig sortExpression="" actionWidgetStyle="dropDown" sortOrder="0">
     <columns>
-      <column name="fid" type="field" width="-1" hidden="0"/>
-      <column name="gml_id" type="field" width="-1" hidden="0"/>
-      <column name="justyfikacja" type="field" width="-1" hidden="0"/>
-      <column name="katObrotu" type="field" width="-1" hidden="0"/>
-      <column name="obiektPrzedstawiany" type="field" width="-1" hidden="0"/>
-      <column name="x" type="field" width="-1" hidden="0"/>
-      <column name="y" type="field" width="-1" hidden="0"/>
-      <column name="startObiekt" type="field" width="-1" hidden="0"/>
-      <column name="startWersjaObiekt" type="field" width="-1" hidden="0"/>
-      <column name="koniecWersjaObiekt" type="field" width="-1" hidden="0"/>
-      <column name="koniecObiekt" type="field" width="-1" hidden="0"/>
-      <column type="actions" width="-1" hidden="1"/>
+      <column name="fid" type="field" hidden="0" width="-1"/>
+      <column name="gml_id" type="field" hidden="0" width="-1"/>
+      <column name="justyfikacja" type="field" hidden="0" width="-1"/>
+      <column name="katObrotu" type="field" hidden="0" width="-1"/>
+      <column name="obiektPrzedstawiany" type="field" hidden="0" width="-1"/>
+      <column name="x" type="field" hidden="0" width="-1"/>
+      <column name="y" type="field" hidden="0" width="-1"/>
+      <column name="startObiekt" type="field" hidden="0" width="-1"/>
+      <column name="startWersjaObiekt" type="field" hidden="0" width="-1"/>
+      <column name="koniecWersjaObiekt" type="field" hidden="0" width="-1"/>
+      <column name="koniecObiekt" type="field" hidden="0" width="-1"/>
+      <column type="actions" hidden="1" width="-1"/>
     </columns>
   </attributetableconfig>
   <conditionalstyles>
@@ -366,30 +267,30 @@ def my_form_open(dialog, layer, feature):
   <featformsuppress>0</featformsuppress>
   <editorlayout>generatedlayout</editorlayout>
   <editable>
-    <field name="fid" editable="1"/>
-    <field name="gml_id" editable="1"/>
-    <field name="justyfikacja" editable="1"/>
-    <field name="katObrotu" editable="1"/>
-    <field name="koniecObiekt" editable="1"/>
-    <field name="koniecWersjaObiekt" editable="1"/>
-    <field name="obiektPrzedstawiany" editable="1"/>
-    <field name="startObiekt" editable="1"/>
-    <field name="startWersjaObiekt" editable="1"/>
-    <field name="x" editable="0"/>
-    <field name="y" editable="0"/>
+    <field editable="1" name="fid"/>
+    <field editable="1" name="gml_id"/>
+    <field editable="1" name="justyfikacja"/>
+    <field editable="1" name="katObrotu"/>
+    <field editable="1" name="koniecObiekt"/>
+    <field editable="1" name="koniecWersjaObiekt"/>
+    <field editable="1" name="obiektPrzedstawiany"/>
+    <field editable="1" name="startObiekt"/>
+    <field editable="1" name="startWersjaObiekt"/>
+    <field editable="0" name="x"/>
+    <field editable="0" name="y"/>
   </editable>
   <labelOnTop>
-    <field name="fid" labelOnTop="0"/>
-    <field name="gml_id" labelOnTop="0"/>
-    <field name="justyfikacja" labelOnTop="0"/>
-    <field name="katObrotu" labelOnTop="0"/>
-    <field name="koniecObiekt" labelOnTop="0"/>
-    <field name="koniecWersjaObiekt" labelOnTop="0"/>
-    <field name="obiektPrzedstawiany" labelOnTop="0"/>
-    <field name="startObiekt" labelOnTop="0"/>
-    <field name="startWersjaObiekt" labelOnTop="0"/>
-    <field name="x" labelOnTop="0"/>
-    <field name="y" labelOnTop="0"/>
+    <field labelOnTop="0" name="fid"/>
+    <field labelOnTop="0" name="gml_id"/>
+    <field labelOnTop="0" name="justyfikacja"/>
+    <field labelOnTop="0" name="katObrotu"/>
+    <field labelOnTop="0" name="koniecObiekt"/>
+    <field labelOnTop="0" name="koniecWersjaObiekt"/>
+    <field labelOnTop="0" name="obiektPrzedstawiany"/>
+    <field labelOnTop="0" name="startObiekt"/>
+    <field labelOnTop="0" name="startWersjaObiekt"/>
+    <field labelOnTop="0" name="x"/>
+    <field labelOnTop="0" name="y"/>
   </labelOnTop>
   <reuseLastValue>
     <field name="fid" reuseLastValue="0"/>
