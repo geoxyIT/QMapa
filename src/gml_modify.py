@@ -196,19 +196,21 @@ class GmlModify:
             #print('tag', main_child[0].tag)
             prezentacje = main_child.findall(pref + 'PrezentacjaGraficzna')
             #print(main_child[0].tag)
+
             for feat in prezentacje:
                 feat.tag = pref + pref_tag + 'PrezentacjaGraficzna'
-                geometry = ET.SubElement(feat, split_pref_0)
-                point = ET.SubElement(geometry, '{http://www.opengis.net/gml/3.2}Point')
-                point.attrib['srsName'] = self.found_crs
-                position = ET.SubElement(point, '{http://www.opengis.net/gml/3.2}pos')
-                position.text = ' '
-                geometry.tail = '\n'
+                if feat.find(pref + 'geometria') is None:
+                    geometry = ET.SubElement(feat, split_pref_0)
+                    point = ET.SubElement(geometry, '{http://www.opengis.net/gml/3.2}Point')
+                    point.attrib['srsName'] = self.found_crs
+                    position = ET.SubElement(point, '{http://www.opengis.net/gml/3.2}pos')
+                    position.text = ' '
+                    geometry.tail = '\n'
 
-                # zmiana kolejnosci atrybutow - geometria ma byc na poczatku
-                geom = copy.deepcopy(feat[-1])
-                feat.insert(0, geom)
-                feat.remove(feat[-1])
+                    # zmiana kolejnosci atrybutow - geometria ma byc na poczatku
+                    geom = copy.deepcopy(feat[-1])
+                    feat.insert(0, geom)
+                    feat.remove(feat[-1])
 
         for ind in range(len(split_pref_list)):
             obj_to_save = split_pref_list[ind]
@@ -244,6 +246,10 @@ class GmlModify:
                     if 'opisyKARTO' in new_tag:
                         for katObr in copy_feat[0].findall(pref + 'katObrotu'):
                             copy_feat[0].remove(katObr)
+
+                        geom_main_obj = copy_feat[0].find(pref + 'geometria')
+                        if geom_main_obj is not None:
+                            copy_feat[0].remove(geom_main_obj)
 
                     i_ins = 0
                     # usuwanie powtarzajacych sie (usuwanie wszystkich znalezionych poza jednym, po kolei)

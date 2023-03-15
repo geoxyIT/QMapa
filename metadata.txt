@@ -6,7 +6,7 @@
 name=QMapa GML 2021
 qgisMinimumVersion=3.24
 description=Wizualizacja mapy zasadniczej z plików GML obejmujących zbiory danych EGiB, GESUT i BDOT500.
-version=2.0.0
+version=2.0.1
 author=GEOXY sp. z o.o. 
 email=qgis@geoxy.pl
 
@@ -21,7 +21,12 @@ repository=https://github.com/geoxyIT/QMapa
 hasProcessingProvider=no
 
 changelog=
-	2.0.0 2023.01.13
+    2.0.1 2023.02.28
+    -znaczne przyspieszenie importu (ok. 2 razy szybciej).
+    -dodawane serwisy sa od teraz widoczne od razu przy dodawaniu.
+    -dodanie podsymboli typu nieoznaczone. Przeznaczone dla obiektow ktore maja niektore atrybuty niezgodne z rozporzadzeniem, w zwiazku z czym nie mialy dopasowanego zadnego symbolu.
+    -zmiana symboli kanal technologiczny i obudowa ochronna przy multilinii.
+    2.0.0 2023.01.13
     -Optymalizacja importu i renderowania
     -Dodanie obsługi importu plików zawierających kilka baz. Obiekty które są niezgodne z modelami BDOT, EGiB i GESUT 2021 są wczytywane, ale nie jest obsługiwana ich odpowiednia wizualizacja.
     -Dodanie możliwości wypełniania kolorami obiektów powierzchniowych w oparciu o plik xlsm z zadeklarowaną strukturą.

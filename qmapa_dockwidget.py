@@ -130,6 +130,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         """Przycisk wywolania strony po nacisnieciu Logo GEOXY"""
         webbrowser.open('http://www.geoxy.pl/')
 
+        #saveStylization(iface.mapCanvas().layers(), str(self.cmbStylization.currentText()))
+
     @pyqtSlot()
     def on_pbDonate_clicked(self):
         """Przycisk wywolania strony po nacisnieciu przycisku postaw kawe"""
@@ -965,6 +967,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         current_scale = iface.layerTreeView().layerTreeModel().legendMapViewData()
         dpi = current_scale[1]
-        mupp = (2.54*scale)/(100*dpi)
+        if dpi != 0:
+            mupp = (2.54*scale)/(100*dpi)
 
-        iface.layerTreeView().layerTreeModel().setLegendMapViewData(mupp, dpi, scale)
+            iface.layerTreeView().layerTreeModel().setLegendMapViewData(mupp, dpi, scale)

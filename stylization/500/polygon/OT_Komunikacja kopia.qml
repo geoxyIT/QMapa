@@ -36,7 +36,7 @@
             <Option type="QString" value="round" name="joinstyle"/>
             <Option type="QString" value="0,255,255,255" name="line_color"/>
             <Option type="QString" value="solid" name="line_style"/>
-            <Option type="QString" value="0.9" name="line_width"/>
+            <Option type="QString" value="0.09" name="line_width"/>
             <Option type="QString" value="MapUnit" name="line_width_unit"/>
             <Option type="QString" value="0" name="offset"/>
             <Option type="QString" value="3x:2500,0,0,0.03,0,0" name="offset_map_unit_scale"/>
@@ -50,7 +50,7 @@
             <Option type="QString" value="MM" name="trim_distance_start_unit"/>
             <Option type="QString" value="0" name="tweak_dash_pattern_on_corners"/>
             <Option type="QString" value="0" name="use_custom_dash"/>
-            <Option type="QString" value="3x:25000,0,0,0.03,0,0" name="width_map_unit_scale"/>
+            <Option type="QString" value="3x:2500,0,0,0.03,0,0" name="width_map_unit_scale"/>
           </Option>
           <prop v="0" k="align_dash_pattern"/>
           <prop v="round" k="capstyle"/>
@@ -64,7 +64,7 @@
           <prop v="round" k="joinstyle"/>
           <prop v="0,255,255,255" k="line_color"/>
           <prop v="solid" k="line_style"/>
-          <prop v="0.9" k="line_width"/>
+          <prop v="0.09" k="line_width"/>
           <prop v="MapUnit" k="line_width_unit"/>
           <prop v="0" k="offset"/>
           <prop v="3x:2500,0,0,0.03,0,0" k="offset_map_unit_scale"/>
@@ -78,7 +78,7 @@
           <prop v="MM" k="trim_distance_start_unit"/>
           <prop v="0" k="tweak_dash_pattern_on_corners"/>
           <prop v="0" k="use_custom_dash"/>
-          <prop v="3x:25000,0,0,0.03,0,0" k="width_map_unit_scale"/>
+          <prop v="3x:2500,0,0,0.03,0,0" k="width_map_unit_scale"/>
           <data_defined_properties>
             <Option type="Map">
               <Option type="QString" value="" name="name"/>
@@ -104,8 +104,8 @@
     <sizescale/>
   </renderer-v2>
   <labeling type="rule-based">
-    <rules key="{ed84a8ee-b4f8-4cf1-a341-d033e913e4c4}">
-      <rule key="{a6735dc6-a7f6-49fd-89cb-58939ee1e178}" description="jezdnia" filter="rodzajObiektu = 'j'">
+    <rules key="{ab83ddc9-a219-49b2-8059-98b3f6837b98}">
+      <rule key="{934f1f65-29d4-49ce-925c-d3aef562ca10}" description="jezdnia" filter="rodzajObiektu = 'j'">
         <settings calloutType="simple">
           <text-style textColor="0,0,0,255" previewBkgrdColor="255,255,255,255" fontSizeUnit="MapUnit" fontSizeMapUnitScale="3x:2500,0,0,0,0,0" fontStrikeout="0" fontItalic="0" namedStyle="Normal" fontWeight="50" isExpression="1" textOrientation="horizontal" capitalization="0" fontWordSpacing="0" fontUnderline="0" multilineHeight="1" fontKerning="1" fontFamily="Arial" useSubstitutions="0" fontSize="1.0417000000000001" fontLetterSpacing="0" textOpacity="1" blendMode="0" allowHtml="0" fieldName="'j.' + try(&quot;rodzajNawierzchni&quot;)" legendString="Aa">
             <families/>
@@ -270,7 +270,7 @@
           </callout>
         </settings>
       </rule>
-      <rule key="{9db9659e-1aa4-48f5-9f81-4d659f34cd0f}" description="chodnik" filter="rodzajObiektu = 'c'">
+      <rule key="{8da64cdd-d3a5-409c-9f74-202aa8786d09}" description="chodnik" filter="rodzajObiektu = 'c'">
         <settings calloutType="simple">
           <text-style textColor="0,0,0,255" previewBkgrdColor="255,255,255,255" fontSizeUnit="MapUnit" fontSizeMapUnitScale="3x:2500,0,0,0,0,0" fontStrikeout="0" fontItalic="0" namedStyle="Normal" fontWeight="50" isExpression="1" textOrientation="horizontal" capitalization="0" fontWordSpacing="0" fontUnderline="0" multilineHeight="1" fontKerning="1" fontFamily="Arial" useSubstitutions="0" fontSize="1.0417000000000001" fontLetterSpacing="0" textOpacity="1" blendMode="0" allowHtml="0" fieldName="'ch.' + try(&quot;rodzajNawierzchni&quot;)" legendString="Aa">
             <families/>
@@ -435,7 +435,7 @@
           </callout>
         </settings>
       </rule>
-      <rule key="{55d0e5db-5407-4b85-88ad-696da5609bcd}" description="droga dla rowerów" filter="rodzajObiektu = 'g'">
+      <rule key="{6a74dc90-5127-4064-adeb-3338a5d49707}" description="droga dla rowerów" filter="rodzajObiektu = 'g'">
         <settings calloutType="simple">
           <text-style textColor="0,0,0,255" previewBkgrdColor="255,255,255,255" fontSizeUnit="MapUnit" fontSizeMapUnitScale="3x:2500,0,0,0,0,0" fontStrikeout="0" fontItalic="0" namedStyle="Normal" fontWeight="50" isExpression="1" textOrientation="horizontal" capitalization="0" fontWordSpacing="0" fontUnderline="0" multilineHeight="1" fontKerning="1" fontFamily="Arial" useSubstitutions="0" fontSize="1.0417000000000001" fontLetterSpacing="0" textOpacity="1" blendMode="0" allowHtml="0" fieldName="'r'" legendString="Aa">
             <families/>
@@ -600,7 +600,7 @@
           </callout>
         </settings>
       </rule>
-      <rule key="{97aa2132-df20-43dd-9eeb-b5e2058f56d5}" description="obszar utwardzony" filter="rodzajObiektu = 'u'">
+      <rule key="{5ef1b096-4243-4a89-bb0a-482ed2bf5968}" description="obszar utwardzony" filter="rodzajObiektu = 'u'">
         <settings calloutType="simple">
           <text-style textColor="0,0,0,255" previewBkgrdColor="255,255,255,255" fontSizeUnit="MapUnit" fontSizeMapUnitScale="3x:2500,0,0,0,0,0" fontStrikeout="0" fontItalic="0" namedStyle="Normal" fontWeight="50" isExpression="1" textOrientation="horizontal" capitalization="0" fontWordSpacing="0" fontUnderline="0" multilineHeight="1" fontKerning="1" fontFamily="Arial" useSubstitutions="0" fontSize="1.0417000000000001" fontLetterSpacing="0" textOpacity="1" blendMode="0" allowHtml="0" fieldName="try(&quot;rodzajNawierzchni&quot;)+'.'" legendString="Aa">
             <families/>
@@ -765,7 +765,7 @@
           </callout>
         </settings>
       </rule>
-      <rule key="{90c40025-6c17-470c-bc36-e094cdae64ab}" description="rów przydrożny" filter="rodzajObiektu = 'r'">
+      <rule key="{256523e6-6203-4e84-9450-52b668d74aca}" description="rów przydrożny" filter="rodzajObiektu = 'r'">
         <settings calloutType="simple">
           <text-style textColor="0,0,0,255" previewBkgrdColor="255,255,255,255" fontSizeUnit="MapUnit" fontSizeMapUnitScale="3x:2500,0,0,0,0,0" fontStrikeout="0" fontItalic="0" namedStyle="Normal" fontWeight="50" isExpression="1" textOrientation="horizontal" capitalization="0" fontWordSpacing="0" fontUnderline="0" multilineHeight="1" fontKerning="1" fontFamily="Arial" useSubstitutions="0" fontSize="1.0417000000000001" fontLetterSpacing="0" textOpacity="1" blendMode="0" allowHtml="0" fieldName="'w.'" legendString="Aa">
             <families/>
@@ -930,7 +930,7 @@
           </callout>
         </settings>
       </rule>
-      <rule key="{2beb281f-9302-4767-a74c-7874ef070f26}" description="peron" filter="rodzajObiektu = 'n'">
+      <rule key="{2d033aea-eb09-4dea-a784-08730f55186a}" description="peron" filter="rodzajObiektu = 'n'">
         <settings calloutType="simple">
           <text-style textColor="0,0,0,255" previewBkgrdColor="255,255,255,255" fontSizeUnit="MapUnit" fontSizeMapUnitScale="3x:2500,0,0,0,0,0" fontStrikeout="0" fontItalic="0" namedStyle="Normal" fontWeight="50" isExpression="1" textOrientation="horizontal" capitalization="0" fontWordSpacing="0" fontUnderline="0" multilineHeight="1" fontKerning="1" fontFamily="Arial" useSubstitutions="0" fontSize="1.0417000000000001" fontLetterSpacing="0" textOpacity="1" blendMode="0" allowHtml="0" fieldName="'per'" legendString="Aa">
             <families/>
@@ -1095,7 +1095,7 @@
           </callout>
         </settings>
       </rule>
-      <rule key="{85e87b74-d519-4bd2-b03e-4916db122cd3}" description="rampa" filter="rodzajObiektu = 'a'">
+      <rule key="{2bf4d056-0bb8-4838-9edb-e15bfc41c127}" description="rampa" filter="rodzajObiektu = 'a'">
         <settings calloutType="simple">
           <text-style textColor="0,0,0,255" previewBkgrdColor="255,255,255,255" fontSizeUnit="MapUnit" fontSizeMapUnitScale="3x:2500,0,0,0,0,0" fontStrikeout="0" fontItalic="0" namedStyle="Normal" fontWeight="50" isExpression="1" textOrientation="horizontal" capitalization="0" fontWordSpacing="0" fontUnderline="0" multilineHeight="1" fontKerning="1" fontFamily="Arial" useSubstitutions="0" fontSize="1.0417000000000001" fontLetterSpacing="0" textOpacity="1" blendMode="0" allowHtml="0" fieldName="'rmp'" legendString="Aa">
             <families/>
@@ -1260,7 +1260,7 @@
           </callout>
         </settings>
       </rule>
-      <rule key="{25719214-4fa0-4d50-b7c8-af763e65fc4a}" description="inny obiekt komunikacyjny" filter="rodzajObiektu = 'i'">
+      <rule key="{83072a4d-aed3-4b64-afa8-c393d07d5be1}" description="inny obiekt komunikacyjny" filter="rodzajObiektu = 'i'">
         <settings calloutType="simple">
           <text-style textColor="0,0,0,255" previewBkgrdColor="255,255,255,255" fontSizeUnit="MapUnit" fontSizeMapUnitScale="3x:2500,0,0,0,0,0" fontStrikeout="0" fontItalic="0" namedStyle="Normal" fontWeight="50" isExpression="1" textOrientation="horizontal" capitalization="0" fontWordSpacing="0" fontUnderline="0" multilineHeight="1" fontKerning="1" fontFamily="Arial" useSubstitutions="0" fontSize="1.0417000000000001" fontLetterSpacing="0" textOpacity="1" blendMode="0" allowHtml="0" fieldName="'ok'" legendString="Aa">
             <families/>
