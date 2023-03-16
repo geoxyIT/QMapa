@@ -41,7 +41,7 @@ def saveStylization(layers, sty_name):
             pathqml = os.path.join(stylization_dir, geom_type, str(name)+'.qml')
             layer.saveNamedStyle(pathqml)
 
-def get_symb_copy(layers, layer_name):
+def getSymbCopy(layers, layer_name):
     child_copy = None
     for layer in layers:
         if layer_name in layer.name():
@@ -57,7 +57,7 @@ def get_symb_copy(layers, layer_name):
 
     return child_copy
 
-def add_copied_symb(layers, child):
+def addCopiedSymb(layers, child):
     for layer in layers:
         try:
             # nadanie wyrazen dla warstw, ktore maja jeden symbol

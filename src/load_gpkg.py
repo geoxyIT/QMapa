@@ -5,7 +5,7 @@ from osgeo import ogr
 from qgis.PyQt.QtCore import QVariant, QDateTime
 from .config import correct_layers
 
-def load_gpkg(gpkg_path):
+def loadGpkg(gpkg_path):
     """funkcja odpowiadaja za edycje warstw z geometria UNKNOW - typ wg. wkb = 0
     jezeli taka geometria istnieje, jest rozbijana i sortowana na 3 rodzaje geometrii
     tj. point, curve, surface"""

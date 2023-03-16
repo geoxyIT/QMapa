@@ -1,7 +1,7 @@
 import os
 # PyQt5
 from PyQt5 import uic
-from .scrap_version import get_local_ver, reg_ver, reg_date
+from .scrap_version import getLocalVer, regVer, regDate
 
 cls, wnd = uic.loadUiType(os.path.join(os.path.dirname(__file__), '..', 'ui', 'help.ui'))
 
@@ -13,11 +13,11 @@ class Help(wnd, cls):
 
         # nadanie wersji z metadanych w okno help
         metadata_path = (os.path.join(os.path.dirname(os.path.dirname(__file__)), 'metadata.txt'))
-        ver = reg_ver(get_local_ver(metadata_path))
+        ver = regVer(getLocalVer(metadata_path))
         self.lb_ver.setText(ver)
 
         # nadanie daty z metadanych do okna help
-        date = reg_date(get_local_ver(metadata_path))
+        date = regDate(getLocalVer(metadata_path))
         self.lb_date.setText(date)
 
         instr_file = (os.path.join(os.path.dirname(__file__), '..', 'instrukcje', 'Instrukcja_uzytkowania_QMapa_GML_2021_2.0.0.pdf'))

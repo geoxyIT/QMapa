@@ -43,7 +43,7 @@ from .qmapa_dockwidget import QMapaDockWidget
 import os.path
 from .src.help import Help
 
-from .src.fill_with_color import open_fill_xlsm_loc  # open_fill_xlsm,
+from .src.area_symbol_fill import openFillXlsmLoc  # open_fill_xlsm,
 
 PLUGIN_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 
@@ -264,7 +264,7 @@ class QMapa:
         # callback=lambda: open_fill_xlsm(path=FILL_PARAMETERS))
         self.toolbarAction(tool_button=tool_button, icon_path=icon_fill_directory_path,
                            text=self.tr(u'Paleta kolorów wypełnień'),
-                           callback=lambda: open_fill_xlsm_loc(path=FILL_PARAMETERS_DIR))
+                           callback=lambda: openFillXlsmLoc(path=FILL_PARAMETERS_DIR))
 
         self.toolbarAction(tool_button=tool_button, icon_path=raster_icon,
                            text=self.tr(u'Dodaj serwis Open Street Map'),

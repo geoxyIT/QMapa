@@ -14,18 +14,18 @@ class ExpressYourself:
         self.enable_expression = enable_expression
         self.temp_enable_expression = enable_expression
 
-    def symbol_recursion(self, sub_symbols):
+    def symbolRecursion(self, sub_symbols):
         """Rekurencja po symbolach - nadawane sa wlasciwosci az do ostatniego
         symbolu, ktory ma subSymbol"""
         while len(sub_symbols) > 0:
             temp = []
             for symb in sub_symbols:
-                self.symbol_properties(symb)
+                self.symbolProperties(symb)
                 if symb.subSymbol():
                     temp += symb.subSymbol().symbolLayers()
                 sub_symbols = temp
 
-    def create_property(self, settings, property_key: int, expression: str):
+    def createProperty(self, settings, property_key: int, expression: str):
         """Utworzenie wlasciwosci dla symboli
         dla symboli nie ma settingsow, tylko datadefinedproperties robi sie
         od razu na obiekcie symbolu"""
@@ -41,7 +41,7 @@ class ExpressYourself:
         settings.dataDefinedProperties().property(property_key).setExpressionString(new_expression)
         settings.dataDefinedProperties().property(property_key).setActive(True)
 
-    def symbol_properties(self, symbol):
+    def symbolProperties(self, symbol):
         """Tworzenie wlasciwosci ktore zostana nadane dla symboli"""
         if (symbol.color().getRgb() != white_color.getRgb() and
                 symbol.color().alpha() != 0):
@@ -49,29 +49,29 @@ class ExpressYourself:
                 color_index = 4
             else:
                 color_index = 3
-            self.create_property(symbol, color_index, self.color_expression)  # PropertyFillColor
+            self.createProperty(symbol, color_index, self.color_expression)  # PropertyFillColor
         if (symbol.strokeColor().getRgb() != white_color.getRgb() and
                 symbol.strokeColor().alpha() != 0) and type(symbol) is not QgsSimpleLineSymbolLayer:
-            self.create_property(symbol, 4, self.color_expression)  # PropertyStrokeColor
-        self.create_property(symbol, 44, self.enable_expression)  # enable symbol layer
+            self.createProperty(symbol, 4, self.color_expression)  # PropertyStrokeColor
+        self.createProperty(symbol, 44, self.enable_expression)  # enable symbol layer
 
-    def label_properties(self, label_settings):
+    def labelProperties(self, label_settings):
         """Tworzenie wlasciwosci dla etykiet"""
         if (label_settings.format().color().getRgb() != white_color.getRgb() and
                 label_settings.format().color().alpha() != 0):
-            self.create_property(label_settings, 4, self.color_expression)
-        self.create_property(label_settings, 15, self.enable_expression)
+            self.createProperty(label_settings, 4, self.color_expression)
+        self.createProperty(label_settings, 15, self.enable_expression)
 
-    def set_callouts(self, settings):
+    def setCallouts(self, settings):
         """Nadanie odnosnikow dla etykiet"""
         # CALLOUTS
         callouts = settings.callout()
         symbols = callouts.lineSymbol().symbolLayers()
         for symb in symbols:
             # wywolanie funkcji z nadaniem wlasciwosci
-            self.symbol_properties(symb)
+            self.symbolProperties(symb)
 
-    def set_background(self, settings):
+    def setBackground(self, settings):
         # BACKGROUND
         text_format = settings.format()
         background = text_format.background()
@@ -79,14 +79,14 @@ class ExpressYourself:
         symbols = background_fill_symbol.symbolLayers()
         for symb in symbols:
             # wywolanie funkcji z nadaniem wlasciwosci
-            self.symbol_properties(symb)
+            self.symbolProperties(symb)
 
             if symb.subSymbol():
                 sub_symbols = symb.subSymbol().symbolLayers()
                 # rekurencja po zagniezdzonych symbolach
-                self.symbol_recursion(sub_symbols)
+                self.symbolRecursion(sub_symbols)
 
-    def set_symbol_expression(self, layers):
+    def setSymbolExpression(self, layers):
         """Nadanie wyrazenia symbolom na warstwie"""
         for layer in layers:
             try:
@@ -98,13 +98,13 @@ class ExpressYourself:
                         symbols = layer.renderer().symbol().symbolLayers()
                         for symb in symbols:
                             # wyrazenia
-                            self.symbol_properties(symb)
+                            self.symbolProperties(symb)
 
                             # wejscie w marker line, hashed line, geometry generator...
                             if symb.subSymbol():
                                 sub_symbols = symb.subSymbol().symbolLayers()
                                 # rekurencja po zagniezdzonych symbolach
-                                self.symbol_recursion(sub_symbols)
+                                self.symbolRecursion(sub_symbols)
 
                     # nadanie wyrazen dla warstw, ktore sa oparte na regulach
                     elif renderer.type() == 'RuleRenderer':
@@ -113,13 +113,13 @@ class ExpressYourself:
                                 symbols = symbol_list.symbolLayers()
                                 for symb in symbols:
                                     # wyrazenia
-                                    self.symbol_properties(symb)
+                                    self.symbolProperties(symb)
 
                                     # wejscie w marker line, hashed line, geometry generator...
                                     if symb.subSymbol():
                                         sub_symbols = symb.subSymbol().symbolLayers()
                                         # rekurencja po zagniezdzonych symbolach
-                                        self.symbol_recursion(sub_symbols)
+                                        self.symbolRecursion(sub_symbols)
 
                     else:
                         # inny rodzaj symbolu
@@ -134,7 +134,7 @@ class ExpressYourself:
             # odswiezenie layer tree
             iface.layerTreeView().refreshLayerSymbology(layer.id())
 
-    def set_label_expression(self, layers, set_colors = True):
+    def setLabelExpression(self, layers, set_colors = True):
         """Nadanie wyrazenia etykietom na warstwie"""
         for layer in layers:
             labeling = layer.labeling()
@@ -146,20 +146,20 @@ class ExpressYourself:
                         self.enable_expression = 'case when 1111 then ' + self.enable_expression + ' else 0 end'
 
                         # wyrazenia
-                        self.label_properties(settings)
+                        self.labelProperties(settings)
                         # nadanie wyrazen
                         labeling.setSettings(settings)
 
                         # nadanie wyrazen dla odnosnikow
-                        self.set_callouts(settings)
+                        self.setCallouts(settings)
 
                         # nadanie wyrazen dla tla etykiet
-                        self.set_background(settings)
+                        self.setBackground(settings)
 
                         self.enable_expression = self.temp_enable_expression
                     else:
                         self.enable_expression = '@Auto'
-                        self.create_property(settings, 15, self.enable_expression)
+                        self.createProperty(settings, 15, self.enable_expression)
                         labeling.setSettings(settings)
 
 
@@ -176,11 +176,11 @@ class ExpressYourself:
                             filter_exp = label.filterExpression()  # tu wyciagac wartosci
                             try:
                                 if set_colors:
-                                    filter_prefix = self.extract_prefix(filter_exp)
-                                    new_color_expression = self.change_label_expression(expression=self.color_expression,
-                                                                                        prefix=filter_prefix)
-                                    new_enable_expression = self.change_label_expression(expression=self.enable_expression,
-                                                                                         prefix=filter_prefix)
+                                    filter_prefix = self.extractPrefix(filter_exp)
+                                    new_color_expression = self.changeLabelExpression(expression=self.color_expression,
+                                                                                      prefix=filter_prefix)
+                                    new_enable_expression = self.changeLabelExpression(expression=self.enable_expression,
+                                                                                       prefix=filter_prefix)
                                     self.color_expression = new_color_expression
                                     self.enable_expression = new_enable_expression
 
@@ -198,22 +198,22 @@ class ExpressYourself:
                                 self.enable_expression = '@Auto'
                         if set_colors:
                             # wyrazenia
-                            self.label_properties(settings)
+                            self.labelProperties(settings)
                             # nadanie wyrazen
                             labeling.setSettings(settings)
 
                             # nadanie wyrazen dla odnosnikow
-                            self.set_callouts(settings)
+                            self.setCallouts(settings)
 
                             # nadanie wyrazen dla tla etykiet
-                            self.set_background(settings)
+                            self.setBackground(settings)
 
                             # powrot do pierownych wyrazen
                             self.color_expression = self.temp_color_expression
                             self.enable_expression = self.temp_enable_expression
 
                         else:
-                            self.create_property(settings, 15, self.enable_expression)
+                            self.createProperty(settings, 15, self.enable_expression)
                             labeling.setSettings(settings)
 
                 else:
@@ -225,7 +225,7 @@ class ExpressYourself:
 
     # DODAC WARUNEK DLA LABELEK I SYMBOLI Z WHITE I BLANK
 
-    def change_label_expression(self, expression, prefix):
+    def changeLabelExpression(self, expression, prefix):
         """Zmiana wyrazenia dla etykiet  - dodanie przedrostka w kolumnach startobiekt, koniecobiekt..."""
         val_to_replace = ['koniecWersjaObiekt', 'koniecObiekt', 'startObiekt', 'startWersjaObiekt']
         for val in val_to_replace:
@@ -233,7 +233,7 @@ class ExpressYourself:
             expression = expression.replace(val, with_prefix)
         return expression
 
-    def extract_prefix(self, text):
+    def extractPrefix(self, text):
         """Metoda do wyciagania nazwy warstwy z filtra"""
         text = text.lower()
         idx = [m.start() for m in re.finditer('"', text)]

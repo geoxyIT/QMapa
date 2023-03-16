@@ -19,8 +19,7 @@ class report:
         #podane tagi sa rozpoznawane jako zgodne z rozporzadzeniem, slownik mowi dodatkowo jaki przedrostek dopisywac gdy wystapi dany tag (np dopisze OT_ do poczatekGorySkarpy)
         self.a = 1
 
-
-    def control_sum(self, file_path):
+    def controlSum(self, file_path):
         #filename = input(file_path)
         start = datetime.datetime.now()
         sha256_hash = hashlib.sha256()
@@ -106,7 +105,7 @@ class report:
 
         return sheetReceiving
 
-    def remove_merged(self, startCol, startRow, endCol, endRow, sheet):
+    def removeMerged(self, startCol, startRow, endCol, endRow, sheet):
         """usuwanie polaczen komorek z wybranego zakresu"""
         allMergedCells = sheet.merged_cells.ranges
         merged_list = []
@@ -123,7 +122,7 @@ class report:
         main_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
         template_path = os.path.join(main_dir, 'raport', 'szablon_raport_z_importu.xlsx')
 
-        control_sum_sha256 = self.control_sum(file_path)
+        control_sum_sha256 = self.controlSum(file_path)
 
         start_paste_row = 9
         template_wb = load_workbook(filename=template_path)
@@ -153,7 +152,7 @@ class report:
 
         dict_copied_frame = {'EGiB':{'header':[header_egib_data,header_egib_style,header_egib_merged],'body':[body_egib_data,body_egib_style,body_egib_merged],'bottom':[bottom_egib_data,bottom_egib_style,bottom_egib_merged], 'prez':[prez_egib_data,prez_egib_style,prez_egib_merged]},'GESUT':{'header':[header_gesut_data,header_gesut_style,header_gesut_merged],'body':[body_gesut_data,body_gesut_style,body_gesut_merged],'bottom':[bottom_gesut_data,bottom_gesut_style,bottom_gesut_merged], 'prez': [prez_egib_data, prez_gesut_style, prez_gesut_merged]},'BDOT500':{'header':[header_bdot500_data,header_bdot500_style,header_bdot500_merged],'body':[body_bdot500_data,body_bdot500_style,body_bdot500_merged],'bottom':[bottom_bdot500_data,bottom_bdot500_style,bottom_bdot500_merged], 'prez': [prez_bdot500_data, prez_bdot500_style, prez_bdot500_merged]},'other':{'header':[header_other_data,header_other_style,header_other_merged],'body':[body_other_data,body_other_style,body_other_merged],'bottom':[bottom_other_data,bottom_other_style,bottom_other_merged]}}
 
-        sheet = self.remove_merged(1,9,9,41,sheet)
+        sheet = self.removeMerged(1, 9, 9, 41, sheet)
         sheet.delete_rows(9,41)
 
         '''sheet['A3'] = sheet['A3'].value + str(os.path.split(file_path)[1])
@@ -269,7 +268,7 @@ class report:
                     sheet.cell(column = 8, row=start_paste_row + 1).value = prez_info[0]
                     start_paste_row += rows
 
-                start_paste_row += 1 #zrobienie odstepu 1 wiersza
+                start_paste_row += 1  # zrobienie odstepu 1 wiersza
 
         #file_report_path = file_path + '_raport.xlsx'
         file_report_path = out_path

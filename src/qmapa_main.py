@@ -1,10 +1,7 @@
 import datetime
 import os, sys
-
 from copy import copy
-
 from qgis.PyQt.QtCore import QVariant, QDateTime
-
 from qgis.utils import iface
 from qgis.core import *
 
@@ -12,10 +9,6 @@ from osgeo import ogr
 
 from .config import correct_layers, additional_layers, incompatible_pref, \
     incompatible_pref_friendly_name, prefix_of_bases, ges_colors, sewer_colors
-from .express_yourself import ExpressYourself
-from .create_report_file import report
-from .kreskowanie_python import kreskowanie
-from .skarpy_python import skarpy
 
 # profiler
 from io import StringIO
@@ -26,24 +19,6 @@ import pstats
 class Main:
     def __init__(self):
         self.current_dir = os.path.dirname(os.path.realpath(__file__))
-
-    def remove_all_joins(self, layer):
-        joins_info = layer.vectorJoins()
-
-        for join in joins_info:
-            layer.removeJoin(join.joinLayerId())
-
-    def add_obligatory_fields(self, layer, fields_list):
-        # obligatory_fields = ['startObiekt', 'startWersjaObiekt', 'koniecWersjaObiekt', 'koniecObiekt']
-
-        for field_name in fields_list:
-            field_index = layer.fields().indexFromName(field_name)
-            if field_index == -1:
-                field = QgsField(field_name, QVariant.String)
-                layer.startEditing()
-                layer.addAttribute(field)
-                # layer.updateFields()
-                layer.commitChanges()
 
     def profil(self, fnc, path):
         # cprofiler
@@ -59,290 +34,21 @@ class Main:
             f.write(response)
         s.close()
 
-    def calculate_hatching(self, layer, object_type, scale, ref_lay_ids):
-        """funkcja przelicza kreskowanie i wstawia ta geometrie w formacie wkt do atrybutow
-        type: 'skarpa' or 'schody' or 'sciana' or 'wody' """
+    def removeAllJoins(self, layer):
+        """usuwanie wszystkich joinow z warstwy"""
+        joins_info = layer.vectorJoins()
+        for join in joins_info:
+            layer.removeJoin(join.joinLayerId())
 
-        # wstawianie kolumny z geometria - jesto to konieczne zeby bylo robione zawsze, unikamy w ten sposob error w symbolach
-        column_name = 'obliczona_geometria' + '_' + scale
-        field_index = layer.fields().indexFromName(column_name)
-        if field_index == -1:
-            field = QgsField(column_name, QVariant.String)
-            layer.dataProvider().addAttributes([field])
-            layer.updateFields()
-
-        ids = ref_lay_ids
-        if ref_lay_ids:
-            if object_type.lower() == 'skarpa' or object_type.lower() == 'wody':
-                pocz = str(ref_lay_ids[0])
-                kon = str(ref_lay_ids[1])
-
-            if layer.geometryType() == 2:
-                # rozpoczecie edycji warstwy
-                def get_feats():
-                    features = []
-                    if 'egb_obiekttrwale' in layer.name().lower():
-                        features = layer.getFeatures(
-                            QgsFeatureRequest().setSubsetOfAttributes(
-                                ['gml_id', 'rodzajobiektuzwiazanegozbudynkiem', column_name],
-                                layer.fields()).setFilterExpression(
-                                '"rodzajobiektuzwiazanegozbudynkiem"=\'s\''))
-                    elif 'ot_obiekttrwale' in layer.name().lower():
-                        features = layer.getFeatures(
-                            QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajobiektu', column_name],
-                                                                      layer.fields()).setFilterExpression(
-                                '"rodzajobiektu"=\'s\''))
-                    elif 'ot_skarpa' in layer.name().lower():
-                        features = layer.getFeatures(
-                            QgsFeatureRequest().setSubsetOfAttributes(['gml_id', column_name],
-                                                                      layer.fields()))
-                    elif 'ot_budowle' in layer.name().lower():
-                        features = layer.getFeatures(
-                            QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajbudowli', column_name],
-                                                                      layer.fields()).setFilterExpression(
-                                '"rodzajbudowli"=\'n\''))
-                    elif 'ot_wody' in layer.name().lower():
-                        features = layer.getFeatures(
-                            QgsFeatureRequest().setSubsetOfAttributes(
-                                ['gml_id', 'rodzajobiektu', 'rodzajobiektu', column_name],
-                                layer.fields()).setFilterExpression(
-                                '"rodzajobiektu"=\'w\' or "rodzajobiektu"=\'g\''))
-
-                    elif 'ot_komunikacja' in layer.name().lower():
-                        features = layer.getFeatures(
-                            QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajobiektu', column_name],
-                                                                      layer.fields()).setFilterExpression(
-                                '"rodzajobiektu"=\'s\''))
-                    return features
-
-                if get_feats() != []:
-                    context = QgsExpressionContext()
-                    context.appendScopes(QgsExpressionContextUtils.globalProjectLayerScopes(layer))
-                    field_index = layer.fields().indexFromName(column_name)
-                    attribute_map = {}
-                    if field_index >= 0:
-                        features = get_feats()  # tutaj jest pobierany iterator poniewaz gdy jest wczesniej to nie zawsze dobrze dziala
-                        for feature in features:
-                            feature_geom = feature.geometry()
-                            attrib = feature.attribute('gml_id')
-                            if object_type.lower() == 'skarpa' or object_type.lower() == 'wody':
-                                # context.setFeature(feature)
-                                # gora_exp = QgsExpression(
-                                #    "skarpy($geometry,  aggregate('" + pocz + "', 'collect', $geometry," + '"gml_id"' + "= attribute(@parent, 'gml_id')),aggregate('" + kon + "', 'collect', $geometry, " + '"gml_id"' + " = attribute(@parent, 'gml_id')),'top')")
-                                # gora = gora_exp.evaluate(context)
-                                # print('gora', gora)
-                                column_name = 'gml_id'
-                                column_value = attrib
-
-                                start_request = QgsFeatureRequest().setFilterExpression(
-                                    f"{column_name} = '{column_value}'")
-
-                                # pobranie polilini
-                                try:
-                                    pocz_layer = QgsProject.instance().mapLayers()[pocz]
-                                    kon_layer = QgsProject.instance().mapLayers()[kon]
-                                    start_points = [f.geometry() for f in pocz_layer.getFeatures(start_request)]
-                                    end_points = [f.geometry() for f in kon_layer.getFeatures(start_request)]
-                                    start_points_geom = QgsGeometry().collectGeometry(start_points)
-                                    end_points_geom = QgsGeometry().collectGeometry(end_points)
-                                    gora = skarpy(feature_geom, top_start_point=start_points_geom,
-                                                  top_end_point=end_points_geom, side='top')
-                                except Exception as e:
-                                    print('blad', e)
-                                    # print('brak polilini dla', attrib, layer.name())
-                                    expression_python = ''
-                                    continue
-
-                                if gora.isNull() is False:
-                                    area = feature_geom.area()
-                                    length = gora.length()
-                                    first_kreskowanie = kreskowanie(gora, feature_geom, area / length, 50, 90,
-                                                                    area / (length), 1, False)
-                                    # print('ffff', first_kreskowanie)
-                                    second_kreskowanie = kreskowanie(gora, feature_geom, area / length, 50, 90,
-                                                                     area / (length * 2),
-                                                                     0.5)
-                                    if scale == '500':
-                                        expression_python = QgsGeometry.collectGeometry(
-                                            [first_kreskowanie, second_kreskowanie]).asWkt(3)
-                                        # print('wstawiane exp', expression_python)
-
-                                else:
-                                    expression_python = ''
-
-                            elif object_type.lower() == 'schody':
-                                if scale == '500':
-                                    # python
-                                    poly_layer = QgsProject.instance().mapLayers()[ids]
-
-                                    column_name = 'gml_id'
-                                    column_value = attrib
-
-                                    # create the feature request
-                                    request = QgsFeatureRequest().setFilterExpression(
-                                        f"{column_name} = '{column_value}'")
-
-                                    # pobranie polilini
-                                    try:
-                                        polyline = [f for f in poly_layer.getFeatures(request)][0]
-                                        polyline_geom = polyline.geometry()
-                                        expression_python = kreskowanie(polyline_geom, feature_geom, 0.5, 100, 90,
-                                                                        0, 1).asWkt(3)
-                                        # print('exp schody', expression_python)
-                                    except:
-                                        # print('brak polilini dla', attrib, layer.name())
-                                        expression_python = ''
-
-                                elif scale == '1000':
-                                    # python
-                                    poly_layer = QgsProject.instance().mapLayers()[ids]
-
-                                    column_name = 'gml_id'
-                                    column_value = attrib
-
-                                    # create the feature request
-                                    request = QgsFeatureRequest().setFilterExpression(
-                                        f"{column_name} = '{column_value}'")
-
-                                    # pobranie polilini
-                                    try:
-                                        polyline = [f for f in poly_layer.getFeatures(request)][0]
-                                        polyline_geom = polyline.geometry()
-                                        expression_python = kreskowanie(polyline_geom, feature_geom, 0.75, 100, 90,
-                                                                        0, 1)
-                                    except:
-                                        # print('brak polilini dla', attrib, layer.name())
-                                        expression_python = 'puste'
-
-                            elif object_type.lower() == 'sciana':
-                                if scale == '500':
-                                    # python
-                                    poly_layer = QgsProject.instance().mapLayers()[ids]
-
-                                    column_name = 'gml_id'
-                                    column_value = attrib
-
-                                    # create the feature request
-                                    request = QgsFeatureRequest().setFilterExpression(
-                                        f"{column_name} = '{column_value}'")
-
-                                    # pobranie polilini
-                                    try:
-                                        polyline = [f for f in poly_layer.getFeatures(request)][0]
-
-                                        polyline_geom = polyline.geometry()
-                                        first_kreskowanie = kreskowanie(polyline_geom, feature_geom, 5.5, 100, 45,
-                                                                        3.5, 1, False)
-                                        second_kreskowanie = kreskowanie(polyline_geom, feature_geom, 5.5, 100, 45,
-                                                                         3, 1, False)
-                                        expression_python = QgsGeometry.collectGeometry(
-                                            [first_kreskowanie, second_kreskowanie]).asWkt(3)
-                                    except:
-                                        # print('brak polilini dla', attrib, layer.name())
-                                        expression_python = 'puste'
-
-
-                                elif scale == '1000':
-                                    # python
-                                    poly_layer = QgsProject.instance().mapLayers()[ids]
-
-                                    column_name = 'gml_id'
-                                    column_value = attrib
-
-                                    # create the feature request
-                                    request = QgsFeatureRequest().setFilterExpression(
-                                        f"{column_name} = '{column_value}'")
-
-                                    # pobranie polilini
-                                    try:
-                                        polyline = [f for f in poly_layer.getFeatures(request)][0]
-                                        polyline_geom = polyline.geometry()
-                                        first_kreskowanie = kreskowanie(polyline_geom, feature_geom, 8.25, 100, 45,
-                                                                        4.25, 1)
-                                        second_kreskowanie = kreskowanie(polyline_geom, feature_geom, 8.25, 100, 45,
-                                                                         5, 1)
-                                        expression_python = QgsGeometry.collectGeometry(
-                                            [first_kreskowanie, second_kreskowanie]).asWkt(3)
-                                    except:
-                                        # print('brak polilini dla', attrib, layer.name())
-                                        expression_python = ''
-                            attribute_map.update({feature.id(): {field_index: expression_python}})
-                        layer.dataProvider().changeAttributeValues(attribute_map)
-
-    def calculate_colors(self, main_layer, column_name):
-        """
-        :param main_layer: warstwa ges rzedna
-        :param column_name: nazwa kolumny wyjsciowej do ktorej wstawiane sa kolory
-        """
-        # pobranie dostępnych warstw
-        layers = iface.mapCanvas().layers()
-
-        # dodanie kolumny
-        field_index = main_layer.fields().indexFromName(column_name)
-        if field_index == -1:
-            field = QgsField(column_name, QVariant.String)
-            main_layer.dataProvider().addAttributes([field])
-            main_layer.updateFields()
-
-        # pobranie kolumny
-        cum_sum_index = main_layer.fields().indexFromName(column_name)
-        attribute_map_python = {}
-        features = main_layer.getFeatures()
-
-        # utowrzenie slownika lokalneId: kolor, poprzez iteracje po warstwach
-        dict_of_colors = {}
-        black_sewer = '0,0,0,255'
-        for layer in layers:
-            layer_name = layer.name()
-            if layer_name in ges_colors.keys():  # iteracja po nazwach warstw w słowniku ges_colors
-                layer_color_type = ges_colors[layer_name][2]  # pobranie typu rodzajSieci albo zrodlo
-                if layer_color_type == 'zrodlo':  # przypadek dla atrybutu zrodlo w config ges_color
-                    layer_color = ges_colors[layer_name][3]  # wartość koloru
-                    for pipe in layer.getFeatures():  # iteracja po obiektach w warstwie
-                        # pobranie i wartości z kolumny lokalnyId
-                        feature_local_id_idx = pipe.fieldNameIndex('lokalnyId')
-                        feature_local_id = pipe.attributes()[feature_local_id_idx]
-                        dict_of_colors[feature_local_id] = layer_color  # nadanie wartości koloru dla iip
-                elif layer_color_type == 'rodzajSieci':  # przypadek dla atrybutu rodzajSieci
-                    # rozbicie na kolory rodzajSieci ze zmiennej w config
-                    for pipe in layer.getFeatures():
-                        feature_local_id_idx = pipe.fieldNameIndex('lokalnyId')
-                        feature_local_id = pipe.attributes()[feature_local_id_idx]
-                        feature_sewer_idx = pipe.fieldNameIndex('rodzajSieci')
-                        feature_sewer_val = pipe.attributes()[feature_sewer_idx]
-                        # wykrycie przypadku dla wielowartosciowych sieci np. 2:e,k
-                        if type(feature_sewer_val) is str:
-                            if ',' in feature_sewer_val:
-                                sewer_color = black_sewer
-                            else:
-                                try:
-                                    feature_sewer_val_stripped = feature_sewer_val.rstrip(')').split(':')
-                                    if len(feature_sewer_val_stripped) > 1:
-                                        feature_sewer_val = feature_sewer_val_stripped[1]
-                                    else:
-                                        feature_sewer_val = feature_sewer_val_stripped[0]
-                                    sewer_color = sewer_colors[feature_sewer_val]
-                                except Exception as e:  # jezeli wartosci nie ma w sewer_colors
-                                    sewer_color = black_sewer
-                        else:  # warunek dla wszystkich dat, wartości null
-                            sewer_color = black_sewer
-                        dict_of_colors[feature_local_id] = sewer_color
-
-        # iteracja po obiektach - ges_rzedna
-        for feature in features:
-            # pobranie indeksu kolumny relacja i wyciągnięcie z niej wartości -> iip przewodu, do którego jest relacja
-            column_index = feature.fieldNameIndex('relacja')
-            relation_value = feature.attributes()[column_index]
-            # pobranie wartości koloru w oparciu o IIP przewodu ze słownika kolorów
-            try:
-                out_text_python = dict_of_colors[relation_value]
-            except:
-                # dla reszty symboli niezawartych w zmiennych config ges_colors
-                # nadawany jest kolor czarny
-                out_text_python = black_sewer
-            # wstawienie wartości koloru do komórki w tabeli QGIS
-            attribute_map_python.update({feature.id(): {cum_sum_index: out_text_python}})
-        main_layer.dataProvider().changeAttributeValues(attribute_map_python)
+    def addObligatoryFields(self, layer, fields_list):
+        """jesli pole z podanej listy pol obowiazkowych (fields_list) nie istnieje na warstwie, to jest dodawane"""
+        for field_name in fields_list:
+            field_index = layer.fields().indexFromName(field_name)
+            if field_index == -1:
+                field = QgsField(field_name, QVariant.String)
+                layer.startEditing()
+                layer.addAttribute(field)
+                layer.commitChanges()
 
     def setStyling(self, layers, style_name):
         """ustawianie wybranej stylizacji dla wybranych warstw na mapie, z plików qml"""
@@ -370,7 +76,7 @@ class Main:
                 except:
                     pass
 
-    def create_groups(self, layer_path):
+    def createGroups(self, layer_path):
         """tworzenie grupy dla plikow ktore nie maja geometrii oraz grupy glownej dla reszty"""
 
         # pobranie nazwy glownej grupy z patha
@@ -487,7 +193,7 @@ class Main:
         order_list = list(mygen(order_list))
 
         # rozpoznanie z jakiej bazy pochodzi warstwa zeby przyporzadkowac ja do wlasciwej grupy
-        def sort_by_base_type(layers_list):
+        def sortByBaseType(layers_list):
             type_groups_dict = {}
             for layy in layers_list:
                 layname = layy[1].name()
@@ -509,8 +215,8 @@ class Main:
                     type_groups_dict[base_name] = [layy]
             return type_groups_dict
 
-        type_groups_dict = sort_by_base_type(layers_with_type)  # wszystkie warstwy
-        type_groups_dict_table = sort_by_base_type(table_layers_list)  # warstwy tekstowe
+        type_groups_dict = sortByBaseType(layers_with_type)  # wszystkie warstwy
+        type_groups_dict_table = sortByBaseType(table_layers_list)  # warstwy tekstowe
 
         root = QgsProject.instance().layerTreeRoot()
         main_group = QgsLayerTreeGroup(str(main_group_name))
@@ -589,7 +295,7 @@ class Main:
                 group.addLayer(layer[1])
                 root.removeLayer(layer[1])
 
-        gr_dict = sort_by_base_type(all_layers_list)
+        gr_dict = sortByBaseType(all_layers_list)
 
         return vec_layers_list, gr_dict
 
@@ -623,7 +329,7 @@ class Main:
 
         return ok_layers
 
-    def get_version(self, start_object, start_version, end_object, end_version):
+    def getVersion(self, start_object, start_version, end_object, end_version):
         version = 'no recognized'
         if type(start_object) is str:
             if '.' in start_object:
@@ -724,9 +430,9 @@ class Main:
                             except:
                                 end_vers = ''
 
-                            feature_version = self.get_version(start_object=start_ob, start_version=start_vers,
-                                                               end_object=end_ob,
-                                                               end_version=end_vers)
+                            feature_version = self.getVersion(start_object=start_ob, start_version=start_vers,
+                                                              end_object=end_ob,
+                                                              end_version=end_vers)
 
                             if feature_version == 'first':
                                 lay_obj_first += 1
@@ -764,7 +470,7 @@ class Main:
 
         return counting_dict
 
-    def os_open(self, path):
+    def osOpen(self, path):
         """Wykrywanie aktualnie uzywanego systemu operacyjnego"""
         if sys.platform == 'win32':
             os.startfile(path)

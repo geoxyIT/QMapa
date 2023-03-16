@@ -48,7 +48,7 @@ class GmlModify:
         self.relations = dict()
         self.incompatible_found = False
 
-    def extract_namespaces(self, file):
+    def extractNamespaces(self, file):
         """odczytanie przestrzeni nazw z pliku pierwotnego i nadanie tej przestrzeni
         dla pliku wtornego"""
         text = file.read()
@@ -75,7 +75,7 @@ class GmlModify:
             self.namespaces_dict[val] = name
 
 
-    def get_relations(self, pref_name):
+    def getRelations(self, pref_name):
         """Iteracja po pliku i wyciagniecie relacji do slownika typu
         {'id':[a,b,c...] gdzie [a,b,c] to lista z id rzednaObiektu"""
 
@@ -109,7 +109,7 @@ class GmlModify:
                     relation_list = list(relation_list_set)
                     self.relations[lokalny_iip] = relation_list
 
-    def iterate_and_add(self, pref_name: str, feature_name: str):
+    def iterateAndAdd(self, pref_name: str, feature_name: str):
         """Przejscie po pliku gml i dodanie atrybutu w konkretne miejsce"""
         # przejscie po pliku gml i dodanie wartosci w tag IIP
         for feature in self.root.iter(feature_name):  # iteracja po rzednych
@@ -129,7 +129,7 @@ class GmlModify:
                                     detect_if_more_than_one += 1
 
 
-    def label_relations(self, pref_name, pref_tag):
+    def labelRelations(self, pref_name, pref_tag):
         """Iteracja po pliku, wyciagniecie relacji z etykiet do obiektow, oraz wstawienie w te obiekty
         id etykiet"""
         gml_id_list = list()
@@ -144,7 +144,7 @@ class GmlModify:
                     add_relation_attr.text = '1'
                     add_relation_attr.tail = '\n'
 
-    def attr_to_text(self, parent_id: str, child_id: str):
+    def attrToText(self, parent_id: str, child_id: str):
         """Zmiana atrybutu na tekst"""
 
         for val in self.root.iter(parent_id):
@@ -163,7 +163,7 @@ class GmlModify:
                     val.remove(child)
                     self.err_number += 1
 
-    def get_crs_epsg(self):
+    def getCrsEpsg(self):
         """rozpoznanie ukladu wspolrzednych danych. Jezeli jest kilka, to bierze pierwszy jaki znajdzie"""
         crs = None
         for feature_member in self.root:
@@ -173,7 +173,7 @@ class GmlModify:
                 break
         return crs
 
-    def extract_all(self, root, pref_name, pref_tag_dict, split_list):
+    def extractAll(self, root, pref_name, pref_tag_dict, split_list):
         pref = pref_name
         list_appending = []
 
@@ -312,11 +312,11 @@ class GmlModify:
                     feat.insert(0, geom)
                     feat.remove(feat[-1])"""
 
-    def save_gml(self):
+    def saveGml(self):
         """Zapis pliku wynikowego gml"""
         self.tree.write(self.output_path, encoding='utf-8')
 
-    def check_is_correct(self, root, pref_name_list, tag_dict):
+    def checkIsCorrect(self, root, pref_name_list, tag_dict):
         for main_child in root:
             try:
                 m_ch_tag = main_child[0].tag
@@ -335,10 +335,10 @@ class GmlModify:
 
     def run(self):
         self.file = open(self.file_path, 'r', encoding='utf-8')
-        self.extract_namespaces(file=self.file)
+        self.extractNamespaces(file=self.file)
 
         #wynikiem ponizszego teoretycznie moze byc none, wtedy warto by bylo dac domyslna wartosc crs taka zeby byla dobra a nie ''
-        self.found_crs = self.get_crs_epsg()
+        self.found_crs = self.getCrsEpsg()
         if self.found_crs is None: self.found_crs = ''
 
         #pref_list = ['{ewidencjaGruntowIBudynkow:1.0}', '{bazaDanychObiektowTopograficznych500:1.0}',
@@ -350,15 +350,15 @@ class GmlModify:
 
         for pref_name in self.pref_name_list:
             # relacja dla obiekt przedstawiany
-            self.attr_to_text(pref_name + 'PrezentacjaGraficzna',
-                              pref_name + 'obiektPrzedstawiany')
+            self.attrToText(pref_name + 'PrezentacjaGraficzna',
+                            pref_name + 'obiektPrzedstawiany')
 
-            self.get_relations(pref_name)
+            self.getRelations(pref_name)
 
             for nm in ["OT_Rzedna", "GES_Rzedna"]:
-                self.iterate_and_add(pref_name, pref_name + nm)
+                self.iterateAndAdd(pref_name, pref_name + nm)
 
-            self.extract_all(self.root, pref_name, self.pref_tag_dict, split_list)
+            self.extractAll(self.root, pref_name, self.pref_tag_dict, split_list)
 
         if self.err_number > 0:
             print("Błąd: Nie wszystkie obiekty zostaną zaimportowane, lub zostaną zaimportowanie niepoprawnie - błąd w relacjach w pliku GML, liczba błędow: " + str(self.err_number))
@@ -369,8 +369,8 @@ class GmlModify:
                                  'Niepoprawny plik GML - \nnie wszystkie obiekty zostaną zaimportowane',
                                  buttons=QMessageBox.Ok)
 
-        self.check_is_correct(self.root, self.pref_name_list, self.pref_tag_dict)
-        self.save_gml()
+        self.checkIsCorrect(self.root, self.pref_name_list, self.pref_tag_dict)
+        self.saveGml()
         self.file.close()
         if self.incompatible_found is True:
             print("Wykryto obiekty niezgodne z modelem 2021")

@@ -45,20 +45,21 @@ from qgis.gui import *
 # import z folderu src
 # from .src.create_relations import CreateRelations
 from .src.gml_modify import GmlModify
-from .src.layer_order import set_new_order
-from .src.load_gpkg import load_gpkg
+from .src.layer_order import setNewOrder
+from .src.load_gpkg import loadGpkg
 from .src.qmapa_main import Main
 from .src.scrap_version import *
 from .src.config import correct_layers
 from .src.express_yourself import ExpressYourself
-from .src.fill_with_color import fill
+from .src.area_symbol_fill import fill
 from .src.create_report_file import report
+from .src.hatch_and_color_calc import calculateHatching, calculateColors
 
 
 from osgeo_utils.samples import ogr2ogr
 
 # import zapisu stylizacji do plikow qml
-from .src.save_edit_qmls import saveStylization, get_symb_copy, add_copied_symb
+from .src.save_edit_qmls import saveStylization, getSymbCopy, addCopiedSymb
 
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -93,14 +94,14 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.active_sets = []
 
         # sprawdzenie wersji programu
-        self.check_version()
+        self.checkVersion()
 
         self.progressBar.hide()
 
         self.rel_times = 0
 
-        self.set_red_labels()
-        self.disp_settings()
+        self.setRedLabels()
+        self.dispSettings()
 
         iface.mapCanvas().refreshAllLayers()
 
@@ -112,31 +113,361 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.closingPlugin.emit()
         event.accept()
 
-    def check_version(self):
-        """sprawdzenie czy zainstalowana wersja wtyczki jest aktualna"""
-        try:
-            URL = 'https://github.com/geoxyIT/QMapa/blob/main/metadata.txt'
-            local_path = (os.path.join(os.path.dirname(__file__), 'metadata.txt'))
-            hub_ver = reg_ver(get_hub_ver(URL))
-            local_ver = reg_ver(get_local_ver(local_path))
-            compare_versions(self.lbVersion, hub_ver, local_ver)
-        except Exception as e:
-            print('Błąd sprawdzania aktualności wersji')
-            print(e)
-            print('Nawiąż połączenie z internetem')
-
     @pyqtSlot()
     def on_pbLogo_clicked(self):
         """Przycisk wywolania strony po nacisnieciu Logo GEOXY"""
         webbrowser.open('http://www.geoxy.pl/')
 
-        #saveStylization(iface.mapCanvas().layers(), str(self.cmbStylization.currentText()))
-
     @pyqtSlot()
     def on_pbDonate_clicked(self):
         """Przycisk wywolania strony po nacisnieciu przycisku postaw kawe"""
-
         webbrowser.open('https://buycoffee.to/qmapa/')
+
+    @pyqtSlot()
+    def on_pbImport_clicked(self):
+        """Zaimportowanie pliku GML z konwersją do GPKG oraz nadaniem grup warstw"""
+
+        dial = QFileDialog(self)
+        name, ext = dial.getOpenFileName(self, caption='Wybierz wejściowy plik GML',
+                                                filter='gml (*.gml)')
+
+        if name != '':
+            iface.layerTreeView().layerTreeModel().setAutoCollapseLegendNodes(1)
+            mod_gml_path, gpkg_path, report_path = self.paths(name)  # pobranie sciezek importu
+            if mod_gml_path != '' and gpkg_path != '' and report_path != '':
+                print('Start importu pliku:', name)
+                start_2 = datetime.now()
+
+                self.signal_of_import = True
+                self.progressBar.show()
+                self.progressBar.setValue(1)
+                self.gml_mod = GmlModify(name, mod_gml_path)
+                self.gml_mod.run()  # przerobienie pliku gml i zapisanie do nowego pliku
+
+                self.progressBar.setValue(10)
+                print('Czas 10%:', datetime.now() - start_2)
+                QCoreApplication.processEvents()
+
+                # utworzenie gpkg z gml
+                ogr2ogr.main(["", "-f", "GPKG", gpkg_path, mod_gml_path])
+                self.progressBar.setValue(20)
+                print('Czas 20%:', datetime.now() - start_2)
+                QCoreApplication.processEvents()
+
+                loadGpkg(gpkg_path)
+                self.progressBar.setValue(30)
+                print('Czas 30%:', datetime.now() - start_2)
+                QCoreApplication.processEvents()
+
+                self.vec_layers_list, gr_dict = Main().createGroups(gpkg_path)
+                self.vec_layers_list = Main().checkLayers(self.vec_layers_list)
+
+                order_list_new = correct_layers  # lista warstw zgodna z rozpo i w dobrej kolejnosci prezentowania
+
+                # ustalenie nowej kolejnosci
+                setNewOrder(order_list_new)
+                self.progressBar.setValue(40)
+                print('Czas 40%:', datetime.now() - start_2)
+                QCoreApplication.processEvents()
+
+                # utworzenie raportu
+                counting_dict = Main().generateReport(gr_dict)
+                report().run(counting_dict, name, report_path)
+                self.progressBar.setValue(50)
+                print('Czas 50%:', datetime.now() - start_2)
+                QCoreApplication.processEvents()
+
+                # nadanie zlaczen
+                self.setJoins(self.vec_layers_list)
+                QCoreApplication.processEvents()
+
+                # usuniecie pliku
+                try:
+                    os.remove(mod_gml_path)
+                except:
+                    print("Problem z usunięciem pliku modyfikowanego gml")
+                self.progressBar.setValue(60)
+                print('Czas 60%:', datetime.now() - start_2)
+                QCoreApplication.processEvents()
+
+                # nadanie stylizacji
+                current_style = self.cmbStylization.currentText()
+                # Main().setStyling(self.vec_layers_list, current_style)
+                self.backToQmlSymb()
+                self.progressBar.setValue(70)
+                print('Czas 70%:', datetime.now() - start_2)
+                QCoreApplication.processEvents()
+
+                # self.set_labels(self.vec_layers_list)
+                '''self.wyswWg()  # sprawdzenie i nadanie wyswietlania wersji, statusu'''
+                self.setRedLabels()
+                self.dispSettings()
+                self.back_wers = False
+                self.back_fill = False
+                if self.gbShowWers.isChecked():
+                    self.dispVers()  # sprawdzenie i nadanie wyswietlania wersji
+                if self.gbFill.isChecked():
+                    self.fillSelectSet()  # sprawdzenie i nadanie fillowania
+                self.progressBar.setValue(80)
+                print('Czas 80%:', datetime.now() - start_2)
+                QCoreApplication.processEvents()
+
+                # obliczenie kreskowania dla skarp, sciany, schodow i wstawienie geometrii do atrybutow
+                scales = ['500', '1000']
+                nr = 0
+
+                start_point_layer_id = False
+                end_point_layer_id = False
+                ot_polyline_layer_id = False
+                egb_polyline_layer_id = False
+                for ll in self.vec_layers_list:
+                    if 'poczatekgoryskarpy' in ll.name().lower():
+                        start_point_layer_id = ll.id()
+                    elif 'koniecgoryskarpy' in ll.name().lower():
+                        end_point_layer_id = ll.id()
+                    elif 'ot_poliliniakierunkowa' in ll.name().lower():
+                        ot_polyline_layer_id = ll.id()
+                    elif 'egb_poliliniakierunkowa' in ll.name().lower():
+                        egb_polyline_layer_id = ll.id()
+
+                for sc in scales:
+                    nr += 1
+                    for lay in self.vec_layers_list:
+                        if 'ot_obiekttrwalezwiazany' in lay.name().lower():
+                            calculateHatching(lay, 'schody', sc, ot_polyline_layer_id)
+                        elif 'egb_obiekttrwalezwiazany' in lay.name().lower():
+                            calculateHatching(lay, 'schody', sc, egb_polyline_layer_id)
+                        elif 'komunikacja' in lay.name().lower():
+                            calculateHatching(lay, 'schody', sc, ot_polyline_layer_id)
+                        elif 'budowle' in lay.name().lower():
+                            calculateHatching(lay, 'sciana', sc, ot_polyline_layer_id)
+
+                        if sc == '500':
+                            if 'ges_rzedna' in lay.name().lower():
+                                calculateColors(lay, 'color')
+                            elif 'wody' in lay.name().lower():
+                                calculateHatching(lay, 'wody', sc, [start_point_layer_id, end_point_layer_id])
+                            elif 'skarpa' in lay.name().lower():
+                                calculateHatching(lay, 'skarpa', sc, [start_point_layer_id, end_point_layer_id])
+
+                        elif sc == '1000':
+                            if 'opisykarto' not in lay.name().lower() and 'prezentacja' not in lay.name().lower():
+                                if 'rzedna' in lay.name().lower():
+                                    Main().removeAllJoins(lay)
+                                Main().addObligatoryFields(lay, ['startObiekt', 'startWersjaObiekt', 'koniecWersjaObiekt', 'koniecObiekt'])
+
+
+                            # tutaj dowawane sa pola ktore moga nie wystapic w pliku gml a sa uzywane w etykietach (opisykarto)-
+                            # dzieki temu szybciej sie rendreruja
+                            if 'ges_opisykarto' in lay.name().lower():
+                                fields_list_ges = ['GES_PrzewodWodociagowy_1_zrodlo','GES_UrzadzeniaSiecWodociagowa_0_zrodlo','GES_UrzadzeniaSiecWodociagowa_1_zrodlo','GES_UrzadzeniaSiecWodociagowa_2_zrodlo',
+                                                   'GES_PrzewodKanalizacyjny_1_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo',
+                                                   'GES_PrzewodElektroenergetyczny_1_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_1_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo',
+                                                   'GES_PrzewodGazowy_1_zrodlo','GES_UrzadzeniaSiecGazowa_0_zrodlo','GES_UrzadzeniaSiecGazowa_1_zrodlo','GES_UrzadzeniaSiecGazowa_2_zrodlo',
+                                                   'GES_PrzewodCieplowniczy_1_zrodlo','GES_UrzadzeniaSiecCieplownicza_0_zrodlo','GES_UrzadzeniaSiecCieplownicza_1_zrodlo','GES_UrzadzeniaSiecCieplownicza_2_zrodlo',
+                                                   'GES_PrzewodTelekomunikacyjny_1_zrodlo','GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo','GES_UrzadzeniaSiecTelekomunikacyjna_1_zrodlo','GES_UrzadzeniaSiecTelekomunikacyjna_2_zrodlo',
+                                                   'GES_PrzewodSpecjalny_1_zrodlo','GES_UrzadzeniaTechniczneSieciSpecjalnej_0_zrodlo','GES_UrzadzeniaTechniczneSieciSpecjalnej_1_zrodlo','GES_UrzadzeniaTechniczneSieciSpecjalnej_2_zrodlo',
+                                                   'GES_PrzewodNiezidentyfikowany_1_zrodlo','GES_UrzadzenieNiezidentyfikowane_0_zrodlo','GES_UrzadzenieNiezidentyfikowane_1_zrodlo','GES_UrzadzenieNiezidentyfikowane_2_zrodlo',
+                                                   'GES_UrzadzeniaTowarzyszczaceLiniowe_1_zrodlo','GES_UrzadzeniaTowarzyszaceLiniowe_1_zrodlo','GES_InneUrzadzeniaTowarzyszace_0_zrodlo','GES_InneUrzadzeniaTowarzyszace_1_zrodlo','GES_InneUrzadzeniaTowarzyszace_2_zrodlo','GES_Rzedna_0_zrodlo']
+                                Main().addObligatoryFields(lay, fields_list_ges)
+                            elif 'ot_opisykarto' in lay.name().lower():
+                                fields_list_ot = ['OT_Rzedna_0_zrodlo_zrodlo','OT_BudynekNiewykazanyWEGIB_2_zrodlo','OT_BlokBudynku_2_zrodlo','OT_ObiektTrwaleZwiazanyZBudynkami_2_zrodlo',
+                                                  'OT_Budowle_0_zrodlo','OT_Budowle_1_zrodlo','OT_Budowle_2_zrodlo',
+                                                  'OT_Komunikacja_1_zrodlo','OT_Komunikacja_2_zrodlo','OT_SportIRekreacja_2_zrodlo',
+                                                  'OT_ZagospodarowanieTerenu_0_zrodlo','OT_ZagospodarowanieTerenu_1_zrodlo','OT_ZagospodarowanieTerenu_2_zrodlo',
+                                                  'OT_Wody_1_zrodlo','OT_Wody_2_zrodlo']
+                                Main().addObligatoryFields(lay, fields_list_ot)
+                            elif 'egb_opisykarto' in lay.name().lower():
+
+                                fields_list_egb = ['EGB_DzialkaEwidencyjna_2_lokalnyId', 'EGB_KonturUzytkuGruntowego_2_lokalnyId',
+                                                   'EGB_KonturKlasyfikacyjny_2_lokalnyId', 'EGB_Budynek_2_lokalnyId',
+                                                   'EGB_BlokBudynku_2_lokalnyId', 'EGB_ObiektTrwaleZwiazanyZBudynkiem_2_lokalnyId',
+                                                   'EGB_ObrebEwidencyjny_2_lokalnyId', 'EGB_JednostkaEwidencyjna_2_lokalnyId']
+                                Main().addObligatoryFields(lay, fields_list_egb)
+                    if nr < len(scales):
+                        self.progressBar.setValue(80 + int((nr / len(scales)) * 20))
+                        print('Czas ' + str(80 + int((nr / len(scales)) * 20)) + '%:', datetime.now() - start_2)
+                        QCoreApplication.processEvents()
+
+                self.progressBar.hide()
+                if report_path.startswith('/'):  # przypadek dla linuksa kiedy sciezka zaczyna sie od slasha
+                    report_path = report_path.lstrip('/')
+                iface.messageBar().pushMessage("Raport z importu",
+                                               '<a href="file:///' + report_path + '">' + report_path + '</a>',
+                                               level=Qgis.Success, duration=0)
+
+                # nadanie wyswietlania ilosci obiektow
+                allLayers = QgsProject.instance().layerTreeRoot().findLayers()
+                QgsProject.instance().reloadAllLayers()
+                excluded_layers = ['OT_opisyKARTO', 'OT_odnosnik', 'OT_poczatekGorySkarpy',  'OT_koniecGorySkarpy', 'OT_poliliniaKierunkowa', 'EGB_opisyKARTO', 'EGB_odnosnik', 'EGB_poliliniaKierunkowa', 'GES_opisyKARTO', 'GES_odnosnik']
+                for (layer) in allLayers:
+                    if layer.name() not in excluded_layers:
+                        layer.setCustomProperty("showFeatureCount", True)
+
+                self.setLegendScale()
+                iface.layerTreeView().layerTreeModel().setAutoCollapseLegendNodes(-1)
+
+                self.progressBar.setValue(100)
+                print('Czas 100%:', datetime.now() - start_2)
+                print('Koniec importu pliku:', name)
+
+        self.signal_of_import = False
+
+
+    def on_cmbStylization_currentTextChanged(self):
+        """ustaw stylizację wybraną w comboboxie"""
+        self.backToQmlSymb()
+        if self.gbShowWers.isChecked():
+            self.dispVers()  # sprawdzenie i nadanie wyswietlania wersji
+        if self.gbFill.isChecked():
+            self.fillSelectSet()  # sprawdzenie i nadanie fillowania
+
+    def on_cmbReda_currentTextChanged(self):
+        self.setRedLabels()
+
+    def on_chbShowPierwsze_stateChanged(self):
+        self.dispSettings()
+
+    def on_chbShowModyfikowane_stateChanged(self):
+        self.dispSettings()
+
+    def on_chbShowArchiwalne_stateChanged(self):
+        self.dispSettings()
+
+    def on_chbShowZamkniete_stateChanged(self):
+        self.dispSettings()
+
+    def on_chbShowWczesniejsze_stateChanged(self):
+        self.dispSettings()
+
+    def on_chbColorPierwsze_stateChanged(self):
+        self.dispSettings()
+
+    def on_chbColorModyfikowane_stateChanged(self):
+        self.dispSettings()
+
+    def on_chbColorArchiwalne_stateChanged(self):
+        self.dispSettings()
+
+    def on_chbColorZamkniete_stateChanged(self):
+        self.dispSettings()
+
+    def on_chbColorWczesniejsze_stateChanged(self):
+        self.dispSettings()
+
+    def on_colPierwsze_stateChanged(self):
+        self.dispSettings()
+
+    def on_colModyfikowane_stateChanged(self):
+        self.dispSettings()
+
+    def on_colArchiwalne_stateChanged(self):
+        self.dispSettings()
+
+    def on_colZamkniete_stateChanged(self):
+        self.dispSettings()
+
+    def on_colWczesniejsze_stateChanged(self):
+        self.dispSettings()
+
+    def on_colPierwsze_colorChanged(self):
+        self.dispSettings()
+
+    def on_colModyfikowane_colorChanged(self):
+        self.dispSettings()
+
+    def on_colArchiwalne_colorChanged(self):
+        self.dispSettings()
+
+    def on_colZamkniete_colorChanged(self):
+        self.dispSettings()
+
+    def on_colWczesniejsze_colorChanged(self):
+        self.dispSettings()
+
+    def on_chbZnacznik_stateChanged(self):
+        self.dispSettings()
+
+    def on_dteZnacznik_valueChanged(self):
+        self.dispSettings()
+
+    def on_gbShowWers_toggled(self,state):
+        self.gbShowWers.setEnabled(False)
+        QCoreApplication.processEvents()
+        self.dispVers()
+        if state:
+            # uncheck dla wersji, dodanie zeby nie wracalo wtedy do poprzedniego qml przy uncheck (bo inaczej robi sie 2 razy)
+            self.back_fill = False
+            self.gbFill.setChecked(False)
+            self.gbFill.setCollapsed(True)
+        self.back_fill = True
+        self.gbShowWers.setEnabled(True)
+
+    def on_gbFill_toggled(self, state):
+        """GroupBox dla fillowania w zaleznosci od wyswietlanego zbioru danych"""
+        self.gbFill.setEnabled(False)
+        QCoreApplication.processEvents()
+        self.fillSelectSet()
+        if state is True:
+            # uncheck dla wersji, dodanie zeby nie wracalo wtedy do poprzedniego gml przy uncheck (bo inaczej robi sie 2 razy)
+            self.back_wers = False
+            self.gbShowWers.setChecked(False)
+            self.gbShowWers.setCollapsed(True)
+        self.back_wers = True
+        self.gbFill.setEnabled(True)
+
+    def on_chbFillBDOT_stateChanged(self):
+        self.fillSelectSet()
+
+    def on_chbFillEGIB_stateChanged(self):
+        self.fillSelectSet()
+
+    def on_chbFillGESUT_stateChanged(self):
+        self.fillSelectSet()
+
+
+
+    # FUNKCJE - do przeniesienia !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    def getSelectedScale(self):
+        """rozpoznanie aktualnie wybranej skali, gdy nie rozpozna to wstawi domyslna skale 500"""
+        val = self.cmbStylization.currentText()
+        if '500' in val and '5000' not in val:
+            scale = 500
+        elif '1000' in val:
+            scale = 1000
+        elif '2000' in val:
+            scale = 2000
+        elif '5000' in val:
+            scale = 5000
+        else:
+            scale = 500
+        return scale
+
+    def setLegendScale(self, scale = None):
+        """nadawanie skali renderowania symboli w widoku warstw"""
+        if scale is None:
+            scale = self.getSelectedScale()
+
+        current_scale = iface.layerTreeView().layerTreeModel().legendMapViewData()
+        dpi = current_scale[1]
+        if dpi != 0:
+            mupp = (2.54*scale)/(100*dpi)
+
+            iface.layerTreeView().layerTreeModel().setLegendMapViewData(mupp, dpi, scale)
+
+    def checkVersion(self):
+        """sprawdzenie czy zainstalowana wersja wtyczki jest aktualna"""
+        try:
+            URL = 'https://github.com/geoxyIT/QMapa/blob/main/metadata.txt'
+            local_path = (os.path.join(os.path.dirname(__file__), 'metadata.txt'))
+            hub_ver = regVer(getHubVer(URL))
+            local_ver = regVer(getLocalVer(local_path))
+            compareVersions(self.lbVersion, hub_ver, local_ver)
+        except Exception as e:
+            print('Błąd sprawdzania aktualności wersji')
+            print(e)
+            print('Nawiąż połączenie z internetem')
+
 
     def addOrtoOsm(self, service_type):
         """Dodanie serwerów OSM i Geoportal ORTO jako warstwa do QGIS"""
@@ -257,467 +588,32 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         return mod_gml_path, gpkg_path, report_path
 
-    @pyqtSlot()
-    def on_pbImport_clicked(self):
-        """Zaimportowanie pliku GML z konwersją do GPKG oraz nadaniem grup warstw"""
-
-        dial = QFileDialog(self)
-        name, ext = dial.getOpenFileName(self, caption='Wybierz wejściowy plik GML',
-                                                filter='gml (*.gml)')
-
-        if name != '':
-            iface.layerTreeView().layerTreeModel().setAutoCollapseLegendNodes(1)
-            mod_gml_path, gpkg_path, report_path = self.paths(name)  # pobranie sciezek importu
-            if mod_gml_path != '' and gpkg_path != '' and report_path != '':
-                print('Start importu pliku:', name)
-                start_2 = datetime.now()
-
-                self.signal_of_import = True
-                self.progressBar.show()
-                self.progressBar.setValue(1)
-                self.gml_mod = GmlModify(name, mod_gml_path)
-                self.gml_mod.run()  # przerobienie pliku gml i zapisanie do nowego pliku
-
-                self.progressBar.setValue(10)
-                print('Czas 10%:', datetime.now() - start_2)
-                QCoreApplication.processEvents()
-
-                # utworzenie gpkg z gml
-                ogr2ogr.main(["", "-f", "GPKG", gpkg_path, mod_gml_path])
-                self.progressBar.setValue(20)
-                print('Czas 20%:', datetime.now() - start_2)
-                QCoreApplication.processEvents()
-
-                load_gpkg(gpkg_path)
-                self.progressBar.setValue(30)
-                print('Czas 30%:', datetime.now() - start_2)
-                QCoreApplication.processEvents()
-
-                self.vec_layers_list, gr_dict = Main().create_groups(gpkg_path)
-                self.vec_layers_list = Main().checkLayers(self.vec_layers_list)
-
-                order_list_new = correct_layers  # lista warstw zgodna z rozpo i w dobrej kolejnosci prezentowania
-
-                # ustalenie nowej kolejnosci
-                set_new_order(order_list_new)
-                self.progressBar.setValue(40)
-                print('Czas 40%:', datetime.now() - start_2)
-                QCoreApplication.processEvents()
-
-                # utworzenie raportu
-                counting_dict = Main().generateReport(gr_dict)
-                report().run(counting_dict, name, report_path)
-                self.progressBar.setValue(50)
-                print('Czas 50%:', datetime.now() - start_2)
-                QCoreApplication.processEvents()
-
-                # nadanie zlaczen
-                self.set_joins(self.vec_layers_list)
-                QCoreApplication.processEvents()
-
-                # usuniecie pliku
-                try:
-                    os.remove(mod_gml_path)
-                except:
-                    print("Problem z usunięciem pliku modyfikowanego gml")
-                self.progressBar.setValue(60)
-                print('Czas 60%:', datetime.now() - start_2)
-                QCoreApplication.processEvents()
-
-                # nadanie stylizacji
-                current_style = self.cmbStylization.currentText()
-                # Main().setStyling(self.vec_layers_list, current_style)
-                self.back_to_qml_symb()
-                self.progressBar.setValue(70)
-                print('Czas 70%:', datetime.now() - start_2)
-                QCoreApplication.processEvents()
-
-                # self.set_labels(self.vec_layers_list)
-                '''self.wyswWg()  # sprawdzenie i nadanie wyswietlania wersji, statusu'''
-                self.set_red_labels()
-                self.disp_settings()
-                self.back_wers = False
-                self.back_fill = False
-                if self.gbShowWers.isChecked():
-                    self.disp_wers()  # sprawdzenie i nadanie wyswietlania wersji
-                if self.gbFill.isChecked():
-                    self.fill_select_set()  # sprawdzenie i nadanie fillowania
-                self.progressBar.setValue(80)
-                print('Czas 80%:', datetime.now() - start_2)
-                QCoreApplication.processEvents()
-
-                # obliczenie kreskowania dla skarp, sciany, schodow i wstawienie geometrii do atrybutow
-                scales = ['500', '1000']
-                nr = 0
-
-                start_point_layer_id = False
-                end_point_layer_id = False
-                ot_polyline_layer_id = False
-                egb_polyline_layer_id = False
-                for ll in self.vec_layers_list:
-                    if 'poczatekgoryskarpy' in ll.name().lower():
-                        start_point_layer_id = ll.id()
-                    elif 'koniecgoryskarpy' in ll.name().lower():
-                        end_point_layer_id = ll.id()
-                    elif 'ot_poliliniakierunkowa' in ll.name().lower():
-                        ot_polyline_layer_id = ll.id()
-                    elif 'egb_poliliniakierunkowa' in ll.name().lower():
-                        egb_polyline_layer_id = ll.id()
-
-                for sc in scales:
-                    nr += 1
-                    for lay in self.vec_layers_list:
-                        if 'ot_obiekttrwalezwiazany' in lay.name().lower():
-                            Main().calculate_hatching(lay, 'schody', sc, ot_polyline_layer_id)
-                        elif 'egb_obiekttrwalezwiazany' in lay.name().lower():
-                            Main().calculate_hatching(lay, 'schody', sc, egb_polyline_layer_id)
-                        elif 'komunikacja' in lay.name().lower():
-                            Main().calculate_hatching(lay, 'schody', sc, ot_polyline_layer_id)
-                        elif 'budowle' in lay.name().lower():
-                            Main().calculate_hatching(lay, 'sciana', sc, ot_polyline_layer_id)
-
-                        if sc == '500':
-                            if 'ges_rzedna' in lay.name().lower():
-                                Main().calculate_colors(lay, 'color')
-                            elif 'wody' in lay.name().lower():
-                                Main().calculate_hatching(lay, 'wody', sc, [start_point_layer_id, end_point_layer_id])
-                            elif 'skarpa' in lay.name().lower():
-                                Main().calculate_hatching(lay, 'skarpa', sc, [start_point_layer_id, end_point_layer_id])
-
-                        elif sc == '1000':
-                            if 'opisykarto' not in lay.name().lower() and 'prezentacja' not in lay.name().lower():
-                                if 'rzedna' in lay.name().lower():
-                                    Main().remove_all_joins(lay)
-                                Main().add_obligatory_fields(lay, ['startObiekt', 'startWersjaObiekt', 'koniecWersjaObiekt', 'koniecObiekt'])
-
-
-                            # tutaj dowawane sa pola ktore moga nie wystapic w pliku gml a sa uzywane w etykietach (opisykarto)-
-                            # dzieki temu szybciej sie rendreruja
-                            if 'ges_opisykarto' in lay.name().lower():
-                                fields_list_ges = ['GES_PrzewodWodociagowy_1_zrodlo','GES_UrzadzeniaSiecWodociagowa_0_zrodlo','GES_UrzadzeniaSiecWodociagowa_1_zrodlo','GES_UrzadzeniaSiecWodociagowa_2_zrodlo',
-                                                   'GES_PrzewodKanalizacyjny_1_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo','GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo',
-                                                   'GES_PrzewodElektroenergetyczny_1_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_1_zrodlo','GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo',
-                                                   'GES_PrzewodGazowy_1_zrodlo','GES_UrzadzeniaSiecGazowa_0_zrodlo','GES_UrzadzeniaSiecGazowa_1_zrodlo','GES_UrzadzeniaSiecGazowa_2_zrodlo',
-                                                   'GES_PrzewodCieplowniczy_1_zrodlo','GES_UrzadzeniaSiecCieplownicza_0_zrodlo','GES_UrzadzeniaSiecCieplownicza_1_zrodlo','GES_UrzadzeniaSiecCieplownicza_2_zrodlo',
-                                                   'GES_PrzewodTelekomunikacyjny_1_zrodlo','GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo','GES_UrzadzeniaSiecTelekomunikacyjna_1_zrodlo','GES_UrzadzeniaSiecTelekomunikacyjna_2_zrodlo',
-                                                   'GES_PrzewodSpecjalny_1_zrodlo','GES_UrzadzeniaTechniczneSieciSpecjalnej_0_zrodlo','GES_UrzadzeniaTechniczneSieciSpecjalnej_1_zrodlo','GES_UrzadzeniaTechniczneSieciSpecjalnej_2_zrodlo',
-                                                   'GES_PrzewodNiezidentyfikowany_1_zrodlo','GES_UrzadzenieNiezidentyfikowane_0_zrodlo','GES_UrzadzenieNiezidentyfikowane_1_zrodlo','GES_UrzadzenieNiezidentyfikowane_2_zrodlo',
-                                                   'GES_UrzadzeniaTowarzyszczaceLiniowe_1_zrodlo','GES_UrzadzeniaTowarzyszaceLiniowe_1_zrodlo','GES_InneUrzadzeniaTowarzyszace_0_zrodlo','GES_InneUrzadzeniaTowarzyszace_1_zrodlo','GES_InneUrzadzeniaTowarzyszace_2_zrodlo','GES_Rzedna_0_zrodlo']
-                                Main().add_obligatory_fields(lay, fields_list_ges)
-                            elif 'ot_opisykarto' in lay.name().lower():
-                                fields_list_ot = ['OT_Rzedna_0_zrodlo_zrodlo','OT_BudynekNiewykazanyWEGIB_2_zrodlo','OT_BlokBudynku_2_zrodlo','OT_ObiektTrwaleZwiazanyZBudynkami_2_zrodlo',
-                                                  'OT_Budowle_0_zrodlo','OT_Budowle_1_zrodlo','OT_Budowle_2_zrodlo',
-                                                  'OT_Komunikacja_1_zrodlo','OT_Komunikacja_2_zrodlo','OT_SportIRekreacja_2_zrodlo',
-                                                  'OT_ZagospodarowanieTerenu_0_zrodlo','OT_ZagospodarowanieTerenu_1_zrodlo','OT_ZagospodarowanieTerenu_2_zrodlo',
-                                                  'OT_Wody_1_zrodlo','OT_Wody_2_zrodlo']
-                                Main().add_obligatory_fields(lay, fields_list_ot)
-                            elif 'egb_opisykarto' in lay.name().lower():
-
-                                fields_list_egb = ['EGB_DzialkaEwidencyjna_2_lokalnyId', 'EGB_KonturUzytkuGruntowego_2_lokalnyId',
-                                                   'EGB_KonturKlasyfikacyjny_2_lokalnyId', 'EGB_Budynek_2_lokalnyId',
-                                                   'EGB_BlokBudynku_2_lokalnyId', 'EGB_ObiektTrwaleZwiazanyZBudynkiem_2_lokalnyId',
-                                                   'EGB_ObrebEwidencyjny_2_lokalnyId', 'EGB_JednostkaEwidencyjna_2_lokalnyId']
-                                Main().add_obligatory_fields(lay, fields_list_egb)
-                    if nr < len(scales):
-                        self.progressBar.setValue(80 + int((nr / len(scales)) * 20))
-                        print('Czas ' + str(80 + int((nr / len(scales)) * 20)) + '%:', datetime.now() - start_2)
-                        QCoreApplication.processEvents()
-
-                self.progressBar.hide()
-                if report_path.startswith('/'):  # przypadek dla linuksa kiedy sciezka zaczyna sie od slasha
-                    report_path = report_path.lstrip('/')
-                iface.messageBar().pushMessage("Raport z importu",
-                                               '<a href="file:///' + report_path + '">' + report_path + '</a>',
-                                               level=Qgis.Success, duration=0)
-
-                # nadanie wyswietlania ilosci obiektow
-                allLayers = QgsProject.instance().layerTreeRoot().findLayers()
-                QgsProject.instance().reloadAllLayers()
-                excluded_layers = ['OT_opisyKARTO', 'OT_odnosnik', 'OT_poczatekGorySkarpy',  'OT_koniecGorySkarpy', 'OT_poliliniaKierunkowa', 'EGB_opisyKARTO', 'EGB_odnosnik', 'EGB_poliliniaKierunkowa', 'GES_opisyKARTO', 'GES_odnosnik']
-                for (layer) in allLayers:
-                    if layer.name() not in excluded_layers:
-                        layer.setCustomProperty("showFeatureCount", True)
-
-                self.setLegendScale()
-                iface.layerTreeView().layerTreeModel().setAutoCollapseLegendNodes(-1)
-
-                self.progressBar.setValue(100)
-                print('Czas 100%:', datetime.now() - start_2)
-                print('Koniec importu pliku:', name)
-
-        self.signal_of_import = False
-
-
-    def on_cmbStylization_currentTextChanged(self):
-        """ustaw stylizację wybraną w comboboxie"""
-        self.back_to_qml_symb()
-        if self.gbShowWers.isChecked():
-            self.disp_wers()  # sprawdzenie i nadanie wyswietlania wersji
-        if self.gbFill.isChecked():
-            self.fill_select_set()  # sprawdzenie i nadanie fillowania
-
-    def set_joins(self, vec_layers_list):
-        """nadawanie joinow podczas importu pliku"""
-
-        joining_dict = {
-                        'OT_opisyKARTO': {'OT_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
-                                        'OT_BudynekNiewykazanyWEGIB': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'OT_BlokBudynku': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'OT_ObiektTrwaleZwiazanyZBudynkami': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'OT_Budowle': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'OT_Komunikacja': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'OT_SportIRekreacja': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'OT_ZagospodarowanieTerenu': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'OT_Wody': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'OT_Rzedna': ['obiektPrzedstawiany', 'gml_id', []]},
-                        'EGB_opisyKARTO': {'EGB_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
-                                         'EGB_JednostkaEwidencyjna': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'EGB_ObrebEwidencyjny': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'EGB_DzialkaEwidencyjna': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'EGB_PunktGraniczny': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'EGB_Budynek': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'EGB_BlokBudynku': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'EGB_ObiektTrwaleZwiazanyZBudynkiem': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'EGB_KonturUzytkuGruntowego': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'EGB_KonturKlasyfikacyjny': ['obiektPrzedstawiany', 'gml_id', []]},
-
-                        'GES_opisyKARTO': {'GES_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
-                                         'GES_InneUrzadzeniaTowarzyszace': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_UrzadzeniaTowarzyszczaceLiniowe': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_UrzadzeniaTowarzyszaceLiniowe': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_PrzewodWodociagowy': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_PrzewodKanalizacyjny': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_PrzewodElektroenergetyczny': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_PrzewodGazowy': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_PrzewodCieplowniczy': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_PrzewodTelekomunikacyjny': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_PrzewodSpecjalny': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_PrzewodNiezidentyfikowany': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_UrzadzeniaSiecWodociagowa': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_UrzadzeniaSiecKanalizacyjna': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_UrzadzeniaSiecElektroenergetyczna': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_UrzadzeniaSiecGazowa': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_UrzadzeniaSiecCieplownicza': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_UrzadzeniaSiecTelekomunikacyjna': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_UrzadzeniaTechniczneSieciSpecjalnej': ['obiektPrzedstawiany', 'gml_id',
-                                                                                     []],
-                                         'GES_UrzadzenieNiezidentyfikowane': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_Rzedna': ['obiektPrzedstawiany', 'gml_id', []]},
-                        'GES_UrzadzeniaSiecWodociagowa': {
-                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'GES_UrzadzeniaSiecKanalizacyjna': {
-                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'GES_UrzadzeniaSiecElektroenergetyczna': {
-                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'GES_UrzadzeniaSiecGazowa': {'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'GES_UrzadzeniaSiecCieplownicza': {
-                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'GES_UrzadzeniaSiecTelekomunikacyjna': {
-                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'GES_UrzadzeniaTechniczneSieciSpecjalnej': {
-                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'GES_UrzadzenieNiezidentyfikowane': {
-                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'GES_InneUrzadzeniaTowarzyszace': {
-                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'OT_Budowle': {'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'OT_ZagospodarowanieTerenu': {'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'OT_Wody': {'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'OT_ObiektTrwaleZwiazanyZBudynkami': {
-                            'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'EGB_ObiektTrwaleZwiazanyZBudynkiem': {
-                            'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]}
-                        }
-
-        # tworzenie zlaczen warstw
-        for layer in vec_layers_list:
-            layer_name = layer.name()
-            if layer_name in joining_dict:
-                dict_main_layer = joining_dict[layer_name]
-                for layer_joining in vec_layers_list:
-                    layer_joining_name = layer_joining.name()
-                    if layer_joining_name in dict_main_layer:
-                        joining_info = dict_main_layer[layer_joining_name]
-                        key_main = joining_info[0]
-                        key_joining = joining_info[1]
-                        fields_list = joining_info[2]
-                        prefix = layer_joining_name + '_' + str(layer_joining.geometryType()) + '_'
-                        QgsProject.instance().addMapLayer(layer)
-                        QgsProject.instance().addMapLayer(layer_joining)
-                        joinObject = QgsVectorLayerJoinInfo()
-                        joinObject.setJoinFieldNamesBlockList(
-                            ['prezentacja_etykiety', 'fid', 'przestrzenNazw', 'wersjaId', 'numerOperatu', 'wladajacy'])
-                        joinObject.setCascadedDelete(False)
-                        joinObject.setDynamicFormEnabled(False)
-                        joinObject.setEditable(False)
-                        joinObject.setUpsertOnEdit(False)
-                        joinObject.setJoinFieldName(key_joining)
-                        joinObject.setTargetFieldName(key_main)
-                        if len(fields_list) > 0:
-                            joinObject.setJoinFieldNamesSubset(fields_list)
-                        joinObject.setPrefix(prefix)
-                        joinObject.setJoinLayerId(layer_joining.id())
-                        joinObject.setUsingMemoryCache(True)
-                        joinObject.setJoinLayer(layer_joining)
-                        layer.addJoin(joinObject)
-
-        # dodawanie pol
-        for layer in vec_layers_list:
-            fields_list_obj = layer.fields().toList()
-            fields_list = []
-            if layer.name() == 'GES_odnosnik' or layer.name() == 'EGB_odnosnik' or layer.name() == 'OT_odnosnik':
-                for field in fields_list_obj:
-                    fields_list.append(field.name())
-                if 'x' not in fields_list:
-                    field = QgsField('x', QVariant.Double)
-                    layer.addExpressionField('$x', field)
-                if 'y' not in fields_list:
-                    field2 = QgsField('y', QVariant.Double)
-                    layer.addExpressionField('$y', field2)
-        iface.mapCanvas().refreshAllLayers()
-
-    def on_cmbReda_currentTextChanged(self):
-        # self.set_labels(self.getLayers())
-        self.set_red_labels()
-
-    def set_red_labels(self):
-        if 'auto' in self.cmbReda.currentText().lower():
-            auto = '1'
-            karto = '0'
-        elif 'karto' in self.cmbReda.currentText().lower():
-            auto = '0'
-            karto = '1'
-        else:
-            auto = '0'
-            karto = '0'
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Auto', auto)
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Karto', karto)
-
-        iface.mapCanvas().refreshAllLayers()
-
-        self.setLegendScale()
-
-    def getLayersByName(self, name):
-        layers = self.getLayers()
-        sk_layers = []
-        for layer in layers:
-            if name in layer.name().lower():
-                sk_layers.append(layer)
-        return sk_layers
-
-    def getLayers(self):
-        """pobierz listę warstw do symbolizacji i labelingu
-        --pobieranie warstw w oparciu o warstwy w rozporzadzeniu"""
-        lays = iface.mapCanvas().layers()
-
-        layers = Main().checkLayers(lays)
-
-        return layers
-
-    def on_chbShowPierwsze_stateChanged(self):
-        self.disp_settings()
-
-    def on_chbShowModyfikowane_stateChanged(self):
-        self.disp_settings()
-
-    def on_chbShowArchiwalne_stateChanged(self):
-        self.disp_settings()
-
-    def on_chbShowZamkniete_stateChanged(self):
-        self.disp_settings()
-
-    def on_chbShowWczesniejsze_stateChanged(self):
-        self.disp_settings()
-
-    def on_chbColorPierwsze_stateChanged(self):
-        self.disp_settings()
-
-    def on_chbColorModyfikowane_stateChanged(self):
-        self.disp_settings()
-
-    def on_chbColorArchiwalne_stateChanged(self):
-        self.disp_settings()
-
-    def on_chbColorZamkniete_stateChanged(self):
-        self.disp_settings()
-
-    def on_chbColorWczesniejsze_stateChanged(self):
-        self.disp_settings()
-
-    def on_colPierwsze_stateChanged(self):
-        self.disp_settings()
-
-    def on_colModyfikowane_stateChanged(self):
-        self.disp_settings()
-
-    def on_colArchiwalne_stateChanged(self):
-        self.disp_settings()
-
-    def on_colZamkniete_stateChanged(self):
-        self.disp_settings()
-
-    def on_colWczesniejsze_stateChanged(self):
-        self.disp_settings()
-
-    def on_colPierwsze_colorChanged(self):
-        self.disp_settings()
-
-    def on_colModyfikowane_colorChanged(self):
-        self.disp_settings()
-
-    def on_colArchiwalne_colorChanged(self):
-        self.disp_settings()
-
-    def on_colZamkniete_colorChanged(self):
-        self.disp_settings()
-
-    def on_colWczesniejsze_colorChanged(self):
-        self.disp_settings()
-
-    def on_chbZnacznik_stateChanged(self):
-        self.disp_settings()
-
-    def on_dteZnacznik_valueChanged(self):
-        self.disp_settings()
-
-    def on_gbShowWers_toggled(self,state):
-        self.gbShowWers.setEnabled(False)
-        QCoreApplication.processEvents()
-        self.disp_wers()
-        if state:
-            # uncheck dla wersji, dodanie zeby nie wracalo wtedy do poprzedniego qml przy uncheck (bo inaczej robi sie 2 razy)
-            self.back_fill = False
-            self.gbFill.setChecked(False)
-            self.gbFill.setCollapsed(True)
-        self.back_fill = True
-        self.gbShowWers.setEnabled(True)
-
-    def back_to_qml_symb(self):
+    def backToQmlSymb(self):
         """Wczytanie stylizacji QML"""
         current_style = self.cmbStylization.currentText()
-        Main().setStyling(self.list_or_canvas(self.signal_of_import), current_style)
+        Main().setStyling(self.listOrCanvas(self.signal_of_import), current_style)
         expression = ExpressYourself('', '')
-        expression.set_label_expression(self.list_or_canvas(self.signal_of_import), False)
+        expression.setLabelExpression(self.listOrCanvas(self.signal_of_import), False)
         self.setLegendScale()
         # self.set_labels(self.getLayers())
 
-    def disp_wers(self):
+    def dispVers(self):
         """ustawienie wyswietlania/niewyswietlania po wersjach"""
         on = self.gbShowWers.isChecked()
         # powrot do pierwotnej stylizacji
         if self.back_wers:
-            self.back_to_qml_symb()
+            self.backToQmlSymb()
 
         self.back_wers = True
 
         if on:
-            self.disp_settings()
+            self.dispSettings()
             expr_show = " with_variable( 'show', pokaz_wersje(if (@DateCompare is '0', @DateCompare, to_datetime(@DateCompare)), @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(" + '"startObiekt"' + ", ''),concat(" + '"startWersjaObiekt"' + ", ''),concat(" + '"koniecObiekt"' + ", ''),concat(" + '"koniecWersjaObiekt"' + ", '')),  if( var('show'), 1111, var('show')))"
             expr_color = " with_variable( 'color', kolor_wersji(if (@DateCompare is '0', @DateCompare, to_datetime(@DateCompare)), @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(" + '"startObiekt"' + ", ''),concat(" + '"startWersjaObiekt"' + ", ''),concat(" + '"koniecObiekt"' + ", ''),concat(" + '"koniecWersjaObiekt"' + ", '')),  if( var('color'), var('color'), 1111))"
 
             expression = ExpressYourself(expr_color, expr_show)
-            expression.set_symbol_expression(self.list_or_canvas(self.signal_of_import))
-            expression.set_label_expression(self.list_or_canvas(self.signal_of_import))
+            expression.setSymbolExpression(self.listOrCanvas(self.signal_of_import))
+            expression.setLabelExpression(self.listOrCanvas(self.signal_of_import))
 
             self.setLegendScale()
         else:
@@ -725,7 +621,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             #self.back_to_qml_symb()
             pass
 
-    def list_or_canvas(self, signal_of_import):
+    def listOrCanvas(self, signal_of_import):
         """Zaleznie od sygnalu, pobierane sa warstwy albo z listy warstw wektorowych
             albo z metody getLayers. Ma to za zadanie pozyskac odpowiednie warstwy podczas
             importu. Aby zostala nadana symbolizacja wg. wersji.
@@ -736,7 +632,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             layers = self.getLayers()
         return layers
 
-    def disp_settings(self):
+    def dispSettings(self):
         """ustawienia dotyczace wyswietlania po wersjach:
         pobranie ustawien z okna wtyczki i zapisanie do zmiennych w projekcie
         obsluga aktywowania opcji w oknie wtyczki"""
@@ -876,13 +772,163 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         iface.mapCanvas().refreshAllLayers()
 
-    def close_dialog(self):
-        """Zamykanie okna dialogu po wywolaniu funkcji"""
-        self.right_click_dlg.close()
+    def setJoins(self, vec_layers_list):
+        """nadawanie joinow podczas importu pliku"""
 
-    def fill_select_set(self):
+        joining_dict = {
+                        'OT_opisyKARTO': {'OT_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
+                                        'OT_BudynekNiewykazanyWEGIB': ['obiektPrzedstawiany', 'gml_id', []],
+                                        'OT_BlokBudynku': ['obiektPrzedstawiany', 'gml_id', []],
+                                        'OT_ObiektTrwaleZwiazanyZBudynkami': ['obiektPrzedstawiany', 'gml_id', []],
+                                        'OT_Budowle': ['obiektPrzedstawiany', 'gml_id', []],
+                                        'OT_Komunikacja': ['obiektPrzedstawiany', 'gml_id', []],
+                                        'OT_SportIRekreacja': ['obiektPrzedstawiany', 'gml_id', []],
+                                        'OT_ZagospodarowanieTerenu': ['obiektPrzedstawiany', 'gml_id', []],
+                                        'OT_Wody': ['obiektPrzedstawiany', 'gml_id', []],
+                                        'OT_Rzedna': ['obiektPrzedstawiany', 'gml_id', []]},
+                        'EGB_opisyKARTO': {'EGB_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
+                                         'EGB_JednostkaEwidencyjna': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'EGB_ObrebEwidencyjny': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'EGB_DzialkaEwidencyjna': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'EGB_PunktGraniczny': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'EGB_Budynek': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'EGB_BlokBudynku': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'EGB_ObiektTrwaleZwiazanyZBudynkiem': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'EGB_KonturUzytkuGruntowego': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'EGB_KonturKlasyfikacyjny': ['obiektPrzedstawiany', 'gml_id', []]},
+
+                        'GES_opisyKARTO': {'GES_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
+                                         'GES_InneUrzadzeniaTowarzyszace': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_UrzadzeniaTowarzyszczaceLiniowe': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_UrzadzeniaTowarzyszaceLiniowe': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_PrzewodWodociagowy': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_PrzewodKanalizacyjny': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_PrzewodElektroenergetyczny': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_PrzewodGazowy': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_PrzewodCieplowniczy': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_PrzewodTelekomunikacyjny': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_PrzewodSpecjalny': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_PrzewodNiezidentyfikowany': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_UrzadzeniaSiecWodociagowa': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_UrzadzeniaSiecKanalizacyjna': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_UrzadzeniaSiecElektroenergetyczna': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_UrzadzeniaSiecGazowa': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_UrzadzeniaSiecCieplownicza': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_UrzadzeniaSiecTelekomunikacyjna': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_UrzadzeniaTechniczneSieciSpecjalnej': ['obiektPrzedstawiany', 'gml_id',
+                                                                                     []],
+                                         'GES_UrzadzenieNiezidentyfikowane': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'GES_Rzedna': ['obiektPrzedstawiany', 'gml_id', []]},
+                        'GES_UrzadzeniaSiecWodociagowa': {
+                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+                        'GES_UrzadzeniaSiecKanalizacyjna': {
+                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+                        'GES_UrzadzeniaSiecElektroenergetyczna': {
+                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+                        'GES_UrzadzeniaSiecGazowa': {'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+                        'GES_UrzadzeniaSiecCieplownicza': {
+                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+                        'GES_UrzadzeniaSiecTelekomunikacyjna': {
+                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+                        'GES_UrzadzeniaTechniczneSieciSpecjalnej': {
+                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+                        'GES_UrzadzenieNiezidentyfikowane': {
+                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+                        'GES_InneUrzadzeniaTowarzyszace': {
+                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+                        'OT_Budowle': {'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+                        'OT_ZagospodarowanieTerenu': {'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+                        'OT_Wody': {'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+                        'OT_ObiektTrwaleZwiazanyZBudynkami': {
+                            'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+                        'EGB_ObiektTrwaleZwiazanyZBudynkiem': {
+                            'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]}
+                        }
+
+        # tworzenie zlaczen warstw
+        for layer in vec_layers_list:
+            layer_name = layer.name()
+            if layer_name in joining_dict:
+                dict_main_layer = joining_dict[layer_name]
+                for layer_joining in vec_layers_list:
+                    layer_joining_name = layer_joining.name()
+                    if layer_joining_name in dict_main_layer:
+                        joining_info = dict_main_layer[layer_joining_name]
+                        key_main = joining_info[0]
+                        key_joining = joining_info[1]
+                        fields_list = joining_info[2]
+                        prefix = layer_joining_name + '_' + str(layer_joining.geometryType()) + '_'
+                        QgsProject.instance().addMapLayer(layer)
+                        QgsProject.instance().addMapLayer(layer_joining)
+                        joinObject = QgsVectorLayerJoinInfo()
+                        joinObject.setJoinFieldNamesBlockList(
+                            ['prezentacja_etykiety', 'fid', 'przestrzenNazw', 'wersjaId', 'numerOperatu', 'wladajacy'])
+                        joinObject.setCascadedDelete(False)
+                        joinObject.setDynamicFormEnabled(False)
+                        joinObject.setEditable(False)
+                        joinObject.setUpsertOnEdit(False)
+                        joinObject.setJoinFieldName(key_joining)
+                        joinObject.setTargetFieldName(key_main)
+                        if len(fields_list) > 0:
+                            joinObject.setJoinFieldNamesSubset(fields_list)
+                        joinObject.setPrefix(prefix)
+                        joinObject.setJoinLayerId(layer_joining.id())
+                        joinObject.setUsingMemoryCache(True)
+                        joinObject.setJoinLayer(layer_joining)
+                        layer.addJoin(joinObject)
+
+        # dodawanie pol
+        for layer in vec_layers_list:
+            fields_list_obj = layer.fields().toList()
+            fields_list = []
+            if layer.name() == 'GES_odnosnik' or layer.name() == 'EGB_odnosnik' or layer.name() == 'OT_odnosnik':
+                for field in fields_list_obj:
+                    fields_list.append(field.name())
+                if 'x' not in fields_list:
+                    field = QgsField('x', QVariant.Double)
+                    layer.addExpressionField('$x', field)
+                if 'y' not in fields_list:
+                    field2 = QgsField('y', QVariant.Double)
+                    layer.addExpressionField('$y', field2)
+        iface.mapCanvas().refreshAllLayers()
+
+    def setRedLabels(self):
+        if 'auto' in self.cmbReda.currentText().lower():
+            auto = '1'
+            karto = '0'
+        elif 'karto' in self.cmbReda.currentText().lower():
+            auto = '0'
+            karto = '1'
+        else:
+            auto = '0'
+            karto = '0'
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Auto', auto)
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Karto', karto)
+
+        iface.mapCanvas().refreshAllLayers()
+
+        self.setLegendScale()
+
+    def getLayersByName(self, name):
+        layers = self.getLayers()
+        sk_layers = []
+        for layer in layers:
+            if name in layer.name().lower():
+                sk_layers.append(layer)
+        return sk_layers
+
+    def getLayers(self):
+        """pobierz listę warstw do symbolizacji i labelingu
+        --pobieranie warstw w oparciu o warstwy w rozporzadzeniu"""
+        lays = iface.mapCanvas().layers()
+
+        layers = Main().checkLayers(lays)
+
+        return layers
+
+    def fillSelectSet(self):
         if self.back_fill:
-            self.back_to_qml_symb()
+            self.backToQmlSymb()
 
         self.back_fill = True
 
@@ -909,65 +955,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
             # przejscie po zaznaczonych zbiorach i nadanie wypelnien
             for set in self.active_sets:
-                fill(excel_path=FILL_PARAMETERS, scale=current_scale, set=set, layers = self.list_or_canvas(self.signal_of_import))
+                fill(excel_path=FILL_PARAMETERS, scale=current_scale, set=set, layers = self.listOrCanvas(self.signal_of_import))
 
             self.setLegendScale()
-
-    def on_gbFill_toggled(self, state):
-        """GroupBox dla fillowania w zaleznosci od wyswietlanego zbioru danych"""
-        self.gbFill.setEnabled(False)
-        QCoreApplication.processEvents()
-        self.fill_select_set()
-        if state is True:
-            # uncheck dla wersji, dodanie zeby nie wracalo wtedy do poprzedniego gml przy uncheck (bo inaczej robi sie 2 razy)
-            self.back_wers = False
-            self.gbShowWers.setChecked(False)
-            self.gbShowWers.setCollapsed(True)
-        self.back_wers = True
-        self.gbFill.setEnabled(True)
-
-
-    def on_chbFillBDOT_stateChanged(self):
-        self.fill_select_set()
-
-    def on_chbFillEGIB_stateChanged(self):
-        self.fill_select_set()
-
-    def on_chbFillGESUT_stateChanged(self):
-        self.fill_select_set()
-
-    def set_fill_checked(self, state):
-        """ustawienie checked/unchecked dla fillowania"""
-        if state == self.gbFill.isChecked():
-            self.back_fill = False
-            self.gbFill.setChecked(not state)
-        self.back_fill = True
-        self.gbFill.setChecked(state)
-        self.gbFill.setCollapsed(not state)
-
-    def getSelectedScale(self):
-        """rozpoznanie aktualnie wybranej skali, gdy nie rozpozna to wstawi domyslna skale 500"""
-        val = self.cmbStylization.currentText()
-        if '500' in val and '5000' not in val:
-            scale = 500
-        elif '1000' in val:
-            scale = 1000
-        elif '2000' in val:
-            scale = 2000
-        elif '5000' in val:
-            scale = 5000
-        else:
-            scale = 500
-        return scale
-
-    def setLegendScale(self, scale = None):
-        """nadawanie skali renderowania symboli w widoku warstw"""
-        if scale is None:
-            scale = self.getSelectedScale()
-
-        current_scale = iface.layerTreeView().layerTreeModel().legendMapViewData()
-        dpi = current_scale[1]
-        if dpi != 0:
-            mupp = (2.54*scale)/(100*dpi)
-
-            iface.layerTreeView().layerTreeModel().setLegendMapViewData(mupp, dpi, scale)

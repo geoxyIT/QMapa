@@ -4,7 +4,7 @@ from typing import List
 from .config import correct_layers
 
 
-def set_new_order(layer_new_order: List):
+def setNewOrder(layer_new_order: List):
     """ustalenie odpowiedniej kolejnosci wartsw"""
     # wejscie do roota
     root = iface.layerTreeCanvasBridge().rootGroup()

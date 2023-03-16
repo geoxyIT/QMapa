@@ -4,34 +4,34 @@ import re
 from PyQt5.QtGui import QColor, QPalette
 
 
-def get_hub_ver(URL):
+def getHubVer(url):
     """Funkcja do pobierania wersji z github"""
-    page = requests.get(URL)
+    page = requests.get(url)
     text = page.text
     return text
 
-def get_local_ver(path):
+def getLocalVer(path):
     """Funkcja do pobierania wersji lokalnej"""
     with open(path, 'r') as f:
         text = f.read()
     return text
 
-def reg_ver(text):
+def regVer(text):
     """Regex dla wyszukania wersji w pliku metadata"""
     pattern = r'version=\d+.\d.\d'
     results = re.search(pattern, text)
     ver = results.group().lstrip('version=')
     return ver
 
-def reg_date(text):
+def regDate(text):
     """Regex dla wyszukiwania daty opublikowanej wersji w pliku metadanych"""
-    version = reg_ver(text)
+    version = regVer(text)
     pattern = version+".+\n"
     results = re.search(pattern, text)
     date = results.group().lstrip(version).lstrip()
     return date
 
-def compare_versions(label, git_ver, loc_ver):
+def compareVersions(label, git_ver, loc_ver):
     """Porownywanie ze soba wersji github i lokalnej"""
     if git_ver > loc_ver:
         print('Twoja wersja jest nieaktualna!')
@@ -49,15 +49,11 @@ def compare_versions(label, git_ver, loc_ver):
 
 if __name__ == '__main__':
     URL = 'https://raw.githubusercontent.com/g-sherman/Qgis-Plugin-Builder/master/metadata.txt'
-    hub_ver = reg_ver(get_hub_ver(URL))
+    hub_ver = regVer(getHubVer(URL))
     print(hub_ver)
     local_path = r'C:\Users\Geoxy\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\QMapa\metadata.txt'
-    local_ver = reg_ver(get_local_ver(local_path))
+    local_ver = regVer(getLocalVer(local_path))
     print(local_ver)
     # compare_versions(hub_ver, local_ver)
-    date = reg_date(get_local_ver(local_path))
+    date = regDate(getLocalVer(local_path))
     print(date)
-
-
-    
-    
