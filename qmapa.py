@@ -42,6 +42,7 @@ from .src.resources import *
 from .qmapa_dockwidget import QMapaDockWidget
 import os.path
 from .src.help import Help
+from .src.change_map_appearance import ChangeAppearance
 
 from .src.area_symbol_fill import openFillXlsmLoc  # open_fill_xlsm,
 
@@ -268,11 +269,11 @@ class QMapa:
 
         self.toolbarAction(tool_button=tool_button, icon_path=raster_icon,
                            text=self.tr(u'Dodaj serwis Open Street Map'),
-                           callback=lambda: QMapaDockWidget().addOrtoOsm('OSM'))
+                           callback=lambda: ChangeAppearance().addOrtoOsm('OSM'))
 
         self.toolbarAction(tool_button=tool_button, icon_path=raster_icon,
                            text=self.tr(u'Dodaj serwis Geoportal ORTO'),
-                           callback=lambda: QMapaDockWidget().addOrtoOsm('GEOPORTAL_ORTO'))
+                           callback=lambda: ChangeAppearance().addOrtoOsm('GEOPORTAL_ORTO'))
 
         self.toolbarAction(tool_button=tool_button, icon_path=icon_help_path,
                            text=self.tr(u'Informacje o wtyczce'), callback=self.help)

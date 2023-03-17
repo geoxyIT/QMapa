@@ -554,7 +554,7 @@ def calculateColors(main_layer, field_name):
         except:
             # dla reszty symboli niezawartych w zmiennych config ges_colors
             # nadawany jest kolor czarny
-            out_text_python = black_sewer
+            out_text_python = black_color
         # wstawienie wartości koloru do komórki w tabeli QGIS
         attribute_map_python.update({feature.id(): {cum_sum_index: out_text_python}})
     # zapisanie atrybutow warstwy
