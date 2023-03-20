@@ -90,7 +90,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1"/>
                 <Option name="joinstyle" type="QString" value="round"/>
                 <Option name="name" type="QString" value="line"/>
-                <Option name="offset" type="QString" value="0,0.20000000000000001"/>
+                <Option name="offset" type="QString" value="0,0.3"/>
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
                 <Option name="offset_unit" type="QString" value="MapUnit"/>
                 <Option name="outline_color" type="QString" value="0,0,0,255"/>
@@ -110,7 +110,7 @@
               <prop v="1" k="horizontal_anchor_point"/>
               <prop v="round" k="joinstyle"/>
               <prop v="line" k="name"/>
-              <prop v="0,0.20000000000000001" k="offset"/>
+              <prop v="0,0.3" k="offset"/>
               <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
               <prop v="MapUnit" k="offset_unit"/>
               <prop v="0,0,0,255" k="outline_color"/>
