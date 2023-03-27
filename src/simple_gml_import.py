@@ -1,9 +1,10 @@
+import os
+from enum import Enum
 from qgis.utils import iface
 from qgis.core import *
 from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox
 from .gml_modify import GmlModify
 from datetime import datetime
-import os
 from osgeo_utils.samples import ogr2ogr
 from .load_gpkg import loadGpkg
 from .hatch_and_color_calc import calculateHatching, calculateColors
@@ -172,7 +173,13 @@ class SimpleGmlImport():
                         key_main = joining_info[0]
                         key_joining = joining_info[1]
                         fields_list = joining_info[2]
-                        prefix = layer_joining_name + '_' + str(layer_joining.geometryType()) + '_'
+                        # rozróżnienie typu geometrii w zależności od zwracanej klasy
+                        # dla QGIS 3.30 zwracany jest enumerator 
+                        if isinstance(layer_joining.geometryType(), Enum) is False:  # wersja < 3.30
+                            geom_type = layer_joining.geometryType()
+                        else: # wersja > 3.30
+                            geom_type = layer_joining.geometryType().value
+                        prefix = layer_joining_name + '_' + str(geom_type) + '_'
                         QgsProject.instance().addMapLayer(layer)
                         QgsProject.instance().addMapLayer(layer_joining)
                         joinObject = QgsVectorLayerJoinInfo()

@@ -124,6 +124,24 @@ class ChangeAppearance():
 
         # self.setLegendScale()
 
+    def setRedLabels(self, red_type):
+        """ zmiana redakcji mapy auto / karto"""
+        if 'auto' in red_type.lower():
+            auto = '1'
+            karto = '0'
+        elif 'karto' in red_type.lower():
+            auto = '0'
+            karto = '1'
+        else:
+            auto = '0'
+            karto = '0'
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Auto', auto)
+        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Karto', karto)
+
+        iface.mapCanvas().refreshAllLayers()
+
+        # self.setLegendScale()
+
     def getLayersByName(self, name):
         layers = self.getLayers()
         sk_layers = []

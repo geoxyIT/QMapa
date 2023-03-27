@@ -130,3 +130,15 @@ dmypy.json
 
 # Folder idea
 .idea/
+
+# Visual Studio folder
+.vscode/
+
+# Visual Studio settings
+Launch.json
+settings.json
+
+# GeoPackage file
+*.gpkg
+*.gpkg-shm
+*.gpkg-wal
