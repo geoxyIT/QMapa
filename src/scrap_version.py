@@ -45,15 +45,3 @@ def compareVersions(label, git_ver, loc_ver):
         # print('Twoja wersja jest aktualna')
         pass
 
-
-
-if __name__ == '__main__':
-    URL = 'https://raw.githubusercontent.com/g-sherman/Qgis-Plugin-Builder/master/metadata.txt'
-    hub_ver = regVer(getHubVer(URL))
-    print(hub_ver)
-    local_path = r'C:\Users\Geoxy\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\QMapa\metadata.txt'
-    local_ver = regVer(getLocalVer(local_path))
-    print(local_ver)
-    # compare_versions(hub_ver, local_ver)
-    date = regDate(getLocalVer(local_path))
-    print(date)
