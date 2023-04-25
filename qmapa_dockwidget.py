@@ -138,7 +138,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             self.fillSelectSet(ChangeAppearance().getLayers())  # sprawdzenie i nadanie fillowania
 
     def on_cmbReda_currentTextChanged(self):
-        self.setRedLabels()
+        ChangeAppearance().setRedLabels(self.cmbReda.currentText())
 
     def on_chbShowPierwsze_stateChanged(self):
         self.dispSettings()

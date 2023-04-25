@@ -1,0 +1,14 @@
+ISSUE 1
+w przypadku gdy w klasie występuje obiekt z nieprawidłową geometrią może wystąpić jeden z problemów:
+
+- Plik zostanie zaimportowany bez wystąpienia błedu pythona, lecz bedzie niepoprawny - część obiektów z tej klasy nie zostanie zaimportowane
+
+- Błąd pythona w czasie importu:
+    RuntimeError: Geometry of feature <nr obiektu> <id obiektu> cannot be parsed: Curve: Got NULL geometry as Member instead of segments
+
+przykład błędnej geometrii:
+<gml:Curve gml:id="CGeomID_16429_6035_6478" srsName="urn:ogc:def:crs:EPSG::2178" srsDimension="2"><gml:segments>
+<gml:LineStringSegment><gml:posList>5549784.80 7422782.07 5549793.93 7422782.22</gml:posList></gml:LineStringSegment>
+<gml:ArcString numArc="1"><gml:posList>5550049.22 7422871.15 5550049.50 7422872.64 5550050.49 7422873.79</gml:posList></gml:ArcString>
+<gml:LineStringSegment><gml:posList>5550050.49 7422873.79</gml:posList></gml:LineStringSegment></gml:segments></gml:Curve>
+błędny jest ostatni segment - ma tylko jeden punkt

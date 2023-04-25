@@ -374,6 +374,9 @@ class GmlModify:
         self.file.close()
         if self.incompatible_found is True:
             print("Wykryto obiekty niezgodne z modelem 2021")
-            iface.messageBar().pushMessage("Wykryto obiekty niezgodne z modelami BDOT, EGiB, GESUT 2021: ",
+            '''iface.messageBar().pushMessage("Wykryto obiekty niezgodne z modelami BDOT, EGiB, GESUT 2021: ",
                                            "Niezgodne obiekty zostaną zaimportowane z przedrostkiem NIESTANDARDOWE",
-                                           level=0, duration=0)
+                                           level=0, duration=0)'''
+            QMessageBox.warning(iface.mainWindow(), 'W czasie importu wykryto obiekty niestandardowe',
+                                'Wykryto obiekty niezgodne z modelami BDOT, EGiB, GESUT 2021: \n\nNiezgodne obiekty zostaną zaimportowane z przedrostkiem NIESTANDARDOWE, szczegóły w raporcie importu.',
+                                buttons=QMessageBox.Ok)
