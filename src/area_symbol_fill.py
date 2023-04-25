@@ -25,6 +25,9 @@ def patternFill(rotation_formula, spacing_formula, width_formula, color_formula,
     """Funkcja wykonujaca kreskowanie na symbolu LinePatternFill - wypelnianie wyrazen"""
     line_pattern = QgsLinePatternFillSymbolLayer()
 
+    # distance unit niezależnie od uzywanej wersji QGIS, zarówno wersja qgis 3.30 jak i starsze
+    map_unit_type = QgsUnitTypes.RenderUnit.RenderMapUnits
+
     # korekta nan value
     rotation_formula += 'else 0 end'
     rotation_formula = rotation_formula.replace('nan', '0')
@@ -40,7 +43,7 @@ def patternFill(rotation_formula, spacing_formula, width_formula, color_formula,
     line_pattern.dataDefinedProperties().property(15).setExpressionString(rotation_formula)
     # spacing
     line_pattern.dataDefinedProperties().property(16).setExpressionString(spacing_formula)
-    line_pattern.setDistanceUnit(1)  # wartosc 1 - map units
+    line_pattern.setDistanceUnit(map_unit_type)  # wartosc 1 - map units
     # color
     line_pattern.dataDefinedProperties().property(3).setExpressionString(rotation_formula)
 
@@ -52,7 +55,7 @@ def patternFill(rotation_formula, spacing_formula, width_formula, color_formula,
         internal_pattern_line = layer.renderer().symbol().symbolLayers()[-1].subSymbol().symbolLayers()[0]  # subsymbol
         # dla width konieczne jest ustawienie szerokosci w odpowiedniej skali
         internal_pattern_line.dataDefinedProperties().property(5).setExpressionString(width_formula)
-        internal_pattern_line.setWidthUnit(1)  # map units
+        internal_pattern_line.setWidthUnit(map_unit_type)  # map units
         # color
         internal_pattern_line.dataDefinedProperties().property(3).setExpressionString(color_formula)
         internal_pattern_line.dataDefinedProperties().property(3).setActive(True)
@@ -62,7 +65,7 @@ def patternFill(rotation_formula, spacing_formula, width_formula, color_formula,
             internal_pattern_line = child.symbols()[0][1].subSymbol().symbolLayers()[0]  # subsymbol
             # dla width konieczne jest ustawienie szerokosci w odpowiedniej skali
             internal_pattern_line.dataDefinedProperties().property(5).setExpressionString(width_formula)
-            internal_pattern_line.setWidthUnit(1)  # map units
+            internal_pattern_line.setWidthUnit(map_unit_type)  # map units
             # color
             internal_pattern_line.dataDefinedProperties().property(4).setExpressionString(color_formula)
             internal_pattern_line.dataDefinedProperties().property(4).setActive(True)
@@ -72,11 +75,15 @@ def patternFillOnlyValues(rotation, spacing, width, color_formula, layer=None, c
     """Funkcja wykonujaca kreskowanie na symbolu LinePatternFill - wypelnianie samych wartosci,
     jest to wykorzystywane w przypadku gdy nie ma atrybutu podstawowego"""
     line_pattern = QgsLinePatternFillSymbolLayer()
+    
+    # distance unit niezależnie od uzywanej wersji QGIS, zarówno wersja qgis 3.30 jak i starsze
+    map_unit_type = QgsUnitTypes.RenderUnit.RenderMapUnits
+    
     # rotacja
     line_pattern.setLineAngle(rotation)
     # spacing
     line_pattern.setDistance(spacing)
-    line_pattern.setDistanceUnit(1)  # wartosc 1 - map units
+    line_pattern.setDistanceUnit(map_unit_type)  # wartosc 1 - map units
 
     # nadanie symbolu oraz wejscie w subsymbol dla symboli single oraz rule
     if single is True and layer is not None:
@@ -85,7 +92,7 @@ def patternFillOnlyValues(rotation, spacing, width, color_formula, layer=None, c
 
         # width
         internal_pattern_line.setWidth(width)
-        internal_pattern_line.setWidthUnit(1)  # map units
+        internal_pattern_line.setWidthUnit(map_unit_type)  # map units
         # color
         internal_pattern_line.dataDefinedProperties().property(4).setExpressionString(color_formula)
         internal_pattern_line.dataDefinedProperties().property(4).setActive(True)
@@ -97,7 +104,7 @@ def patternFillOnlyValues(rotation, spacing, width, color_formula, layer=None, c
 
             # width
             internal_pattern_line.setWidth(width)
-            internal_pattern_line.setWidthUnit(1)  # map units
+            internal_pattern_line.setWidthUnit(map_unit_type)  # map units
             # color
             internal_pattern_line.dataDefinedProperties().property(4).setExpressionString(color_formula)
             internal_pattern_line.dataDefinedProperties().property(4).setActive(True)
