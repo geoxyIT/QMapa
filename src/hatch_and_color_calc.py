@@ -1,6 +1,4 @@
-import datetime
-from copy import copy
-from qgis.PyQt.QtCore import QVariant, QDateTime
+from qgis.PyQt.QtCore import QVariant
 from qgis.utils import iface
 from qgis.core import *
 from qgis.gui import *
@@ -20,8 +18,6 @@ def getPolylineFromStartEnd(geometry, top_start_point, top_end_point, side = 'to
     #  na exterior ring jesli jest tam poczatek gory skarpy
     #  lub na wszystkich interior ringach jesli na ktorymkolwiek z nich jest poczatek gory skarpy
 
-    # context = QgsExpressionContext()
-    # context.setFeature(feature)
     orig_geom_list = geometry.asGeometryCollection()
     lines_list = []
     for idx, geomet in enumerate(orig_geom_list):
@@ -127,7 +123,6 @@ def getPolylineFromStartEnd(geometry, top_start_point, top_end_point, side = 'to
                         lines_list.append(line)
 
     return QgsGeometry.collectGeometry(lines_list)
-    #return QgsGeometry().fromWkt('<QgsGeometry: LineString (6550700.50107295252382755 5859886.9859598446637392, 6550702.27532895654439926 5859889.41077638510614634)>')
 
 # Generate list of QgsPoints from input geometry ( can be point, line, or polygon )
 def extractPoints(geom):

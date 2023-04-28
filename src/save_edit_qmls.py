@@ -1,6 +1,5 @@
 import os
 from qgis.core import QgsMapLayerType
-import copy
 from qgis.utils import iface
 
 def saveStylization(layers, sty_name):

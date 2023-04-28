@@ -1,7 +1,7 @@
 from qgis.utils import iface
 import os
 from .scrap_version import *
-from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox
+from qgis.PyQt.QtWidgets import QMessageBox
 from qgis.core import *
 from qgis.gui import *
 from .qmapa_main import Main

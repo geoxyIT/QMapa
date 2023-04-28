@@ -1,6 +1,4 @@
-import datetime
 import os, sys
-from copy import copy
 from qgis.PyQt.QtCore import QVariant, QDateTime
 from qgis.utils import iface
 from qgis.core import *
@@ -379,10 +377,6 @@ class Main:
         techn_layers = ['EGB_poliliniaKierunkowa', 'OT_poliliniaKierunkowa', 'OT_opisyKARTO', 'GES_opisyKARTO',
                         'EGB_opisyKARTO', 'OT_poczatekGorySkarpy', 'OT_koniecGorySkarpy', 'EGB_odnosnik', 'OT_odnosnik',
                         'GES_odnosnik']
-        prez_layers = ['EGB_PrezentacjaGraficzna', 'OT_PrezentacjaGraficzna', 'GES_PrezentacjaGraficzna']
-
-        dict_split_by_type = {}
-
         for group_name, group_items in type_groups_dict.items():
             for item in group_items:
                 layer = item[1]

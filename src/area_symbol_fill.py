@@ -1,6 +1,4 @@
 # Funkcja do wypełniania warstw poligonowych w oparciu o reguły w Excel
-import os, webbrowser
-
 import math
 import pandas as pd
 import numpy as np

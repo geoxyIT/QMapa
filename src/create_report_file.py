@@ -1,10 +1,4 @@
-'''from openpyxl import Workbook
-from openpyxl.utils import get_column_letter
-from openpyxl import load_workbook'''
 from copy import copy
-#from .config import pts_list, line_list, polygon_list
-#from openpyxl import *
-from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
 from openpyxl import load_workbook
 import datetime
@@ -274,8 +268,5 @@ class report:
         file_report_path = out_path
 
         template_wb.save(file_report_path)
-
-        '''new_workbook = self.createEmptyWorkbook()
-        new_worksheet = new_workbook.create_sheet('raport importu')'''
 
         return(file_report_path)

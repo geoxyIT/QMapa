@@ -1,7 +1,6 @@
 from qgis.core import *
 from qgis.utils import iface
 from typing import List
-from .config import correct_layers
 
 
 def setNewOrder(layer_new_order: List):
@@ -15,7 +14,7 @@ def setNewOrder(layer_new_order: List):
 
     out_list_index = 90
 
-    for idx, layer in enumerate(current_order):
+    for layer in current_order:
         if layer.name() in layer_new_order:
             index = layer_new_order.index(layer.name())  # pobranie indeksu nowej kolejnosci na podstawie warstwy
             new_order_index.append(index)

@@ -1,9 +1,4 @@
-import datetime
-
-
 from osgeo import ogr
-from qgis.PyQt.QtCore import QVariant, QDateTime
-from .config import correct_layers
 
 def loadGpkg(gpkg_path):
     """funkcja odpowiadaja za edycje warstw z geometria UNKNOW - typ wg. wkb = 0
@@ -55,15 +50,15 @@ def loadGpkg(gpkg_path):
             for feature in layer:
                 if feature.geometry() is not None:
                     if feature.geometry().GetGeometryType() in pts_list:
-                        #layer_0.CreateFeature(feature)
+                        # layer_0.CreateFeature(feature)
                         layer_0_feats.append(feature)
                         pass
                     elif feature.geometry().GetGeometryType() in line_list:
-                        #layer_1.CreateFeature(feature)
+                        # layer_1.CreateFeature(feature)
                         layer_1_feats.append(feature)
                         pass
                     elif feature.geometry().GetGeometryType() in polygon_list:
-                        #layer_2.CreateFeature(feature)
+                        # layer_2.CreateFeature(feature)
                         layer_2_feats.append(feature)
                         pass
 

@@ -1,11 +1,8 @@
-import os.path
 import xml.etree.ElementTree as ET
 import copy
 import re
-import cProfile
-import datetime
-from .config import correct_layers, pts_list, line_list, polygon_list, incompatible_pref, incompatible_pref_friendly_name
-from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox
+from .config import correct_layers, incompatible_pref
+from qgis.PyQt.QtWidgets import QMessageBox
 from qgis.utils import iface
 
 class GMLIncorrect(Exception):
@@ -60,15 +57,7 @@ class GmlModify:
         for namespace in namespaces_list:
             name = namespace[0]
             val = namespace[1].replace('"','')
-            #if name == 'gml': self.gml_namespace_val = val
-            #if name == 'ges' or name == 'ot' or name == 'egb':
-            """if val == "bazaDanychObiektowTopograficznych500:1.0" or val == "geodezyjnaEwidencjaSieciUzbrojeniaTerenu:1.0" or val == "ewidencjaGruntowIBudynkow:1.0":
-                self.pr_name = f"{{{val}}}"
-                #print('PREFFFFFFFFFFFFFF ',self.pr_name)
-                self.pref_name_list.append(self.pr_name)"""
-            #if val == "bazaDanychObiektowTopograficznych500:1.0":
             self.pr_name = f"{{{val}}}"
-            # print('PREFFFFFFFFFFFFFF ',self.pr_name)
             self.pref_name_list.append(self.pr_name)
 
             ET.register_namespace(name, val)
@@ -291,26 +280,6 @@ class GmlModify:
 
         for child in list_appending:
             root.append(child)
-
-        """for zammm in ['PrezentacjaGraficzna', 'Etykieta', 'etykieta']:
-            for main_child in root:
-                #print('tag', main_child[0].tag)
-                prezentacje = main_child.findall(pref + zammm)
-                #print(main_child[0].tag)
-                '''for ch in main_child:
-                    print(ch.tag, ch.attrib)'''
-                for feat in prezentacje:
-                    feat.tag = pref + pref_tag + zammm
-                    geometry = ET.SubElement(feat, split_pref_0)
-                    point = ET.SubElement(geometry, '{http://www.opengis.net/gml/3.2}Point')
-                    position = ET.SubElement(point, '{http://www.opengis.net/gml/3.2}pos')
-                    position.text = ' '
-                    geometry.tail = '\n'
-
-                    # zmiana kolejnosci atrybutow - geometria ma byc na poczatku
-                    geom = copy.deepcopy(feat[-1])
-                    feat.insert(0, geom)
-                    feat.remove(feat[-1])"""
 
     def saveGml(self):
         """Zapis pliku wynikowego gml"""

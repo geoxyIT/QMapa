@@ -2,7 +2,7 @@ import os
 from enum import Enum
 from qgis.utils import iface
 from qgis.core import *
-from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox
+from qgis.PyQt.QtWidgets import QMessageBox
 from .gml_modify import GmlModify
 from datetime import datetime
 from osgeo_utils.samples import ogr2ogr
@@ -12,7 +12,7 @@ from .create_report_file import report
 from .config import correct_layers
 from .qmapa_main import Main
 from .change_map_appearance import ChangeAppearance
-from qgis.PyQt.QtCore import QCoreApplication, QVariant#, Qt, QDateTime, QSize, pyqtSignal, pyqtSlot
+from qgis.PyQt.QtCore import QCoreApplication, QVariant
 from .layer_order import setNewOrder
 
 class SimpleGmlImport():

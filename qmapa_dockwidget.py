@@ -26,14 +26,12 @@
  ***************************************************************************/
 """
 import os
-from datetime import datetime
 import webbrowser
 
-from qgis.PyQt import QtGui, QtWidgets, uic
-from qgis.PyQt.QtCore import Qt, QVariant, QDateTime, QSize, pyqtSignal, pyqtSlot, QCoreApplication
-# from qgis.PyQt.QtWidgets import QFileDialog, QPushButton, QDialog
-from qgis.PyQt.QtCore import pyqtSignal, pyqtSlot, QVariant, QDateTime
-from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox
+from qgis.PyQt import QtWidgets, uic
+from qgis.PyQt.QtCore import pyqtSignal, pyqtSlot, QCoreApplication
+from qgis.PyQt.QtCore import pyqtSignal, pyqtSlot
+from qgis.PyQt.QtWidgets import QFileDialog
 from qgis.utils import iface
 from qgis.core import *
 from qgis.gui import *
