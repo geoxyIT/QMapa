@@ -126,7 +126,6 @@ def getPolylineFromStartEnd(geometry, top_start_point, top_end_point, side = 'to
 
 # Generate list of QgsPoints from input geometry ( can be point, line, or polygon )
 def extractPoints(geom):
-    multi_geom = QgsGeometry()
     temp_geom = []
     if geom.type() == 0:  # it's a point
         if geom.isMultipart():
@@ -155,6 +154,7 @@ def extractPoints(geom):
 
 
 def lineToMultiSegments(multi_line_geometry):
+    """podzielenie geometrii polilini na pojedyncze segmenty liniowe:"""
     multi_segments = QgsMultiLineString()
     for line_geometry in multi_line_geometry.asGeometryCollection():
         pts = extractPoints(line_geometry)
@@ -239,10 +239,13 @@ def hatching(polyline_geometry, geometry_limit, spacing, distance, rotate_angle=
 
     new_geom_list = []
     #prev_residue = offset
-    too_short = offset
+
     length_top = polyline_geometry.length()
+    # poprawka gdy spacing jest dluzszy niz polilinia (dziala jak jest dane na True)
     if spacing > length_top and fix_short:
         too_short = length_top/2
+    else:
+        too_short = offset
 
     for part in orig_geom_list:
         parts_list = []
@@ -468,7 +471,7 @@ def calculateHatching(layer, object_type, scale, ref_lay_ids):
                                 else:
                                     spacing = 0.75
                                 calculated_hatching_wkt = hatching(polyline_geom, feature_geom, spacing, 100, 90,
-                                                                   0, 1).asWkt(3)
+                                                                   0, 1, False).asWkt(3)
                         except:
                             # print('brak polilini dla', attrib, layer.name())
                             calculated_hatching_wkt = ''
