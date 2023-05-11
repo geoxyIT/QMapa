@@ -31,7 +31,7 @@ from qgis.PyQt.QtWidgets import QAction, QToolButton
 from qgis.core import QgsExpression
 
 # Import expressions
-from .expressions import connect_points, get_half_line, kreskowanie, skarpy, recalculate_justification, pokaz_wersje, \
+from .expressions import connect_points, get_half_line, recalculate_justification, pokaz_wersje, \
     kolor_wersji
 
 # Initialize Qt resources from file resources.py
@@ -190,10 +190,8 @@ class QMapa:
         self.tryUnregister()
 
         # inizjalizacja funkcji z folderu expressions
-        # QgsExpression.registerFunction(kreskowanie.kreskowanie)
         QgsExpression.registerFunction(connect_points.connect_points)
         QgsExpression.registerFunction(get_half_line.get_half_line)
-        # QgsExpression.registerFunction(skarpy.skarpy)
         QgsExpression.registerFunction(recalculate_justification.recalculate_justification)
         QgsExpression.registerFunction(pokaz_wersje.pokaz_wersje)
         QgsExpression.registerFunction(kolor_wersji.kolor_wersji)
@@ -202,19 +200,11 @@ class QMapa:
 
     def tryUnregister(self):
         try:
-            QgsExpression.unregisterFunction('kreskowanie')
-        except:
-            pass
-        try:
             QgsExpression.unregisterFunction('connect_points')
         except:
             pass
         try:
             QgsExpression.unregisterFunction('get_half_line')
-        except:
-            pass
-        try:
-            QgsExpression.unregisterFunction('skarpy')
         except:
             pass
         try:
@@ -331,10 +321,8 @@ class QMapa:
         self.tryUnregister()
 
         # inizjalizacja funkcji z folderu expressions
-        # QgsExpression.registerFunction(kreskowanie.kreskowanie)
         QgsExpression.registerFunction(connect_points.connect_points)
         QgsExpression.registerFunction(get_half_line.get_half_line)
-        # QgsExpression.registerFunction(skarpy.skarpy)
         QgsExpression.registerFunction(recalculate_justification.recalculate_justification)
         QgsExpression.registerFunction(pokaz_wersje.pokaz_wersje)
         QgsExpression.registerFunction(kolor_wersji.kolor_wersji)

@@ -4,7 +4,6 @@ from qgis.utils import iface
 
 def saveStylization(layers, sty_name):
     """Zapisywanie stylizacji o podanej nazwie ,warstw w plikach qml w folderze wtyczki stylization"""
-    print('layers', layers)
     dir_path = os.path.dirname(os.path.realpath(__file__))
     sty_path = os.path.join(dir_path, '..', 'stylization')
     # pobranie nazw istniejących stylizacji
