@@ -21,13 +21,13 @@ repository=https://github.com/geoxyIT/QMapa
 hasProcessingProvider=no
 
 changelog=
-    2.0.1 2023.04.25
+    2.0.1 2023.05.11
     -przyspieszenie importu.
     -dodanie podsymboli typu nieoznaczone. Przeznaczone dla obiektów, które mają niektóre atrybuty niezgodne z rozporzadzeniem, w związku z czym nie miały dopasowanego żadnego symbolu.
     -poprawa symboli bramy i furtki - były z lewej strony liniii, są z prawej.
     -poprawa błędu w opisachKarto w przypadku gdy były w prezentacjach graficznych o geometrii innej niż punktowa.
-    -poprawa błędu w kreskowaiu skarp, schodów, grobli, wałów, ścian oporowych w przypadku gdy dlugość polilini była 0.
-    -poprawa wyglądu kreskowania dla małych skarp, schodów, grobli, wałów, ścian oporowych.
+    -poprawa błędu w kreskowaiu skarp, grobli, wałów w przypadku gdy dlugość polilini była 0.
+    -poprawa wyglądu kreskowania dla małych skarp, grobli, wałów.
     -zmiana symboli kanał technologiczny i obudowa ochronna przy multilinii.
     -dodawane serwisy są od teraz widoczne od razu przy dodawaniu.
     2.0.0 2023.01.13
