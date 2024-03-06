@@ -1,4 +1,4 @@
-2.0.2 2024
+2.1.0 2024
 - poprawa odczytu gml z uszkodzonymi obiektami (np. obiekt z uszkodzoną geometrią)
 - poprawa odczytu gml w przypadku wielokrotnego definiowania przestrzeni nazw w pliku
 - dodanie symbolizacji (etykiety) dla EGB_AdresNieruchomosci - brak takiego w rozporzadzeniu
