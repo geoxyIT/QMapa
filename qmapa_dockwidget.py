@@ -30,7 +30,6 @@ import webbrowser
 
 from qgis.PyQt import QtWidgets, uic
 from qgis.PyQt.QtCore import pyqtSignal, pyqtSlot, QCoreApplication
-from qgis.PyQt.QtCore import pyqtSignal, pyqtSlot
 from qgis.PyQt.QtWidgets import QFileDialog
 from qgis.utils import iface
 from qgis.core import *
@@ -43,6 +42,8 @@ from .src.area_symbol_fill import fill
 
 from .src.simple_gml_import import SimpleGmlImport
 from .src.change_map_appearance import ChangeAppearance
+
+import subprocess
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'ui', 'qmapa_dockwidget_base.ui'))
@@ -90,6 +91,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         iface.mapCanvas().scaleChanged.connect(lambda: ChangeAppearance().setLegendScale(ChangeAppearance().getSelectedScale(self.cmbStylization.currentText())))
 
         ChangeAppearance().setLegendScale(ChangeAppearance().getSelectedScale(self.cmbStylization.currentText()))
+
 
     def closeEvent(self, event):
         self.closingPlugin.emit()

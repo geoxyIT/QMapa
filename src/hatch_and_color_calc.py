@@ -5,6 +5,8 @@ from qgis.gui import *
 from .config import ges_colors, sewer_colors
 import math
 
+import time
+
 def getPolylineFromStartEnd(geometry, top_start_point, top_end_point, side = 'top'):
     """
     obliczenie polilini bedacej gora lub dolem skarpy (do wyboru)
@@ -13,10 +15,6 @@ def getPolylineFromStartEnd(geometry, top_start_point, top_end_point, side = 'to
     :param top_start_point: punkt poczatku gory skarpy,
     :param top_end_point: punkt konca gory skarpy,
     :param side: ('top' lub 'bottom') czy ma byc zwracana linia przedstawiajaca gore czy dol skarpy."""
-
-    # TODO: dla skarp typu "obwarzanek" czyli z kilkoma dziurami, mozna zrobic ze gora skarpy jest
-    #  na exterior ring jesli jest tam poczatek gory skarpy
-    #  lub na wszystkich interior ringach jesli na ktorymkolwiek z nich jest poczatek gory skarpy
 
     orig_geom_list = geometry.asGeometryCollection()
     lines_list = []
@@ -58,66 +56,42 @@ def getPolylineFromStartEnd(geometry, top_start_point, top_end_point, side = 'to
                     end_x = round(coord_top_end.x(), 3)
                     end_y = round(coord_top_end.y(), 3)
 
-                start_first = False
-                start_find = False
-                end_find = False
-
                 line_points = []
-                points_break = []
-                points_prev = []
-                for nr in range(points_num-1):
+                pocz_nr = -1
+                kon_nr = -1
+
+                for nr in range(points_num - 1):
                     coord_point = geom.vertexAt(nr)
                     point_x = round(coord_point.x(), 3)
                     point_y = round(coord_point.y(), 3)
-                    points_prev.append(nr)
 
                     # sprawdzenie czy poligon jest "obwarzankiem" (ma wiecej niz jeden ring) i dodatkowo
-                    # poczatek jest w wierzcholku ringu, wtedy bierz wszystkie z tego ringu
-                    if num_of_int_rings > 0 and (point_x, point_y) == (start_x, start_y): # and start_x == end_x and start_y == end_y
-                        start_find = True
-                        end_find = True
-                        line_points = []
-                        line_points = [nnr for nnr in range(points_num)]
-                        break
+                    # poczatek i koniec jest taki sam i sa w wierzcholku ringu, wtedy bierz wszystkie z tego ringu
+                    if num_of_int_rings > 0 and (end_x, end_y) == (start_x, start_y) and (point_x, point_y) == (start_x, start_y):
+                        pocz_nr = nr
+                        kon_nr = nr
 
-                    #jesli wsp wierzcholka == wsp poczatku
-                    if (point_x, point_y) == (start_x, start_y):
+                    # jak nie jest obwarzankiem z pocz i kon w tym samym miejscu to szukaj poczatku
+                    elif (point_x, point_y) == (start_x, start_y):
+                        pocz_nr = nr
 
-                        start_find = True
-                        start_first = True
-                        if nr not in line_points:
-                            line_points.append(nr)
-                        points_prev = []
+                    # jak nie jest obwarzankiem z pocz i kon w tym samym miejscu to szukaj konca
+                    elif (point_x, point_y) == (end_x, end_y):
+                        kon_nr = nr
 
-                    #jesli wsp wierzcholka == wsp konca
-                    if (point_x, point_y) == (end_x, end_y):
-                        end_find = True
-                        if start_first is False:
-                            points_break = points_prev.copy()
-                        else:
-                            line_points.append(nr)
-                            start_first = False
-                        points_prev = []
+                if pocz_nr != -1 and kon_nr != -1:
+                    if pocz_nr == kon_nr and pocz_nr != -1:
+                        line_points = list(range(0, points_num))
+                    elif pocz_nr < kon_nr:
+                        line_points = list(range(pocz_nr, kon_nr + 1))
+                    elif pocz_nr > kon_nr:
+                        line_points_first_part = list(range(pocz_nr, points_num))
+                        line_points_second_part = list(range(0, kon_nr + 1))
+                        line_points = line_points_first_part + line_points_second_part
 
-                    if start_first is True:
-                        if nr not in line_points:
-                            line_points.append(nr)
-                        points_prev = []
-
-                if start_find and end_find:
-                    for pt in points_break:
-                        if pt not in line_points:
-                            line_points.append(pt)
                     points_list = []
                     for p_nr in line_points:
-                        #ind = p_nr + 1
-                        ind = p_nr
-                        #points_list.append("point_n(geom_from_wkt('" + geom.asWkt() + "')," + str(ind) + ")")
-                        points_list.append(verts[ind])
-
-                    # pts = ','.join(points_list)
-                    # expr_line = QgsExpression('make_line('+pts+')')
-                    # line = expr_line.evaluate(context)
+                        points_list.append(verts[p_nr])
                     line = QgsGeometry().fromPolyline(points_list)
                     if line is not None:
                         lines_list.append(line)
@@ -488,7 +462,7 @@ def calculateColors(main_layer, field_name):
     :param field_name: nazwa kolumny wyjsciowej do ktorej wstawiane sa kolory
     """
     # pobranie dostępnych warstw
-    layers = iface.mapCanvas().layers()
+    #layers = iface.mapCanvas().layers()
 
     # dodanie kolumny w ktorej bedzie zapisana obliczona geometria
     field_index = main_layer.fields().indexFromName(field_name)
@@ -505,6 +479,10 @@ def calculateColors(main_layer, field_name):
     # utowrzenie slownika lokalneId: kolor, poprzez iteracje po warstwach
     dict_of_colors = {}
     black_color = '0,0,0,255'
+
+    # pobranie dostępnych warstw
+    layers = iface.mapCanvas().layers()
+
     for layer in layers:
         layer_name = layer.name()
         if layer_name in ges_colors.keys():  # iteracja po nazwach warstw w słowniku ges_colors

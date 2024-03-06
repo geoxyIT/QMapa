@@ -6,6 +6,7 @@ from qgis.PyQt.QtWidgets import QMessageBox
 from .gml_modify import GmlModify
 from datetime import datetime
 from osgeo_utils.samples import ogr2ogr
+from osgeo import ogr, gdal
 from .load_gpkg import loadGpkg
 from .hatch_and_color_calc import calculateHatching, calculateColors
 from .create_report_file import report
@@ -14,6 +15,10 @@ from .qmapa_main import Main
 from .change_map_appearance import ChangeAppearance
 from qgis.PyQt.QtCore import QCoreApplication, QVariant
 from .layer_order import setNewOrder
+
+import subprocess
+import time
+import osgeo
 
 class SimpleGmlImport():
     def __init__(self):
@@ -111,7 +116,8 @@ class SimpleGmlImport():
                                          'EGB_BlokBudynku': ['obiektPrzedstawiany', 'gml_id', []],
                                          'EGB_ObiektTrwaleZwiazanyZBudynkiem': ['obiektPrzedstawiany', 'gml_id', []],
                                          'EGB_KonturUzytkuGruntowego': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'EGB_KonturKlasyfikacyjny': ['obiektPrzedstawiany', 'gml_id', []]},
+                                         'EGB_KonturKlasyfikacyjny': ['obiektPrzedstawiany', 'gml_id', []],
+                                         'EGB_AdresNieruchomosci': ['obiektPrzedstawiany', 'gml_id', []]},
 
                         'GES_opisyKARTO': {'GES_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
                                          'GES_InneUrzadzeniaTowarzyszace': ['obiektPrzedstawiany', 'gml_id', []],
@@ -214,6 +220,42 @@ class SimpleGmlImport():
                     layer.addExpressionField('$y', field2)
         iface.mapCanvas().refreshAllLayers()
 
+    def gml_to_gpkg(self, input_gml, output_gpkg):
+        """funkcja konwertowania gml na gpkg z obsluga niepoprawnych obiektow, zwraca napotkane bledy/ostrzezenia"""
+        my_env = os.environ.copy()
+
+
+        # Call the main function of ogr2ogr using subprocess
+        # tutaj tworzona jest komenda w pythonie do konwertowania gml na gpkg.
+        # pomijane sa bledne obiekty (np. z nieciagla geometria)
+        # dodatkowo uruchamiane jest to z uzyciem subprocess zeby przejac wszsytkie bledy/ostrzezenia z gdala
+
+        gdal_args = ["", "-f", "GPKG", output_gpkg, input_gml,
+                     "--config", "GML_SKIP_CORRUPTED_FEATURES", "YES"]
+        # komenda python jest po to zeby miec pewnosc ze uzywa ogr2ogr z osgeo a nie z jakiegos tam exe,
+        # bo inaczej czasami dziala jak nie jest z python osgeo (inne nazwy kolumny/warstwy geometrii)
+        '''# ta opcja daje zle nazwy geometrii:
+        gdal_command = ["ogr2ogr", "-f", "GPKG", output_gpkg, input_gml,
+                        "--config", "GML_SKIP_CORRUPTED_FEATURES", "YES"]
+        process = subprocess.run(gdal_command, stderr=subprocess.PIPE, text=True, env=my_env)
+        '''
+        pyth_command = ("from osgeo import ogr; "
+                         "from osgeo_utils.samples import ogr2ogr; "
+                         "ogr.UseExceptions(); "
+                         f"ogr2ogr.main({gdal_args})")
+        pyth_command = ("from osgeo import ogr; "
+                        "from osgeo_utils.samples import ogr2ogr; "
+                        "ogr.DontUseExceptions(); "
+                        f"ogr2ogr.main({gdal_args})")
+        process = subprocess.run(["python", "-c", pyth_command], stderr=subprocess.PIPE, text=True, env = my_env)
+        error_output = process.stderr
+
+        # rozdzielenie bledow po \n i usuniecie pustych linii
+        conv_errors_list = [value for value in error_output.split('\n') if value != '']
+
+        return conv_errors_list
+
+
     def runImport(self, name, progressBar, current_style):
         """
         import pliku gml - zamiana na gpkg i wstawienie warstw do projektu
@@ -248,7 +290,14 @@ class SimpleGmlImport():
                 QCoreApplication.processEvents()
 
                 # utworzenie gpkg z gml
-                ogr2ogr.main(["", "-f", "GPKG", gpkg_path, mod_gml_path])
+                #osgeo.gdal.SetConfigOption("GML_SKIP_CORRUPTED_FEATURES", "YES")
+                #ogr2ogr.main(["", "-f", "GPKG", gpkg_path, mod_gml_path])
+
+                '''ogr2ogr.main(["","-f", "GPKG", gpkg_path, mod_gml_path,
+                        "--config", "GML_SKIP_CORRUPTED_FEATURES", "YES"])'''
+
+                conversion_errors_list = self.gml_to_gpkg(mod_gml_path, gpkg_path)
+
                 progressBar.setValue(20)
                 print('Czas 20%:', datetime.now() - start_time)
                 QCoreApplication.processEvents()
@@ -271,7 +320,7 @@ class SimpleGmlImport():
 
                 # utworzenie raportu
                 counting_dict = Main().generateReport(gr_dict)
-                report().run(counting_dict, name, report_path)
+                report().run(counting_dict, name, report_path, conversion_errors_list)
                 progressBar.setValue(50)
                 print('Czas 50%:', datetime.now() - start_time)
                 QCoreApplication.processEvents()
@@ -398,7 +447,8 @@ class SimpleGmlImport():
                                                    'EGB_BlokBudynku_2_lokalnyId',
                                                    'EGB_ObiektTrwaleZwiazanyZBudynkiem_2_lokalnyId',
                                                    'EGB_ObrebEwidencyjny_2_lokalnyId',
-                                                   'EGB_JednostkaEwidencyjna_2_lokalnyId']
+                                                   'EGB_JednostkaEwidencyjna_2_lokalnyId',
+                                                   'EGB_AdresNieruchomosci_0_lokalnyId']
                                 Main().addObligatoryFields(lay, fields_list_egb)
                     if nr < len(scales):
                         progressBar.setValue(70 + int((nr / len(scales)) * 20))
@@ -425,6 +475,13 @@ class SimpleGmlImport():
                         layer.setCustomProperty("showFeatureCount", True)
 
                 iface.layerTreeView().layerTreeModel().setAutoCollapseLegendNodes(-1)
+
+                # informacja o wykryciu bledow importu:
+                if len(conversion_errors_list)>0:
+                    print('Wykryto bledy przy imporcie')
+                    QMessageBox.warning(iface.mainWindow(), 'W czasie importu wystąpiły błędy.',
+                                         'Niektóre obiekty mogły nie zostać zaimportowane. Szczegóły dostępne w raporcie.',
+                                         buttons=QMessageBox.Ok)
 
                 progressBar.setValue(100)
                 print('Czas 100%:', datetime.now() - start_time)

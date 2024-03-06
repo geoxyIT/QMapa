@@ -1,3 +1,4 @@
+import datetime
 import xml.etree.ElementTree as ET
 import copy
 import re
@@ -36,8 +37,10 @@ class GmlModify:
         self.output_path = output_path
 
         # zmienna z root
+        st = datetime.datetime.now()
         self.tree = ET.parse(self.file_path)
         self.root = self.tree.getroot()
+        print('czytanie:', datetime.datetime.now()-st)
 
         self.gml_namespace_val = None
         self.pref_name = None
@@ -51,18 +54,19 @@ class GmlModify:
         text = file.read()
         namespaces_list = re.findall('xmlns:(.*?)=(".*?")', text)
 
-        self.pref_name_list = []
+        all_pref_name_list = []
         self.namespaces_dict = {}
         self.gml_namespace_val = "http://www.opengis.net/gml/3.2"
         for namespace in namespaces_list:
             name = namespace[0]
             val = namespace[1].replace('"','')
             self.pr_name = f"{{{val}}}"
-            self.pref_name_list.append(self.pr_name)
+            all_pref_name_list.append(self.pr_name)
 
             ET.register_namespace(name, val)
             self.namespaces_dict[val] = name
 
+        self.pref_name_list = list(set(all_pref_name_list))
 
     def getRelations(self, pref_name):
         """Iteracja po pliku i wyciagniecie relacji do slownika typu
@@ -210,8 +214,13 @@ class GmlModify:
             for main_child in root:
                 for feat in main_child:
                     is_found = feat.find(obj_to_save)
+                    element = is_found
                     if is_found is not None:
-                        list_main_feat.append(copy.deepcopy(main_child))
+                        if len(element) == 0 and (element.text is None or element.text.strip() == ""):
+                            #print(f"Element '{element.tag}' is empty")
+                            pass
+                        else:
+                            list_main_feat.append(copy.deepcopy(main_child))
                     # usuwanie z glownego obiektu wszystkiego co jest zapisane w liscie split
                     for to_del_from_main in feat.findall(obj_to_save):
                         feat.remove(to_del_from_main)
@@ -236,9 +245,11 @@ class GmlModify:
                         for katObr in copy_feat[0].findall(pref + 'katObrotu'):
                             copy_feat[0].remove(katObr)
 
-                        geom_main_obj = copy_feat[0].find(pref + 'geometria')
-                        if geom_main_obj is not None:
-                            copy_feat[0].remove(geom_main_obj)
+                    # usuwanie glownej geometrii
+                    # (tak zeby zostala tylko ta co jest w w podklasie typu polilinia, odnosnik itp.)
+                    geom_main_obj = copy_feat[0].find(pref + 'geometria')
+                    if geom_main_obj is not None:
+                        copy_feat[0].remove(geom_main_obj)
 
                     i_ins = 0
                     # usuwanie powtarzajacych sie (usuwanie wszystkich znalezionych poza jednym, po kolei)
@@ -308,7 +319,8 @@ class GmlModify:
 
         #wynikiem ponizszego teoretycznie moze byc none, wtedy warto by bylo dac domyslna wartosc crs taka zeby byla dobra a nie ''
         self.found_crs = self.getCrsEpsg()
-        if self.found_crs is None: self.found_crs = ''
+        if self.found_crs is None:
+            self.found_crs = ''
 
         #pref_list = ['{ewidencjaGruntowIBudynkow:1.0}', '{bazaDanychObiektowTopograficznych500:1.0}',
                      #'{geodezyjnaEwidencjaSieciUzbrojeniaTerenu:1.0}']
@@ -316,7 +328,6 @@ class GmlModify:
         split_list = ['poliliniaKierunkowa', 'poczatekGorySkarpy', 'koniecGorySkarpy', 'etykieta', 'poczatekGoryKolejnejSkarpy', 'koniecGoryKolejnejSkarpy']
 
         self.err_number = 0
-
         for pref_name in self.pref_name_list:
             # relacja dla obiekt przedstawiany
             self.attrToText(pref_name + 'PrezentacjaGraficzna',
@@ -341,6 +352,7 @@ class GmlModify:
         self.checkIsCorrect(self.root, self.pref_name_list, self.pref_tag_dict)
         self.saveGml()
         self.file.close()
+
         if self.incompatible_found is True:
             print("Wykryto obiekty niezgodne z modelem 2021")
 

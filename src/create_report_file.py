@@ -5,6 +5,8 @@ import datetime
 import os
 import hashlib
 from .config import incompatible_pref
+from openpyxl.styles import Alignment
+
 
 class report:
     """tworzenie raportu z importu"""
@@ -112,7 +114,7 @@ class report:
             sheet.unmerge_cells(start_row=merged[0], start_column=merged[1], end_row=merged[2], end_column=merged[3])
 
         return sheet
-    def run(self, dict, file_path, out_path):
+    def run(self, dict_report, file_path, out_path, conv_errors_list):
         main_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
         template_path = os.path.join(main_dir, 'raport', 'szablon_raport_z_importu.xlsx')
 
@@ -160,7 +162,7 @@ class report:
         prez_layers = ['EGB_PrezentacjaGraficzna', 'OT_PrezentacjaGraficzna', 'GES_PrezentacjaGraficzna']
 
 
-        for group_name, layers_info in dict.items():
+        for group_name, layers_info in dict_report.items():
             if len(layers_info) > 0:
                 if group_name in ['EGiB', 'GESUT', 'BDOT500'] :
                     key_frame = group_name
@@ -263,6 +265,23 @@ class report:
                     start_paste_row += rows
 
                 start_paste_row += 1  # zrobienie odstepu 1 wiersza
+
+        # Dodanie info o bledach importu
+        sheet_errors = template_wb['Błędy_importu']
+        if len(conv_errors_list) > 0:
+            sheet.cell(column=1, row=start_paste_row).value = 'W czasie importu wystąpiły błędy. Niektóre obiekty mogły nie zostać zaimportowane. Szczegóły na następnym arkuszu.'
+            sheet.cell(column=1, row=start_paste_row).alignment = Alignment(horizontal='center')
+
+            n_font = copy(sheet.cell(column=1, row=start_paste_row).font)
+            n_font.color = 'FFFF0000'
+            sheet.cell(column=1, row=start_paste_row).font = n_font
+
+            row_err = 1
+            for conv_err in conv_errors_list:
+                sheet_errors.cell(column=1, row=row_err).value = conv_err
+                row_err += 1
+        else:
+            template_wb.remove(sheet_errors)
 
         #file_report_path = file_path + '_raport.xlsx'
         file_report_path = out_path

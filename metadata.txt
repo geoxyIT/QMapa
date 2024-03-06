@@ -6,7 +6,7 @@
 name=QMapa GML 2021
 qgisMinimumVersion=3.24
 description=Wizualizacja mapy zasadniczej z plików GML obejmujących zbiory danych EGiB, GESUT i BDOT500.
-version=2.0.1
+version=2.0.2
 author=GEOXY sp. z o.o. 
 email=qgis@geoxy.pl
 
@@ -21,6 +21,10 @@ repository=https://github.com/geoxyIT/QMapa
 hasProcessingProvider=no
 
 changelog=
+    2.0.2 2024
+    - poprawa odczytu gml z uszkodzonymi obiektami (np. obiekt z uszkodzoną geometrią)
+    - poprawa odczytu gml w przypadku wielokrotnego definiowania przestrzeni nazw w pliku
+    - dodanie symbolizacji (etykiety) dla EGB_AdresNieruchomosci - brak takiego w rozporzadzeniu
     2.0.1 2023.05.11
     -przyspieszenie importu.
     -dodanie podsymboli typu nieoznaczone. Przeznaczone dla obiektów, które mają niektóre atrybuty niezgodne z rozporzadzeniem, w związku z czym nie miały dopasowanego żadnego symbolu.
