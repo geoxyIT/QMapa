@@ -270,7 +270,7 @@ class report:
         sheet_errors = template_wb['Błędy_importu']
         if len(conv_errors_list) > 0:
             sheet.cell(column=1, row=start_paste_row).value = 'W czasie importu wystąpiły błędy. Niektóre obiekty mogły nie zostać zaimportowane. Szczegóły na następnym arkuszu.'
-            sheet.cell(column=1, row=start_paste_row).alignment = Alignment(horizontal='center')
+            sheet.cell(column=1, row=start_paste_row).alignment = Alignment(horizontal='left')
 
             n_font = copy(sheet.cell(column=1, row=start_paste_row).font)
             n_font.color = 'FFFF0000'

@@ -479,8 +479,8 @@ class SimpleGmlImport():
                 # informacja o wykryciu bledow importu:
                 if len(conversion_errors_list)>0:
                     print('Wykryto bledy przy imporcie')
-                    QMessageBox.warning(iface.mainWindow(), 'W czasie importu wystąpiły błędy.',
-                                         'Niektóre obiekty mogły nie zostać zaimportowane. Szczegóły dostępne w raporcie.',
+                    QMessageBox.warning(iface.mainWindow(), 'Napotkano błędy przy imporcie',
+                                         'W czasie importu wystąpiły błędy. Niektóre obiekty mogły nie zostać zaimportowane. Szczegóły dostępne w raporcie.',
                                          buttons=QMessageBox.Ok)
 
                 progressBar.setValue(100)
