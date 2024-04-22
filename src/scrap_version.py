@@ -4,14 +4,17 @@ import re
 from PyQt5.QtGui import QColor, QPalette
 
 
-def getHubVer(url):
-    """Funkcja do pobierania wersji z github"""
+def getHubText(url):
+    """Funkcja do pobierania tekstu (wersji i info) z github"""
     page = requests.get(url)
-    text = page.text
+    if page.status_code == 200:
+        text = page.text
+    else:
+        text = ''
     return text
 
-def getLocalVer(path):
-    """Funkcja do pobierania wersji lokalnej"""
+def getLocalText(path):
+    """Funkcja do pobierania tekstu wersji lokalnej w pliku"""
     with open(path, 'r') as f:
         text = f.read()
     return text

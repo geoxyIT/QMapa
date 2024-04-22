@@ -21,7 +21,7 @@ repository=https://github.com/geoxyIT/QMapa
 hasProcessingProvider=no
 
 changelog=
-    2.1.0 2024
+    2.1.0 2024.04.25
     - poprawa odczytu gml z uszkodzonymi obiektami (np. obiekt z uszkodzoną geometrią)
     - poprawa odczytu gml w przypadku wielokrotnego definiowania przestrzeni nazw w pliku
     - dodanie symbolizacji (etykiety) dla EGB_AdresNieruchomosci - brak takiego w rozporzadzeniu

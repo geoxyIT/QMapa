@@ -78,6 +78,9 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         # sprawdzenie wersji programu
         ChangeAppearance().checkVersion(self.lbVersion)
 
+        # Dodanie aktualnej informacji
+        ChangeAppearance().checkAdditionalInfo(self.lbAdditionalInfo)
+
         self.progressBar.hide()
 
         self.rel_times = 0
@@ -101,11 +104,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def on_pbLogo_clicked(self):
         """Przycisk wywolania strony po nacisnieciu Logo GEOXY"""
         webbrowser.open('http://www.geoxy.pl/')
-
-    @pyqtSlot()
-    def on_pbDonate_clicked(self):
-        """Przycisk wywolania strony po nacisnieciu przycisku postaw kawe"""
-        webbrowser.open('https://buycoffee.to/qmapa/')
 
     @pyqtSlot()
     def on_pbImport_clicked(self):
