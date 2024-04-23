@@ -16,6 +16,8 @@ from .change_map_appearance import ChangeAppearance
 from qgis.PyQt.QtCore import QCoreApplication, QVariant
 from .layer_order import setNewOrder
 
+from .analytics import runAnalytics
+
 import subprocess
 import time
 import osgeo
@@ -255,6 +257,29 @@ class SimpleGmlImport():
 
         return conv_errors_list
 
+    def createAnalysisString(self, counting_dict):
+        sum_counting = {}
+        for b_name, b_classes in counting_dict.items():
+            if b_name not in sum_counting:
+                sum_counting[b_name] = {}
+                sum_counting[b_name]['obiekty'] = 0
+                sum_counting[b_name]['karto'] = 0
+            for cl_name, cl_inf in b_classes.items():
+                if cl_name.lower().endswith('prezentacjagraficzna'):
+                    sum_counting[b_name]['karto'] += cl_inf[0]
+                else:
+                    sum_counting[b_name]['obiekty'] += cl_inf[0]
+
+        texts = []
+        for b_name, b_counts in sum_counting.items():
+            cts_list = []
+            for ct_name, ct_val in b_counts.items():
+                cts_list.append(f'{ct_name}: {ct_val}')
+            cts = ', '.join(cts_list)
+            b_text = f'{b_name}: ({cts})'
+            texts.append(b_text)
+        return ', '.join(texts)
+
 
     def runImport(self, name, progressBar, current_style):
         """
@@ -271,6 +296,7 @@ class SimpleGmlImport():
         :param progressBar: progres bar
         :param current_style: string z nazwa aktualnego stylu (skali)
         """
+        runAnalytics(2, str(1))
         vec_layers_list = []
         if name != '':
             iface.layerTreeView().layerTreeModel().setAutoCollapseLegendNodes(1)
@@ -321,6 +347,7 @@ class SimpleGmlImport():
                 # utworzenie raportu
                 counting_dict = Main().generateReport(gr_dict)
                 report().run(counting_dict, name, report_path, conversion_errors_list)
+
                 progressBar.setValue(50)
                 print('Czas 50%:', datetime.now() - start_time)
                 QCoreApplication.processEvents()
@@ -485,6 +512,8 @@ class SimpleGmlImport():
 
                 progressBar.setValue(100)
                 print('Czas 100%:', datetime.now() - start_time)
+                imp_info = self.createAnalysisString(counting_dict) + str(datetime.now() - start_time)
+                runAnalytics(2, imp_info)
                 print('Koniec importu pliku:', name)
 
         return vec_layers_list

@@ -43,6 +43,8 @@ from .src.area_symbol_fill import fill
 from .src.simple_gml_import import SimpleGmlImport
 from .src.change_map_appearance import ChangeAppearance
 
+from .src.analytics import runAnalytics
+
 import subprocess
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -69,6 +71,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.back_fill = True
 
         self.setupUi(self)
+
+        runAnalytics(1, str(Qgis.QGIS_VERSION))
 
         self.cmbStylization.addItems(Main().getStylizations(omit_special=True))
 
@@ -129,6 +133,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     def on_cmbStylization_currentTextChanged(self):
         """ustaw stylizację wybraną w comboboxie"""
+        runAnalytics(3, str(1))
         ChangeAppearance().backToQmlSymb(self.cmbStylization.currentText(), ChangeAppearance().getLayers())
         if self.gbShowWers.isChecked():
             self.dispVers(ChangeAppearance().getLayers())  # sprawdzenie i nadanie wyswietlania wersji
@@ -136,6 +141,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             self.fillSelectSet(ChangeAppearance().getLayers())  # sprawdzenie i nadanie fillowania
 
     def on_cmbReda_currentTextChanged(self):
+        runAnalytics(3, str(2))
         ChangeAppearance().setRedLabels(self.cmbReda.currentText())
 
     def on_chbShowPierwsze_stateChanged(self):
@@ -205,6 +211,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.dispSettings()
 
     def on_gbShowWers_toggled(self,state):
+        runAnalytics(3, str(4))
         self.gbShowWers.setEnabled(False)
         QCoreApplication.processEvents()
         self.dispVers(ChangeAppearance().getLayers())
@@ -218,6 +225,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     def on_gbFill_toggled(self, state):
         """GroupBox dla fillowania w zaleznosci od wyswietlanego zbioru danych"""
+        runAnalytics(3, str(3))
         self.gbFill.setEnabled(False)
         QCoreApplication.processEvents()
         self.fillSelectSet(ChangeAppearance().getLayers())
