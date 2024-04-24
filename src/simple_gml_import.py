@@ -249,7 +249,7 @@ class SimpleGmlImport():
                         "from osgeo_utils.samples import ogr2ogr; "
                         "ogr.DontUseExceptions(); "
                         f"ogr2ogr.main({gdal_args})")
-        process = subprocess.run(["python", "-c", pyth_command], stderr=subprocess.PIPE, text=True, env = my_env)
+        process = subprocess.run(["python", "-c", pyth_command], stderr=subprocess.PIPE, text=True, env = my_env, shell=False, creationflags=subprocess.CREATE_NO_WINDOW)
         error_output = process.stderr
 
         # rozdzielenie bledow po \n i usuniecie pustych linii
