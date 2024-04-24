@@ -29,6 +29,13 @@
 
 import os, sys
 
+PLUGIN_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
+
+FILL_PARAMETERS = os.path.join(PLUGIN_DIRECTORY, 'fill', 'QMapa_wypelnieniaObszarow.xlsm')
+FILL_PARAMETERS_DIR = os.path.join(PLUGIN_DIRECTORY, 'fill')
+BINARIES = os.path.join(PLUGIN_DIRECTORY, 'bin')
+STAT_DLL = os.path.join(BINARIES, 'gxy_statistics.dll')
+
 external_packages = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'external_packages')
 sys.path.append(external_packages)
 

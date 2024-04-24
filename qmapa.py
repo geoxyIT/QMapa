@@ -45,11 +45,7 @@ from .src.change_map_appearance import ChangeAppearance
 
 from .src.area_symbol_fill import openFillXlsmLoc  # open_fill_xlsm,
 
-PLUGIN_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
-
-FILL_PARAMETERS = os.path.join(PLUGIN_DIRECTORY, 'fill', 'QMapa_wypelnieniaObszarow.xlsm')
-FILL_PARAMETERS_DIR = os.path.join(PLUGIN_DIRECTORY, 'fill')
-
+from QMapa import FILL_PARAMETERS_DIR
 
 class QMapa:
     """QGIS Plugin Implementation."""

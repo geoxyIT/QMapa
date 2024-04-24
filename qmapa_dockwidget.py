@@ -45,14 +45,11 @@ from .src.change_map_appearance import ChangeAppearance
 
 from .src.analytics import runAnalytics
 
-import subprocess
+from QMapa import FILL_PARAMETERS
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'ui', 'qmapa_dockwidget_base.ui'))
 
-PLUGIN_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
-
-FILL_PARAMETERS = os.path.join(PLUGIN_DIRECTORY, 'fill', 'QMapa_wypelnieniaObszarow.xlsm')
 
 class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     closingPlugin = pyqtSignal()
