@@ -44,6 +44,7 @@ from .src.help import Help
 from .src.change_map_appearance import ChangeAppearance
 
 from .src.area_symbol_fill import openFillXlsmLoc  # open_fill_xlsm,
+from .src.terms_conditions import Terms
 
 from QMapa import FILL_PARAMETERS_DIR
 
@@ -242,7 +243,7 @@ class QMapa:
 
         # dodanie reakcji po kliknieciu
         action.triggered.connect(self.run)
-        tool_button.clicked.connect(self.run)
+        #tool_button.clicked.connect(self.run)
 
         # dodanie kolejnych akcji do tool button
         # tool_button = self.toolbarAction(tool_button=tool_button, icon_path=icon_fill_sett_path,
@@ -323,25 +324,26 @@ class QMapa:
         QgsExpression.registerFunction(pokaz_wersje.pokaz_wersje)
         QgsExpression.registerFunction(kolor_wersji.kolor_wersji)
 
-        if not self.pluginIsActive:
-            self.pluginIsActive = True
+        if Terms(self.dialogs).checkCanRun():
+            if not self.pluginIsActive:
+                self.pluginIsActive = True
 
-            # fpath "** STARTING QMapa"
+                # fpath "** STARTING QMapa"
 
-            # dockwidget may not exist if:
-            #    first run of plugin
-            #    removed on close (see self.onClosePlugin method)
-            if self.dockwidget == None:
-                # Create the dockwidget (after translation) and keep reference
-                self.dockwidget = QMapaDockWidget()
+                # dockwidget may not exist if:
+                #    first run of plugin
+                #    removed on close (see self.onClosePlugin method)
+                if self.dockwidget == None:
+                    # Create the dockwidget (after translation) and keep reference
+                    self.dockwidget = QMapaDockWidget()
 
-            # connect to provide cleanup on closing of dockwidget
-            self.dockwidget.closingPlugin.connect(self.onClosePlugin)
+                # connect to provide cleanup on closing of dockwidget
+                self.dockwidget.closingPlugin.connect(self.onClosePlugin)
 
-            # show the dockwidget
-            # TODO: fix to allow choice of dock location
-            self.iface.addDockWidget(Qt.RightDockWidgetArea, self.dockwidget)
-            self.dockwidget.show()
+                # show the dockwidget
+                # TODO: fix to allow choice of dock location
+                self.iface.addDockWidget(Qt.RightDockWidgetArea, self.dockwidget)
+                self.dockwidget.show()
 
     def help(self):
         """Wyswietlanie okna pomocy"""

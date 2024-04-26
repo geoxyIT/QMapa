@@ -1,7 +1,7 @@
 import requests
 import re
 
-from PyQt5.QtGui import QColor, QPalette
+from qgis.PyQt.QtGui import QColor, QPalette
 
 
 def getHubText(url):

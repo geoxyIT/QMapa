@@ -1,6 +1,6 @@
 import os
 # PyQt5
-from PyQt5 import uic
+from qgis.PyQt import uic
 from .scrap_version import getLocalText, regVer, regDate
 
 cls, wnd = uic.loadUiType(os.path.join(os.path.dirname(__file__), '..', 'ui', 'help.ui'))
