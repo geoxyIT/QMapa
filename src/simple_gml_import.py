@@ -1,4 +1,4 @@
-import os
+import os, sys
 from enum import Enum
 from qgis.utils import iface
 from qgis.core import *
@@ -249,7 +249,10 @@ class SimpleGmlImport():
                         "from osgeo_utils.samples import ogr2ogr; "
                         "ogr.DontUseExceptions(); "
                         f"ogr2ogr.main({gdal_args})")
-        process = subprocess.run(["python", "-c", pyth_command], stderr=subprocess.PIPE, text=True, env = my_env, shell=False, creationflags=subprocess.CREATE_NO_WINDOW)
+        if sys.platform == 'win32':
+            process = subprocess.run(["python", "-c", pyth_command], stderr=subprocess.PIPE, text=True, env = my_env, shell=False, creationflags=subprocess.CREATE_NO_WINDOW)
+        elif sys.platform == 'linux':
+            process = subprocess.run(["python3", "-c", pyth_command], stderr=subprocess.PIPE, text=True, env = my_env, shell=False)
         error_output = process.stderr
 
         # rozdzielenie bledow po \n i usuniecie pustych linii
