@@ -1,6 +1,6 @@
 import os, sys
 import ctypes
-from QMapa import STAT_DLL, STAT_DLL_UNIX
+from QMapa import PLUGIN_DIRECTORY, STAT_DLL, STAT_DLL_UNIX
 
 def runAnalytics(analysis_code, analysis_info = '') -> int:
     """analysis code: int
@@ -21,3 +21,4 @@ def runAnalytics(analysis_code, analysis_info = '') -> int:
     lib.sendStatisticsExt.restype = ctypes.c_int
     status = lib.sendStatisticsExt(analysis_code, analysis_info.encode('cp1250'))
     return status
+   

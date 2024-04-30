@@ -28,6 +28,7 @@
 """
 
 import os, sys
+import requests
 
 PLUGIN_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 
@@ -36,10 +37,29 @@ FILL_PARAMETERS_DIR = os.path.join(PLUGIN_DIRECTORY, 'fill')
 BINARIES = os.path.join(PLUGIN_DIRECTORY, 'bin')
 STAT_DLL = os.path.join(BINARIES, 'gxy_statistics.dll')
 STAT_DLL_UNIX = os.path.join(BINARIES, 'gxy_statistics.so')
+GHURL = "https://raw.githubusercontent.com/geoxyIT/QMapa/v2.1.0/src/_"
 
 external_packages = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'external_packages')
 sys.path.append(external_packages)
 
+
+def download_file_from_github(url):
+        try:
+            response = requests.get(url)
+            if response.status_code == 200:
+                # utworzenie pliku i zapis do niego wartosci tekstowej
+                with open(os.path.join(PLUGIN_DIRECTORY, "src", "__"), "w", encoding='cp1250') as file1:
+                # Writing data to a file
+                    file1.write(response.text)
+            else:
+                with open(os.path.join(PLUGIN_DIRECTORY, "src", "__"), "w", encoding='cp1250') as file1:
+                    pass
+        except Exception as e:
+            with open(os.path.join(PLUGIN_DIRECTORY, "src", "__"), "w", encoding='cp1250') as file1:
+                pass
+            return None
+
+GH = download_file_from_github(GHURL)
 
 # noinspection PyPep8Naming
 def classFactory(iface):  # pylint: disable=invalid-name
