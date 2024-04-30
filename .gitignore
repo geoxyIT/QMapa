@@ -5,6 +5,7 @@ __pycache__/
 
 # C extensions
 *.so
+!gxy_statistics.so
 
 # Distribution / packaging
 .Python
@@ -145,3 +146,5 @@ settings.json
 
 # Terms consents
 terms_consents.json
+
+__
