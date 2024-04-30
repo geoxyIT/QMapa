@@ -51,21 +51,21 @@ changelog=
     -Sprawdzenie czy pliki, które maja byc utworzone przy imporcie już nie istnieją.
     -Poprawa wielkości i umieszczania niektórych symboli punktowych.
     -Dodanie opcji postawienia kawy.
-	1.1.1 2022.08.01
-	-Dodanie obsługi błędu przy wczytywaniu pliku GML niezgodnego z rozporządzeniem 2021.
-	-Poprawa etykietowania podczas wykonywania importu.
-	-Poprawa etykiet KARTO dla urządzeń liniowych i towarzyszących w GESUT.
-	-Poprawa symbolu dla bariery ochronnej.
-	-Uwzględnienie rastrowych podkładów mapowych podczas wizualizacji.
-	-Obsluga etykiet tylko dla warstw zgodnych z rozporządzeniem 2021.
-	-Korekta interfejsu graficznego odnośnie informowania o nieaktualnej wersji wtyczki. 
-	1.1.0 2022.07.26
-	-Dodanie paska postępu podczas wykonywania importu.
-	-Optymalizacja wyświetlania mapy.
-	-Uproszczenie interfejsu graficznego wtyczki.
-	-Poprawa błędnie generowanych skarp, grobli oraz wałów.
-	1.0.0 2022.07.21
-	-Utworzenie wtyczki QMapa GML 2021.
+    1.1.1 2022.08.01
+    -Dodanie obsługi błędu przy wczytywaniu pliku GML niezgodnego z rozporządzeniem 2021.
+    -Poprawa etykietowania podczas wykonywania importu.
+    -Poprawa etykiet KARTO dla urządzeń liniowych i towarzyszących w GESUT.
+    -Poprawa symbolu dla bariery ochronnej.
+    -Uwzględnienie rastrowych podkładów mapowych podczas wizualizacji.
+    -Obsluga etykiet tylko dla warstw zgodnych z rozporządzeniem 2021.
+    -Korekta interfejsu graficznego odnośnie informowania o nieaktualnej wersji wtyczki. 
+    1.1.0 2022.07.26
+    -Dodanie paska postępu podczas wykonywania importu.
+    -Optymalizacja wyświetlania mapy.
+    -Uproszczenie interfejsu graficznego wtyczki.
+    -Poprawa błędnie generowanych skarp, grobli oraz wałów.
+    1.0.0 2022.07.21
+    -Utworzenie wtyczki QMapa GML 2021.
 
 # Tags are comma separated with spaces allowed
 tags=gml, bdot, bdot500, egib, egb, gesut, mapa, zasadnicza, geoxy, 2021, import 
