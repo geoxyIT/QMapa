@@ -262,6 +262,9 @@ class QMapa:
                            callback=lambda: ChangeAppearance().addOrtoOsm('GEOPORTAL_ORTO'))
 
         self.toolbarAction(tool_button=tool_button, icon_path=icon_help_path,
+                           text=self.tr(u'Statystyki'), callback=self.termsInfo)
+
+        self.toolbarAction(tool_button=tool_button, icon_path=icon_help_path,
                            text=self.tr(u'Informacje o wtyczce'), callback=self.help)
 
         # dodanie toolbutton do toolbara
@@ -344,6 +347,9 @@ class QMapa:
                 # TODO: fix to allow choice of dock location
                 self.iface.addDockWidget(Qt.RightDockWidgetArea, self.dockwidget)
                 self.dockwidget.show()
+
+    def termsInfo(self):
+        Terms(self.dialogs).showTermsInfo()
 
     def help(self):
         """Wyswietlanie okna pomocy"""
