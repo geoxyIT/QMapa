@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Informacja o zbieraniu statystyk</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -23,7 +23,7 @@
       </font>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot;font-family:'MS Shell Dlg 2','sans-serif'; color:#000000;&quot;&gt;Aplikacja &lt;/span&gt;&lt;span style=&quot;font-family:'MS Shell Dlg 2','sans-serif'; font-weight:600; color:#000000;&quot;&gt;QMapa GML 2021 &lt;/span&gt;&lt;span style=&quot;font-family:'MS Shell Dlg 2','sans-serif'; color:#000000;&quot;&gt;przesyła do autora – firmy GEOXY sp. z o.o. statystyki użytkowania &lt;br/&gt;zawierające &lt;/span&gt;&lt;span style=&quot;font-family:'MS Shell Dlg 2','sans-serif'; color:#000000;&quot;&gt;informacje o sposobie korzystania z aplikacji &lt;/span&gt;&lt;span style=&quot;font-family:'MS Shell Dlg 2','sans-serif'; font-weight:600; color:#ff2600;&quot;&gt;w celu ciągłego doskonalenia jej działania.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-family:'MS Shell Dlg 2','sans-serif'; color:#000000;&quot;&gt;Jeżeli nie zgadzasz się na przekazywanie takich informacji nie uruchamiaj i nie używaj aplikacji &lt;/span&gt;&lt;span style=&quot;font-family:'MS Shell Dlg 2','sans-serif'; font-weight:600; color:#000000;&quot;&gt;QMapa GML 2021&lt;/span&gt;&lt;span style=&quot;font-family:'MS Shell Dlg 2','sans-serif'; color:#000000;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot;font-family:'MS Shell Dlg 2','sans-serif'; color:#000000;&quot;&gt;Aplikacja &lt;/span&gt;&lt;span style=&quot;font-family:'MS Shell Dlg 2','sans-serif'; font-weight:600; color:#000000;&quot;&gt;QMapa GML 2021 &lt;/span&gt;&lt;span style=&quot;font-family:'MS Shell Dlg 2','sans-serif'; color:#000000;&quot;&gt;przesyła do autora – firmy GEOXY sp. z o.o. statystyki użytkowania &lt;br/&gt;zawierające &lt;/span&gt;&lt;span style=&quot;font-family:'MS Shell Dlg 2','sans-serif'; color:#000000;&quot;&gt;informacje o sposobie korzystania z aplikacji &lt;/span&gt;&lt;span style=&quot;font-family:'MS Shell Dlg 2','sans-serif'; font-weight:400; color:#000000;&quot;&gt;w celu ciągłego doskonalenia jej działania.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-family:'MS Shell Dlg 2','sans-serif'; color:#000000;&quot;&gt;Jeżeli nie zgadzasz się na przekazywanie takich informacji nie uruchamiaj i nie używaj aplikacji &lt;/span&gt;&lt;span style=&quot;font-family:'MS Shell Dlg 2','sans-serif'; font-weight:600; color:#000000;&quot;&gt;QMapa GML 2021&lt;/span&gt;&lt;span style=&quot;font-family:'MS Shell Dlg 2','sans-serif'; color:#000000;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
 </string>
      </property>
      <property name="alignment">
