@@ -1,1 +1,0 @@
-<html><head/><body><p>Test <span style=" font-weight:600; color:#2ca763;">wyświetlania</span><a href="https://www.geoxy.pl/pl"><span style=" text-decoration: underline; color:#0000ff;">komunikatów</span></a><span style=" font-weight:600; color:#3848a7;">qmapy</span></p></body></html>
