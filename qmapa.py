@@ -221,9 +221,11 @@ class QMapa:
         """Stworzenie rozwijanego toolbuttona"""
         icon_path = ':/plugins/qmapa/icons/icon.png'
         icon_help_path = ':/plugins/qmapa/icons/help.png'
+        icon_stats_info_path = ':/plugins/qmapa/icons/stats_info.png'
         # icon_fill_sett_path = ':/plugins/qmapa/icons/fill_settings.png'
         icon_fill_directory_path = ':/plugins/qmapa/icons/fill_directory.png'
         raster_icon = ':/plugins/qmapa/icons/raster.png'
+
 
         # stworzenie toolbuttona
         tool_button = QToolButton()
@@ -261,7 +263,7 @@ class QMapa:
                            text=self.tr(u'Dodaj serwis Geoportal ORTO'),
                            callback=lambda: ChangeAppearance().addOrtoOsm('GEOPORTAL_ORTO'))
 
-        self.toolbarAction(tool_button=tool_button, icon_path=icon_help_path,
+        self.toolbarAction(tool_button=tool_button, icon_path=icon_stats_info_path,
                            text=self.tr(u'Statystyki'), callback=self.termsInfo)
 
         self.toolbarAction(tool_button=tool_button, icon_path=icon_help_path,

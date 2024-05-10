@@ -7,5 +7,6 @@
 		<file>fill_directory.png</file>
 		<file>raster.png</file>
 		<file>donate.png</file>
+		<file>stats_info.png</file>
     </qresource>
 </RCC>
