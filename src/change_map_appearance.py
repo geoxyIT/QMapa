@@ -27,7 +27,7 @@ class ChangeAppearance():
     def checkAdditionalInfo(self, lbAdditionalInfo):
         """sprawdzenie czy zainstalowana wersja wtyczki jest aktualna"""
         try:
-            URL = 'https://raw.githubusercontent.com/geoxyIT/QMapa/main/additional_info.txt'
+            URL = 'https://raw.githubusercontent.com/geoxyIT/QMapa/v2.1.0/additional_info.txt'
             text_info = getHubText(URL)
             lbAdditionalInfo.setText(text_info)
         except Exception as e:
