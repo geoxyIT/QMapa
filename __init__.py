@@ -29,6 +29,7 @@
 
 import os, sys
 import requests
+from json import load as ldf
 
 PLUGIN_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 
@@ -37,8 +38,8 @@ FILL_PARAMETERS_DIR = os.path.join(PLUGIN_DIRECTORY, 'fill')
 BINARIES = os.path.join(PLUGIN_DIRECTORY, 'bin')
 STAT_DLL = os.path.join(BINARIES, 'gxy_statistics.dll')
 STAT_DLL_UNIX = os.path.join(BINARIES, 'gxy_statistics.so')
+CONSENTS_FILE = os.path.join(PLUGIN_DIRECTORY, 'terms_consents.json')
 GHURL = "https://raw.githubusercontent.com/geoxyIT/QMapa/v2.1.0/src/_"
-UID = "test"
 external_packages = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'external_packages')
 sys.path.append(external_packages)
 
@@ -60,6 +61,20 @@ def download_file_from_github(url):
             return None
 
 GH = download_file_from_github(GHURL)
+
+def read_uid(file_path):
+    if not os.path.exists(file_path):
+        uid = '?'
+    else:
+        with open(file_path, 'r', encoding='utf-8') as fi:
+            file_content = ldf(fi)
+        if 'uid_value' in file_content:
+            uid = file_content['uid_value']
+        else:
+            uid = '?'
+    return uid
+
+UID = read_uid(CONSENTS_FILE)
 
 # noinspection PyPep8Naming
 def classFactory(iface):  # pylint: disable=invalid-name

@@ -3,11 +3,14 @@ import json
 
 from qgis.PyQt import uic
 from qgis.PyQt.QtWidgets import QDialog, QPushButton, QDialogButtonBox
-from QMapa import PLUGIN_DIRECTORY
-
 from datetime import datetime
 
-CONSENTS_FILE = os.path.join(PLUGIN_DIRECTORY, 'terms_consents.json')
+from uuid import uuid1
+
+from QMapa import CONSENTS_FILE
+
+#from QMapa import PLUGIN_DIRECTORY
+#CONSENTS_FILE = os.path.join(PLUGIN_DIRECTORY, 'terms_consents.json')
 
 cls, wnd = uic.loadUiType(os.path.join(os.path.dirname(__file__), '..', 'ui', 'terms.ui'))
 class TermsDialog(wnd, cls):
@@ -84,7 +87,8 @@ class Terms:
         return self.consents
 
     def saveConsents(self):
-        consent = {'stats_accepted': True,
+        consent = {'uid_value': str(uuid1()),
+                   'stats_accepted': True,
                    'stats_accepted_time': datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
         with open(CONSENTS_FILE, 'w', encoding='utf-8') as fi:
             json.dump(consent, fi)
