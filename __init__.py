@@ -38,7 +38,7 @@ BINARIES = os.path.join(PLUGIN_DIRECTORY, 'bin')
 STAT_DLL = os.path.join(BINARIES, 'gxy_statistics.dll')
 STAT_DLL_UNIX = os.path.join(BINARIES, 'gxy_statistics.so')
 GHURL = "https://raw.githubusercontent.com/geoxyIT/QMapa/v2.1.0/src/_"
-
+UID = "test"
 external_packages = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'external_packages')
 sys.path.append(external_packages)
 

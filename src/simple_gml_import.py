@@ -299,7 +299,7 @@ class SimpleGmlImport():
         :param progressBar: progres bar
         :param current_style: string z nazwa aktualnego stylu (skali)
         """
-        runAnalytics(2, str(1))
+        runAnalytics(2, 1)
         vec_layers_list = []
         if name != '':
             iface.layerTreeView().layerTreeModel().setAutoCollapseLegendNodes(1)
