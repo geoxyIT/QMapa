@@ -1,6 +1,7 @@
 import os, sys
 import ctypes
-from QMapa import STAT_DLL, STAT_DLL_UNIX, UID
+from QMapa import STAT_DLL, STAT_DLL_UNIX, UID, CONSENTS_FILE
+from QMapa import read_uid
 
 def runAnalytics(analysis_code, analysis_info = '') -> int:
     """analysis code: int
@@ -17,8 +18,11 @@ def runAnalytics(analysis_code, analysis_info = '') -> int:
     else:
         return 0
 
+    if (UID == '?'): analysis_uid = read_uid(CONSENTS_FILE)
+    else: analysis_uid = UID
+
     lib.sendStatisticsExt.argtypes = [ctypes.c_char_p, ctypes.c_int, ctypes.c_char_p]
     lib.sendStatisticsExt.restype = ctypes.c_int
-    status = lib.sendStatisticsExt(UID.encode('cp1250'), analysis_code, analysis_info.encode('cp1250'))
+    status = lib.sendStatisticsExt(analysis_uid.encode('cp1250'), analysis_code, analysis_info.encode('cp1250'))
     return status
    
