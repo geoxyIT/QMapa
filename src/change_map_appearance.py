@@ -30,6 +30,8 @@ class ChangeAppearance():
             #URL = 'https://raw.githubusercontent.com/geoxyIT/QMapa/v2.1.0/additional_info.txt'
             URL = 'https://raw.githubusercontent.com/geoxyIT/QMapa/main/additional_info.txt'
             text_info = getHubText(URL)
+            '''with open((os.path.join(os.path.dirname(__file__), '..', 'additional_info.txt'))) as ff:
+                text_info= ff.read()'''
             lbAdditionalInfo.setText(text_info)
         except Exception as e:
             print('Błąd pobierania dodatkowych informacji')
