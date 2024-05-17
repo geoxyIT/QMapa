@@ -24,3 +24,10 @@ class Help(wnd, cls):
 
         html_text = '<html><head/><body><p><a href="' + 'file:///' + instr_file + '"><span style=" text-decoration: underline; color:#0000ff;">Instrukcja użytkowania</span></a></p></body></html>'
         self.label_15.setText(html_text)
+
+    def set_terms_agreed_info(self, is_accepted, time_accepted):
+        if is_accepted:
+            self.lb_agree.setText('Wyrażono zgodę:')
+            self.lb_agree_time.setText(f'{time_accepted}')
+        else:
+            self.lb_agree.setText('Nie wyrażono zgody')

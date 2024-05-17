@@ -263,8 +263,8 @@ class QMapa:
                            text=self.tr(u'Dodaj serwis Geoportal ORTO'),
                            callback=lambda: ChangeAppearance().addOrtoOsm('GEOPORTAL_ORTO'))
 
-        self.toolbarAction(tool_button=tool_button, icon_path=icon_stats_info_path,
-                           text=self.tr(u'Statystyki'), callback=self.termsInfo)
+        '''self.toolbarAction(tool_button=tool_button, icon_path=icon_stats_info_path,
+                           text=self.tr(u'Statystyki'), callback=self.termsInfo)'''
 
         self.toolbarAction(tool_button=tool_button, icon_path=icon_help_path,
                            text=self.tr(u'Informacje o wtyczce'), callback=self.help)
@@ -350,11 +350,16 @@ class QMapa:
                 self.iface.addDockWidget(Qt.RightDockWidgetArea, self.dockwidget)
                 self.dockwidget.show()
 
-    def termsInfo(self):
-        Terms(self.dialogs).showTermsInfo()
+    '''def termsInfo(self):
+        Terms(self.dialogs).showTermsInfo()'''
 
     def help(self):
         """Wyswietlanie okna pomocy"""
         dialog = Help()
         self.dialogs.append(dialog)
+        dialog.adjustSize()
+        dialog.setFixedSize(dialog.size())
+        trms = Terms(self.dialogs)
+        trms.checkCanRun(show_message=False)
+        dialog.set_terms_agreed_info(trms.consents, trms.time_consents)
         dialog.show()

@@ -27,7 +27,7 @@ class TermsDialog(wnd, cls):
         self.adjustSize()
         self.show()
 
-cls_info, wnd_info = uic.loadUiType(os.path.join(os.path.dirname(__file__), '..', 'ui', 'terms_info.ui'))
+'''cls_info, wnd_info = uic.loadUiType(os.path.join(os.path.dirname(__file__), '..', 'ui', 'terms_info.ui'))
 class TermsInfo(wnd_info, cls_info):
     def __init__(self):
         super().__init__()
@@ -40,7 +40,7 @@ class TermsInfo(wnd_info, cls_info):
         if is_accepted:
             self.label_2.setText(f'Wyrażono zgodę: {time_accepted}')
         else:
-            self.label_2.setText('Nie wyrażono zgody')
+            self.label_2.setText('Nie wyrażono zgody')'''
 
 class Terms:
     def __init__(self, dialogs):
@@ -72,16 +72,16 @@ class Terms:
             self.saveConsents()
         self.checkTermsConsentsInFile()
 
-    def showTermsInfo(self):
+    '''def showTermsInfo(self):
         self.checkTermsConsentsInFile()
         dial = TermsInfo()
         dial.fill_is_accepted(self.consents ,self.time_consents)
         self.dialogs.append(dial)
-        dial.exec_()
+        dial.exec_()'''
 
-    def checkCanRun(self):
+    def checkCanRun(self, show_message = True):
         self.checkTermsConsentsInFile()
-        if not self.consents:
+        if not self.consents and show_message:
             self.showTermsMessage()
 
         return self.consents
@@ -89,6 +89,6 @@ class Terms:
     def saveConsents(self):
         consent = {'uid_value': str(uuid1()),
                    'stats_accepted': True,
-                   'stats_accepted_time': datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+                   'stats_accepted_time': datetime.now().strftime("%Y.%m.%d %H:%M:%S")}
         with open(CONSENTS_FILE, 'w', encoding='utf-8') as fi:
             json.dump(consent, fi)
