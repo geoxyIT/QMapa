@@ -166,7 +166,7 @@ class SimpleGmlImport():
                         'OT_ObiektTrwaleZwiazanyZBudynkami': {
                             'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
                         'EGB_ObiektTrwaleZwiazanyZBudynkiem': {
-                            'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]}
+                            'EGB_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]}
                         }
 
         # tworzenie zlaczen warstw
