@@ -191,10 +191,12 @@ class Main:
         order_list = list(mygen(order_list))
 
         # rozpoznanie z jakiej bazy pochodzi warstwa zeby przyporzadkowac ja do wlasciwej grupy
+        #recognized_bases = ['EGiB', 'GESUT', 'BDOT500']
+        recognized_bases = [v for k, v in prefix_of_bases.items()]
         def sortByBaseType(layers_list):
             type_groups_dict = {}
             for layy in layers_list:
-                layname = layy[1].name()
+                layname = layy[0]
 
                 if layname.startswith('EGB_'):
                     base_name = 'EGiB'
@@ -222,25 +224,32 @@ class Main:
 
         # utworzenie grup dla baz
         for group_name, group_layers_with_type in type_groups_dict.items():
-            main_group.insertGroup(1, group_name)
-            specified_group = main_group.findGroup(group_name)
+            # jesli dana grupa jest rozpoznana to tworzy podgrupe dla pomocniczych
+            if group_name in recognized_bases:
+                main_group.insertGroup(1, group_name)
+                specified_group = main_group.findGroup(group_name)
 
-            # dodanie prefixu OT_Pomocznice elementy...
-            try:
-                prefix = [k for k, v in prefix_of_bases.items() if v == group_name][0]
-            except:
-                prefix = ''
+                # dodanie prefixu OT_Pomocnicze elementy...
+                try:
+                    prefix = [k for k, v in prefix_of_bases.items() if v == group_name][0]
+                except:
+                    prefix = ''
 
-            editorial_elements = prefix + '_' + 'pomocniczeElementyKARTO'
+                editorial_elements = prefix + '_' + 'pomocniczeElementyKARTO'
 
-            # utworzenie grupy Pomocnicze elementy redakcyjne
-            specified_group.insertGroup(-1, editorial_elements)
-            # przejecie do grupy pomocnicznych elementow
-            additional_group = specified_group.findGroup(editorial_elements)
-            if additional_group is not None:
-                additional_group.setItemVisibilityChecked(False)
-                additional_group.setExpanded(False)
-            # przeniesienie z grupy specified do grupy pomocniczych elementow redakcyjnych
+                # utworzenie grupy Pomocnicze elementy redakcyjne
+                specified_group.insertGroup(-1, editorial_elements)
+                # przejecie do grupy pomocnicznych elementow
+                additional_group = specified_group.findGroup(editorial_elements)
+                if additional_group is not None:
+                    additional_group.setItemVisibilityChecked(False)
+                    additional_group.setExpanded(False)
+                # przeniesienie z grupy specified do grupy pomocniczych elementow redakcyjnych
+                group_is_recognized = True
+            else:
+                main_group.insertGroup(-1, group_name)
+                specified_group = main_group.findGroup(group_name)
+                group_is_recognized = False
 
             # posortowanie listy warstw z typami na podstawie listy z kolejnoscia oraz jej nadmienienie
             for idx, layer in enumerate(group_layers_with_type):
@@ -248,7 +257,8 @@ class Main:
                     index = order_list.index(layer[0])
                     group_layers_with_type[idx].append(index)
                 else:
-                    group_layers_with_type[idx].append(out_list_index + 1)
+                    out_list_index += 1
+                    group_layers_with_type[idx].append(out_list_index)
 
             group_layers_with_type.sort(key=lambda x: x[2])  # posortowanie
             # wstawianie z geometria do grupy z zachowaniem kolejnosci
@@ -261,8 +271,8 @@ class Main:
                 if incompatible_pref in layer[1].name():
                     replaced_2 = '_'.join(layer[1].name().split('_')[3:])
                     layer[1].setName(replaced_2)
-                # jezeli warstwa nalezy do grupy elementow redakcyjnych to ją tam dodaj
-                if layer[1].sourceName() in additional_layers:
+                # jezeli warstwa nalezy do grupy elementow redakcyjnych to ją tam dodaj a jak nie to do glownej
+                if layer[1].sourceName() in additional_layers and group_is_recognized:
                     additional_group.insertChildNode(idx, QgsLayerTreeLayer(layer[1]))
                     root.removeLayer(layer[1])
                 else:
