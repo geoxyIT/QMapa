@@ -1,0 +1,1 @@
+Jeżeli w repozytorium wtyczek nie ma nowszej wersji, to oznacza, że aktualizacja wtyczki oczekuje na akceptację zespołu QGIS.
