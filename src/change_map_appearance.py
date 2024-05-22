@@ -20,23 +20,20 @@ class ChangeAppearance():
             local_ver = regVer(getLocalText(local_path))
             compareVersions(lbVersion, hub_ver, local_ver)
         except Exception as e:
-            print('Błąd sprawdzania aktualności wersji')
-            print(e)
-            print('Nawiąż połączenie z internetem')
+            print('Błąd sprawdzania aktualności wersji:', e)
+            print('Sprawdź swoje połączenie internetowe.')
 
     def checkAdditionalInfo(self, lbAdditionalInfo):
         """sprawdzenie czy zainstalowana wersja wtyczki jest aktualna"""
         try:
-            #URL = 'https://raw.githubusercontent.com/geoxyIT/QMapa/v2.1.0/additional_info.txt'
             URL = 'https://raw.githubusercontent.com/geoxyIT/QMapa/main/additional_info.txt'
             text_info = getHubText(URL)
             '''with open((os.path.join(os.path.dirname(__file__), '..', 'additional_info.txt'))) as ff:
                 text_info= ff.read()'''
             lbAdditionalInfo.setText(text_info)
         except Exception as e:
-            print('Błąd pobierania dodatkowych informacji')
-            print(e)
-            print('Nawiąż połączenie z internetem')
+            print('Błąd pobierania dodatkowych informacji:', e)
+            print('Sprawdź swoje połączenie internetowe.')
 
     def addOrtoOsm(self, service_type):
         """Dodanie serwerów OSM i Geoportal ORTO jako warstwa do QGIS"""
