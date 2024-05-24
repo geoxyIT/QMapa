@@ -67,6 +67,8 @@ class Main:
                 try:
                     style_file_path = os.path.join(stylization_dir, geom_type, layer.name() + '.qml')
                     # todo: zrobic zeby probowalo pobierac takze pliki dla wartw z koncowka geometrii (_0, _1, _2)
+                    #categories = QgsMapLayer.StyleCategory.Labeling | QgsMapLayer.StyleCategory.Symbology
+                    #layer.loadNamedStyle(style_file_path, categories)
                     layer.loadNamedStyle(theURI=style_file_path,
                                          loadFromLocalDb=False)
                     layer.triggerRepaint()

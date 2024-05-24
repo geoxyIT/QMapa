@@ -215,11 +215,11 @@ class SimpleGmlImport():
                 for field in fields_list_obj:
                     fields_list.append(field.name())
                 if 'x' not in fields_list:
-                    field = QgsField('x', QVariant.Double)
-                    layer.addExpressionField('$x', field)
+                    field_x = QgsField('x', QVariant.Double)
+                    layer.addExpressionField('$x', field_x)
                 if 'y' not in fields_list:
-                    field2 = QgsField('y', QVariant.Double)
-                    layer.addExpressionField('$y', field2)
+                    field_y = QgsField('y', QVariant.Double)
+                    layer.addExpressionField('$y', field_y)
         iface.mapCanvas().refreshAllLayers()
 
     def gml_to_gpkg(self, input_gml, output_gpkg):
