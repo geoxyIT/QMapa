@@ -30,12 +30,14 @@ def loadGpkg(gpkg_path):
             layer_2 = data.GetLayer(layer.GetName()+'_2')
 
             # jezeli tych warstw nie ma, utworz je
+            # pobranie nazwy pola z geometria (bo jak jest w gml jako 'geometria' to taka sie da, a nie domyslna 'geom'
+            geom_field_name = lyr_def.GetGeomFieldDefn(0).GetName()
             if layer_0 == None:
-                layer_0 = data.CreateLayer(layer.GetName()+'_0', srs=spatial_ref, geom_type=ogr.wkbMultiPoint)
+                layer_0 = data.CreateLayer(layer.GetName()+'_0', srs=spatial_ref, geom_type=ogr.wkbMultiPoint, options=[f"GEOMETRY_NAME={geom_field_name}"])
             if layer_1 == None:
-                layer_1 = data.CreateLayer(layer.GetName()+'_1', srs=spatial_ref, geom_type=ogr.wkbMultiCurve)
+                layer_1 = data.CreateLayer(layer.GetName()+'_1', srs=spatial_ref, geom_type=ogr.wkbMultiCurve, options=[f"GEOMETRY_NAME={geom_field_name}"])
             if layer_2 == None:
-                layer_2 = data.CreateLayer(layer.GetName()+'_2', srs=spatial_ref, geom_type=ogr.wkbMultiSurface)
+                layer_2 = data.CreateLayer(layer.GetName()+'_2', srs=spatial_ref, geom_type=ogr.wkbMultiSurface, options=[f"GEOMETRY_NAME={geom_field_name}"])
 
             # utworzenie kolumn (pola) w nowych warstwach
             for i in range(lyr_def.GetFieldCount()):

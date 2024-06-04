@@ -5,8 +5,7 @@ from qgis.core import *
 from qgis.PyQt.QtWidgets import QMessageBox
 from .gml_modify import GmlModify
 from datetime import datetime
-from osgeo_utils.samples import ogr2ogr
-from osgeo import ogr, gdal
+from osgeo import gdal
 from .load_gpkg import loadGpkg
 from .hatch_and_color_calc import calculateHatching, calculateColors
 from .create_report_file import report
@@ -20,7 +19,6 @@ from .analytics import runAnalytics
 
 import subprocess
 import time
-import osgeo
 
 class SimpleGmlImport():
     def __init__(self):
@@ -222,10 +220,9 @@ class SimpleGmlImport():
                     layer.addExpressionField('$y', field_y)
         iface.mapCanvas().refreshAllLayers()
 
-    def gml_to_gpkg(self, input_gml, output_gpkg):
+    def gml_to_gpkg_old(self, input_gml, output_gpkg):
         """funkcja konwertowania gml na gpkg z obsluga niepoprawnych obiektow, zwraca napotkane bledy/ostrzezenia"""
         my_env = os.environ.copy()
-
 
         # Call the main function of ogr2ogr using subprocess
         # tutaj tworzona jest komenda w pythonie do konwertowania gml na gpkg.
@@ -236,23 +233,44 @@ class SimpleGmlImport():
                      "--config", "GML_SKIP_CORRUPTED_FEATURES", "YES"]
         # komenda python jest po to zeby miec pewnosc ze uzywa ogr2ogr z osgeo a nie z jakiegos tam exe,
         # bo inaczej czasami dziala jak nie jest z python osgeo (inne nazwy kolumny/warstwy geometrii)
-        '''# ta opcja daje zle nazwy geometrii:
-        gdal_command = ["ogr2ogr", "-f", "GPKG", output_gpkg, input_gml,
-                        "--config", "GML_SKIP_CORRUPTED_FEATURES", "YES"]
-        process = subprocess.run(gdal_command, stderr=subprocess.PIPE, text=True, env=my_env)
-        '''
-        pyth_command = ("from osgeo import ogr; "
-                         "from osgeo_utils.samples import ogr2ogr; "
-                         "ogr.UseExceptions(); "
-                         f"ogr2ogr.main({gdal_args})")
+        # dodatkowo pozwala to przejac bledy
         pyth_command = ("from osgeo import ogr; "
                         "from osgeo_utils.samples import ogr2ogr; "
                         "ogr.DontUseExceptions(); "
                         f"ogr2ogr.main({gdal_args})")
+
         if sys.platform == 'win32':
             process = subprocess.run(["python", "-c", pyth_command], stderr=subprocess.PIPE, text=True, env = my_env, shell=False, creationflags=subprocess.CREATE_NO_WINDOW)
         elif sys.platform == 'linux':
             process = subprocess.run(["python3", "-c", pyth_command], stderr=subprocess.PIPE, text=True, env = my_env, shell=False)
+        error_output = process.stderr
+
+        # rozdzielenie bledow po \n i usuniecie pustych linii
+        conv_errors_list = [value for value in error_output.split('\n') if value != '']
+
+        return conv_errors_list
+
+    def gml_to_gpkg(self, input_gml, output_gpkg):
+        # GDAL configuration options
+        '''gdal_options = [
+            "-f", "GPKG",
+            "--config", "GML_SKIP_CORRUPTED_FEATURES", "YES"
+        ]'''
+
+        # Perform vector translation using GDAL's VectorTranslate
+        my_env = os.environ.copy()
+        pyth_command = ("from osgeo import gdal; "
+                        "gdal.DontUseExceptions(); "
+                        "gdal.SetConfigOption('GML_SKIP_CORRUPTED_FEATURES', 'YES');"
+                        "gdal_options = gdal.VectorTranslateOptions(format='GPKG'); "
+                        f"gdal.VectorTranslate(r'{output_gpkg}', r'{input_gml}', options=gdal_options)")
+
+        if sys.platform == 'win32':
+            process = subprocess.run(["python", "-c", pyth_command], stderr=subprocess.PIPE, text=True, env=my_env,
+                                     shell=False, creationflags=subprocess.CREATE_NO_WINDOW)
+        elif sys.platform == 'linux':
+            process = subprocess.run(["python3", "-c", pyth_command], stderr=subprocess.PIPE, text=True, env=my_env,
+                                     shell=False)
         error_output = process.stderr
 
         # rozdzielenie bledow po \n i usuniecie pustych linii
@@ -299,13 +317,13 @@ class SimpleGmlImport():
         :param progressBar: progres bar
         :param current_style: string z nazwa aktualnego stylu (skali)
         """
-        runAnalytics(2, 1)
         vec_layers_list = []
         if name != '':
             iface.layerTreeView().layerTreeModel().setAutoCollapseLegendNodes(1)
             mod_gml_path, gpkg_path, report_path = self.paths(name)  # pobranie sciezek importu
             if mod_gml_path != '' and gpkg_path != '' and report_path != '':
                 print('Start importu pliku:', name)
+                runAnalytics(2, 2)
                 start_time = datetime.now()
 
                 self.signal_of_import = True
@@ -319,12 +337,6 @@ class SimpleGmlImport():
                 QCoreApplication.processEvents()
 
                 # utworzenie gpkg z gml
-                #osgeo.gdal.SetConfigOption("GML_SKIP_CORRUPTED_FEATURES", "YES")
-                #ogr2ogr.main(["", "-f", "GPKG", gpkg_path, mod_gml_path])
-
-                '''ogr2ogr.main(["","-f", "GPKG", gpkg_path, mod_gml_path,
-                        "--config", "GML_SKIP_CORRUPTED_FEATURES", "YES"])'''
-
                 conversion_errors_list = self.gml_to_gpkg(mod_gml_path, gpkg_path)
 
                 progressBar.setValue(20)

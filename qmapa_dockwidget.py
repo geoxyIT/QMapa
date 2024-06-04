@@ -109,7 +109,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     @pyqtSlot()
     def on_pbImport_clicked(self):
         """Zaimportowanie pliku GML z konwersją do GPKG oraz nadaniem grup warstw"""
-
+        runAnalytics(2, 1)
         dial = QFileDialog(self)
         name, ext = dial.getOpenFileName(self, caption='Wybierz wejściowy plik GML',
                                                 filter='gml (*.gml)')
