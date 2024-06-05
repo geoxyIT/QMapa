@@ -240,9 +240,11 @@ class SimpleGmlImport():
                         f"ogr2ogr.main({gdal_args})")
 
         if sys.platform == 'win32':
-            process = subprocess.run(["python", "-c", pyth_command], stderr=subprocess.PIPE, text=True, env = my_env, shell=False, creationflags=subprocess.CREATE_NO_WINDOW)
+            process = subprocess.run(["python", "-c", pyth_command], stderr=subprocess.PIPE, text=True,
+                                     env = my_env, shell=False, creationflags=subprocess.CREATE_NO_WINDOW)
         elif sys.platform == 'linux':
-            process = subprocess.run(["python3", "-c", pyth_command], stderr=subprocess.PIPE, text=True, env = my_env, shell=False)
+            process = subprocess.run(["python3", "-c", pyth_command], stderr=subprocess.PIPE, text=True,
+                                     env = my_env, shell=False)
         error_output = process.stderr
 
         # rozdzielenie bledow po \n i usuniecie pustych linii
@@ -274,7 +276,8 @@ class SimpleGmlImport():
         error_output = process.stderr
 
         # rozdzielenie bledow po \n i usuniecie pustych linii
-        conv_errors_list = [value for value in error_output.split('\n') if value != '']
+        conv_errors_list = [value for value in error_output.split('\n')
+                            if value != '' and 'Warning 1: The output driver does not natively support' not in value]
 
         return conv_errors_list
 
@@ -520,15 +523,19 @@ class SimpleGmlImport():
 
                 progressBar.setValue(100)
                 print('Czas 100%:', datetime.now() - start_time)
-                imp_info = self.createAnalysisString(counting_dict) + str(datetime.now() - start_time)
+                imp_info = self.createAnalysisString(counting_dict) + ' ' + str(datetime.now() - start_time)
                 runAnalytics(2, imp_info)
                 print('Koniec importu pliku:', name)
 
                 # informacja o wykryciu bledow importu:
-                if len(conversion_errors_list) > 0:
+                errors_conversion = len(conversion_errors_list)
+                if  errors_conversion > 0:
                     print('Wykryto bledy przy imporcie')
                     QMessageBox.warning(iface.mainWindow(), 'Napotkano błędy przy imporcie',
-                                        'W czasie importu wystąpiły błędy. Niektóre obiekty mogły nie zostać zaimportowane. Szczegóły dostępne w raporcie.',
+                                        'W czasie importu wystąpiły błędy. '
+                                        'Niektóre obiekty mogły nie zostać zaimportowane. '
+                                        'Szczegóły dostępne w raporcie.',
                                         buttons=QMessageBox.Ok)
+                    runAnalytics(2, f"errs:{errors_conversion}")
 
         return vec_layers_list
