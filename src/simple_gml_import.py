@@ -277,7 +277,9 @@ class SimpleGmlImport():
 
         # rozdzielenie bledow po \n i usuniecie pustych linii
         conv_errors_list = [value for value in error_output.split('\n')
-                            if value != '' and 'Warning 1: The output driver does not natively support' not in value]
+                            if value != ''
+                            and 'Warning 1: The output driver does not natively support' not in value
+                            and 'Warning 1: The output driver does not seem to natively support' not in value]
 
         return conv_errors_list
 
