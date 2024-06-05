@@ -518,17 +518,17 @@ class SimpleGmlImport():
 
                 iface.layerTreeView().layerTreeModel().setAutoCollapseLegendNodes(-1)
 
-                # informacja o wykryciu bledow importu:
-                if len(conversion_errors_list)>0:
-                    print('Wykryto bledy przy imporcie')
-                    QMessageBox.warning(iface.mainWindow(), 'Napotkano błędy przy imporcie',
-                                         'W czasie importu wystąpiły błędy. Niektóre obiekty mogły nie zostać zaimportowane. Szczegóły dostępne w raporcie.',
-                                         buttons=QMessageBox.Ok)
-
                 progressBar.setValue(100)
                 print('Czas 100%:', datetime.now() - start_time)
                 imp_info = self.createAnalysisString(counting_dict) + str(datetime.now() - start_time)
                 runAnalytics(2, imp_info)
                 print('Koniec importu pliku:', name)
+
+                # informacja o wykryciu bledow importu:
+                if len(conversion_errors_list) > 0:
+                    print('Wykryto bledy przy imporcie')
+                    QMessageBox.warning(iface.mainWindow(), 'Napotkano błędy przy imporcie',
+                                        'W czasie importu wystąpiły błędy. Niektóre obiekty mogły nie zostać zaimportowane. Szczegóły dostępne w raporcie.',
+                                        buttons=QMessageBox.Ok)
 
         return vec_layers_list

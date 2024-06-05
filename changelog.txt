@@ -1,3 +1,5 @@
+2.2.0 2024.06.17
+-dostosowanie importu do nowszych wersji QGIS (z GDAL 3.9.0)
 2.1.0 2024.05.24
 -dodanie raportowania statystyk użytkowania wtyczki
 -dodanie warstw EGB_AdresZameldowania oraz EGB_AdresStalegoPobytu jako zgodnych z rozporządzeniem
