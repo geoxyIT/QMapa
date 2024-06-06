@@ -37,6 +37,7 @@ FILL_PARAMETERS = os.path.join(PLUGIN_DIRECTORY, 'fill', 'QMapa_wypelnieniaObsza
 FILL_PARAMETERS_DIR = os.path.join(PLUGIN_DIRECTORY, 'fill')
 BINARIES = os.path.join(PLUGIN_DIRECTORY, 'bin')
 STAT_DLL = os.path.join(BINARIES, 'gxy_statistics.dll')
+STAT_DLL_3_24 = os.path.join(BINARIES, 'gxy_statistics_3_24.dll')
 STAT_DLL_UNIX = os.path.join(BINARIES, 'gxy_statistics.so')
 CONSENTS_FILE = os.path.join(PLUGIN_DIRECTORY, 'terms_consents.json')
 GHURL = "https://raw.githubusercontent.com/geoxyIT/QMapa/main/src/_"
