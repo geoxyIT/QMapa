@@ -224,6 +224,7 @@ class Main:
         main_group = QgsLayerTreeGroup(str(main_group_name))
         root.addChildNode(main_group)
 
+        editorial_groups_list = []
         # utworzenie grup dla baz
         for group_name, group_layers_with_type in type_groups_dict.items():
             # jesli dana grupa jest rozpoznana to tworzy podgrupe dla pomocniczych
@@ -244,6 +245,7 @@ class Main:
                 # przejecie do grupy pomocnicznych elementow
                 additional_group = specified_group.findGroup(editorial_elements)
                 if additional_group is not None:
+                    editorial_groups_list.append(additional_group)
                     additional_group.setItemVisibilityChecked(False)
                     additional_group.setExpanded(False)
                 # przeniesienie z grupy specified do grupy pomocniczych elementow redakcyjnych
@@ -307,7 +309,7 @@ class Main:
 
         gr_dict = sortByBaseType(all_layers_list)
 
-        return vec_layers_list, gr_dict
+        return vec_layers_list, gr_dict, editorial_groups_list
 
     def getStylizations(self, omit_special=False):
         """Pobieranie stylizacji z folderu we wtyczce, omit_special oznacza pomijanie stylizacji zapisanych w [ ]"""

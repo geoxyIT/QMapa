@@ -283,7 +283,9 @@ class SimpleGmlImport():
 
         return conv_errors_list
 
-    def createAnalysisString(self, counting_dict):
+
+    def countObjectsByType(self, counting_dict):
+        "grupuje obiekty po typie czy jest to karto czy nie"
         sum_counting = {}
         for b_name, b_classes in counting_dict.items():
             if b_name not in sum_counting:
@@ -295,7 +297,27 @@ class SimpleGmlImport():
                     sum_counting[b_name]['karto'] += cl_inf[0]
                 else:
                     sum_counting[b_name]['obiekty'] += cl_inf[0]
+        return sum_counting
 
+
+    def checkIfOnlyKarto(self, sum_counting):
+        "sprawdza czy w glownych bazach jest tylko karto"
+        ob_sum = 0
+        kar_sum = 0
+        for b_name, b_counts in sum_counting.items():
+            if not b_name.startswith('NIESTANDARDOWE:'):
+                for ct_name, ct_val in b_counts.items():
+                    if ct_name == 'obiekty':
+                        ob_sum += ct_val
+                    elif ct_name == 'karto':
+                        kar_sum += ct_val
+
+        if ob_sum == 0 and kar_sum > 0:
+            return True
+        else:
+            return False
+
+    def createAnalysisString(self, sum_counting):
         texts = []
         for b_name, b_counts in sum_counting.items():
             cts_list = []
@@ -353,7 +375,7 @@ class SimpleGmlImport():
                 print('Czas 30%:', datetime.now() - start_time)
                 QCoreApplication.processEvents()
 
-                vec_layers_list, gr_dict = Main().createGroups(gpkg_path)
+                vec_layers_list, gr_dict, editorial_grups = Main().createGroups(gpkg_path)
                 vec_layers_list = Main().checkLayers(vec_layers_list)
 
                 order_list_new = correct_layers  # lista warstw zgodna z rozpo i w dobrej kolejnosci prezentowania
@@ -525,9 +547,23 @@ class SimpleGmlImport():
 
                 progressBar.setValue(100)
                 print('Czas 100%:', datetime.now() - start_time)
-                imp_info = self.createAnalysisString(counting_dict) + ' ' + str(datetime.now() - start_time)
+
+                sum_counting = self.countObjectsByType(counting_dict)
+                imp_info = self.createAnalysisString(sum_counting) + ' ' + str(datetime.now() - start_time)
+
                 runAnalytics(2, imp_info)
                 print('Koniec importu pliku:', name)
+
+                # informacja o tym ze wyryto tylko karto bez obiektow:
+                if self.checkIfOnlyKarto(sum_counting):
+                    for ed_group in editorial_grups:
+                        ed_group.setItemVisibilityChecked(True)
+                        ed_group.setExpanded(True)
+                    print('Wybrany plik jest niekompletny - zawiera tylko prezentacje graficzne bez obiektow')
+                    QMessageBox.warning(iface.mainWindow(), 'Wybrany plik jest niekompletny',
+                                        'Wybrany plik nie zawiera danych obiektowych a jedynie prezentację graficzną obiektów. '
+                                        'Uniemożliwia to poprawną wizualizację, w szczególności wygenerowanie etykiet.',
+                                        buttons=QMessageBox.Ok)
 
                 # informacja o wykryciu bledow importu:
                 errors_conversion = len(conversion_errors_list)

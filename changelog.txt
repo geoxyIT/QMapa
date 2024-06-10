@@ -1,21 +1,23 @@
-2.2.0 2024.06.17
--dostosowanie importu do nowszych wersji QGIS (z GDAL 3.9.0)
+2.2.0 2024.06.11
+-Dostosowanie importu do nowszych wersji QGIS (z GDAL 3.9.0).
+-Poprawienie symbolizacji dla prezentacji graficznej.
+-Rozpoznawanie niekompletnego pliku, który zawiera tylko prezentację graficzną a nie zawiera obiektów.
 2.1.0 2024.05.24
--dodanie raportowania statystyk użytkowania wtyczki
--dodanie warstw EGB_AdresZameldowania oraz EGB_AdresStalegoPobytu jako zgodnych z rozporządzeniem
--poprawa wykazywania obiektów niestandardowych w raporcie
--poprawa odczytu gml z uszkodzonymi obiektami (np. obiekt z uszkodzoną geometrią)
--poprawa odczytu gml w przypadku wielokrotnego definiowania przestrzeni nazw w pliku
--dodanie symbolizacji (etykiety) dla EGB_AdresNieruchomosci - brak takiego symbolu w rozporzadzeniu
+-Dodanie raportowania statystyk użytkowania wtyczki.
+-Dodanie warstw EGB_AdresZameldowania oraz EGB_AdresStalegoPobytu jako zgodnych z rozporządzeniem.
+-Poprawa wykazywania obiektów niestandardowych w raporcie.
+-Poprawa odczytu gml z uszkodzonymi obiektami (np. obiekt z uszkodzoną geometrią).
+-Poprawa odczytu gml w przypadku wielokrotnego definiowania przestrzeni nazw w pliku.
+-Dodanie symbolizacji (etykiety) dla EGB_AdresNieruchomosci - brak takiego symbolu w rozporzadzeniu.
 2.0.1 2023.05.11
--przyspieszenie importu.
--dodanie podsymboli typu nieoznaczone. Przeznaczone dla obiektów, które mają niektóre atrybuty niezgodne z rozporzadzeniem, w związku z czym nie miały dopasowanego żadnego symbolu.
--poprawa symboli bramy i furtki - były z lewej strony liniii, są z prawej.
--poprawa błędu w opisachKarto w przypadku gdy były w prezentacjach graficznych o geometrii innej niż punktowa.
--poprawa błędu w kreskowaiu skarp, grobli, wałów w przypadku gdy dlugość polilini była 0.
--poprawa wyglądu kreskowania dla małych skarp, grobli, wałów.
--zmiana symboli kanał technologiczny i obudowa ochronna przy multilinii.
--dodawane serwisy są od teraz widoczne od razu przy dodawaniu.
+-Przyspieszenie importu.
+-Dodanie podsymboli typu nieoznaczone. Przeznaczone dla obiektów, które mają niektóre atrybuty niezgodne z rozporzadzeniem, w związku z czym nie miały dopasowanego żadnego symbolu.
+-Poprawa symboli bramy i furtki - były z lewej strony liniii, są z prawej.
+-Poprawa błędu w opisachKarto w przypadku gdy były w prezentacjach graficznych o geometrii innej niż punktowa.
+-Poprawa błędu w kreskowaiu skarp, grobli, wałów w przypadku gdy dlugość polilini była 0.
+-Poprawa wyglądu kreskowania dla małych skarp, grobli, wałów.
+-Zmiana symboli kanał technologiczny i obudowa ochronna przy multilinii.
+-Dodawane serwisy są od teraz widoczne od razu przy dodawaniu.
 2.0.0 2023.01.13
 -Optymalizacja importu i renderowania
 -Dodanie obsługi importu plików zawierających kilka baz. Obiekty które są niezgodne z modelami BDOT, EGiB i GESUT 2021 są wczytywane, ale nie jest obsługiwana ich odpowiednia wizualizacja.
@@ -34,22 +36,22 @@
 -Poprawa wielkości i umieszczania niektórych symboli punktowych.
 -Dodanie opcji postawienia kawy.
 1.1.1 2022.08.01
--Dodanie obslugi bledu przy nieprawidlowym namespace w gml
--Poprawa etykietowania przy imporcie
--Poprawa etykiet KARTO dla urzadzen liniowych i towarzyszacych w gesut
--Poprawa symbolu dla bariery ochronnej
--Dodanie mozliwosci obslugi wtyczki z rastrowym podkladem mapowym
--Obsluga etykiet tylko dla warstw z rozporzadzenia
--Korekta UI o informowaniu o nieaktualnej wersji wtyczki 
+-Dodanie obslugi bledu przy nieprawidlowym namespace w gml.
+-Poprawa etykietowania przy imporcie.
+-Poprawa etykiet KARTO dla urzadzen liniowych i towarzyszacych w gesut.
+-Poprawa symbolu dla bariery ochronnej.
+-Dodanie mozliwosci obslugi wtyczki z rastrowym podkladem mapowym.
+-Obsluga etykiet tylko dla warstw z rozporzadzenia.
+-Korekta UI o informowaniu o nieaktualnej wersji wtyczki .
 1.1.0 2022.07.26
--Poprawa skarp w 1000
--Zmiana skarp i grobli analogicznie do skarp
--Poprawa blednych skarp
--Uproszczenie opisow w formatce
--Dodanie progressBar przy imporcie
--Generowanie kreskowania przy imporcie
--Poprawa sciezek do ui
--Uproszczenie wtyczki
--Poprawa bledu generowania skarp
+-Poprawa skarp w 1000.
+-Zmiana skarp i grobli analogicznie do skarp.
+-Poprawa blednych skarp.
+-Uproszczenie opisow w formatce.
+-Dodanie progressBar przy imporcie.
+-Generowanie kreskowania przy imporcie.
+-Poprawa sciezek do ui.
+-Uproszczenie wtyczki.
+-Poprawa bledu generowania skarp.
 1.0.0 2022.07.21
--Utworzenie wtyczki QMapa
+-Utworzenie wtyczki QMapa.
