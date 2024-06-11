@@ -69,15 +69,16 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         self.setupUi(self)
 
-        runAnalytics(1, Qgis.QGIS_VERSION)
+        # sprawdzenie wersji programu
+        plugin_ver = ChangeAppearance().checkVersion(self.lbVersion)
+
+        runAnalytics(1, f"{Qgis.QGIS_VERSION}, {plugin_ver}")
 
         self.cmbStylization.addItems(Main().getStylizations(omit_special=True))
 
         # aktywne zbiory dla fillowania
         self.active_sets = []
 
-        # sprawdzenie wersji programu
-        ChangeAppearance().checkVersion(self.lbVersion)
 
         # Dodanie aktualnej informacji
         ChangeAppearance().checkAdditionalInfo(self.lbAdditionalInfo)

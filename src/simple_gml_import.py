@@ -549,7 +549,7 @@ class SimpleGmlImport():
                 print('Czas 100%:', datetime.now() - start_time)
 
                 sum_counting = self.countObjectsByType(counting_dict)
-                imp_info = self.createAnalysisString(sum_counting) + ' ' + str(datetime.now() - start_time)
+                imp_info = self.createAnalysisString(sum_counting) + ', ' + str(datetime.now() - start_time)
 
                 runAnalytics(2, imp_info)
                 print('Koniec importu pliku:', name)

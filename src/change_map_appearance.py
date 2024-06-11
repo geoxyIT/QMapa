@@ -13,15 +13,17 @@ class ChangeAppearance():
 
     def checkVersion(self, lbVersion):
         """sprawdzenie czy zainstalowana wersja wtyczki jest aktualna"""
+        local_path = (os.path.join(os.path.dirname(__file__), '..', 'metadata.txt'))
+        local_ver = regVer(getLocalText(local_path))
         try:
             URL = 'https://raw.githubusercontent.com/geoxyIT/QMapa/main/metadata.txt'
-            local_path = (os.path.join(os.path.dirname(__file__), '..', 'metadata.txt'))
             hub_ver = regVer(getHubText(URL))
-            local_ver = regVer(getLocalText(local_path))
             compareVersions(lbVersion, hub_ver, local_ver)
         except Exception as e:
             print('Błąd sprawdzania aktualności wersji:', e)
             print('Sprawdź swoje połączenie internetowe.')
+
+        return local_ver
 
     def checkAdditionalInfo(self, lbAdditionalInfo):
         """sprawdzenie czy zainstalowana wersja wtyczki jest aktualna"""
