@@ -1,5 +1,5 @@
 
-# Copyright (c) 2010-2022 openpyxl
+# Copyright (c) 2010-2024 openpyxl
 
 
 from io import BytesIO
@@ -7,7 +7,11 @@ from warnings import warn
 
 from openpyxl.xml.functions import fromstring
 from openpyxl.xml.constants import IMAGE_NS
-from openpyxl.packaging.relationship import get_rel, get_rels_path, get_dependents
+from openpyxl.packaging.relationship import (
+    get_rel,
+    get_rels_path,
+    get_dependents,
+)
 from openpyxl.drawing.spreadsheet_drawing import SpreadsheetDrawing
 from openpyxl.drawing.image import Image, PILImage
 from openpyxl.chart.chartspace import ChartSpace
@@ -18,7 +22,7 @@ def find_images(archive, path):
     """
     Given the path to a drawing file extract charts and images
 
-    Ingore errors due to unsupported parts of DrawingML
+    Ignore errors due to unsupported parts of DrawingML
     """
 
     src = archive.read(path)
@@ -36,7 +40,11 @@ def find_images(archive, path):
 
     charts = []
     for rel in drawing._chart_rels:
-        cs = get_rel(archive, deps, rel.id, ChartSpace)
+        try:
+            cs = get_rel(archive, deps, rel.id, ChartSpace)
+        except TypeError as e:
+            warn(f"Unable to read chart {rel.id} from {path} {e}")
+            continue
         chart = read_chart(cs)
         chart.anchor = rel.anchor
         charts.append(chart)
@@ -46,7 +54,7 @@ def find_images(archive, path):
         return charts, images
 
     for rel in drawing._blip_rels:
-        dep = deps[rel.embed]
+        dep = deps.get(rel.embed)
         if dep.Type == IMAGE_NS:
             try:
                 image = Image(BytesIO(archive.read(dep.target)))

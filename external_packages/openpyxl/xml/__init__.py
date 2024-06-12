@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2022 openpyxl
+# Copyright (c) 2010-2024 openpyxl
 
 
 """Collection of XML resources compatible across different Python versions"""

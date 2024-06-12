@@ -1,9 +1,10 @@
-# Copyright (c) 2010-2022 openpyxl
+# Copyright (c) 2010-2024 openpyxl
 
 from copy import copy
 
 from openpyxl.compat import safe_string
 from openpyxl.utils import (
+    get_column_letter,
     get_column_interval,
     column_index_from_string,
     range_boundaries,
@@ -60,6 +61,10 @@ class Dimension(Strict, StyleableObject):
         cp.__init__(**attrib)
         cp._style = copy(self._style)
         return cp
+
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} Instance, Attributes={dict(self)}>"
 
 
 class RowDimension(Dimension):
@@ -174,6 +179,11 @@ class ColumnDimension(Dimension):
         """
         if not all([self.min, self.max]):
             self.min = self.max = column_index_from_string(self.index)
+
+    @property
+    def range(self):
+        """Return the range of cells actually covered"""
+        return f"{get_column_letter(self.min)}:{get_column_letter(self.max)}"
 
 
     def to_tree(self):

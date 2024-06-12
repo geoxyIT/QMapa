@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2022 openpyxl
+# Copyright (c) 2010-2024 openpyxl
 
 from openpyxl.descriptors.serialisable import Serialisable
 from openpyxl.descriptors import (
@@ -333,7 +333,8 @@ class SpreadsheetDrawing(Serialisable):
 
     def _write_rels(self):
         rels = RelationshipList()
-        rels.Relationship = self._rels
+        for r in self._rels:
+            rels.append(r)
         return rels.to_tree()
 
 

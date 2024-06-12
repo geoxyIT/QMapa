@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2022 openpyxl
+# Copyright (c) 2010-2024 openpyxl
 
 """Worksheet is the 2nd-level container in Excel."""
 
@@ -20,13 +20,15 @@ from openpyxl.utils import (
     get_column_letter,
     range_boundaries,
     coordinate_to_tuple,
-    absolute_coordinate,
 )
 from openpyxl.cell import Cell, MergedCell
 from openpyxl.formatting.formatting import ConditionalFormattingList
 from openpyxl.packaging.relationship import RelationshipList
 from openpyxl.workbook.child import _WorkbookChild
-from openpyxl.workbook.defined_name import COL_RANGE_RE, ROW_RANGE_RE
+from openpyxl.workbook.defined_name import (
+    DefinedNameDict,
+)
+
 from openpyxl.formula.translate import Translator
 
 from .datavalidation import DataValidationList
@@ -54,6 +56,13 @@ from .properties import WorksheetProperties
 from .pagebreak import RowBreak, ColBreak
 from .scenario import ScenarioList
 from .table import TableList
+from .formula import ArrayFormula
+from .print_settings import (
+    PrintTitles,
+    ColRange,
+    RowRange,
+    PrintArea,
+)
 
 
 class Worksheet(_WorkbookChild):
@@ -120,16 +129,14 @@ class Worksheet(_WorkbookChild):
         self.print_options = PrintOptions()
         self._print_rows = None
         self._print_cols = None
-        self._print_area = None
+        self._print_area = PrintArea()
         self.page_margins = PageMargins()
         self.views = SheetViewList()
         self.protection = SheetProtection()
+        self.defined_names = DefinedNameDict()
 
         self._current_row = 0
         self.auto_filter = AutoFilter()
-        self.paper_size = None
-        self.formula_attributes = {}
-        self.orientation = None
         self.conditional_formatting = ConditionalFormattingList()
         self.legacy_drawing = None
         self.sheet_properties = WorksheetProperties()
@@ -139,7 +146,7 @@ class Worksheet(_WorkbookChild):
 
     @property
     def sheet_view(self):
-        return self.views.sheetView[0]
+        return self.views.active
 
 
     @property
@@ -153,8 +160,14 @@ class Worksheet(_WorkbookChild):
 
 
     @property
-    def page_breaks(self):
-        return (self.row_breaks, self.col_breaks) # legacy, remove at some point
+    def array_formulae(self):
+        """Returns a dictionary of cells with array formulae and the cells in array"""
+        result = {}
+        for c in self._cells.values():
+            if c.data_type == "f":
+                if isinstance(c.value, ArrayFormula):
+                    result[c.coordinate] = c.value.ref
+        return result
 
 
     @property
@@ -162,20 +175,11 @@ class Worksheet(_WorkbookChild):
         return self.sheet_view.showGridLines
 
 
-    """ To keep compatibility with previous versions"""
-    @property
-    def show_summary_below(self):
-        return self.sheet_properties.outlinePr.summaryBelow
-
-    @property
-    def show_summary_right(self):
-        return self.sheet_properties.outlinePr.summaryRight
-
-
     @property
     def freeze_panes(self):
         if self.sheet_view.pane is not None:
             return self.sheet_view.pane.topLeftCell
+
 
     @freeze_panes.setter
     def freeze_panes(self, topLeftCell=None):
@@ -250,7 +254,7 @@ class Worksheet(_WorkbookChild):
         Will create a new cell if one doesn't already exist.
         """
         if not 0 < row < 1048577:
-            raise ValueError("Row numbers must be between 1 and 1048576")
+            raise ValueError(f"Row numbers must be between 1 and 1048576. Row number supplied was {row}")
         coordinate = (row, column)
         if not coordinate in self._cells:
             cell = Cell(self, row=row, column=column)
@@ -325,14 +329,13 @@ class Worksheet(_WorkbookChild):
 
     @property
     def min_row(self):
-        """The minimium row index containing data (1-based)
+        """The minimum row index containing data (1-based)
 
         :type: int
         """
         min_row = 1
         if self._cells:
-            rows = set(c[0] for c in self._cells)
-            min_row = min(rows)
+            min_row = min(self._cells)[0]
         return min_row
 
 
@@ -344,8 +347,7 @@ class Worksheet(_WorkbookChild):
         """
         max_row = 1
         if self._cells:
-            rows = set(c[0] for c in self._cells)
-            max_row = max(rows)
+            max_row = max(self._cells)[0]
         return max_row
 
 
@@ -357,8 +359,7 @@ class Worksheet(_WorkbookChild):
         """
         min_col = 1
         if self._cells:
-            cols = set(c[1] for c in self._cells)
-            min_col = min(cols)
+            min_col = min(c[1] for c in self._cells)
         return min_col
 
 
@@ -370,8 +371,7 @@ class Worksheet(_WorkbookChild):
         """
         max_col = 1
         if self._cells:
-            cols = set(c[1] for c in self._cells)
-            max_col = max(cols)
+            max_col = max(c[1] for c in self._cells)
         return max_col
 
 
@@ -524,6 +524,14 @@ class Worksheet(_WorkbookChild):
     def columns(self):
         """Produces all cells in the worksheet, by column  (see :func:`iter_cols`)"""
         return self.iter_cols()
+
+
+    @property
+    def column_groups(self):
+        """
+        Return a list of column ranges where more than one column
+        """
+        return [cd.range for cd in self.column_dimensions.values() if cd.min and cd.max > cd.min]
 
 
     def set_printer_settings(self, paper_size, orientation):
@@ -829,7 +837,7 @@ class Worksheet(_WorkbookChild):
     def print_title_rows(self):
         """Rows to be printed at the top of every page (ex: '1:3')"""
         if self._print_rows:
-            return self._print_rows
+            return str(self._print_rows)
 
 
     @print_title_rows.setter
@@ -839,16 +847,14 @@ class Worksheet(_WorkbookChild):
         format `1:3`
         """
         if rows is not None:
-            if not ROW_RANGE_RE.match(rows):
-                raise ValueError("Print title rows must be the form 1:3")
-        self._print_rows = rows
+            self._print_rows = RowRange(rows)
 
 
     @property
     def print_title_cols(self):
         """Columns to be printed at the left side of every page (ex: 'A:C')"""
         if self._print_cols:
-            return self._print_cols
+            return str(self._print_cols)
 
 
     @print_title_cols.setter
@@ -858,17 +864,13 @@ class Worksheet(_WorkbookChild):
         format ``A:C`
         """
         if cols is not None:
-            if not COL_RANGE_RE.match(cols):
-                raise ValueError("Print title cols must be the form C:D")
-        self._print_cols = cols
+            self._print_cols = ColRange(cols)
 
 
     @property
     def print_titles(self):
-        if self.print_title_cols and self.print_title_rows:
-            return ",".join([self.print_title_rows, self.print_title_cols])
-        else:
-            return self.print_title_rows or self.print_title_cols
+        titles = PrintTitles(cols=self._print_cols, rows=self._print_rows, title=self.title)
+        return str(titles)
 
 
     @property
@@ -877,18 +879,22 @@ class Worksheet(_WorkbookChild):
         The print area for the worksheet, or None if not set. To set, supply a range
         like 'A1:D4' or a list of ranges.
         """
-        return self._print_area
+        self._print_area.title = self.title
+        return str(self._print_area)
 
 
     @print_area.setter
     def print_area(self, value):
         """
-        Range of cells in the form A1:D4 or list of ranges
+        Range of cells in the form A1:D4 or list of ranges. Print area can be cleared
+        by passing `None` or an empty list
         """
-        if isinstance(value, str):
-            value = [value]
-
-        self._print_area = [absolute_coordinate(v) for v in value]
+        if not value:
+            self._print_area = PrintArea()
+        elif isinstance(value, str):
+            self._print_area = PrintArea.from_string(value)
+        elif hasattr(value, "__iter__"):
+            self._print_area = PrintArea.from_string(",".join(value))
 
 
 def _gutter(idx, offset, max_val):

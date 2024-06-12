@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2022 openpyxl
+# Copyright (c) 2010-2024 openpyxl
 
 from array import array
 
@@ -182,6 +182,10 @@ class CellStyleList(Serialisable):
 
 
     def __getitem__(self, idx):
+        try:
+            return self.xf[idx]
+        except IndexError:
+            print((f"{idx} is out of range"))
         return self.xf[idx]
 
 

@@ -1,23 +1,24 @@
-# Copyright (c) 2010-2022 openpyxl
+# Copyright (c) 2010-2024 openpyxl
 
 import datetime
 
-from openpyxl.compat import safe_string
 from openpyxl.descriptors import (
-    String,
     DateTime,
     Alias,
-    )
+)
 from openpyxl.descriptors.serialisable import Serialisable
 from openpyxl.descriptors.nested import NestedText
-from openpyxl.xml.functions import (Element, QName, tostring)
+from openpyxl.xml.functions import (
+    Element,
+    QName,
+)
 from openpyxl.xml.constants import (
     COREPROPS_NS,
     DCORE_NS,
     XSI_NS,
     DCTERMS_NS,
-    DCTERMS_PREFIX
 )
+
 
 class NestedDateTime(DateTime, NestedText):
 
@@ -29,6 +30,7 @@ class NestedDateTime(DateTime, NestedText):
             tagname = "{%s}%s" % (namespace, tagname)
         el = Element(tagname)
         if value is not None:
+            value = value.replace(tzinfo=None)
             el.text = value.isoformat(timespec="seconds") + 'Z'
             return el
 
@@ -69,13 +71,13 @@ class DocumentProperties(Serialisable):
     identifier = NestedText(expected_type=str, allow_none=True, namespace=DCORE_NS)
     language = NestedText(expected_type=str, allow_none=True, namespace=DCORE_NS)
     # Dublin Core Terms
-    created = QualifiedDateTime(allow_none=True, namespace=DCTERMS_NS)
-    modified = QualifiedDateTime(allow_none=True, namespace=DCTERMS_NS)
+    created = QualifiedDateTime(allow_none=True, namespace=DCTERMS_NS) # assumed to be UTC
+    modified = QualifiedDateTime(allow_none=True, namespace=DCTERMS_NS) # assumed to be UTC
 
     __elements__ = ("creator", "title", "description", "subject","identifier",
-                  "language", "created", "modified", "lastModifiedBy", "category",
-                  "contentStatus", "version", "revision", "keywords", "lastPrinted",
-                  )
+                    "language", "created", "modified", "lastModifiedBy", "category",
+                    "contentStatus", "version", "revision", "keywords", "lastPrinted",
+                    )
 
 
     def __init__(self,
@@ -86,23 +88,24 @@ class DocumentProperties(Serialisable):
                  lastPrinted=None,
                  revision=None,
                  version=None,
-                 created=datetime.datetime.utcnow(),
+                 created=None,
                  creator="openpyxl",
                  description=None,
                  identifier=None,
                  language=None,
-                 modified=datetime.datetime.utcnow(),
+                 modified=None,
                  subject=None,
                  title=None,
                  ):
+        now = datetime.datetime.now(tz=datetime.timezone.utc).replace(tzinfo=None)
         self.contentStatus = contentStatus
         self.lastPrinted = lastPrinted
         self.revision = revision
         self.version = version
         self.creator = creator
         self.lastModifiedBy = lastModifiedBy
-        self.modified = modified
-        self.created = created
+        self.modified = modified or now
+        self.created = created or now
         self.title = title
         self.subject = subject
         self.description = description

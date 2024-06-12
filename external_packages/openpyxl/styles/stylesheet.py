@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2022 openpyxl
+# Copyright (c) 2010-2024 openpyxl
 
 from warnings import warn
 
@@ -108,7 +108,7 @@ class Stylesheet(Serialisable):
         Merge named style names "cellStyles" with their associated styles
         "cellStyleXfs"
         """
-        named_styles = self.cellStyles.names
+        named_styles = self.cellStyles.remove_duplicates()
 
         for style in named_styles:
             self._expand_named_style(style)

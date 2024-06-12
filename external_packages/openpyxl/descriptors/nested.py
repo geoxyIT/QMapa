@@ -1,4 +1,4 @@
-#copyright openpyxl 2010-2015
+# Copyright (c) 2010-2024 openpyxl
 
 """
 Generic serialisable classes
@@ -13,9 +13,7 @@ from .base import (
     Float,
     Integer,
     String,
-    Text,
     )
-from .sequence import Sequence
 from openpyxl.compat import safe_string
 from openpyxl.xml.functions import Element, localname, whitespace
 
