@@ -21,7 +21,7 @@ repository=https://github.com/geoxyIT/QMapa
 hasProcessingProvider=no
 
 changelog=
-    2.2.0 2024.06.11
+    2.2.0 2024.06.12
     -Dostosowanie importu do nowszych wersji QGIS (z GDAL 3.9.0).
     -Poprawienie symbolizacji dla prezentacji graficznej.
     -Rozpoznawanie niekompletnego pliku, który zawiera tylko prezentację graficzną a nie zawiera obiektów.
