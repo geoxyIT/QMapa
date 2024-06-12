@@ -296,7 +296,12 @@ class SimpleGmlImport():
                 if cl_name.lower().endswith('prezentacjagraficzna'):
                     sum_counting[b_name]['karto'] += cl_inf[0]
                 else:
-                    sum_counting[b_name]['obiekty'] += cl_inf[0]
+                    if len(cl_inf) >= 4:
+                        # dla znanych baz jest kilka wersji i trzeba jes zsumowac
+                        sum_counting[b_name]['obiekty'] += sum(cl_inf[0:4])
+                    else:
+                        # dla niestandardowych jest tylko jedna
+                        sum_counting[b_name]['obiekty'] += cl_inf[0]
         return sum_counting
 
 
