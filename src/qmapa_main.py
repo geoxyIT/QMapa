@@ -13,6 +13,7 @@ from io import StringIO
 import cProfile
 import pstats
 
+import gc
 
 class Main:
     def __init__(self):
@@ -55,6 +56,7 @@ class Main:
         sty_path = os.path.join(dir_path, '..', 'stylization')
         stylization_dir = os.path.join(sty_path, str(style_name))
         for layer in layers:
+            #layer.setRenderer(None)
             if layer.type() == QgsMapLayerType.VectorLayer:
                 if layer.geometryType() == 0:
                     geom_type = ('point')
@@ -64,17 +66,34 @@ class Main:
                     geom_type = ('polygon')
                 else:
                     geom_type = ''
+
+                layer.setRenderer(QgsNullSymbolRenderer())
+                layer.triggerRepaint()
+
+                layer.setLabeling(None)
+                layer.setLabelsEnabled(False)
+                layer.triggerRepaint()
+                iface.layerTreeView().refreshLayerSymbology(layer.id())
+
                 try:
                     style_file_path = os.path.join(stylization_dir, geom_type, layer.name() + '.qml')
                     # todo: zrobic zeby probowalo pobierac takze pliki dla wartw z koncowka geometrii (_0, _1, _2)
-                    #categories = QgsMapLayer.StyleCategory.Labeling | QgsMapLayer.StyleCategory.Symbology
-                    #layer.loadNamedStyle(style_file_path, categories)
-                    layer.loadNamedStyle(theURI=style_file_path,
-                                         loadFromLocalDb=False)
+                    categories = QgsMapLayer.StyleCategory.Labeling | QgsMapLayer.StyleCategory.Symbology
+                    layer.loadNamedStyle(style_file_path, categories)
+
+
+                    '''layer.styleManager().reset()
+                    layer = self.reset_layer_renderer(layer)'''
+
+                    '''layer.loadNamedStyle(theURI=style_file_path,
+                                         loadFromLocalDb=False)'''
+
                     layer.triggerRepaint()
                     iface.layerTreeView().refreshLayerSymbology(layer.id())
                 except:
                     pass
+
+        gc.collect()
 
     def createGroups(self, layer_path):
         """tworzenie grupy dla plikow ktore nie maja geometrii oraz grupy glownej dla reszty"""

@@ -44,8 +44,18 @@ def runAnalytics(analysis_code, analysis_info = '') -> int:
     """analysis code: int
     analysis_info: string"""
     # otwarcie: 1
+    #   1, "<wersja_qgis>, <wersja_wtyczki>"
     # import: 2
+    #   2, 1 - naciśnięcie importuj
+    #   2, 2 - rozpoczęcie importowania
+    #   2, "<informacje_o_imporcie>"
+    #   2, "errs:x" - bledne obiekty (corrupted)
     # redakcja: 3
+    #   3, 1 - stylizacja
+    #   3, 2 - redakcja auto/karto
+    #   3, 3 - wypelnij kolorami
+    #   3, 4 - wersje
+
     analysis_info = str(analysis_info)
 
     current_version = Qgis.QGIS_VERSION

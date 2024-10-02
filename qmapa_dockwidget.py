@@ -35,6 +35,8 @@ from qgis.utils import iface
 from qgis.core import *
 from qgis.gui import *
 
+import gc
+
 # import z folderu src
 from .src.qmapa_main import Main
 from .src.express_yourself import ExpressYourself
@@ -110,24 +112,27 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     @pyqtSlot()
     def on_pbImport_clicked(self):
         """Zaimportowanie pliku GML z konwersją do GPKG oraz nadaniem grup warstw"""
+        gc.collect()
         runAnalytics(2, 1)
         dial = QFileDialog(self)
         name, ext = dial.getOpenFileName(self, caption='Wybierz wejściowy plik GML',
                                                 filter='gml (*.gml)')
 
         # zaimportowanie pliku gml
-        vev_lays_list = SimpleGmlImport().runImport(name, self.progressBar, self.cmbStylization.currentText())
+        if name:
+            vec_lays_list = SimpleGmlImport().runImport(name, self.progressBar, self.cmbStylization.currentText())
 
-        ChangeAppearance().setRedLabels(self.cmbReda.currentText())
-        self.dispSettings()
-        self.back_wers = False
-        self.back_fill = False
-        if self.gbShowWers.isChecked():
-            self.dispVers(vev_lays_list)  # sprawdzenie i nadanie wyswietlania wersji
-        if self.gbFill.isChecked():
-            self.fillSelectSet(vev_lays_list)  # sprawdzenie i nadanie fillowania
-        ChangeAppearance().setLegendScale(ChangeAppearance().getSelectedScale(self.cmbStylization.currentText()))
-        QCoreApplication.processEvents()
+            ChangeAppearance().setRedLabels(self.cmbReda.currentText())
+            self.dispSettings()
+            self.back_wers = False
+            self.back_fill = False
+            if self.gbShowWers.isChecked():
+                self.dispVers(vec_lays_list)  # sprawdzenie i nadanie wyswietlania wersji
+            if self.gbFill.isChecked():
+                self.fillSelectSet(vec_lays_list)  # sprawdzenie i nadanie fillowania
+            ChangeAppearance().setLegendScale(ChangeAppearance().getSelectedScale(self.cmbStylization.currentText()))
+            QCoreApplication.processEvents()
+        vec_lays_list = None
 
     def on_cmbStylization_currentTextChanged(self):
         """ustaw stylizację wybraną w comboboxie"""

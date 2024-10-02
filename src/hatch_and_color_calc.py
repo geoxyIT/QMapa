@@ -1,9 +1,12 @@
+import copy
+
 from qgis.PyQt.QtCore import QVariant
 from qgis.utils import iface
 from qgis.core import *
 from qgis.gui import *
 from .config import ges_colors, sewer_colors
 import math
+import sys
 
 import time
 
@@ -278,46 +281,46 @@ def getFeaturesToHatch(layer, calc_geom_field):
     """W zaleznosci od nazwy warstwy (layer) funkcja pobiera z niej obiekty, dla ktorych ma byc liczone kreskowanie.
     Atrybut calc_geom_column wskazuje nazwe kolumny, w ktorej bedzie zapisywana geometria - nalezy ja podac poniewaz
     funkcja nie zwraca wszystkich atrybutow obiektu tylko te niezbedne"""
-    features = []
+    features_list = []
     if 'egb_obiekttrwale' in layer.name().lower():
         # pobiera tylko obiekty typu schody
-        features = layer.getFeatures(
+        features_list = (feat for feat in layer.getFeatures(
             QgsFeatureRequest().setSubsetOfAttributes(
                 ['gml_id', 'rodzajobiektuzwiazanegozbudynkiem', calc_geom_field],
                 layer.fields()).setFilterExpression(
-                '"rodzajobiektuzwiazanegozbudynkiem"=\'s\''))
+                '"rodzajobiektuzwiazanegozbudynkiem"=\'s\'')))
     elif 'ot_obiekttrwale' in layer.name().lower():
         # pobiera tylko obiekty typu schody
-        features = layer.getFeatures(
+        features_list = (feat for feat in layer.getFeatures(
             QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajobiektu', calc_geom_field],
                                                       layer.fields()).setFilterExpression(
-                '"rodzajobiektu"=\'s\''))
+                '"rodzajobiektu"=\'s\'')))
     elif 'ot_komunikacja' in layer.name().lower():
         # pobiera tylko obiekty typu schody
-        features = layer.getFeatures(
+        features_list = (feat for feat in layer.getFeatures(
             QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajobiektu', calc_geom_field],
                                                       layer.fields()).setFilterExpression(
-                '"rodzajobiektu"=\'s\''))
+                '"rodzajobiektu"=\'s\'')))
     elif 'ot_skarpa' in layer.name().lower():
         # pobiera wszystkie obiekty
-        features = layer.getFeatures(
+        features_list = (feat for feat in layer.getFeatures(
             QgsFeatureRequest().setSubsetOfAttributes(['gml_id', calc_geom_field],
-                                                      layer.fields()))
+                                                      layer.fields())))
     elif 'ot_budowle' in layer.name().lower():
         # pobiera tylko sciany oporowe
-        features = layer.getFeatures(
+        features_list = (feat for feat in layer.getFeatures(
             QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajbudowli', calc_geom_field],
                                                       layer.fields()).setFilterExpression(
-                '"rodzajbudowli"=\'n\''))
+                '"rodzajbudowli"=\'n\'')))
     elif 'ot_wody' in layer.name().lower():
         # pobiera tylko groble i waly
-        features = layer.getFeatures(
+        features_list = (feat for feat in layer.getFeatures(
             QgsFeatureRequest().setSubsetOfAttributes(
                 ['gml_id', 'rodzajobiektu', 'rodzajobiektu', calc_geom_field],
                 layer.fields()).setFilterExpression(
-                '"rodzajobiektu"=\'w\' or "rodzajobiektu"=\'g\''))
+                '"rodzajobiektu"=\'w\' or "rodzajobiektu"=\'g\'')))
 
-    return features
+    return features_list
 
 def calculateHatching(layer, object_type, scale, ref_lay_ids):
     """
@@ -335,17 +338,20 @@ def calculateHatching(layer, object_type, scale, ref_lay_ids):
     # - jesto to konieczne zeby bylo robione zawsze, unikamy w ten sposob error w symbolach
     calc_geom_field = 'obliczona_geometria' + '_' + scale
     field_index = layer.fields().indexFromName(calc_geom_field)
+
     if field_index == -1:
         field = QgsField(calc_geom_field, QVariant.String)
         layer.dataProvider().addAttributes([field])
         layer.updateFields()
 
-    if ref_lay_ids and layer.geometryType() == 2 and getFeaturesToHatch(layer, calc_geom_field) != []:
+    features_to_calc = list(getFeaturesToHatch(layer, calc_geom_field))
+    if ref_lay_ids and layer.geometryType() == 2 and features_to_calc != []:
         field_index = layer.fields().indexFromName(calc_geom_field)
         attribute_map = {}
         if field_index >= 0:
-            features = getFeaturesToHatch(layer, calc_geom_field)  # tutaj jest pobierany iterator poniewaz gdy jest wczesniej to nie zawsze dobrze dziala
-            for feature in features:
+            #features_to_calc = getFeaturesToHatch(layer, calc_geom_field)  # tutaj jest pobierany iterator poniewaz gdy jest wczesniej to nie zawsze dobrze dziala
+            features_to_calc = list(getFeaturesToHatch(layer, calc_geom_field))
+            for feature in features_to_calc:
                 feature_geom = feature.geometry()
                 calculated_hatching_wkt = ''
                 if object_type.lower() == 'skarpa' or object_type.lower() == 'wody':
@@ -354,7 +360,7 @@ def calculateHatching(layer, object_type, scale, ref_lay_ids):
                         start_point_lay_id = str(ref_lay_ids[0])
                         end_point_lay_id = str(ref_lay_ids[1])
 
-                        # nazwa i wartosc pola w  poczatku/ koncu gory po ktorej ma byc odnajdywana/y
+                        # nazwa i wartosc pola w poczatku/ koncu gory po ktorej ma byc odnajdywana/y
                         ref_key_field_name = 'gml_id'
                         ref_key_field_value = feature.attribute('gml_id')
 
@@ -369,8 +375,12 @@ def calculateHatching(layer, object_type, scale, ref_lay_ids):
                             end_point_layer = QgsProject.instance().mapLayers()[end_point_lay_id]
 
                             # pobranie odpowiadajacych obiektow i ich geometrii
-                            start_points = [f.geometry() for f in start_point_layer.getFeatures(point_request)]
-                            end_points = [f.geometry() for f in end_point_layer.getFeatures(point_request)]
+                            list_fit_start_features = list(start_point_layer.getFeatures(point_request))
+                            list_fit_end_features = list(end_point_layer.getFeatures(point_request))
+                            start_points = [f.geometry() for f in list_fit_start_features]
+                            end_points = [f.geometry() for f in list_fit_end_features]
+                            del list_fit_start_features
+                            del list_fit_end_features
                             start_points_geom = QgsGeometry().collectGeometry(start_points)
                             end_points_geom = QgsGeometry().collectGeometry(end_points)
 
@@ -403,11 +413,13 @@ def calculateHatching(layer, object_type, scale, ref_lay_ids):
                     # obliczanie kreskowania dla scian oporowych i schodow
                     if scale == '500' or scale == '1000':
                         polyline_lay_id = ref_lay_ids
+
                         polyline_layer = QgsProject.instance().mapLayers()[polyline_lay_id]
 
                         # nazwa i wartosc pola w polilini po ktorej ma byc odnajdywana/y
                         ref_key_field_name = 'gml_id'
                         ref_key_field_value = feature.attribute('gml_id')
+
 
                         # zapytanie do pobrania polilini kierunkowej
                         request = QgsFeatureRequest().setFilterExpression(
@@ -415,7 +427,9 @@ def calculateHatching(layer, object_type, scale, ref_lay_ids):
 
                         try:
                             # pobranie polilini i jej geometrii
-                            polyline = [f for f in polyline_layer.getFeatures(request)][0]
+                            list_fit_polyline_features = list(polyline_layer.getFeatures(request))
+                            polyline = [f for f in list_fit_polyline_features][0]
+                            del(list_fit_polyline_features)
                             polyline_geom = polyline.geometry()
 
                             if object_type.lower() == 'sciana':
@@ -451,6 +465,7 @@ def calculateHatching(layer, object_type, scale, ref_lay_ids):
                             calculated_hatching_wkt = ''
 
                 attribute_map.update({feature.id(): {field_index: calculated_hatching_wkt}})
+            features_to_calc = None
             # zapisanie atrybutow warstwy
             layer.dataProvider().changeAttributeValues(attribute_map)
 
@@ -474,7 +489,7 @@ def calculateColors(main_layer, field_name):
     # pobranie kolumny
     cum_sum_index = main_layer.fields().indexFromName(field_name)
     attribute_map_python = {}
-    features = main_layer.getFeatures()
+
 
     # utowrzenie slownika lokalneId: kolor, poprzez iteracje po warstwach
     dict_of_colors = {}
@@ -483,20 +498,22 @@ def calculateColors(main_layer, field_name):
     # pobranie dostępnych warstw
     layers = iface.mapCanvas().layers()
 
-    for layer in layers:
-        layer_name = layer.name()
+    for current_layer in layers:
+        layer_name = current_layer.name()
         if layer_name in ges_colors.keys():  # iteracja po nazwach warstw w słowniku ges_colors
             layer_color_type = ges_colors[layer_name][2]  # pobranie typu rodzajSieci albo zrodlo
             if layer_color_type == 'zrodlo':  # przypadek dla atrybutu zrodlo w config ges_color
                 layer_color = ges_colors[layer_name][3]  # wartość koloru
-                for pipe in layer.getFeatures():  # iteracja po obiektach w warstwie
+                current_layer_features = list(current_layer.getFeatures())
+                for pipe in current_layer_features:  # iteracja po obiektach w warstwie
                     # pobranie i wartości z kolumny lokalnyId
                     feature_local_id_idx = pipe.fieldNameIndex('lokalnyId')
                     feature_local_id = pipe.attributes()[feature_local_id_idx]
                     dict_of_colors[feature_local_id] = layer_color  # nadanie wartości koloru dla iip
             elif layer_color_type == 'rodzajSieci':  # przypadek dla atrybutu rodzajSieci
                 # rozbicie na kolory rodzajSieci ze zmiennej w config
-                for pipe in layer.getFeatures():
+                current_layer_features = list(current_layer.getFeatures())
+                for pipe in current_layer_features:
                     feature_local_id_idx = pipe.fieldNameIndex('lokalnyId')
                     feature_local_id = pipe.attributes()[feature_local_id_idx]
                     feature_sewer_idx = pipe.fieldNameIndex('rodzajSieci')
@@ -518,9 +535,10 @@ def calculateColors(main_layer, field_name):
                     else:  # warunek dla wszystkich dat, wartości null
                         calculated_color = black_color
                     dict_of_colors[feature_local_id] = calculated_color
-
+    current_layer_features = None
+    main_lay_features = list(main_layer.getFeatures())
     # iteracja po obiektach - ges_rzedna
-    for feature in features:
+    for feature in main_lay_features:
         # pobranie indeksu kolumny relacja i wyciągnięcie z niej wartości -> iip przewodu, do którego jest relacja
         column_index = feature.fieldNameIndex('relacja')
         relation_value = feature.attributes()[column_index]

@@ -63,7 +63,10 @@ class GmlModify:
             self.pr_name = f"{{{val}}}"
             all_pref_name_list.append(self.pr_name)
 
-            ET.register_namespace(name, val)
+            try:
+                ET.register_namespace(name, val)
+            except:
+                print(f"pominięto rejestracje namespace {name} {val}")
             self.namespaces_dict[val] = name
 
         self.pref_name_list = list(set(all_pref_name_list))

@@ -260,12 +260,23 @@ class SimpleGmlImport():
         ]'''
 
         # Perform vector translation using GDAL's VectorTranslate
+        # TODO: poszukac czy sa inne listy lub inne pola ktore trzeba by bylo przekonwertowac - raczej nie ma.
         my_env = os.environ.copy()
-        pyth_command = ("from osgeo import gdal; "
-                        "gdal.DontUseExceptions(); "
-                        "gdal.SetConfigOption('GML_SKIP_CORRUPTED_FEATURES', 'YES');"
-                        "gdal_options = gdal.VectorTranslateOptions(format='GPKG'); "
-                        f"gdal.VectorTranslate(r'{output_gpkg}', r'{input_gml}', options=gdal_options)")
+
+        # parametr mapFieldType został dodany od wersji 3.5 gdala, wtedy tez chyba zostala dodana osluga list
+        gdal_vers = gdal.__version__
+        if gdal_vers.startswith("3.4"):
+            pyth_command = ("from osgeo import gdal; "
+                            "gdal.DontUseExceptions(); "
+                            "gdal.SetConfigOption('GML_SKIP_CORRUPTED_FEATURES', 'YES');"
+                            "gdal_options = gdal.VectorTranslateOptions(format='GPKG'); "
+                            f"gdal.VectorTranslate(r'{output_gpkg}', r'{input_gml}', options=gdal_options)")
+        else:
+            pyth_command = ("from osgeo import gdal; "
+                            "gdal.DontUseExceptions(); "
+                            "gdal.SetConfigOption('GML_SKIP_CORRUPTED_FEATURES', 'YES');"
+                            "gdal_options = gdal.VectorTranslateOptions(format='GPKG', mapFieldType=['StringList=String', 'IntegerList=String' , 'RealList=String']); "
+                            f"gdal.VectorTranslate(r'{output_gpkg}', r'{input_gml}', options=gdal_options)")
 
         if sys.platform == 'win32':
             process = subprocess.run(["python", "-c", pyth_command], stderr=subprocess.PIPE, text=True, env=my_env,
@@ -274,6 +285,8 @@ class SimpleGmlImport():
             process = subprocess.run(["python3", "-c", pyth_command], stderr=subprocess.PIPE, text=True, env=my_env,
                                      shell=False)
         error_output = process.stderr
+        if error_output:
+            print(error_output)
 
         # rozdzielenie bledow po \n i usuniecie pustych linii
         conv_errors_list = [value for value in error_output.split('\n')
@@ -350,6 +363,7 @@ class SimpleGmlImport():
         :param current_style: string z nazwa aktualnego stylu (skali)
         """
         vec_layers_list = []
+        counting_dict = {}
         if name != '':
             iface.layerTreeView().layerTreeModel().setAutoCollapseLegendNodes(1)
             mod_gml_path, gpkg_path, report_path = self.paths(name)  # pobranie sciezek importu
@@ -363,6 +377,7 @@ class SimpleGmlImport():
                 progressBar.setValue(1)
                 gml_mod = GmlModify(name, mod_gml_path)
                 gml_mod.run()  # przerobienie pliku gml i zapisanie do nowego pliku
+                del gml_mod
 
                 progressBar.setValue(10)
                 print('Czas 10%:', datetime.now() - start_time)
@@ -418,6 +433,7 @@ class SimpleGmlImport():
                 print('Czas 70%:', datetime.now() - start_time)
                 QCoreApplication.processEvents()
 
+
                 # obliczenie kreskowania dla skarp, sciany, schodow i wstawienie geometrii do atrybutow
                 scales = ['500', '1000']
                 nr = 0
@@ -442,11 +458,12 @@ class SimpleGmlImport():
                         if 'ot_obiekttrwalezwiazany' in lay.name().lower():
                             calculateHatching(lay, 'schody', sc, ot_polyline_layer_id)
                         elif 'egb_obiekttrwalezwiazany' in lay.name().lower():
-                            calculateHatching(lay, 'schody', sc, egb_polyline_layer_id)
+                                calculateHatching(lay, 'schody', sc, egb_polyline_layer_id)
                         elif 'komunikacja' in lay.name().lower():
                             calculateHatching(lay, 'schody', sc, ot_polyline_layer_id)
                         elif 'budowle' in lay.name().lower():
                             calculateHatching(lay, 'sciana', sc, ot_polyline_layer_id)
+
 
                         if sc == '500':
                             if 'ges_rzedna' in lay.name().lower():
@@ -524,6 +541,8 @@ class SimpleGmlImport():
                                                    'EGB_JednostkaEwidencyjna_2_lokalnyId',
                                                    'EGB_AdresNieruchomosci_0_lokalnyId']
                                 Main().addObligatoryFields(lay, fields_list_egb)
+
+
                     if nr < len(scales):
                         progressBar.setValue(70 + int((nr / len(scales)) * 20))
                         print('Czas ' + str(70 + int((nr / len(scales)) * 20)) + '%:', datetime.now() - start_time)
