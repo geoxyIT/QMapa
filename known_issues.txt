@@ -23,7 +23,7 @@ Proponowane rozwiązania:
 - ekran akustyczny
 
 zastosować dodatkowo generator geometrii dla obu odsuniętych linii,
-który zmieni goemetrię na końcach, przykłady:
+który zmieni goemetrię na końcach, przykład:
 
 case when  is_closed( $geometry)
 then
