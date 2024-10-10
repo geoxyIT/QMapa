@@ -21,8 +21,8 @@ repository=https://github.com/geoxyIT/QMapa
 hasProcessingProvider=no
 
 changelog=
-    2.3.0 2024.10.01
-    -Poprawienie obliczania kreskowania i kolorów - błąd zawieszenia się przy 70%.
+    2.3.0 2024.10.10
+    -Poprawienie obliczania kreskowania i kolorów - błąd zawieszenia się przy 70%%.
     -Poprawienie wczytywania wielokrotnie występujących atrybutów (np. rodzaj sieci).
     2.2.0 2024.06.12
     -Dostosowanie importu do nowszych wersji QGIS (z GDAL 3.9.0).

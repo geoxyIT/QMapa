@@ -1,4 +1,4 @@
-2.3.0 2024.10.01
+2.3.0 2024.10.10
 -Poprawienie obliczania kreskowania i kolorów - błąd zawieszenia się przy 70%.
 -Poprawienie wczytywania wielokrotnie występujących atrybutów (np. rodzaj sieci).
 2.2.0 2024.06.12
