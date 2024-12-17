@@ -1,24 +1,23 @@
-import os, sys
+import os, sys, subprocess
+from osgeo import gdal
+from datetime import datetime
+from distutils.version import LooseVersion
 from enum import Enum
 from qgis.utils import iface
 from qgis.core import *
 from qgis.PyQt.QtWidgets import QMessageBox
-from .gml_modify import GmlModify
-from datetime import datetime
-from osgeo import gdal
-from .load_gpkg import loadGpkg
-from .hatch_and_color_calc import calculateHatching, calculateColors
-from .create_report_file import report
-from .config import correct_layers
-from .qmapa_main import Main
-from .change_map_appearance import ChangeAppearance
 from qgis.PyQt.QtCore import QCoreApplication, QVariant
-from .layer_order import setNewOrder
 
 from .analytics import runAnalytics
+from .create_report_file import report
+from .config import correct_layers
+from .gml_modify import GmlModify
+from .hatch_and_color_calc import calculateHatching, calculateColors
+from .load_gpkg import loadGpkg
+from .qmapa_main import Main
+from .change_map_appearance import ChangeAppearance
+from .layer_order import setNewOrder
 
-import subprocess
-import time
 
 class SimpleGmlImport():
     def __init__(self):
@@ -265,7 +264,7 @@ class SimpleGmlImport():
 
         # parametr mapFieldType został dodany od wersji 3.5 gdala, wtedy tez chyba zostala dodana osluga list
         gdal_vers = gdal.__version__
-        if gdal_vers.startswith("3.4"):
+        if LooseVersion(gdal_vers) < LooseVersion("3.7.0"):
             pyth_command = ("from osgeo import gdal; "
                             "gdal.DontUseExceptions(); "
                             "gdal.SetConfigOption('GML_SKIP_CORRUPTED_FEATURES', 'YES');"

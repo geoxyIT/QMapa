@@ -6,7 +6,7 @@
 name=QMapa GML 2021
 qgisMinimumVersion=3.24
 description=Wizualizacja mapy zasadniczej z plików GML obejmujących zbiory danych EGiB, GESUT i BDOT500.
-version=2.3.0
+version=2.3.1
 author=GEOXY sp. z o.o. 
 email=qgis@geoxy.pl
 
@@ -21,12 +21,14 @@ repository=https://github.com/geoxyIT/QMapa
 hasProcessingProvider=no
 
 changelog=
+    2.3.1 2024.12.16
+    -Dostosowanie obsługi VectorTranslateOptions w zależności od wersji GDAL (< 3.7.0)
     2.3.0 2024.10.10
-    -Poprawienie obliczania kreskowania i kolorów - błąd zawieszenia się przy 70%%.
-    -Poprawienie wczytywania wielokrotnie występujących atrybutów (np. rodzaj sieci).
+    -Poprawa obliczania kreskowania i kolorów - błąd zawieszenia się przy 70%%.
+    -Poprawa wczytywania wielokrotnie występujących atrybutów (np. rodzaj sieci).
     2.2.0 2024.06.12
     -Dostosowanie importu do nowszych wersji QGIS (z GDAL 3.9.0).
-    -Poprawienie symbolizacji dla prezentacji graficznej.
+    -Poprawa symbolizacji dla prezentacji graficznej.
     -Rozpoznawanie niekompletnego pliku, który zawiera tylko prezentację graficzną a nie zawiera obiektów.
     2.1.0 2024.05.24
     -Dodanie raportowania statystyk użytkowania wtyczki.
@@ -57,7 +59,7 @@ changelog=
     -Poprawa kodowania na utf-8 w modyfikowanym pliku GML.
     -Przy oddaleniu symbole zmniejszane sa maksymalnie 5 krotnie - przy duźym oddaleniu lepiej widac zawartość.
     -Możliwość dodawanie warstw z serwisami ortofotomapy i openstreetmap.
-    -Poprawienie grupowania warstw w widoku drzewa.
+    -Poprawa grupowania warstw w widoku drzewa.
     -Sprawdzenie czy pliki, które maja byc utworzone przy imporcie już nie istnieją.
     -Poprawa wielkości i umieszczania niektórych symboli punktowych.
     -Dodanie opcji postawienia kawy.
