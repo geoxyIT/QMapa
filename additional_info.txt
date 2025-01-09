@@ -1,1 +1,1 @@
-<html><head/><body><p><span style=" font-family:'Calibri','sans-serif'; font-size:10pt; color:#000000;">Zapoznaj się z naszą aplikacją </span><a href="https://geoxy.pl/pl.aplikacje.html"><span style=" font-size:10pt; font-weight:600; text-decoration: underline; color:#0000ff;">Qgml</span></a><span style=" font-family:'Calibri','sans-serif'; font-size:10pt; color:#000000;"> do walidacji i kontroli plików GML.</span></p></body></html>
+
