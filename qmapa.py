@@ -230,7 +230,7 @@ class QMapa:
         # stworzenie toolbuttona
         tool_button = QToolButton()
         # toolbutton jest rozwijalny
-        tool_button.setPopupMode(QToolButton.MenuButtonPopup)
+        tool_button.setPopupMode(QToolButton.ToolButtonPopupMode.MenuButtonPopup)
         # nadanie akcji
         action = QAction(icon=QIcon(icon_path), text=u'QMapa', parent=self.iface.mainWindow())
 
@@ -347,7 +347,7 @@ class QMapa:
 
                 # show the dockwidget
                 # TODO: fix to allow choice of dock location
-                self.iface.addDockWidget(Qt.RightDockWidgetArea, self.dockwidget)
+                self.iface.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.dockwidget)
                 self.dockwidget.show()
 
     '''def termsInfo(self):

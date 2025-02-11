@@ -67,7 +67,7 @@ class ChangeAppearance():
                 print(f'Warstwa z serwisem o takiej nawie już istnieje')
                 QMessageBox.critical(iface.mainWindow(), 'Dodanie serwisu nie powiodło się',
                                      'Warstwa z serwisem o takiej nazwie już istnieje.',
-                                     buttons=QMessageBox.Ok)
+                                     buttons=QMessageBox.StandardButton.Ok)
 
 
         elif service_type == 'OSM':
@@ -91,7 +91,7 @@ class ChangeAppearance():
                 print(f'Warstwa z serwisem o takiej nawie już istnieje')
                 QMessageBox.critical(iface.mainWindow(), 'Dodanie serwisu nie powiodło się',
                                      'Warstwa z serwisem o takiej nazwie już istnieje.',
-                                     buttons=QMessageBox.Ok)
+                                     buttons=QMessageBox.StandardButton.Ok)
 
 
     def getSelectedScale(self, scale_string):

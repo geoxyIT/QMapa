@@ -22,8 +22,8 @@ class TermsDialog(wnd, cls):
         button_cancel = QPushButton('Nie zgadzam się')
 
         # Ustawianie przycisków w buttonboxie
-        self.buttonBox.addButton(button_ok, QDialogButtonBox.AcceptRole)
-        self.buttonBox.addButton(button_cancel, QDialogButtonBox.RejectRole)
+        self.buttonBox.addButton(button_ok, QDialogButtonBox.ButtonRole.AcceptRole)
+        self.buttonBox.addButton(button_cancel, QDialogButtonBox.ButtonRole.RejectRole)
         self.adjustSize()
         self.show()
 
@@ -67,8 +67,8 @@ class Terms:
     def showTermsMessage(self):
         dial = TermsDialog()
         self.dialogs.append(dial)
-        res = dial.exec_()
-        if res == QDialog.Accepted:
+        res = dial.exec()
+        if res == QDialog.DialogCode.Accepted:
             self.saveConsents()
         self.checkTermsConsentsInFile()
 

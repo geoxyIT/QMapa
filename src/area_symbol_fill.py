@@ -225,7 +225,7 @@ def fill_with_color(fill_dict: Dict, scale: int, set: str, layers):
                 if 'case' not in formula:
                     # przypadek jezeli nie ma atrybutow podstawowych
                     new_fill_color = QgsSimpleFillSymbolLayer()
-                    new_fill_color.setStrokeStyle(Qt.NoPen)
+                    new_fill_color.setStrokeStyle(Qt.PenStyle.NoPen)
                     new_fill_color.dataDefinedProperties().property(3).setExpressionString(formula)
                     new_fill_color.dataDefinedProperties().property(3).setActive(True)
                     layer.renderer().symbol().insertSymbolLayer(0, new_fill_color)
@@ -240,7 +240,7 @@ def fill_with_color(fill_dict: Dict, scale: int, set: str, layers):
                     formula += 'end'
                     pattern_fill_color_formula += 'end'
                     new_fill_color = QgsSimpleFillSymbolLayer()
-                    new_fill_color.setStrokeStyle(Qt.NoPen)
+                    new_fill_color.setStrokeStyle(Qt.PenStyle.NoPen)
                     new_fill_color.dataDefinedProperties().property(3).setExpressionString(formula)
                     new_fill_color.dataDefinedProperties().property(3).setActive(True)
                     layer.renderer().symbol().insertSymbolLayer(0, new_fill_color)
@@ -364,7 +364,7 @@ def fill_with_color(fill_dict: Dict, scale: int, set: str, layers):
                     if 'case' not in formula:
                         # przypadek jezeli nie ma atrybutow podstawowych
                         new_fill_color = QgsSimpleFillSymbolLayer()
-                        new_fill_color.setStrokeStyle(Qt.NoPen)
+                        new_fill_color.setStrokeStyle(Qt.PenStyle.NoPen)
                         new_fill_color.dataDefinedProperties().property(3).setExpressionString(formula)
                         new_fill_color.dataDefinedProperties().property(3).setActive(True)
                         child.symbols()[0].insertSymbolLayer(0, new_fill_color)
@@ -384,7 +384,7 @@ def fill_with_color(fill_dict: Dict, scale: int, set: str, layers):
                         pattern_fill_color_formula += "else '255,255,255,255' "
                         pattern_fill_color_formula += 'end'
                         new_fill_color = QgsSimpleFillSymbolLayer()
-                        new_fill_color.setStrokeStyle(Qt.NoPen)
+                        new_fill_color.setStrokeStyle(Qt.PenStyle.NoPen)
                         new_fill_color.dataDefinedProperties().property(3).setExpressionString(formula)
                         new_fill_color.dataDefinedProperties().property(3).setActive(True)
                         child.symbols()[0].insertSymbolLayer(0, new_fill_color)
