@@ -41,8 +41,8 @@ def compareVersions(label, git_ver, loc_ver):
         text_of_version = "Twoja wersja jest nieaktualna! Dostępna jest wersja: " + str(git_ver) + "\n" + getHubText("https://raw.githubusercontent.com/geoxyIT/QMapa/main/additional_version_info.txt")
         label.setText(text_of_version)
         pal = label.palette()
-        pal.setColor(QPalette.Window, QColor("#FF0000"))
-        pal.setColor(QPalette.WindowText, QColor("#FFFFFF"))
+        pal.setColor(QPalette.ColorRole.Window, QColor("#FF0000"))
+        pal.setColor(QPalette.ColorRole.WindowText, QColor("#FFFFFF"))
         label.setPalette(pal)
     else:
         # print('Twoja wersja jest aktualna')

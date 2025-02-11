@@ -64,9 +64,9 @@ class SimpleGmlImport():
                                                                                                                    info_3,
                                                                                                                    ', \n\n'.join(
                                                                                                                        existing_file_names))),
-                                                        QMessageBox.Yes, QMessageBox.No)
+                                                        QMessageBox.StandardButton.Yes, QMessageBox.StandardButton.No)
 
-            if allow_override_reply == QMessageBox.Yes:
+            if allow_override_reply == QMessageBox.StandardButton.Yes:
                 for name_key, path in dict_existing_files.items():
                     # sprawdzenie dostepu poprzez probe usuniecia pliku
                     try:
@@ -76,7 +76,7 @@ class SimpleGmlImport():
                                                        level=2, duration=0)
                         QMessageBox.critical(iface.mainWindow(), 'Błąd: brak dostępu do pliku',
                                              'Brak dostępu do pliku, sprawdż czy plik nie jest używany przez inny program. \n' + path,
-                                             buttons=QMessageBox.Ok)
+                                             buttons=QMessageBox.StandardButton.Ok)
 
                         print('nie można otworzyć pliku')
                         mod_gml_path = ''
@@ -586,7 +586,7 @@ class SimpleGmlImport():
                     QMessageBox.warning(iface.mainWindow(), 'Wybrany plik jest niekompletny',
                                         'Wybrany plik nie zawiera danych obiektowych a jedynie prezentację graficzną obiektów. '
                                         'Uniemożliwia to poprawną wizualizację, w szczególności wygenerowanie etykiet.',
-                                        buttons=QMessageBox.Ok)
+                                        buttons=QMessageBox.StandardButton.Ok)
 
                 # informacja o wykryciu bledow importu:
                 errors_conversion = len(conversion_errors_list)
@@ -596,7 +596,7 @@ class SimpleGmlImport():
                                         'W czasie importu wystąpiły błędy. '
                                         'Niektóre obiekty mogły nie zostać zaimportowane. '
                                         'Szczegóły dostępne w raporcie.',
-                                        buttons=QMessageBox.Ok)
+                                        buttons=QMessageBox.StandardButton.Ok)
                     runAnalytics(2, f"errs:{errors_conversion}")
 
         return vec_layers_list

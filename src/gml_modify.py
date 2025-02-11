@@ -350,7 +350,7 @@ class GmlModify:
                                            level=1, duration=0)
             QMessageBox.warning(iface.mainWindow(), 'Błąd importu',
                                  'Niepoprawny plik GML - \nnie wszystkie obiekty zostaną zaimportowane',
-                                 buttons=QMessageBox.Ok)
+                                 buttons=QMessageBox.StandardButton.Ok)
 
         self.checkIsCorrect(self.root, self.pref_name_list, self.pref_tag_dict)
         self.saveGml()
@@ -361,4 +361,4 @@ class GmlModify:
 
             QMessageBox.warning(iface.mainWindow(), 'W czasie importu wykryto obiekty niestandardowe',
                                 'Wykryto obiekty niezgodne z modelami aplikacyjnymi GML 2021 dla baz: EGiB, GESUT, BDOT500. \n\nNiezgodne obiekty zostaną zaimportowane z przedrostkiem NIESTANDARDOWE, szczegóły w raporcie importu.',
-                                buttons=QMessageBox.Ok)
+                                buttons=QMessageBox.StandardButton.Ok)
