@@ -435,6 +435,7 @@ class SimpleGmlImport():
 
                 # obliczenie kreskowania dla skarp, sciany, schodow i wstawienie geometrii do atrybutow
                 scales = ['500', '1000']
+                #scales = []
                 nr = 0
 
                 start_point_layer_id = False
@@ -465,7 +466,7 @@ class SimpleGmlImport():
 
 
                         if sc == '500':
-                            if 'ges_rzedna' in lay.name().lower():
+                            if 1==2 and 'ges_rzedna' in lay.name().lower():
                                 calculateColors(lay, 'color')
                             elif 'wody' in lay.name().lower():
                                 calculateHatching(lay, 'wody', sc, [start_point_layer_id, end_point_layer_id])
