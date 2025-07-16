@@ -466,7 +466,7 @@ class SimpleGmlImport():
 
 
                         if sc == '500':
-                            if 1==2 and 'ges_rzedna' in lay.name().lower():
+                            if 'ges_rzedna' in lay.name().lower():
                                 calculateColors(lay, 'color')
                             elif 'wody' in lay.name().lower():
                                 calculateHatching(lay, 'wody', sc, [start_point_layer_id, end_point_layer_id])

@@ -5,6 +5,7 @@ import re
 from .config import correct_layers, incompatible_pref
 from qgis.PyQt.QtWidgets import QMessageBox
 from qgis.utils import iface
+from collections import defaultdict
 
 class GMLIncorrect(Exception):
     """Exception raised when gml is incorrect.
@@ -37,18 +38,76 @@ class GmlModify:
         self.output_path = output_path
 
         # zmienna z root
-        st = datetime.datetime.now()
-        self.tree = ET.parse(self.file_path)
-        self.root = self.tree.getroot()
-        print('czytanie:', datetime.datetime.now()-st)
+        self.tree = None
+        self.root = None
 
         self.gml_namespace_val = None
         self.pref_name = None
 
         self.relations = dict()
+        self.reversed_relations = dict()
         self.incompatible_found = False
 
+    def reverseDict(self, dict_relations):
+        reversed_dict = defaultdict(list)
+
+        for przewod, rzedne in dict_relations.items():
+            for rzedna in rzedne:
+                reversed_dict[rzedna].append(przewod)
+
+        return reversed_dict
+
     def extractNamespaces(self, file):
+        """Szybka i odporna analiza namespace'ów w pliku XML bez pełnego parsowania"""
+        self.namespaces_dict = {}
+        self.pref_name_list = []
+        self.gml_namespace_val = "http://www.opengis.net/gml/3.2"
+        seen = set()
+        fragment = ""
+
+        for line in file:
+            if "xmlns" in line:
+                fragment += line
+                if ">" in line:  # zakładamy że koniec fragmentu XML
+                    # Przeskanuj to, co zebrane
+                    pattern = re.compile(r'xmlns(?::(\w+))?=["\'](.*?)["\']')
+                    for match in pattern.finditer(fragment):
+                        prefix = match.group(1) if match.group(1) else ""
+                        uri = match.group(2)
+                        if (prefix, uri) in seen:
+                            continue
+                        seen.add((prefix, uri))
+                        if prefix:
+                            try:
+                                ET.register_namespace(prefix, uri)
+                            except Exception:
+                                print(f"pominięto rejestrację namespace {prefix} {uri}")
+                        self.namespaces_dict[uri] = prefix
+                        self.pref_name_list.append(f"{{{uri}}}")
+                    fragment = ""  # wyczyść po przetworzeniu
+            elif fragment:
+                fragment += line
+                if ">" in line:
+                    # zakończ buforowanie i przetwórz
+                    pattern = re.compile(r'xmlns(?::(\w+))?=["\'](.*?)["\']')
+                    for match in pattern.finditer(fragment):
+                        prefix = match.group(1) if match.group(1) else ""
+                        uri = match.group(2)
+                        if (prefix, uri) in seen:
+                            continue
+                        seen.add((prefix, uri))
+                        if prefix:
+                            try:
+                                ET.register_namespace(prefix, uri)
+                            except Exception:
+                                print(f"pominięto rejestrację namespace {prefix} {uri}")
+                        self.namespaces_dict[uri] = prefix
+                        self.pref_name_list.append(f"{{{uri}}}")
+                    fragment = ""
+
+        self.pref_name_list = list(set(self.pref_name_list))
+
+    def extractNamespaces_old(self, file):
         """odczytanie przestrzeni nazw z pliku pierwotnego i nadanie tej przestrzeni
         dla pliku wtornego"""
         text = file.read()
@@ -109,10 +168,25 @@ class GmlModify:
         """Przejscie po pliku gml i dodanie atrybutu w konkretne miejsce"""
         # przejscie po pliku gml i dodanie wartosci w tag IIP
         for feature in self.root.iter(feature_name):  # iteracja po rzednych
+            gmlid_rz = feature.attrib[f'{{{self.gml_namespace_val}}}id']
+            if gmlid_rz in self.reversed_relations:
+                list_gmlids_przew = self.reversed_relations[gmlid_rz]
+                for iip in list_gmlids_przew:
+                    for iip_element in feature.findall(pref_name + 'idIIP'):
+                        for add in iip_element:
+                            add_relation_attr = ET.SubElement(add, pref_name + 'relacja')
+                            add_relation_attr.text = iip
+                            add_relation_attr.tail = '\n'
+                    break # dodaje tylko pierwszy trafiony obiekt z relacji
+
+    def iterateAndAdd_old(self, pref_name: str, feature_name: str):
+        """Przejscie po pliku gml i dodanie atrybutu w konkretne miejsce"""
+        # przejscie po pliku gml i dodanie wartosci w tag IIP
+        for feature in self.root.iter(feature_name):  # iteracja po rzednych
             # print('fit', feature)
             detect_if_more_than_one = 0
             for item in self.relations.items():     # iteracja po przewodach
-                if detect_if_more_than_one < 1:  # warunek dla nie przechodzenia w kolejny przewód, jeżeli
+                if detect_if_more_than_one < 1:  # warunek dla nieprzechodzenia w kolejny przewód, jeżeli
                     # relacja została przypisana do więcej niż jednego obiektu
                     iip = item[0]  # iip przewodu
                     for values in item[1]:  # iteracja po rzednych obiektu - gml_id rzednej
@@ -317,9 +391,20 @@ class GmlModify:
                 pass
 
     def run(self):
-        self.file = open(self.file_path, 'r', encoding='utf-8')
-        self.extractNamespaces(file=self.file)
+        st = datetime.datetime.now()
+        print('GMLMOD start:')
+        file_gm = open(self.file_path, 'r', encoding='utf-8')
+        self.extractNamespaces(file=file_gm)
+        file_gm.close()
+        print('GMLMOD namespaces, czas:', datetime.datetime.now() - st)
 
+        # zmienna z root
+        st = datetime.datetime.now()
+        self.tree = ET.parse(self.file_path)
+        self.root = self.tree.getroot()
+        print('GMLMOD czytanie, czas:', datetime.datetime.now() - st)
+
+        st = datetime.datetime.now()
         #wynikiem ponizszego teoretycznie moze byc none, wtedy warto by bylo dac domyslna wartosc crs taka zeby byla dobra a nie ''
         self.found_crs = self.getCrsEpsg()
         if self.found_crs is None:
@@ -338,10 +423,19 @@ class GmlModify:
 
             self.getRelations(pref_name)
 
+            self.reversed_relations = self.reverseDict(self.relations)
+            self.relations = dict()
+
             for nm in ["OT_Rzedna", "GES_Rzedna"]:
+                #self.iterateAndAdd(pref_name, pref_name + nm)
                 self.iterateAndAdd(pref_name, pref_name + nm)
 
+            self.reversed_relations = dict()
+
             self.extractAll(self.root, pref_name, self.pref_tag_dict, split_list)
+
+
+        print('GMLMOD wyciaganie, czas:', datetime.datetime.now() - st)
 
         if self.err_number > 0:
             print("Błąd: Nie wszystkie obiekty zostaną zaimportowane, lub zostaną zaimportowanie niepoprawnie - błąd w relacjach w pliku GML, liczba błędow: " + str(self.err_number))
@@ -352,9 +446,12 @@ class GmlModify:
                                  'Niepoprawny plik GML - \nnie wszystkie obiekty zostaną zaimportowane',
                                  buttons=QMessageBox.StandardButton.Ok)
 
+        st = datetime.datetime.now()
         self.checkIsCorrect(self.root, self.pref_name_list, self.pref_tag_dict)
+        print('GMLMOD sprawdzenie, czas:', datetime.datetime.now() - st)
+        st = datetime.datetime.now()
         self.saveGml()
-        self.file.close()
+        print('GMLMOD zapis, czas:', datetime.datetime.now() - st)
 
         if self.incompatible_found is True:
             print("Wykryto obiekty niezgodne z modelem 2021")
