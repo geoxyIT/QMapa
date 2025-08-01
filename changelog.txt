@@ -1,6 +1,7 @@
-2.4.0 2025.x.x
+2.4.0 2025.08.29
 -Dodanie wsparcia dla Qt6 (QGIS 4)
--Optymalizacja importu - poprawa wczytywania dużych plików
+-Optymalizacja importu - poprawienie wczytywania dużych plików
+-Poprawienie wstawiania etykiet
 2.3.1 2024.12.16
 -Dostosowanie obsługi VectorTranslateOptions w zależności od wersji GDAL (< 3.7.0)
 2.3.0 2024.10.10
