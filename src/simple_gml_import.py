@@ -539,7 +539,8 @@ class SimpleGmlImport():
                                                    'EGB_ObiektTrwaleZwiazanyZBudynkiem_2_lokalnyId',
                                                    'EGB_ObrebEwidencyjny_2_lokalnyId',
                                                    'EGB_JednostkaEwidencyjna_2_lokalnyId',
-                                                   'EGB_AdresNieruchomosci_0_lokalnyId']
+                                                   'EGB_AdresNieruchomosci_0_lokalnyId',
+                                                   'EGB_PunktGraniczny_0_lokalnyId']
                                 Main().addObligatoryFields(lay, fields_list_egb)
 
 
