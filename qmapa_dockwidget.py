@@ -66,13 +66,15 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         # #widgets-and-dialogs-with-auto-connect
         # pozwalanie na powrot do pierwotnej symbolizacji
 
+        self._appearance = ChangeAppearance()
+
         self.back_wers = True
         self.back_fill = True
 
         self.setupUi(self)
 
         # sprawdzenie wersji programu
-        plugin_ver = ChangeAppearance().checkVersion(self.lbVersion)
+        plugin_ver = self._appearance.checkVersion(self.lbVersion)
 
         runAnalytics(1, f"{Qgis.QGIS_VERSION}, {plugin_ver}")
 
@@ -83,22 +85,24 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
 
         # Dodanie aktualnej informacji
-        ChangeAppearance().checkAdditionalInfo(self.lbAdditionalInfo)
+        self._appearance.checkAdditionalInfo(self.lbAdditionalInfo)
 
         self.progressBar.hide()
 
         self.rel_times = 0
 
-        ChangeAppearance().setRedLabels(self.cmbReda.currentText())
+        self._appearance.setRedLabels(self.cmbReda.currentText())
 
         self.dispSettings()
 
         iface.mapCanvas().refreshAllLayers()
+        iface.mapCanvas().scaleChanged.connect(self.on_scale_changed)
+        self._appearance.setLegendScale(self._appearance.getSelectedScale(self.cmbStylization.currentText()))
 
-        iface.mapCanvas().scaleChanged.connect(lambda: ChangeAppearance().setLegendScale(ChangeAppearance().getSelectedScale(self.cmbStylization.currentText())))
-
-        ChangeAppearance().setLegendScale(ChangeAppearance().getSelectedScale(self.cmbStylization.currentText()))
-
+    def on_scale_changed(self):
+        self._appearance.setLegendScale(
+            self._appearance.getSelectedScale(self.cmbStylization.currentText())
+        )
 
     def closeEvent(self, event):
         self.closingPlugin.emit()
@@ -122,7 +126,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         if name:
             vec_lays_list = SimpleGmlImport().runImport(name, self.progressBar, self.cmbStylization.currentText())
 
-            ChangeAppearance().setRedLabels(self.cmbReda.currentText())
+            self._appearance.setRedLabels(self.cmbReda.currentText())
             self.dispSettings()
             self.back_wers = False
             self.back_fill = False
@@ -130,22 +134,22 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 self.dispVers(vec_lays_list)  # sprawdzenie i nadanie wyswietlania wersji
             if self.gbFill.isChecked():
                 self.fillSelectSet(vec_lays_list)  # sprawdzenie i nadanie fillowania
-            ChangeAppearance().setLegendScale(ChangeAppearance().getSelectedScale(self.cmbStylization.currentText()))
+            self._appearance.setLegendScale(self._appearance.getSelectedScale(self.cmbStylization.currentText()))
             QCoreApplication.processEvents()
         vec_lays_list = None
 
     def on_cmbStylization_currentTextChanged(self):
         """ustaw stylizację wybraną w comboboxie"""
         runAnalytics(3, 1)
-        ChangeAppearance().backToQmlSymb(self.cmbStylization.currentText(), ChangeAppearance().getLayers())
+        self._appearance.backToQmlSymb(self.cmbStylization.currentText(), self._appearance.getLayers())
         if self.gbShowWers.isChecked():
-            self.dispVers(ChangeAppearance().getLayers())  # sprawdzenie i nadanie wyswietlania wersji
+            self.dispVers(self._appearance.getLayers())  # sprawdzenie i nadanie wyswietlania wersji
         if self.gbFill.isChecked():
-            self.fillSelectSet(ChangeAppearance().getLayers())  # sprawdzenie i nadanie fillowania
+            self.fillSelectSet(self._appearance.getLayers())  # sprawdzenie i nadanie fillowania
 
     def on_cmbReda_currentTextChanged(self):
         runAnalytics(3, 2)
-        ChangeAppearance().setRedLabels(self.cmbReda.currentText())
+        self._appearance.setRedLabels(self.cmbReda.currentText())
 
     def on_chbShowPierwsze_stateChanged(self):
         self.dispSettings()
@@ -217,7 +221,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         runAnalytics(3, 4)
         self.gbShowWers.setEnabled(False)
         QCoreApplication.processEvents()
-        self.dispVers(ChangeAppearance().getLayers())
+        self.dispVers(self._appearance.getLayers())
         if state:
             # uncheck dla wersji, dodanie zeby nie wracalo wtedy do poprzedniego qml przy uncheck (bo inaczej robi sie 2 razy)
             self.back_fill = False
@@ -231,7 +235,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         runAnalytics(3, 3)
         self.gbFill.setEnabled(False)
         QCoreApplication.processEvents()
-        self.fillSelectSet(ChangeAppearance().getLayers())
+        self.fillSelectSet(self._appearance.getLayers())
         if state is True:
             # uncheck dla wersji, dodanie zeby nie wracalo wtedy do poprzedniego gml przy uncheck (bo inaczej robi sie 2 razy)
             self.back_wers = False
@@ -241,13 +245,13 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.gbFill.setEnabled(True)
 
     def on_chbFillBDOT_stateChanged(self):
-        self.fillSelectSet(ChangeAppearance().getLayers())
+        self.fillSelectSet(self._appearance.getLayers())
 
     def on_chbFillEGIB_stateChanged(self):
-        self.fillSelectSet(ChangeAppearance().getLayers())
+        self.fillSelectSet(self._appearance.getLayers())
 
     def on_chbFillGESUT_stateChanged(self):
-        self.fillSelectSet(ChangeAppearance().getLayers())
+        self.fillSelectSet(self._appearance.getLayers())
 
     # FUNKCJE
     def dispSettings(self):
@@ -393,13 +397,13 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     def fillSelectSet(self, layers_list):
         if self.back_fill:
-            ChangeAppearance().backToQmlSymb(self.cmbStylization.currentText(), layers_list)
+            self._appearance.backToQmlSymb(self.cmbStylization.currentText(), layers_list)
 
         self.back_fill = True
 
         on = self.gbFill.isChecked()
         if on:
-            current_scale = ChangeAppearance().getSelectedScale(self.cmbStylization.currentText())
+            current_scale = self._appearance.getSelectedScale(self.cmbStylization.currentText())
 
             # pobranie aktywnych przyciskow
             if self.chbFillBDOT.isChecked() and 'OT' not in self.active_sets:
@@ -421,14 +425,14 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             for set in self.active_sets:
                 fill(excel_path=FILL_PARAMETERS, scale=current_scale, set=set, layers = layers_list)
 
-            ChangeAppearance().setLegendScale(ChangeAppearance().getSelectedScale(self.cmbStylization.currentText()))
+            self._appearance.setLegendScale(self._appearance.getSelectedScale(self.cmbStylization.currentText()))
 
     def dispVers(self, layers_list):
         """ustawienie wyswietlania/niewyswietlania po wersjach"""
         on = self.gbShowWers.isChecked()
         # powrot do pierwotnej stylizacji
         if self.back_wers:
-            ChangeAppearance().backToQmlSymb(self.cmbStylization.currentText(), layers_list)
+            self._appearance.backToQmlSymb(self.cmbStylization.currentText(), layers_list)
 
         self.back_wers = True
 
@@ -441,7 +445,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             expression.setSymbolExpression(layers_list)
             expression.setLabelExpression(layers_list)
 
-            ChangeAppearance().setLegendScale(ChangeAppearance().getSelectedScale(self.cmbStylization.currentText()))
+            self._appearance.setLegendScale(self._appearance.getSelectedScale(self.cmbStylization.currentText()))
         else:
             # powrot do pierwotnej stylizacji z QML
             #self.back_to_qml_symb()
