@@ -403,7 +403,7 @@ def hatching(polyline_geometry, geometry_limit, spacing, distance, rotate_angle=
     limit_parted_by_bisections_list = limit_parted_by_bisections.asGeometryCollection()
 
     # index przestrzenny:
-    index = QgsSpatialIndex()
+    features_to_index = []  # lista obiektow - zeby jednoczesnie wrzucic wszystkie obiekty
     polygon_map = {}
 
     times_profiling['preparing3'] = times_profiling['preparing3'] + datetime.datetime.now() - start_hat
@@ -413,8 +413,11 @@ def hatching(polyline_geometry, geometry_limit, spacing, distance, rotate_angle=
         feature = QgsFeature()
         feature.setGeometry(poly)
         feature.setId(i)  # Przypisanie ID
-        index.insertFeature(feature)
+        features_to_index.append(feature)
         polygon_map[i] = poly
+
+    index = QgsSpatialIndex()
+    index.addFeatures(features_to_index)
 
     for part in orig_geom_list:
         st2 = datetime.datetime.now()
