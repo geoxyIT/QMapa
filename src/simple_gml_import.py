@@ -1,7 +1,7 @@
 import os, sys, subprocess
 from osgeo import gdal
 from datetime import datetime
-from distutils.version import LooseVersion
+from packaging import version
 from enum import Enum
 from qgis.utils import iface
 from qgis.core import *
@@ -264,7 +264,7 @@ class SimpleGmlImport():
 
         # parametr mapFieldType został dodany od wersji 3.5 gdala, wtedy tez chyba zostala dodana osluga list
         gdal_vers = gdal.__version__
-        if LooseVersion(gdal_vers) < LooseVersion("3.7.0"):
+        if version.parse(gdal_vers) < version.parse("3.7.0"):
             pyth_command = ("from osgeo import gdal; "
                             "gdal.DontUseExceptions(); "
                             "gdal.SetConfigOption('GML_SKIP_CORRUPTED_FEATURES', 'YES');"
