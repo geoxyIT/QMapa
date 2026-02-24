@@ -261,7 +261,7 @@ class QMapa:
 
         self.toolbarAction(tool_button=tool_button, icon_path=raster_icon,
                            text=self.tr(u'Dodaj serwis Geoportal ORTO'),
-                           callback=lambda: ChangeAppearance().addOrtoOsm('GEOPORTAL_ORTO'))
+                           callback=lambda: ChangeAppearance().addOrtoOsm('ORTO_STANDARD'))
 
         '''self.toolbarAction(tool_button=tool_button, icon_path=icon_stats_info_path,
                            text=self.tr(u'Statystyki'), callback=self.termsInfo)'''

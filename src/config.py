@@ -136,3 +136,7 @@ sewer_colors = {'w': '0,0,255,255',
                 'c': '210,0,210,255',
                 't': '255,145,0,255'}
 
+# URL do ortofotomapy WMS lub WMTS
+# na końcu jest dodawane WMTS/HighResolution lub WMTS/StandardResolution
+# czyli pełny link wygląda np https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMTS/StandardResolution
+geoportal_orto_url = "https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/"
