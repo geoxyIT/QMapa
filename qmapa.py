@@ -27,7 +27,7 @@
 """
 from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication, Qt
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction, QToolButton
+from qgis.PyQt.QtWidgets import QAction, QToolButton, QMenu
 from qgis.core import QgsExpression
 
 # Import expressions
@@ -222,10 +222,8 @@ class QMapa:
         icon_path = ':/plugins/qmapa/icons/icon.png'
         icon_help_path = ':/plugins/qmapa/icons/help.png'
         icon_stats_info_path = ':/plugins/qmapa/icons/stats_info.png'
-        # icon_fill_sett_path = ':/plugins/qmapa/icons/fill_settings.png'
         icon_fill_directory_path = ':/plugins/qmapa/icons/fill_directory.png'
         raster_icon = ':/plugins/qmapa/icons/raster.png'
-
 
         # stworzenie toolbuttona
         tool_button = QToolButton()
@@ -245,46 +243,66 @@ class QMapa:
 
         # dodanie reakcji po kliknieciu
         action.triggered.connect(self.run)
-        #tool_button.clicked.connect(self.run)
 
-        # dodanie kolejnych akcji do tool button
-        # tool_button = self.toolbarAction(tool_button=tool_button, icon_path=icon_fill_sett_path,
-        # text=self.tr(u'Parametry wypełniania obszarów '),
-        # callback=lambda: open_fill_xlsm(path=FILL_PARAMETERS))
-        self.toolbarAction(tool_button=tool_button, icon_path=icon_fill_directory_path,
+        main_menu = QMenu(self.iface.mainWindow())
+        tool_button.setMenu(main_menu)
+
+        # 1.1
+        self.toolbarAction(menu=main_menu, icon_path=icon_fill_directory_path,
                            text=self.tr(u'Paleta kolorów wypełnień'),
                            callback=lambda: openFillXlsmLoc(path=FILL_PARAMETERS_DIR))
 
-        self.toolbarAction(tool_button=tool_button, icon_path=raster_icon,
+        # 1.2
+        self.toolbarAction(menu=main_menu, icon_path=raster_icon,
                            text=self.tr(u'Dodaj serwis Open Street Map'),
                            callback=lambda: ChangeAppearance().addOrtoOsm('OSM'))
 
-        self.toolbarAction(tool_button=tool_button, icon_path=raster_icon,
-                           text=self.tr(u'Dodaj serwis Geoportal ORTO'),
-                           callback=lambda: ChangeAppearance().addOrtoOsm('ORTO_STANDARD'))
+        # 1.3
+        orto_submenu = QMenu(self.tr(u'Dodaj serwis Geoportal ORTO'), main_menu)
+        orto_submenu.setIcon(QIcon(raster_icon))
+        main_menu.addMenu(orto_submenu) # Wpinamy podmenu do głównego menu
 
-        '''self.toolbarAction(tool_button=tool_button, icon_path=icon_stats_info_path,
+        # 1.3.1
+        self.toolbarAction(menu=orto_submenu, icon_path=raster_icon,
+                           text=self.tr(u'Ortofotomapa Standardowej Rozdzielczości (WMTS)'),
+                           callback=lambda: ChangeAppearance().addOrtoOsm('ORTO_STANDARD', 'WMTS'))
+        
+        # 1.3.2
+        self.toolbarAction(menu=orto_submenu, icon_path=raster_icon,
+                           text=self.tr(u'Ortofotomapa Wysokiej Rozdzielczości (WMTS)'),
+                           callback=lambda: ChangeAppearance().addOrtoOsm('ORTO_HIGH', 'WMTS'))
+        
+        # 1.3.3
+        self.toolbarAction(menu=orto_submenu, icon_path=raster_icon,
+                           text=self.tr(u'Ortofotomapa Standardowej Rozdzielczości (WMS)'),
+                           callback=lambda: ChangeAppearance().addOrtoOsm('ORTO_STANDARD', 'WMS'))
+        
+        # 1.3.4
+        self.toolbarAction(menu=orto_submenu, icon_path=raster_icon,
+                           text=self.tr(u'Ortofotomapa Wysokiej Rozdzielczości (WMS)'),
+                           callback=lambda: ChangeAppearance().addOrtoOsm('ORTO_HIGH', 'WMS'))
+        
+        # 1.4 - ukryte
+        '''self.toolbarAction(menu=main_menu, icon_path=icon_stats_info_path,
                            text=self.tr(u'Statystyki'), callback=self.termsInfo)'''
 
-        self.toolbarAction(tool_button=tool_button, icon_path=icon_help_path,
+        # 1.4
+        self.toolbarAction(menu=main_menu, icon_path=icon_help_path,
                            text=self.tr(u'Informacje o wtyczce'), callback=self.help)
 
         # dodanie toolbutton do toolbara
         self.toolbar.addWidget(tool_button)
 
-    def toolbarAction(self, tool_button, icon_path, text, callback):
-        """Utworzenie akcji dla toolbara"""
+    def toolbarAction(self, menu, icon_path, text, callback):
+        """Utworzenie akcji i dodanie jej do wskazanego menu"""
         # utworzenie akcji
         action = QAction(icon=QIcon(icon_path),
                          text=text, parent=self.iface.mainWindow())
         action.triggered.connect(callback)
         self.actions.append(action)
-        # dodanie akcji do toolbuttona
-        tool_button.addAction(action)
-
-        # dodanie akcji do menu glownego
-        self.iface.addPluginToMenu(self.menu, action)
-        # return tool_button
+        
+        # dodanie akcji do wskazanego menu
+        menu.addAction(action)
 
     def onClosePlugin(self):
         """Cleanup necessary items here when plugin dockwidget is closed"""
