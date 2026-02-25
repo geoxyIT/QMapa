@@ -455,22 +455,22 @@ class SimpleGmlImport():
                 for sc in scales:
                     nr += 1
                     for lay in vec_layers_list:
-                        if 'ot_obiekttrwalezwiazany' in lay.name().lower():
+                        if 'egb_obiekttrwalezwiazany' in lay.name().lower() and egb_polyline_layer_id:
+                            calculateHatching(lay, 'schody', sc, egb_polyline_layer_id)
+                        elif 'ot_obiekttrwalezwiazany' in lay.name().lower() and ot_polyline_layer_id:
                             calculateHatching(lay, 'schody', sc, ot_polyline_layer_id)
-                        elif 'egb_obiekttrwalezwiazany' in lay.name().lower():
-                                calculateHatching(lay, 'schody', sc, egb_polyline_layer_id)
-                        elif 'komunikacja' in lay.name().lower():
+                        elif 'komunikacja' in lay.name().lower() and ot_polyline_layer_id:
                             calculateHatching(lay, 'schody', sc, ot_polyline_layer_id)
-                        elif 'budowle' in lay.name().lower():
+                        elif 'budowle' in lay.name().lower() and ot_polyline_layer_id:
                             calculateHatching(lay, 'sciana', sc, ot_polyline_layer_id)
 
 
                         if sc == '500':
                             if 'ges_rzedna' in lay.name().lower():
                                 calculateColors(lay, 'color')
-                            elif 'wody' in lay.name().lower():
+                            elif 'wody' in lay.name().lower() and start_point_layer_id and end_point_layer_id:
                                 calculateHatching(lay, 'wody', sc, [start_point_layer_id, end_point_layer_id])
-                            elif 'skarpa' in lay.name().lower():
+                            elif 'skarpa' in lay.name().lower() and start_point_layer_id and end_point_layer_id:
                                 calculateHatching(lay, 'skarpa', sc, [start_point_layer_id, end_point_layer_id])
 
                         elif sc == '1000':
