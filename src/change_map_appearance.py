@@ -68,6 +68,7 @@ class ChangeAppearance():
             res_label = "Wysoka Rozdzielczość" if is_high else "Standardowa Rozdzielczość"
             
             # Baza URL Geoportalu
+            # przykładowy url: https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMTS/HighResolution
             base_url = f"{geoportal_orto_url}{protocol}/{res_path}"
             layer_name = f'Geoportal ORTO {res_label} ({protocol})'
             
