@@ -261,7 +261,7 @@ class SimpleGmlImport():
         # Perform vector translation using GDAL's VectorTranslate
         # TODO: poszukac czy sa inne listy lub inne pola ktore trzeba by bylo przekonwertowac - raczej nie ma.
         my_env = os.environ.copy()
-
+        my_env["PYDEVD_DISABLE_FILE_VALIDATION"] = "1"
         # parametr mapFieldType został dodany od wersji 3.5 gdala, wtedy tez chyba zostala dodana osluga list
         gdal_vers = gdal.__version__
         if LooseVersion(gdal_vers) < LooseVersion("3.7.0"):
@@ -276,7 +276,6 @@ class SimpleGmlImport():
                             "gdal.SetConfigOption('GML_SKIP_CORRUPTED_FEATURES', 'YES');"
                             "gdal_options = gdal.VectorTranslateOptions(format='GPKG', mapFieldType=['StringList=String', 'IntegerList=String' , 'RealList=String']); "
                             f"gdal.VectorTranslate(r'{output_gpkg}', r'{input_gml}', options=gdal_options)")
-
         if sys.platform == 'win32':
             process = subprocess.run(["python", "-c", pyth_command], stderr=subprocess.PIPE, text=True, env=my_env,
                                      shell=False, creationflags=subprocess.CREATE_NO_WINDOW)
