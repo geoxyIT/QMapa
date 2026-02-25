@@ -93,11 +93,13 @@ class ChangeAppearance():
         # sprawdzenie czy warstwa o takiej nazwie istnieje
         if len(QgsProject.instance().mapLayersByName(layer_name)) > 0:
             print(f'Warstwa z serwisem o nazwie {layer_name} już istnieje')
-            QMessageBox.critical(
-                iface.mainWindow(), 
-                'Dodanie serwisu nie powiodło się',
+            
+            # Wyświetlenie dyskretnego komunikatu na górnym pasku QGIS
+            iface.messageBar().pushMessage(
+                "Informacja", 
                 f'Warstwa "{layer_name}" już istnieje w projekcie.',
-                buttons=QMessageBox.StandardButton.Ok
+                level=Qgis.MessageLevel.Info, 
+                duration=4 # Czas wyświetlania w sekundach
             )
             return
 
