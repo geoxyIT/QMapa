@@ -7,6 +7,7 @@ from qgis.gui import *
 from .qmapa_main import Main
 from .express_yourself import ExpressYourself
 import urllib.parse
+import requests
 
 from .config import geoportal_orto_url
 
@@ -100,6 +101,21 @@ class ChangeAppearance():
                 f'Warstwa "{layer_name}" już istnieje w projekcie.',
                 level=Qgis.MessageLevel.Info, 
                 duration=4 # Czas wyświetlania w sekundach
+            )
+            return
+
+        url_to_test = f"{base_url}?SERVICE={protocol}&REQUEST=GetCapabilities"
+            
+        try:
+            response = requests.get(url_to_test, timeout=5) # zapytanie do serwera z timeoutem 5s, aby wyeliminować czekanie na timeout qgisa w przypadku problemu z serwerem (domyslnie 60s)
+            response.raise_for_status() 
+        except requests.exceptions.RequestException as e:
+            print(f"Błąd połączenia z {url_to_test}: {e}")
+            iface.messageBar().pushMessage(
+                "Błąd usługi", 
+                f"Serwer ({base_url}) nie odpowiada. Spróbuj ponownie później.", 
+                level=Qgis.MessageLevel.Critical, 
+                duration=7
             )
             return
 
