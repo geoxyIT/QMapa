@@ -22,11 +22,14 @@ repository=https://github.com/geoxyIT/QMapa
 hasProcessingProvider=no
 
 changelog=
-    2.4.0 2025.08.29
+    2.4.0 2026.03.04
     -Dodanie wsparcia dla Qt6 (QGIS 4)
     -Optymalizacja importu - poprawienie wczytywania dużych plików
     -Poprawienie wstawiania etykiet
     -Dodanie etykiet dla EGB_PunktGraniczny - skala 1:500 i 1:1000 (domyślnie wyłączone)
+    -Do menu głównego zostały dodane serwisy WMS/WMTS w standardowej i wysokiej rozdzielczości
+    -Poprawa błędów związanych z obliczaniem kreskowania dla skarp
+    -Likwidacja komunikatów informujących o używaniu przestarzałych funkcji bibliotek zewnętrznych
     2.3.1 2024.12.16
     -Dostosowanie obsługi VectorTranslateOptions w zależności od wersji GDAL (< 3.7.0)
     2.3.0 2024.10.10
