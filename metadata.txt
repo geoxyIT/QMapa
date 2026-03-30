@@ -6,12 +6,12 @@
 name=QMapa GML 2021
 qgisMinimumVersion=3.24
 qgisMaximumVersion=4.99
-description=Wizualizacja mapy zasadniczej z plików GML obejmujących zbiory danych EGiB, GESUT i BDOT500.
-version=2.4.0
+description=Wizualizacja mapy zasadniczej z plików GML obejmujących zbiory danych EGiB, GESUT i BDOT500. EN: Visualization of the base map from GML files covering the EGiB, GESUT, and BDOT500 datasets.
+version=2.4.1
 author=GEOXY sp. z o.o. 
 email=qgis@geoxy.pl
 
-about=Wtyczka działa na plikach GML sporządzonych zgodnie z modelami danych 2021. Prezentacja kartograficzna obiektów na mapie jest realizowana wg standardów opublikowanych w rozporządzeniu Ministra Rozwoju, Pracy i Technologii z dnia 23 lipca 2021 r. w sprawie bazy danych obiektów topograficznych oraz mapy zasadniczej.
+about=Wtyczka działa na plikach GML sporządzonych zgodnie z modelami danych 2021. Prezentacja kartograficzna obiektów na mapie jest realizowana wg standardów opublikowanych w rozporządzeniu Ministra Rozwoju, Pracy i Technologii z dnia 23 lipca 2021 r. w sprawie bazy danych obiektów topograficznych oraz mapy zasadniczej. EN: The plugin works with GML files prepared in accordance with the 2021 data models. The cartographic presentation of objects on the map is carried out in accordance with the standards published in the Regulation of the Minister of Development, Labour and Technology of 23 July 2021 on the database of topographic objects and the base map.
 
 
 tracker=https://github.com/geoxyIT/QMapa/issues
@@ -22,6 +22,10 @@ repository=https://github.com/geoxyIT/QMapa
 hasProcessingProvider=no
 
 changelog=
+    2.4.1 2026.03.30
+    -Dostosowanie wsparcia dla Qt6 (QGIS 4)
+    -Poprawa dodawania serwisu OSM
+    -Dostosowanie oczekiwania na odpowiedź serwisów WMS/WMTS do wersji certifi < 2024.02.02 
     2.4.0 2026.03.04
     -Dodanie wsparcia dla Qt6 (QGIS 4)
     -Optymalizacja importu - poprawienie wczytywania dużych plików
