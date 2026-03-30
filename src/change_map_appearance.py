@@ -104,7 +104,11 @@ class ChangeAppearance():
             )
             return
 
-        url_to_test = f"{base_url}?SERVICE={protocol}&REQUEST=GetCapabilities"
+        # przygotowanie URL do przetestowania timeoutu
+        if service_type == 'OSM':
+            url_to_test = "https://a.tile.openstreetmap.org/0/0/0.png"
+        else:
+            url_to_test = f"{base_url}?SERVICE={protocol}&REQUEST=GetCapabilities"
             
         try:
             response = requests.get(url_to_test, timeout=5) # zapytanie do serwera z timeoutem 5s, aby wyeliminować czekanie na timeout qgisa w przypadku problemu z serwerem (domyslnie 60s)
@@ -113,7 +117,7 @@ class ChangeAppearance():
             print(f"Błąd połączenia z {url_to_test}: {e}")
             iface.messageBar().pushMessage(
                 "Błąd usługi", 
-                f"Serwer ({base_url}) nie odpowiada. Spróbuj ponownie później.", 
+                f"Serwer ({layer_name}) nie odpowiada. Spróbuj ponownie później.",
                 level=Qgis.MessageLevel.Critical, 
                 duration=7
             )
