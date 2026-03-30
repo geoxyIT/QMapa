@@ -85,7 +85,7 @@ class SimpleGmlImport():
                         break
             else:
                 iface.messageBar().pushMessage("Import nie został wykonany: ", "nie zezwolono na nadpisanie",
-                                               level=Qgis.Info, duration=0)
+                                               level=Qgis.MessageLevel.Info, duration=0)
                 mod_gml_path = ''
                 gpkg_path = ''
                 report_path = ''
@@ -555,7 +555,7 @@ class SimpleGmlImport():
                     report_path = report_path.lstrip('/')
                 iface.messageBar().pushMessage("Raport z importu",
                                                '<a href="file:///' + report_path + '">' + report_path + '</a>',
-                                               level=Qgis.Success, duration=0)
+                                               level=Qgis.MessageLevel.Success, duration=0)
 
                 # nadanie wyswietlania ilosci obiektow
                 allLayers = QgsProject.instance().layerTreeRoot().findLayers()
