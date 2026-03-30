@@ -106,4 +106,3 @@ def loadGpkg(gpkg_path):
 
     # zamkniecie pliku
     file_data = None
-

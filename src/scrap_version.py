@@ -47,4 +47,3 @@ def compareVersions(label, git_ver, loc_ver):
     else:
         # print('Twoja wersja jest aktualna')
         pass
-

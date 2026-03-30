@@ -420,4 +420,3 @@ def openFillXlsmLoc(path: str):
     """Otwarcie lokalizacji w której znajduje się plik xlsx"""
     # webbrowser.open(path)
     Main().osOpen(path)
-

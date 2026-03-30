@@ -78,4 +78,3 @@ def runAnalytics(analysis_code, analysis_info = '') -> int:
     lib.sendStatisticsExt.restype = ctypes.c_int
     status = lib.sendStatisticsExt(analysis_uid.encode('cp1250'), analysis_code, analysis_info.encode('cp1250'))
     return status
-   
