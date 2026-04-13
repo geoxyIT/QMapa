@@ -3,17 +3,18 @@ from qgis.gui import *
 from qgis.core import NULL
 import datetime
 from qgis.PyQt.QtCore import QVariant, QDateTime
+from ast import literal_eval
 
 @qgsfunction(args='auto', group='Custom', referenced_columns=[])
 def pokaz_wersje(date_compare, sett_pierwsze, sett_modyfikowane, sett_archiwalne, sett_zamkniete, sett_wczesniejsze, start_obiekt, start_wersja, koniec_obiekt, koniec_wersja, feature, parent):
     #start_obiekt, start_wersja, koniec_obiekt, koniec_wersja,
     
     #obi = feature.attribute('koniecWersjaObiekt')
-    sett_pierwsze = eval(sett_pierwsze)
-    sett_modyfikowane = eval(sett_modyfikowane)
-    sett_archiwalne = eval(sett_archiwalne)
-    sett_zamkniete = eval(sett_zamkniete)
-    sett_wczesniejsze = eval(sett_wczesniejsze)
+    sett_pierwsze = literal_eval(sett_pierwsze)
+    sett_modyfikowane = literal_eval(sett_modyfikowane)
+    sett_archiwalne = literal_eval(sett_archiwalne)
+    sett_zamkniete = literal_eval(sett_zamkniete)
+    sett_wczesniejsze = literal_eval(sett_wczesniejsze)
 
     show = 'default'
 
