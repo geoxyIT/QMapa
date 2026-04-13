@@ -66,6 +66,15 @@ class QMapa:
         # Utworzenie dialogow
         self.dialogs = []
 
+        # lista nazw funkcji ktore uzywają @qgsfunction
+        self.custom_functions = {
+            'connect_points': connect_points.connect_points,
+            'get_half_line': get_half_line.get_half_line,
+            'recalculate_justification': recalculate_justification.recalculate_justification,
+            'pokaz_wersje': pokaz_wersje.pokaz_wersje,
+            'kolor_wersji': kolor_wersji.kolor_wersji
+        }
+
         # initialize plugin directory
         self.plugin_dir = os.path.dirname(__file__)
 
@@ -184,38 +193,11 @@ class QMapa:
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
 
-        self.tryUnregister()
-
-        # inizjalizacja funkcji z folderu expressions
-        QgsExpression.registerFunction(connect_points.connect_points)
-        QgsExpression.registerFunction(get_half_line.get_half_line)
-        QgsExpression.registerFunction(recalculate_justification.recalculate_justification)
-        QgsExpression.registerFunction(pokaz_wersje.pokaz_wersje)
-        QgsExpression.registerFunction(kolor_wersji.kolor_wersji)
+        for func in self.custom_functions.values():
+            QgsExpression.registerFunction(func)
 
         self.initExpandToolbar()
 
-    def tryUnregister(self):
-        try:
-            QgsExpression.unregisterFunction('connect_points')
-        except:
-            pass
-        try:
-            QgsExpression.unregisterFunction('get_half_line')
-        except:
-            pass
-        try:
-            QgsExpression.unregisterFunction('recalculate_justification')
-        except:
-            pass
-        try:
-            QgsExpression.unregisterFunction('pokaz_wersje')
-        except:
-            pass
-        try:
-            QgsExpression.unregisterFunction('kolor_wersji')
-        except:
-            pass
 
     def initExpandToolbar(self):
         """Stworzenie rozwijanego toolbuttona"""
@@ -325,6 +307,12 @@ class QMapa:
 
         # print "** UNLOAD QMapa"
 
+        for func_name in self.custom_functions.keys():
+            try:
+                QgsExpression.unregisterFunction(func_name)
+            except Exception as e:
+                print(f'Nie udało się wyrejestrować funkcji {func_name}: {e}')
+
         for action in self.actions:
             self.iface.removePluginMenu(
                 self.tr(u'&QMapa GML 2021'),
@@ -338,14 +326,10 @@ class QMapa:
 
     def run(self):
         """Run method that loads and starts the plugin"""
-        self.tryUnregister()
 
         # inizjalizacja funkcji z folderu expressions
-        QgsExpression.registerFunction(connect_points.connect_points)
-        QgsExpression.registerFunction(get_half_line.get_half_line)
-        QgsExpression.registerFunction(recalculate_justification.recalculate_justification)
-        QgsExpression.registerFunction(pokaz_wersje.pokaz_wersje)
-        QgsExpression.registerFunction(kolor_wersji.kolor_wersji)
+        for func in self.custom_functions.values():
+            QgsExpression.registerFunction(func)
 
         if Terms(self.dialogs).checkCanRun():
             if not self.pluginIsActive:

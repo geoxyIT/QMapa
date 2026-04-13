@@ -6,6 +6,7 @@ import os
 import hashlib
 from .config import incompatible_pref
 from openpyxl.styles import Alignment
+from openpyxl.cell.cell import MergedCell
 
 
 class report:
@@ -81,12 +82,10 @@ class report:
                 # if type(cell) == "<class 'openpyxl.cell.cell.Cell'>":
                 try:
                     # paste style to sheet receiving
-                    if include_value:
+                    if include_value and not isinstance(cell, MergedCell):  # nie wklejanie do scalonych komórek (wrzuca tylko do "głównej")
                         cell.value = copiedData[countRow][countCol]
-
-                    # print(type(cell))
-                except:
-                    pass
+                except Exception as e:
+                    print(f'pasteRange error, cell: {cell.coordinate}, row: {cell.row}: {e}')
 
                 cell.font = style[countRow][countCol][0]
                 cell.border = style[countRow][countCol][1]

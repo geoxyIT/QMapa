@@ -387,8 +387,8 @@ class GmlModify:
                             else:
                                 name_of_base = 'NotRecognized'
                             main_child[0].tag = pref_name + incompatible_pref + name_of_base + '_' + class_name
-            except:
-                pass
+            except Exception as e:
+                print(f'checkIsCorrect error: {e}')
 
     def run(self):
         st = datetime.datetime.now()
