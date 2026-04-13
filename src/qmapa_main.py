@@ -90,8 +90,8 @@ class Main:
 
                     layer.triggerRepaint()
                     iface.layerTreeView().refreshLayerSymbology(layer.id())
-                except:
-                    pass
+                except Exception as e:
+                    print(f'setStyling error, layer {layer.name()}: {e}')
 
         gc.collect()
 
@@ -434,12 +434,18 @@ class Main:
                             lay_obj_archival = 0
                             lay_obj_closed = 0
                             uniq_iip = set()
+
+                        is_prezentacjaGraficzna = False
+                        if 'PrezentacjaGraficzna' in layer_simple_name:
+                            is_prezentacjaGraficzna = True
+
                         for feature in layer.getFeatures():
-                            try:
-                                iip = feature.attribute("przestrzenNazw") + feature.attribute("lokalnyId")
-                                uniq_iip.add(iip)
-                            except:
-                                pass
+                            if not is_prezentacjaGraficzna: # jesli dotyczy to warstwy prezentacji graficznej to i tak nie bedzie atrybutow wersji
+                                try:
+                                    iip = feature.attribute("przestrzenNazw") + feature.attribute("lokalnyId")
+                                    uniq_iip.add(iip)
+                                except Exception as e:
+                                    print(f'generateRaport ({group_name}) layer: {layer.name()}, feature {feature}: {e}')
                             try:
                                 start_ob = feature.attribute("startObiekt")
                             except:

@@ -50,8 +50,8 @@ def getSymbCopy(layers, layer_name):
                         for child in layer.renderer().rootRule().children():
                             '''child_copy = copy.deepcopy(child)'''
                             child_copy = child
-            except:
-                pass
+            except Exception as e:
+                print(f'getSymbCopy error, layer {layer.name()}: {e}')
 
     return child_copy
 

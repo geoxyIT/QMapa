@@ -128,8 +128,7 @@ class ExpressYourself:
                         pass
 
             except Exception as e:
-                # zwrocenie bledu
-                print(e)
+                print(f'setSymbolExpression error, layer {layer.name()}: {e}')
 
             # odswiezenie layer tree
             iface.layerTreeView().refreshLayerSymbology(layer.id())
@@ -189,8 +188,8 @@ class ExpressYourself:
                                 else:
                                     self.enable_expression = '@Karto'
 
-                            except:
-                                pass
+                            except Exception as e:
+                                print(f'setLabelExpression error, layer: {layer.name()}: {e}')
                         else:
                             if set_colors:
                                 self.enable_expression = 'case when 1111 then ' + self.enable_expression + ' else 0 end'
