@@ -410,12 +410,6 @@ def fill(excel_path, scale, set, layers):
     fill_with_color(fill_dict, scale, set, layers)
 
 
-def openFillXlsm(path: str):
-    """Otwarcie pliku xlsm z parametrami wypełniania do edycji"""
-    # webbrowser.open(path)
-    Main().osOpen(path)
-
-
 def openFillXlsmLoc(path: str):
     """Otwarcie lokalizacji w której znajduje się plik xlsx"""
     # webbrowser.open(path)
