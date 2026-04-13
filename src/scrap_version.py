@@ -6,7 +6,7 @@ from qgis.PyQt.QtGui import QColor, QPalette
 
 def getHubText(url):
     """Funkcja do pobierania tekstu (wersji i info) z github"""
-    page = requests.get(url)
+    page = requests.get(url, timeout=5)
     if page.status_code == 200:
         text = page.text
     else:
