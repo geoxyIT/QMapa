@@ -498,13 +498,13 @@ class Main:
         return counting_dict
 
     def osOpen(self, path):
-        """Wykrywanie aktualnie uzywanego systemu operacyjnego"""
-        if sys.platform == 'win32':
-            os.startfile(path)
-        elif sys.platform == 'darwin' or sys.platform == 'linux':
-            os.system(f'open "{path}"')
-        else:
-            try:
-                os.system(f'xdg-open "{path}"')
-            except OSError as err:
-                print('Ta funkcjonalność nie obsługuje twojego systemu operacyjnego', err)
+        """Wykrywanie aktualnie uzywanego systemu operacyjnego i otwieranie path w odpowiedni sposób"""
+        try:
+            if sys.platform == 'win32':
+                os.startfile(path)
+            elif sys.platform == 'linux':
+                subprocess.run(['xdg-open', path], check=True)
+            else:
+                subprocess.run(['open', path], check=True)
+        except Exception as err:
+            print(f'Nie udało się otworzyć pliku na tym systemie: {err}')
