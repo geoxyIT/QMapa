@@ -47,7 +47,7 @@ sys.path.append(external_packages)
 
 def download_file_from_github(url):
         try:
-            response = requests.get(url)
+            response = requests.get(url, timeout=5)
             if response.status_code == 200:
                 # utworzenie pliku i zapis do niego wartosci tekstowej
                 with open(os.path.join(PLUGIN_DIRECTORY, "src", "__"), "w", encoding='cp1250') as file1:
