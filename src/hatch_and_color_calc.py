@@ -188,7 +188,6 @@ def AKAKAKAKAK_hatching_old(polyline_geometry, geometry_limit, spacing, distance
     geometry_limit = geometry_limit.buffer(0.005, 1)
 
     bis_list = []
-    angle_list = []
     bisection = None
 
     # obliczanie dwusiecznych:
@@ -330,7 +329,6 @@ def hatching(polyline_geometry, geometry_limit, spacing, distance, rotate_angle=
     geometry_limit = geometry_limit.buffer(0.005, 1)
 
     bis_list = []
-    angle_list = []
     bisection = None
 
     # obliczanie dwusiecznych:
@@ -603,8 +601,8 @@ def calculateHatching(layer, object_type, scale, ref_lay_ids):
                         ref_key_field_value = feature.attribute('gml_id')
 
                         # zapytanie do pobrania punktow poczatku/ konca gory
-                        point_request = QgsFeatureRequest().setFilterExpression(
-                            f"{ref_key_field_name} = '{ref_key_field_value}'")
+                        # point_request = QgsFeatureRequest().setFilterExpression(
+                        #     f"{ref_key_field_name} = '{ref_key_field_value}'")
                         # pobranie polilini
                         try:
                             # pobranie odpowiadajacych obiektow i ich geometrii
@@ -947,7 +945,7 @@ def calculateColors(main_layer, field_name):
                                 else:
                                     feature_sewer_val = feature_sewer_val_stripped[0]
                                 calculated_color = sewer_colors[feature_sewer_val]
-                            except Exception as e:  # jezeli wartosci nie ma w sewer_colors
+                            except:  # jezeli wartosci nie ma w sewer_colors
                                 calculated_color = black_color
                     else:  # warunek dla wszystkich dat, wartości null
                         calculated_color = black_color
