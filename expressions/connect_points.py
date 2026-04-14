@@ -1,5 +1,5 @@
-from qgis.core import *
-from qgis.gui import *
+from qgis.core import QgsExpression, QgsExpressionContext
+from qgis.utils import qgsfunction
 
 @qgsfunction(args='auto', group='Custom')
 def connect_points(geometry, feature, parent):

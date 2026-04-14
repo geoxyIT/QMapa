@@ -1,9 +1,8 @@
 from qgis.utils import iface
 import os
-from .scrap_version import *
+from .scrap_version import compareVersions, getHubText, getLocalText, regVer
 from qgis.PyQt.QtWidgets import QMessageBox
-from qgis.core import *
-from qgis.gui import *
+from qgis.core import Qgis, QgsExpressionContextUtils, QgsProject, QgsRasterLayer
 from .qmapa_main import Main
 from .express_yourself import ExpressYourself
 import urllib.parse

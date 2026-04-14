@@ -1,16 +1,21 @@
-import copy
 import datetime
-
 from qgis.PyQt.QtCore import QVariant
 from qgis.utils import iface
-from qgis.core import *
-from qgis.gui import *
+from qgis.core import (
+    Qgis,
+    QgsFeature,
+    QgsFeatureRequest,
+    QgsField,
+    QgsGeometry,
+    QgsLineString,
+    QgsMultiLineString,
+    QgsPointXY,
+    QgsProject,
+    QgsSpatialIndex
+)
 from .config import ges_colors, sewer_colors
 import math
-import sys
 from collections import defaultdict
-
-import time
 
 # profiler
 from io import StringIO

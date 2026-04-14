@@ -5,7 +5,7 @@ import numpy as np
 from typing import Dict
 
 from qgis.utils import iface
-from qgis.core import *
+from qgis.core import QgsLinePatternFillSymbolLayer, QgsMapLayerType, QgsSimpleFillSymbolLayer, QgsUnitTypes
 from qgis.PyQt.QtCore import Qt
 from .qmapa_main import Main
 

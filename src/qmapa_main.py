@@ -1,12 +1,21 @@
 import os, sys
+import subprocess
 from qgis.PyQt.QtCore import QVariant, QDateTime
 from qgis.utils import iface
-from qgis.core import *
-
+from qgis.core import (
+    QgsField,
+    QgsLayerTreeGroup,
+    QgsLayerTreeLayer,
+    QgsMapLayer,
+    QgsMapLayerType,
+    QgsNullSymbolRenderer,
+    QgsProject,
+    QgsVectorLayer
+)
 from osgeo import ogr
 
 from .config import correct_layers, additional_layers, incompatible_pref, \
-    incompatible_pref_friendly_name, prefix_of_bases, ges_colors, sewer_colors
+    incompatible_pref_friendly_name, prefix_of_bases
 
 # profiler
 from io import StringIO

@@ -1,4 +1,4 @@
-import os, sys
+import sys
 import ctypes
 from QMapa import STAT_DLL, STAT_DLL_3_24, STAT_DLL_UNIX, UID, CONSENTS_FILE
 from QMapa import read_uid
