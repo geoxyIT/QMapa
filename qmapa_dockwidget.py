@@ -32,8 +32,7 @@ from qgis.PyQt import QtWidgets, uic
 from qgis.PyQt.QtCore import pyqtSignal, pyqtSlot, QCoreApplication
 from qgis.PyQt.QtWidgets import QFileDialog
 from qgis.utils import iface
-from qgis.core import *
-from qgis.gui import *
+from qgis.core import Qgis, QgsExpressionContextUtils, QgsProject
 
 import gc
 

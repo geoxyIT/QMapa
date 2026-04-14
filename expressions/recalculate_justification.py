@@ -1,5 +1,4 @@
-from qgis.core import *
-from qgis.gui import *
+from qgis.utils import qgsfunction
 
 @qgsfunction(args='auto', group='Custom', referenced_columns=[])
 def recalculate_justification(value, feature, parent):

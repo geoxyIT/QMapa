@@ -4,7 +4,7 @@ from datetime import datetime
 from packaging import version
 from enum import Enum
 from qgis.utils import iface
-from qgis.core import *
+from qgis.core import Qgis, QgsField, QgsProject, QgsVectorLayerJoinInfo
 from qgis.PyQt.QtWidgets import QMessageBox
 from qgis.PyQt.QtCore import QCoreApplication, QVariant
 

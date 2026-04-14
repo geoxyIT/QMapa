@@ -35,7 +35,7 @@ from .expressions import connect_points, get_half_line, recalculate_justificatio
     kolor_wersji
 
 # Initialize Qt resources from file resources.py
-from .src.resources import *
+from .src.resources import *    # noqa: F401, F403
 
 # Import the code for the DockWidget
 from .qmapa_dockwidget import QMapaDockWidget

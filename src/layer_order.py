@@ -1,4 +1,4 @@
-from qgis.core import *
+from qgis.core import QgsMapLayerType
 from qgis.utils import iface
 from typing import List
 

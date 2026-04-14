@@ -1,8 +1,5 @@
-from qgis.core import *
-from qgis.gui import *
-from qgis.core import NULL
-import datetime
-from qgis.PyQt.QtCore import QVariant, QDateTime
+from qgis.PyQt.QtCore import QDateTime
+from qgis.utils import qgsfunction
 from ast import literal_eval
 
 @qgsfunction(args='auto', group='Custom', referenced_columns=[])
