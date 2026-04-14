@@ -18,7 +18,6 @@ class report:
 
     def controlSum(self, file_path):
         #filename = input(file_path)
-        start = datetime.datetime.now()
         sha256_hash = hashlib.sha256()
 
         with open(file_path, 'rb') as f:

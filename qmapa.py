@@ -203,7 +203,7 @@ class QMapa:
         """Stworzenie rozwijanego toolbuttona"""
         icon_path = ':/plugins/qmapa/icons/icon.png'
         icon_help_path = ':/plugins/qmapa/icons/help.png'
-        icon_stats_info_path = ':/plugins/qmapa/icons/stats_info.png'
+        # icon_stats_info_path = ':/plugins/qmapa/icons/stats_info.png'
         icon_fill_directory_path = ':/plugins/qmapa/icons/fill_directory.png'
         raster_icon = ':/plugins/qmapa/icons/raster.png'
 

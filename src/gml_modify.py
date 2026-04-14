@@ -229,7 +229,7 @@ class GmlModify:
                     added = ET.SubElement(val, tag)
                     added.text = value
                     added.tail = '\n'
-                except StopIteration as e:
+                except StopIteration:
                     val.remove(child)
                     self.err_number += 1
 
