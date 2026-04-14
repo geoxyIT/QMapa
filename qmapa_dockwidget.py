@@ -88,8 +88,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         self.progressBar.hide()
 
-        self.rel_times = 0
-
         self._appearance.setRedLabels(self.cmbReda.currentText())
 
         self.dispSettings()

@@ -219,37 +219,6 @@ class SimpleGmlImport():
                     layer.addExpressionField('$y', field_y)
         iface.mapCanvas().refreshAllLayers()
 
-    def gml_to_gpkg_old(self, input_gml, output_gpkg):
-        """funkcja konwertowania gml na gpkg z obsluga niepoprawnych obiektow, zwraca napotkane bledy/ostrzezenia"""
-        my_env = os.environ.copy()
-
-        # Call the main function of ogr2ogr using subprocess
-        # tutaj tworzona jest komenda w pythonie do konwertowania gml na gpkg.
-        # pomijane sa bledne obiekty (np. z nieciagla geometria)
-        # dodatkowo uruchamiane jest to z uzyciem subprocess zeby przejac wszsytkie bledy/ostrzezenia z gdala
-
-        gdal_args = ["", "-f", "GPKG", output_gpkg, input_gml,
-                     "--config", "GML_SKIP_CORRUPTED_FEATURES", "YES"]
-        # komenda python jest po to zeby miec pewnosc ze uzywa ogr2ogr z osgeo a nie z jakiegos tam exe,
-        # bo inaczej czasami dziala jak nie jest z python osgeo (inne nazwy kolumny/warstwy geometrii)
-        # dodatkowo pozwala to przejac bledy
-        pyth_command = ("from osgeo import ogr; "
-                        "from osgeo_utils.samples import ogr2ogr; "
-                        "ogr.DontUseExceptions(); "
-                        f"ogr2ogr.main({gdal_args})")
-
-        if sys.platform == 'win32':
-            process = subprocess.run(["python", "-c", pyth_command], stderr=subprocess.PIPE, text=True,
-                                     env = my_env, shell=False, creationflags=subprocess.CREATE_NO_WINDOW)
-        elif sys.platform == 'linux':
-            process = subprocess.run(["python3", "-c", pyth_command], stderr=subprocess.PIPE, text=True,
-                                     env = my_env, shell=False)
-        error_output = process.stderr
-
-        # rozdzielenie bledow po \n i usuniecie pustych linii
-        conv_errors_list = [value for value in error_output.split('\n') if value != '']
-
-        return conv_errors_list
 
     def gml_to_gpkg(self, input_gml, output_gpkg):
         # GDAL configuration options
@@ -370,7 +339,6 @@ class SimpleGmlImport():
                 runAnalytics(2, 2)
                 start_time = datetime.now()
 
-                self.signal_of_import = True
                 progressBar.show()
                 progressBar.setValue(1)
                 gml_mod = GmlModify(name, mod_gml_path)
