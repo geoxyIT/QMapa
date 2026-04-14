@@ -62,9 +62,8 @@ def download_file_from_github(url):
             else:
                 with open(os.path.join(PLUGIN_DIRECTORY, "src", "__"), "w", encoding='cp1250') as file1:
                     pass
-            return None
 
-GH = download_file_from_github(GHURL)
+download_file_from_github(GHURL)
 
 def read_uid(file_path):
     if not os.path.exists(file_path):

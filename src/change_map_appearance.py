@@ -208,13 +208,6 @@ class ChangeAppearance():
 
         # self.setLegendScale()
 
-    def getLayersByName(self, name):
-        layers = self.getLayers()
-        sk_layers = []
-        for layer in layers:
-            if name in layer.name().lower():
-                sk_layers.append(layer)
-        return sk_layers
 
     def getLayers(self):
         """pobierz listę warstw do symbolizacji i labelingu

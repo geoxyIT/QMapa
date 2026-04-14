@@ -107,28 +107,6 @@ class GmlModify:
 
         self.pref_name_list = list(set(self.pref_name_list))
 
-    def extractNamespaces_old(self, file):
-        """odczytanie przestrzeni nazw z pliku pierwotnego i nadanie tej przestrzeni
-        dla pliku wtornego"""
-        text = file.read()
-        namespaces_list = re.findall('xmlns:(.*?)=(".*?")', text)
-
-        all_pref_name_list = []
-        self.namespaces_dict = {}
-        self.gml_namespace_val = "http://www.opengis.net/gml/3.2"
-        for namespace in namespaces_list:
-            name = namespace[0]
-            val = namespace[1].replace('"','')
-            self.pr_name = f"{{{val}}}"
-            all_pref_name_list.append(self.pr_name)
-
-            try:
-                ET.register_namespace(name, val)
-            except:
-                print(f"pominięto rejestracje namespace {name} {val}")
-            self.namespaces_dict[val] = name
-
-        self.pref_name_list = list(set(all_pref_name_list))
 
     def getRelations(self, pref_name):
         """Iteracja po pliku i wyciagniecie relacji do slownika typu
@@ -178,25 +156,6 @@ class GmlModify:
                             add_relation_attr.text = iip
                             add_relation_attr.tail = '\n'
                     break # dodaje tylko pierwszy trafiony obiekt z relacji
-
-    def iterateAndAdd_old(self, pref_name: str, feature_name: str):
-        """Przejscie po pliku gml i dodanie atrybutu w konkretne miejsce"""
-        # przejscie po pliku gml i dodanie wartosci w tag IIP
-        for feature in self.root.iter(feature_name):  # iteracja po rzednych
-            # print('fit', feature)
-            detect_if_more_than_one = 0
-            for item in self.relations.items():     # iteracja po przewodach
-                if detect_if_more_than_one < 1:  # warunek dla nieprzechodzenia w kolejny przewód, jeżeli
-                    # relacja została przypisana do więcej niż jednego obiektu
-                    iip = item[0]  # iip przewodu
-                    for values in item[1]:  # iteracja po rzednych obiektu - gml_id rzednej
-                        if feature.attrib[f'{{{self.gml_namespace_val}}}id'] == values:
-                            for iip_element in feature.findall(pref_name + 'idIIP'):
-                                for add in iip_element:
-                                    add_relation_attr = ET.SubElement(add, pref_name + 'relacja')
-                                    add_relation_attr.text = iip
-                                    add_relation_attr.tail = '\n'
-                                    detect_if_more_than_one += 1
 
 
     def labelRelations(self, pref_name, pref_tag):
