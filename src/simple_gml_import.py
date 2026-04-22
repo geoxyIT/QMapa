@@ -1,4 +1,6 @@
-import os, sys, subprocess
+import os
+import sys
+import subprocess
 from osgeo import gdal
 from datetime import datetime
 from packaging import version
@@ -19,13 +21,13 @@ from .change_map_appearance import ChangeAppearance
 from .layer_order import setNewOrder
 
 
-class SimpleGmlImport():
+class SimpleGmlImport:
     def __init__(self):
         pass
 
     def paths(self, gml_path):
         """utworzenie sciezek plikow importu i raportu,
-         sprawdzenie czy juz istnieja i czy jest do nich dostep, zapytanie czy nadpisac"""
+        sprawdzenie czy juz istnieja i czy jest do nich dostep, zapytanie czy nadpisac"""
 
         path, ext = os.path.splitext(gml_path)
         mod_gml_path = os.path.join(os.path.dirname(path), os.path.basename(path) + '_mod' + ext)
@@ -58,13 +60,17 @@ class SimpleGmlImport():
                 existing_file_names.append(name_key + ": \n" + path)
 
             # zapytanie czy nadpisac
-            allow_override_reply = QMessageBox.question(iface.mainWindow(), 'Nadpisać?',
-                                                        ("{} importu już {}, czy chesz {} nadpisać? \n\n{}".format(info_1,
-                                                                                                                   info_2,
-                                                                                                                   info_3,
-                                                                                                                   ', \n\n'.join(
-                                                                                                                       existing_file_names))),
-                                                        QMessageBox.StandardButton.Yes, QMessageBox.StandardButton.No)
+            allow_override_reply = QMessageBox.question(
+                iface.mainWindow(),
+                'Nadpisać?',
+                (
+                    "{} importu już {}, czy chesz {} nadpisać? \n\n{}".format(
+                        info_1, info_2, info_3, ', \n\n'.join(existing_file_names)
+                    )
+                ),
+                QMessageBox.StandardButton.Yes,
+                QMessageBox.StandardButton.No,
+            )
 
             if allow_override_reply == QMessageBox.StandardButton.Yes:
                 for name_key, path in dict_existing_files.items():
@@ -72,11 +78,19 @@ class SimpleGmlImport():
                     try:
                         os.remove(path)
                     except:
-                        iface.messageBar().pushMessage("Import nie został wykonany: ", "brak dostępu do pliku " + path,
-                                                       level=2, duration=0)
-                        QMessageBox.critical(iface.mainWindow(), 'Błąd: brak dostępu do pliku',
-                                             'Brak dostępu do pliku, sprawdż czy plik nie jest używany przez inny program. \n' + path,
-                                             buttons=QMessageBox.StandardButton.Ok)
+                        iface.messageBar().pushMessage(
+                            "Import nie został wykonany: ",
+                            "brak dostępu do pliku " + path,
+                            level=2,
+                            duration=0,
+                        )
+                        QMessageBox.critical(
+                            iface.mainWindow(),
+                            'Błąd: brak dostępu do pliku',
+                            'Brak dostępu do pliku, sprawdż czy plik nie jest używany przez inny program. \n'
+                            + path,
+                            buttons=QMessageBox.StandardButton.Ok,
+                        )
 
                         print('nie można otworzyć pliku')
                         mod_gml_path = ''
@@ -84,8 +98,12 @@ class SimpleGmlImport():
                         report_path = ''
                         break
             else:
-                iface.messageBar().pushMessage("Import nie został wykonany: ", "nie zezwolono na nadpisanie",
-                                               level=Qgis.MessageLevel.Info, duration=0)
+                iface.messageBar().pushMessage(
+                    "Import nie został wykonany: ",
+                    "nie zezwolono na nadpisanie",
+                    level=Qgis.MessageLevel.Info,
+                    duration=0,
+                )
                 mod_gml_path = ''
                 gpkg_path = ''
                 report_path = ''
@@ -96,75 +114,93 @@ class SimpleGmlImport():
         """nadawanie joinow podczas importu pliku"""
 
         joining_dict = {
-                        'OT_opisyKARTO': {'OT_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
-                                        'OT_BudynekNiewykazanyWEGIB': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'OT_BlokBudynku': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'OT_ObiektTrwaleZwiazanyZBudynkami': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'OT_Budowle': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'OT_Komunikacja': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'OT_SportIRekreacja': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'OT_ZagospodarowanieTerenu': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'OT_Wody': ['obiektPrzedstawiany', 'gml_id', []],
-                                        'OT_Rzedna': ['obiektPrzedstawiany', 'gml_id', []]},
-                        'EGB_opisyKARTO': {'EGB_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
-                                         'EGB_JednostkaEwidencyjna': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'EGB_ObrebEwidencyjny': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'EGB_DzialkaEwidencyjna': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'EGB_PunktGraniczny': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'EGB_Budynek': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'EGB_BlokBudynku': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'EGB_ObiektTrwaleZwiazanyZBudynkiem': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'EGB_KonturUzytkuGruntowego': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'EGB_KonturKlasyfikacyjny': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'EGB_AdresNieruchomosci': ['obiektPrzedstawiany', 'gml_id', []]},
-
-                        'GES_opisyKARTO': {'GES_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
-                                         'GES_InneUrzadzeniaTowarzyszace': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_UrzadzeniaTowarzyszczaceLiniowe': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_UrzadzeniaTowarzyszaceLiniowe': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_PrzewodWodociagowy': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_PrzewodKanalizacyjny': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_PrzewodElektroenergetyczny': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_PrzewodGazowy': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_PrzewodCieplowniczy': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_PrzewodTelekomunikacyjny': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_PrzewodSpecjalny': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_PrzewodNiezidentyfikowany': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_UrzadzeniaSiecWodociagowa': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_UrzadzeniaSiecKanalizacyjna': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_UrzadzeniaSiecElektroenergetyczna': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_UrzadzeniaSiecGazowa': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_UrzadzeniaSiecCieplownicza': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_UrzadzeniaSiecTelekomunikacyjna': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_UrzadzeniaTechniczneSieciSpecjalnej': ['obiektPrzedstawiany', 'gml_id',
-                                                                                     []],
-                                         'GES_UrzadzenieNiezidentyfikowane': ['obiektPrzedstawiany', 'gml_id', []],
-                                         'GES_Rzedna': ['obiektPrzedstawiany', 'gml_id', []]},
-                        'GES_UrzadzeniaSiecWodociagowa': {
-                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'GES_UrzadzeniaSiecKanalizacyjna': {
-                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'GES_UrzadzeniaSiecElektroenergetyczna': {
-                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'GES_UrzadzeniaSiecGazowa': {'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'GES_UrzadzeniaSiecCieplownicza': {
-                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'GES_UrzadzeniaSiecTelekomunikacyjna': {
-                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'GES_UrzadzeniaTechniczneSieciSpecjalnej': {
-                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'GES_UrzadzenieNiezidentyfikowane': {
-                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'GES_InneUrzadzeniaTowarzyszace': {
-                            'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'OT_Budowle': {'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'OT_ZagospodarowanieTerenu': {'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'OT_Wody': {'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'OT_ObiektTrwaleZwiazanyZBudynkami': {
-                            'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
-                        'EGB_ObiektTrwaleZwiazanyZBudynkiem': {
-                            'EGB_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]}
-                        }
+            'OT_opisyKARTO': {
+                'OT_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
+                'OT_BudynekNiewykazanyWEGIB': ['obiektPrzedstawiany', 'gml_id', []],
+                'OT_BlokBudynku': ['obiektPrzedstawiany', 'gml_id', []],
+                'OT_ObiektTrwaleZwiazanyZBudynkami': ['obiektPrzedstawiany', 'gml_id', []],
+                'OT_Budowle': ['obiektPrzedstawiany', 'gml_id', []],
+                'OT_Komunikacja': ['obiektPrzedstawiany', 'gml_id', []],
+                'OT_SportIRekreacja': ['obiektPrzedstawiany', 'gml_id', []],
+                'OT_ZagospodarowanieTerenu': ['obiektPrzedstawiany', 'gml_id', []],
+                'OT_Wody': ['obiektPrzedstawiany', 'gml_id', []],
+                'OT_Rzedna': ['obiektPrzedstawiany', 'gml_id', []],
+            },
+            'EGB_opisyKARTO': {
+                'EGB_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
+                'EGB_JednostkaEwidencyjna': ['obiektPrzedstawiany', 'gml_id', []],
+                'EGB_ObrebEwidencyjny': ['obiektPrzedstawiany', 'gml_id', []],
+                'EGB_DzialkaEwidencyjna': ['obiektPrzedstawiany', 'gml_id', []],
+                'EGB_PunktGraniczny': ['obiektPrzedstawiany', 'gml_id', []],
+                'EGB_Budynek': ['obiektPrzedstawiany', 'gml_id', []],
+                'EGB_BlokBudynku': ['obiektPrzedstawiany', 'gml_id', []],
+                'EGB_ObiektTrwaleZwiazanyZBudynkiem': ['obiektPrzedstawiany', 'gml_id', []],
+                'EGB_KonturUzytkuGruntowego': ['obiektPrzedstawiany', 'gml_id', []],
+                'EGB_KonturKlasyfikacyjny': ['obiektPrzedstawiany', 'gml_id', []],
+                'EGB_AdresNieruchomosci': ['obiektPrzedstawiany', 'gml_id', []],
+            },
+            'GES_opisyKARTO': {
+                'GES_odnosnik': ['gml_id', 'gml_id', ['x', 'y']],
+                'GES_InneUrzadzeniaTowarzyszace': ['obiektPrzedstawiany', 'gml_id', []],
+                'GES_UrzadzeniaTowarzyszczaceLiniowe': ['obiektPrzedstawiany', 'gml_id', []],
+                'GES_UrzadzeniaTowarzyszaceLiniowe': ['obiektPrzedstawiany', 'gml_id', []],
+                'GES_PrzewodWodociagowy': ['obiektPrzedstawiany', 'gml_id', []],
+                'GES_PrzewodKanalizacyjny': ['obiektPrzedstawiany', 'gml_id', []],
+                'GES_PrzewodElektroenergetyczny': ['obiektPrzedstawiany', 'gml_id', []],
+                'GES_PrzewodGazowy': ['obiektPrzedstawiany', 'gml_id', []],
+                'GES_PrzewodCieplowniczy': ['obiektPrzedstawiany', 'gml_id', []],
+                'GES_PrzewodTelekomunikacyjny': ['obiektPrzedstawiany', 'gml_id', []],
+                'GES_PrzewodSpecjalny': ['obiektPrzedstawiany', 'gml_id', []],
+                'GES_PrzewodNiezidentyfikowany': ['obiektPrzedstawiany', 'gml_id', []],
+                'GES_UrzadzeniaSiecWodociagowa': ['obiektPrzedstawiany', 'gml_id', []],
+                'GES_UrzadzeniaSiecKanalizacyjna': ['obiektPrzedstawiany', 'gml_id', []],
+                'GES_UrzadzeniaSiecElektroenergetyczna': ['obiektPrzedstawiany', 'gml_id', []],
+                'GES_UrzadzeniaSiecGazowa': ['obiektPrzedstawiany', 'gml_id', []],
+                'GES_UrzadzeniaSiecCieplownicza': ['obiektPrzedstawiany', 'gml_id', []],
+                'GES_UrzadzeniaSiecTelekomunikacyjna': ['obiektPrzedstawiany', 'gml_id', []],
+                'GES_UrzadzeniaTechniczneSieciSpecjalnej': ['obiektPrzedstawiany', 'gml_id', []],
+                'GES_UrzadzenieNiezidentyfikowane': ['obiektPrzedstawiany', 'gml_id', []],
+                'GES_Rzedna': ['obiektPrzedstawiany', 'gml_id', []],
+            },
+            'GES_UrzadzeniaSiecWodociagowa': {
+                'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]
+            },
+            'GES_UrzadzeniaSiecKanalizacyjna': {
+                'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]
+            },
+            'GES_UrzadzeniaSiecElektroenergetyczna': {
+                'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]
+            },
+            'GES_UrzadzeniaSiecGazowa': {
+                'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]
+            },
+            'GES_UrzadzeniaSiecCieplownicza': {
+                'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]
+            },
+            'GES_UrzadzeniaSiecTelekomunikacyjna': {
+                'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]
+            },
+            'GES_UrzadzeniaTechniczneSieciSpecjalnej': {
+                'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]
+            },
+            'GES_UrzadzenieNiezidentyfikowane': {
+                'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]
+            },
+            'GES_InneUrzadzeniaTowarzyszace': {
+                'GES_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]
+            },
+            'OT_Budowle': {'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+            'OT_ZagospodarowanieTerenu': {
+                'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]
+            },
+            'OT_Wody': {'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]},
+            'OT_ObiektTrwaleZwiazanyZBudynkami': {
+                'OT_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]
+            },
+            'EGB_ObiektTrwaleZwiazanyZBudynkiem': {
+                'EGB_PrezentacjaGraficzna': ['gml_id', 'obiektPrzedstawiany', []]
+            },
+        }
 
         # tworzenie zlaczen warstw
         for layer in vec_layers_list:
@@ -179,17 +215,25 @@ class SimpleGmlImport():
                         key_joining = joining_info[1]
                         fields_list = joining_info[2]
                         # rozróżnienie typu geometrii w zależności od zwracanej klasy
-                        # dla QGIS 3.30 zwracany jest enumerator 
+                        # dla QGIS 3.30 zwracany jest enumerator
                         if isinstance(layer_joining.geometryType(), Enum) is False:  # wersja < 3.30
                             geom_type = layer_joining.geometryType()
-                        else: # wersja > 3.30
+                        else:  # wersja > 3.30
                             geom_type = layer_joining.geometryType().value
                         prefix = layer_joining_name + '_' + str(geom_type) + '_'
                         QgsProject.instance().addMapLayer(layer)
                         QgsProject.instance().addMapLayer(layer_joining)
                         joinObject = QgsVectorLayerJoinInfo()
                         joinObject.setJoinFieldNamesBlockList(
-                            ['prezentacja_etykiety', 'fid', 'przestrzenNazw', 'wersjaId', 'numerOperatu', 'wladajacy'])
+                            [
+                                'prezentacja_etykiety',
+                                'fid',
+                                'przestrzenNazw',
+                                'wersjaId',
+                                'numerOperatu',
+                                'wladajacy',
+                            ]
+                        )
                         joinObject.setCascadedDelete(False)
                         joinObject.setDynamicFormEnabled(False)
                         joinObject.setEditable(False)
@@ -208,7 +252,11 @@ class SimpleGmlImport():
         for layer in vec_layers_list:
             fields_list_obj = layer.fields().toList()
             fields_list = []
-            if layer.name() == 'GES_odnosnik' or layer.name() == 'EGB_odnosnik' or layer.name() == 'OT_odnosnik':
+            if (
+                layer.name() == 'GES_odnosnik'
+                or layer.name() == 'EGB_odnosnik'
+                or layer.name() == 'OT_odnosnik'
+            ):
                 for field in fields_list_obj:
                     fields_list.append(field.name())
                 if 'x' not in fields_list:
@@ -218,7 +266,6 @@ class SimpleGmlImport():
                     field_y = QgsField('y', QVariant.Double)
                     layer.addExpressionField('$y', field_y)
         iface.mapCanvas().refreshAllLayers()
-
 
     def gml_to_gpkg(self, input_gml, output_gpkg):
         # GDAL configuration options
@@ -234,35 +281,52 @@ class SimpleGmlImport():
         # parametr mapFieldType został dodany od wersji 3.5 gdala, wtedy tez chyba zostala dodana osluga list
         gdal_vers = gdal.__version__
         if version.parse(gdal_vers) < version.parse("3.7.0"):
-            pyth_command = ("from osgeo import gdal; "
-                            "gdal.DontUseExceptions(); "
-                            "gdal.SetConfigOption('GML_SKIP_CORRUPTED_FEATURES', 'YES');"
-                            "gdal_options = gdal.VectorTranslateOptions(format='GPKG'); "
-                            f"gdal.VectorTranslate(r'{output_gpkg}', r'{input_gml}', options=gdal_options)")
+            pyth_command = (
+                "from osgeo import gdal; "
+                "gdal.DontUseExceptions(); "
+                "gdal.SetConfigOption('GML_SKIP_CORRUPTED_FEATURES', 'YES');"
+                "gdal_options = gdal.VectorTranslateOptions(format='GPKG'); "
+                f"gdal.VectorTranslate(r'{output_gpkg}', r'{input_gml}', options=gdal_options)"
+            )
         else:
-            pyth_command = ("from osgeo import gdal; "
-                            "gdal.DontUseExceptions(); "
-                            "gdal.SetConfigOption('GML_SKIP_CORRUPTED_FEATURES', 'YES');"
-                            "gdal_options = gdal.VectorTranslateOptions(format='GPKG', mapFieldType=['StringList=String', 'IntegerList=String' , 'RealList=String']); "
-                            f"gdal.VectorTranslate(r'{output_gpkg}', r'{input_gml}', options=gdal_options)")
+            pyth_command = (
+                "from osgeo import gdal; "
+                "gdal.DontUseExceptions(); "
+                "gdal.SetConfigOption('GML_SKIP_CORRUPTED_FEATURES', 'YES');"
+                "gdal_options = gdal.VectorTranslateOptions(format='GPKG', mapFieldType=['StringList=String', 'IntegerList=String' , 'RealList=String']); "
+                f"gdal.VectorTranslate(r'{output_gpkg}', r'{input_gml}', options=gdal_options)"
+            )
         if sys.platform == 'win32':
-            process = subprocess.run(["python", "-c", pyth_command], stderr=subprocess.PIPE, text=True, env=my_env,
-                                     shell=False, creationflags=subprocess.CREATE_NO_WINDOW)
+            process = subprocess.run(
+                ["python", "-c", pyth_command],
+                stderr=subprocess.PIPE,
+                text=True,
+                env=my_env,
+                shell=False,
+                creationflags=subprocess.CREATE_NO_WINDOW,
+            )
         elif sys.platform == 'linux':
-            process = subprocess.run(["python3", "-c", pyth_command], stderr=subprocess.PIPE, text=True, env=my_env,
-                                     shell=False)
+            process = subprocess.run(
+                ["python3", "-c", pyth_command],
+                stderr=subprocess.PIPE,
+                text=True,
+                env=my_env,
+                shell=False,
+            )
         error_output = process.stderr
         if error_output:
             print(error_output)
 
         # rozdzielenie bledow po \n i usuniecie pustych linii
-        conv_errors_list = [value for value in error_output.split('\n')
-                            if value != ''
-                            and 'Warning 1: The output driver does not natively support' not in value
-                            and 'Warning 1: The output driver does not seem to natively support' not in value]
+        conv_errors_list = [
+            value
+            for value in error_output.split('\n')
+            if value != ''
+            and 'Warning 1: The output driver does not natively support' not in value
+            and 'Warning 1: The output driver does not seem to natively support' not in value
+        ]
 
         return conv_errors_list
-
 
     def countObjectsByType(self, counting_dict):
         "grupuje obiekty po typie czy jest to karto czy nie"
@@ -283,7 +347,6 @@ class SimpleGmlImport():
                         # dla niestandardowych jest tylko jedna
                         sum_counting[b_name]['obiekty'] += cl_inf[0]
         return sum_counting
-
 
     def checkIfOnlyKarto(self, sum_counting):
         "sprawdza czy w glownych bazach jest tylko karto"
@@ -312,7 +375,6 @@ class SimpleGmlImport():
             b_text = f'{b_name}: ({cts})'
             texts.append(b_text)
         return ', '.join(texts)
-
 
     def runImport(self, name, progressBar, current_style):
         """
@@ -399,10 +461,9 @@ class SimpleGmlImport():
                 print('Czas 70%:', datetime.now() - start_time)
                 QCoreApplication.processEvents()
 
-
                 # obliczenie kreskowania dla skarp, sciany, schodow i wstawienie geometrii do atrybutow
                 scales = ['500', '1000']
-                #scales = []
+                # scales = []
                 nr = 0
 
                 start_point_layer_id = False
@@ -422,116 +483,175 @@ class SimpleGmlImport():
                 for sc in scales:
                     nr += 1
                     for lay in vec_layers_list:
-                        if 'egb_obiekttrwalezwiazany' in lay.name().lower() and egb_polyline_layer_id:
+                        if (
+                            'egb_obiekttrwalezwiazany' in lay.name().lower()
+                            and egb_polyline_layer_id
+                        ):
                             calculateHatching(lay, 'schody', sc, egb_polyline_layer_id)
-                        elif 'ot_obiekttrwalezwiazany' in lay.name().lower() and ot_polyline_layer_id:
+                        elif (
+                            'ot_obiekttrwalezwiazany' in lay.name().lower() 
+                            and ot_polyline_layer_id
+                        ):
                             calculateHatching(lay, 'schody', sc, ot_polyline_layer_id)
                         elif 'komunikacja' in lay.name().lower() and ot_polyline_layer_id:
                             calculateHatching(lay, 'schody', sc, ot_polyline_layer_id)
                         elif 'budowle' in lay.name().lower() and ot_polyline_layer_id:
                             calculateHatching(lay, 'sciana', sc, ot_polyline_layer_id)
 
-
                         if sc == '500':
                             if 'ges_rzedna' in lay.name().lower():
                                 calculateColors(lay, 'color')
-                            elif 'wody' in lay.name().lower() and start_point_layer_id and end_point_layer_id:
-                                calculateHatching(lay, 'wody', sc, [start_point_layer_id, end_point_layer_id])
-                            elif 'skarpa' in lay.name().lower() and start_point_layer_id and end_point_layer_id:
-                                calculateHatching(lay, 'skarpa', sc, [start_point_layer_id, end_point_layer_id])
+                            elif (
+                                'wody' in lay.name().lower()
+                                and start_point_layer_id
+                                and end_point_layer_id
+                            ):
+                                calculateHatching(
+                                    lay, 'wody', sc, [start_point_layer_id, end_point_layer_id]
+                                )
+                            elif (
+                                'skarpa' in lay.name().lower()
+                                and start_point_layer_id
+                                and end_point_layer_id
+                            ):
+                                calculateHatching(
+                                    lay, 'skarpa', sc, [start_point_layer_id, end_point_layer_id]
+                                )
 
                         elif sc == '1000':
-                            if 'opisykarto' not in lay.name().lower() and 'prezentacja' not in lay.name().lower():
+                            if (
+                                'opisykarto' not in lay.name().lower()
+                                and 'prezentacja' not in lay.name().lower()
+                            ):
                                 if 'rzedna' in lay.name().lower():
                                     Main().removeAllJoins(lay)
-                                Main().addObligatoryFields(lay, ['startObiekt', 'startWersjaObiekt', 'koniecWersjaObiekt',
-                                                                 'koniecObiekt'])
+                                Main().addObligatoryFields(
+                                    lay,
+                                    [
+                                        'startObiekt',
+                                        'startWersjaObiekt',
+                                        'koniecWersjaObiekt',
+                                        'koniecObiekt',
+                                    ],
+                                )
 
                             # tutaj dowawane sa pola ktore moga nie wystapic w pliku gml a sa uzywane w etykietach (opisykarto)-
                             # dzieki temu szybciej sie rendreruja
                             if 'ges_opisykarto' in lay.name().lower():
-                                fields_list_ges = ['GES_PrzewodWodociagowy_1_zrodlo',
-                                                   'GES_UrzadzeniaSiecWodociagowa_0_zrodlo',
-                                                   'GES_UrzadzeniaSiecWodociagowa_1_zrodlo',
-                                                   'GES_UrzadzeniaSiecWodociagowa_2_zrodlo',
-                                                   'GES_PrzewodKanalizacyjny_1_zrodlo',
-                                                   'GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo',
-                                                   'GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo',
-                                                   'GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo',
-                                                   'GES_PrzewodElektroenergetyczny_1_zrodlo',
-                                                   'GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo',
-                                                   'GES_UrzadzeniaSiecElektroenergetyczna_1_zrodlo',
-                                                   'GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo',
-                                                   'GES_PrzewodGazowy_1_zrodlo', 'GES_UrzadzeniaSiecGazowa_0_zrodlo',
-                                                   'GES_UrzadzeniaSiecGazowa_1_zrodlo', 'GES_UrzadzeniaSiecGazowa_2_zrodlo',
-                                                   'GES_PrzewodCieplowniczy_1_zrodlo',
-                                                   'GES_UrzadzeniaSiecCieplownicza_0_zrodlo',
-                                                   'GES_UrzadzeniaSiecCieplownicza_1_zrodlo',
-                                                   'GES_UrzadzeniaSiecCieplownicza_2_zrodlo',
-                                                   'GES_PrzewodTelekomunikacyjny_1_zrodlo',
-                                                   'GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo',
-                                                   'GES_UrzadzeniaSiecTelekomunikacyjna_1_zrodlo',
-                                                   'GES_UrzadzeniaSiecTelekomunikacyjna_2_zrodlo',
-                                                   'GES_PrzewodSpecjalny_1_zrodlo',
-                                                   'GES_UrzadzeniaTechniczneSieciSpecjalnej_0_zrodlo',
-                                                   'GES_UrzadzeniaTechniczneSieciSpecjalnej_1_zrodlo',
-                                                   'GES_UrzadzeniaTechniczneSieciSpecjalnej_2_zrodlo',
-                                                   'GES_PrzewodNiezidentyfikowany_1_zrodlo',
-                                                   'GES_UrzadzenieNiezidentyfikowane_0_zrodlo',
-                                                   'GES_UrzadzenieNiezidentyfikowane_1_zrodlo',
-                                                   'GES_UrzadzenieNiezidentyfikowane_2_zrodlo',
-                                                   'GES_UrzadzeniaTowarzyszczaceLiniowe_1_zrodlo',
-                                                   'GES_UrzadzeniaTowarzyszaceLiniowe_1_zrodlo',
-                                                   'GES_InneUrzadzeniaTowarzyszace_0_zrodlo',
-                                                   'GES_InneUrzadzeniaTowarzyszace_1_zrodlo',
-                                                   'GES_InneUrzadzeniaTowarzyszace_2_zrodlo', 'GES_Rzedna_0_zrodlo']
+                                fields_list_ges = [
+                                    'GES_PrzewodWodociagowy_1_zrodlo',
+                                    'GES_UrzadzeniaSiecWodociagowa_0_zrodlo',
+                                    'GES_UrzadzeniaSiecWodociagowa_1_zrodlo',
+                                    'GES_UrzadzeniaSiecWodociagowa_2_zrodlo',
+                                    'GES_PrzewodKanalizacyjny_1_zrodlo',
+                                    'GES_UrzadzeniaSiecKanalizacyjna_0_zrodlo',
+                                    'GES_UrzadzeniaSiecKanalizacyjna_1_zrodlo',
+                                    'GES_UrzadzeniaSiecKanalizacyjna_2_zrodlo',
+                                    'GES_PrzewodElektroenergetyczny_1_zrodlo',
+                                    'GES_UrzadzeniaSiecElektroenergetyczna_0_zrodlo',
+                                    'GES_UrzadzeniaSiecElektroenergetyczna_1_zrodlo',
+                                    'GES_UrzadzeniaSiecElektroenergetyczna_2_zrodlo',
+                                    'GES_PrzewodGazowy_1_zrodlo',
+                                    'GES_UrzadzeniaSiecGazowa_0_zrodlo',
+                                    'GES_UrzadzeniaSiecGazowa_1_zrodlo',
+                                    'GES_UrzadzeniaSiecGazowa_2_zrodlo',
+                                    'GES_PrzewodCieplowniczy_1_zrodlo',
+                                    'GES_UrzadzeniaSiecCieplownicza_0_zrodlo',
+                                    'GES_UrzadzeniaSiecCieplownicza_1_zrodlo',
+                                    'GES_UrzadzeniaSiecCieplownicza_2_zrodlo',
+                                    'GES_PrzewodTelekomunikacyjny_1_zrodlo',
+                                    'GES_UrzadzeniaSiecTelekomunikacyjna_0_zrodlo',
+                                    'GES_UrzadzeniaSiecTelekomunikacyjna_1_zrodlo',
+                                    'GES_UrzadzeniaSiecTelekomunikacyjna_2_zrodlo',
+                                    'GES_PrzewodSpecjalny_1_zrodlo',
+                                    'GES_UrzadzeniaTechniczneSieciSpecjalnej_0_zrodlo',
+                                    'GES_UrzadzeniaTechniczneSieciSpecjalnej_1_zrodlo',
+                                    'GES_UrzadzeniaTechniczneSieciSpecjalnej_2_zrodlo',
+                                    'GES_PrzewodNiezidentyfikowany_1_zrodlo',
+                                    'GES_UrzadzenieNiezidentyfikowane_0_zrodlo',
+                                    'GES_UrzadzenieNiezidentyfikowane_1_zrodlo',
+                                    'GES_UrzadzenieNiezidentyfikowane_2_zrodlo',
+                                    'GES_UrzadzeniaTowarzyszczaceLiniowe_1_zrodlo',
+                                    'GES_UrzadzeniaTowarzyszaceLiniowe_1_zrodlo',
+                                    'GES_InneUrzadzeniaTowarzyszace_0_zrodlo',
+                                    'GES_InneUrzadzeniaTowarzyszace_1_zrodlo',
+                                    'GES_InneUrzadzeniaTowarzyszace_2_zrodlo',
+                                    'GES_Rzedna_0_zrodlo',
+                                ]
                                 Main().addObligatoryFields(lay, fields_list_ges)
                             elif 'ot_opisykarto' in lay.name().lower():
-                                fields_list_ot = ['OT_Rzedna_0_zrodlo_zrodlo', 'OT_BudynekNiewykazanyWEGIB_2_zrodlo',
-                                                  'OT_BlokBudynku_2_zrodlo', 'OT_ObiektTrwaleZwiazanyZBudynkami_2_zrodlo',
-                                                  'OT_Budowle_0_zrodlo', 'OT_Budowle_1_zrodlo', 'OT_Budowle_2_zrodlo',
-                                                  'OT_Komunikacja_1_zrodlo', 'OT_Komunikacja_2_zrodlo',
-                                                  'OT_SportIRekreacja_2_zrodlo',
-                                                  'OT_ZagospodarowanieTerenu_0_zrodlo',
-                                                  'OT_ZagospodarowanieTerenu_1_zrodlo',
-                                                  'OT_ZagospodarowanieTerenu_2_zrodlo',
-                                                  'OT_Wody_1_zrodlo', 'OT_Wody_2_zrodlo']
+                                fields_list_ot = [
+                                    'OT_Rzedna_0_zrodlo_zrodlo',
+                                    'OT_BudynekNiewykazanyWEGIB_2_zrodlo',
+                                    'OT_BlokBudynku_2_zrodlo',
+                                    'OT_ObiektTrwaleZwiazanyZBudynkami_2_zrodlo',
+                                    'OT_Budowle_0_zrodlo',
+                                    'OT_Budowle_1_zrodlo',
+                                    'OT_Budowle_2_zrodlo',
+                                    'OT_Komunikacja_1_zrodlo',
+                                    'OT_Komunikacja_2_zrodlo',
+                                    'OT_SportIRekreacja_2_zrodlo',
+                                    'OT_ZagospodarowanieTerenu_0_zrodlo',
+                                    'OT_ZagospodarowanieTerenu_1_zrodlo',
+                                    'OT_ZagospodarowanieTerenu_2_zrodlo',
+                                    'OT_Wody_1_zrodlo',
+                                    'OT_Wody_2_zrodlo',
+                                ]
                                 Main().addObligatoryFields(lay, fields_list_ot)
                             elif 'egb_opisykarto' in lay.name().lower():
 
-                                fields_list_egb = ['EGB_DzialkaEwidencyjna_2_lokalnyId',
-                                                   'EGB_KonturUzytkuGruntowego_2_lokalnyId',
-                                                   'EGB_KonturKlasyfikacyjny_2_lokalnyId', 'EGB_Budynek_2_lokalnyId',
-                                                   'EGB_BlokBudynku_2_lokalnyId',
-                                                   'EGB_ObiektTrwaleZwiazanyZBudynkiem_2_lokalnyId',
-                                                   'EGB_ObrebEwidencyjny_2_lokalnyId',
-                                                   'EGB_JednostkaEwidencyjna_2_lokalnyId',
-                                                   'EGB_AdresNieruchomosci_0_lokalnyId',
-                                                   'EGB_PunktGraniczny_0_lokalnyId']
+                                fields_list_egb = [
+                                    'EGB_DzialkaEwidencyjna_2_lokalnyId',
+                                    'EGB_KonturUzytkuGruntowego_2_lokalnyId',
+                                    'EGB_KonturKlasyfikacyjny_2_lokalnyId',
+                                    'EGB_Budynek_2_lokalnyId',
+                                    'EGB_BlokBudynku_2_lokalnyId',
+                                    'EGB_ObiektTrwaleZwiazanyZBudynkiem_2_lokalnyId',
+                                    'EGB_ObrebEwidencyjny_2_lokalnyId',
+                                    'EGB_JednostkaEwidencyjna_2_lokalnyId',
+                                    'EGB_AdresNieruchomosci_0_lokalnyId',
+                                    'EGB_PunktGraniczny_0_lokalnyId',
+                                ]
                                 Main().addObligatoryFields(lay, fields_list_egb)
-
 
                     if nr < len(scales):
                         progressBar.setValue(70 + int((nr / len(scales)) * 20))
-                        print('Czas ' + str(70 + int((nr / len(scales)) * 20)) + '%:', datetime.now() - start_time)
+                        print(
+                            'Czas ' + str(70 + int((nr / len(scales)) * 20)) + '%:',
+                            datetime.now() - start_time,
+                        )
                         QCoreApplication.processEvents()
 
                 progressBar.setValue(90)
                 print('Czas 90%:', datetime.now() - start_time)
                 progressBar.hide()
-                if report_path.startswith('/'):  # przypadek dla linuksa kiedy sciezka zaczyna sie od slasha
+                if report_path.startswith(
+                    '/'
+                ):  # przypadek dla linuksa kiedy sciezka zaczyna sie od slasha
                     report_path = report_path.lstrip('/')
-                iface.messageBar().pushMessage("Raport z importu",
-                                               '<a href="file:///' + report_path + '">' + report_path + '</a>',
-                                               level=Qgis.MessageLevel.Success, duration=0)
+                iface.messageBar().pushMessage(
+                    "Raport z importu",
+                    '<a href="file:///' + report_path + '">' + report_path + '</a>',
+                    level=Qgis.MessageLevel.Success,
+                    duration=0,
+                )
 
                 # nadanie wyswietlania ilosci obiektow
                 allLayers = QgsProject.instance().layerTreeRoot().findLayers()
                 QgsProject.instance().reloadAllLayers()
-                excluded_layers = ['OT_opisyKARTO', 'OT_odnosnik', 'OT_poczatekGorySkarpy', 'OT_koniecGorySkarpy',
-                                   'OT_poliliniaKierunkowa', 'EGB_opisyKARTO', 'EGB_odnosnik', 'EGB_poliliniaKierunkowa',
-                                   'GES_opisyKARTO', 'GES_odnosnik']
-                for (layer) in allLayers:
+                excluded_layers = [
+                    'OT_opisyKARTO',
+                    'OT_odnosnik',
+                    'OT_poczatekGorySkarpy',
+                    'OT_koniecGorySkarpy',
+                    'OT_poliliniaKierunkowa',
+                    'EGB_opisyKARTO',
+                    'EGB_odnosnik',
+                    'EGB_poliliniaKierunkowa',
+                    'GES_opisyKARTO',
+                    'GES_odnosnik',
+                ]
+                for layer in allLayers:
                     if layer.name() not in excluded_layers:
                         layer.setCustomProperty("showFeatureCount", True)
 
@@ -541,7 +661,11 @@ class SimpleGmlImport():
                 print('Czas 100%:', datetime.now() - start_time)
 
                 sum_counting = self.countObjectsByType(counting_dict)
-                imp_info = self.createAnalysisString(sum_counting) + ', ' + str(datetime.now() - start_time)
+                imp_info = (
+                    self.createAnalysisString(sum_counting)
+                    + ', '
+                    + str(datetime.now() - start_time)
+                )
 
                 runAnalytics(2, imp_info)
                 print('Koniec importu pliku:', name)
@@ -552,20 +676,26 @@ class SimpleGmlImport():
                         ed_group.setItemVisibilityChecked(True)
                         ed_group.setExpanded(True)
                     print('Wybrany plik jest niekompletny - zawiera tylko prezentacje graficzne bez obiektow')
-                    QMessageBox.warning(iface.mainWindow(), 'Wybrany plik jest niekompletny',
-                                        'Wybrany plik nie zawiera danych obiektowych a jedynie prezentację graficzną obiektów. '
-                                        'Uniemożliwia to poprawną wizualizację, w szczególności wygenerowanie etykiet.',
-                                        buttons=QMessageBox.StandardButton.Ok)
+                    QMessageBox.warning(
+                        iface.mainWindow(),
+                        'Wybrany plik jest niekompletny',
+                        'Wybrany plik nie zawiera danych obiektowych a jedynie prezentację graficzną obiektów. '
+                        'Uniemożliwia to poprawną wizualizację, w szczególności wygenerowanie etykiet.',
+                        buttons=QMessageBox.StandardButton.Ok,
+                    )
 
                 # informacja o wykryciu bledow importu:
                 errors_conversion = len(conversion_errors_list)
-                if  errors_conversion > 0:
+                if errors_conversion > 0:
                     print('Wykryto bledy przy imporcie')
-                    QMessageBox.warning(iface.mainWindow(), 'Napotkano błędy przy imporcie',
-                                        'W czasie importu wystąpiły błędy. '
-                                        'Niektóre obiekty mogły nie zostać zaimportowane. '
-                                        'Szczegóły dostępne w raporcie.',
-                                        buttons=QMessageBox.StandardButton.Ok)
+                    QMessageBox.warning(
+                        iface.mainWindow(),
+                        'Napotkano błędy przy imporcie',
+                        'W czasie importu wystąpiły błędy. '
+                        'Niektóre obiekty mogły nie zostać zaimportowane. '
+                        'Szczegóły dostępne w raporcie.',
+                        buttons=QMessageBox.StandardButton.Ok,
+                    )
                     runAnalytics(2, f"errs:{errors_conversion}")
 
         return vec_layers_list

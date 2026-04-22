@@ -12,13 +12,13 @@ import certifi
 from .config import geoportal_orto_url
 
 
-class ChangeAppearance():
+class ChangeAppearance:
     def __init__(self):
         pass
 
     def checkVersion(self, lbVersion):
         """sprawdzenie czy zainstalowana wersja wtyczki jest aktualna"""
-        local_path = (os.path.join(os.path.dirname(__file__), '..', 'metadata.txt'))
+        local_path = os.path.join(os.path.dirname(__file__), '..', 'metadata.txt')
         local_ver = regVer(getLocalText(local_path))
         try:
             URL = 'https://raw.githubusercontent.com/geoxyIT/QMapa/main/metadata.txt'
@@ -42,17 +42,16 @@ class ChangeAppearance():
             print('Błąd pobierania dodatkowych informacji:', e)
             print('Sprawdź swoje połączenie internetowe.')
 
-
     def addOrtoOsm(self, service_type, protocol='WMS'):
         """
         Dodanie serwerów OSM i Geoportal ORTO jako warstwa do QGIS.
-        
+
         :param service_type: 'OSM', 'ORTO_STANDARD' lub 'ORTO_HIGH'
         :param protocol: 'WMS' lub 'WMTS' (domyślnie 'WMS'. Ignorowane dla OSM)
         """
         layer_name = ""
         uri = ""
-        
+
         # generowanie URI
         if service_type == 'OSM':
             layer_name = 'Open Street Map'
@@ -61,18 +60,18 @@ class ChangeAppearance():
                 'url=https://a.tile.openstreetmap.org/%7Bz%7D/%7Bx%7D/%7By%7D.png&'
                 'zmax=19&zmin=0&crs=EPSG3857'
             )
-            
+
         elif service_type in ['ORTO_STANDARD', 'ORTO_HIGH']:
             # Określenie rozdzielczości
-            is_high = (service_type == 'ORTO_HIGH')
+            is_high = service_type == 'ORTO_HIGH'
             res_path = "HighResolution" if is_high else "StandardResolution"
             res_label = "Wysoka Rozdzielczość" if is_high else "Standardowa Rozdzielczość"
-            
+
             # Baza URL Geoportalu
             # przykładowy url: https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMTS/HighResolution
             base_url = f"{geoportal_orto_url}{protocol}/{res_path}"
             layer_name = f'Geoportal ORTO {res_label} ({protocol})'
-            
+
             if protocol == 'WMS':
                 uri = (
                     "IgnoreGetFeatureInfoUrl=1&IgnoreGetMapUrl=1&contextualWMSLegend=0&"
@@ -86,21 +85,21 @@ class ChangeAppearance():
                     "layers=ORTOFOTOMAPA&styles=default&tileMatrixSet=EPSG:2180&"
                     f"url={encoded_url}"
                 )
-            else:   # prtocol to nie WMS ani WMTS
+            else:  # prtocol to nie WMS ani WMTS
                 return
-        else:   # service_type to nie ORTO_STANDARD ani ORTO_HIGH
+        else:  # service_type to nie ORTO_STANDARD ani ORTO_HIGH
             return
 
         # sprawdzenie czy warstwa o takiej nazwie istnieje
         if len(QgsProject.instance().mapLayersByName(layer_name)) > 0:
             print(f'Warstwa z serwisem o nazwie {layer_name} już istnieje')
-            
+
             # Wyświetlenie dyskretnego komunikatu na górnym pasku QGIS
             iface.messageBar().pushMessage(
-                "Informacja", 
+                "Informacja",
                 f'Warstwa "{layer_name}" już istnieje w projekcie.',
-                level=Qgis.MessageLevel.Info, 
-                duration=4 # Czas wyświetlania w sekundach
+                level=Qgis.MessageLevel.Info,
+                duration=4,  # Czas wyświetlania w sekundach
             )
             return
 
@@ -135,7 +134,9 @@ class ChangeAppearance():
 
         if not skip_requests_precheck:
             try:
-                response = requests.get(url_to_test, timeout=5) # zapytanie do serwera z timeoutem 5s, aby wyeliminować czekanie na timeout qgisa w przypadku problemu z serwerem (domyslnie 60s)
+                response = requests.get(url_to_test, timeout=5)
+                # zapytanie do serwera z timeoutem 5s, aby wyeliminować czekanie na timeout
+                # qgisa w przypadku problemu z serwerem (domyslnie 60s)
                 response.raise_for_status()
             except requests.exceptions.RequestException as e:
                 print(f"Błąd połączenia z {url_to_test}: {e}")
@@ -143,7 +144,7 @@ class ChangeAppearance():
                     "Błąd usługi",
                     f"Serwer ({layer_name}) nie odpowiada. Spróbuj ponownie później.",
                     level=Qgis.MessageLevel.Critical,
-                    duration=7
+                    duration=7,
                 )
                 return
 
@@ -159,15 +160,15 @@ class ChangeAppearance():
         else:
             print(f'Nieprawidłowa warstwa {layer_name}')
             QMessageBox.critical(
-                iface.mainWindow(), 
+                iface.mainWindow(),
                 'Błąd ładowania',
                 f'Nie udało się wczytać warstwy "{layer_name}"',
-                buttons=QMessageBox.StandardButton.Ok
+                buttons=QMessageBox.StandardButton.Ok,
             )
 
     def getSelectedScale(self, scale_string):
         """rozpoznanie aktualnie wybranej skali, gdy nie rozpozna to wstawi domyslna skale 500"""
-        #val = self.cmbStylization.currentText()
+        # val = self.cmbStylization.currentText()
         if '500' in scale_string and '5000' not in scale_string:
             scale = 500
         elif '1000' in scale_string:
@@ -186,12 +187,12 @@ class ChangeAppearance():
         current_scale = iface.layerTreeView().layerTreeModel().legendMapViewData()
         dpi = current_scale[1]
         if dpi != 0:
-            mupp = (2.54*scale)/(100*dpi)
+            mupp = (2.54 * scale) / (100 * dpi)
 
             iface.layerTreeView().layerTreeModel().setLegendMapViewData(mupp, dpi, scale)
 
     def setRedLabels(self, red_type):
-        """ zmiana redakcji mapy auto / karto"""
+        """zmiana redakcji mapy auto / karto"""
         if 'auto' in red_type.lower():
             auto = '1'
             karto = '0'
@@ -208,7 +209,6 @@ class ChangeAppearance():
 
         # self.setLegendScale()
 
-
     def getLayers(self):
         """pobierz listę warstw do symbolizacji i labelingu
         --pobieranie warstw w oparciu o warstwy w rozporzadzeniu"""
@@ -220,7 +220,7 @@ class ChangeAppearance():
 
     def backToQmlSymb(self, current_style, layers_list):
         """Wczytanie stylizacji QML"""
-        #current_style = self.cmbStylization.currentText()
+        # current_style = self.cmbStylization.currentText()
         Main().setStyling(layers_list, current_style)
         expression = ExpressYourself('', '')
         expression.setLabelExpression(layers_list, False)

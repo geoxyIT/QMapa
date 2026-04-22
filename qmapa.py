@@ -12,8 +12,8 @@
                               -------------------
         begin                : 2022-04-07
         git sha              : $Format:%H$
-        copyright            : (C) 2022 by  
-        email                :  
+        copyright            : (C) 2022 by
+        email                :
  ***************************************************************************/
 
 /***************************************************************************
@@ -31,11 +31,16 @@ from qgis.PyQt.QtWidgets import QAction, QToolButton, QMenu
 from qgis.core import QgsExpression
 
 # Import expressions
-from .expressions import connect_points, get_half_line, recalculate_justification, pokaz_wersje, \
-    kolor_wersji
+from .expressions import (
+    connect_points,
+    get_half_line,
+    recalculate_justification,
+    pokaz_wersje,
+    kolor_wersji,
+)
 
 # Initialize Qt resources from file resources.py
-from .src.resources import *    # noqa: F401, F403
+from .src.resources import *  # noqa: F401, F403
 
 # Import the code for the DockWidget
 from .qmapa_dockwidget import QMapaDockWidget
@@ -47,6 +52,7 @@ from .src.area_symbol_fill import openFillXlsmLoc  # open_fill_xlsm,
 from .src.terms_conditions import Terms
 
 from QMapa import FILL_PARAMETERS_DIR
+
 
 class QMapa:
     """QGIS Plugin Implementation."""
@@ -72,7 +78,7 @@ class QMapa:
             'get_half_line': get_half_line.get_half_line,
             'recalculate_justification': recalculate_justification.recalculate_justification,
             'pokaz_wersje': pokaz_wersje.pokaz_wersje,
-            'kolor_wersji': kolor_wersji.kolor_wersji
+            'kolor_wersji': kolor_wersji.kolor_wersji,
         }
 
         # initialize plugin directory
@@ -80,10 +86,7 @@ class QMapa:
 
         # initialize locale
         locale = QSettings().value('locale/userLocale')[0:2]
-        locale_path = os.path.join(
-            self.plugin_dir,
-            'i18n',
-            'QMapa_{}.qm'.format(locale))
+        locale_path = os.path.join(self.plugin_dir, 'i18n', 'QMapa_{}.qm'.format(locale))
 
         if os.path.exists(locale_path):
             self.translator = QTranslator()
@@ -118,16 +121,17 @@ class QMapa:
         return QCoreApplication.translate('QMapa', message)
 
     def add_action(
-            self,
-            icon_path,
-            text,
-            callback,
-            enabled_flag=True,
-            add_to_menu=True,
-            add_to_toolbar=True,
-            status_tip=None,
-            whats_this=None,
-            parent=None):
+        self,
+        icon_path,
+        text,
+        callback,
+        enabled_flag=True,
+        add_to_menu=True,
+        add_to_toolbar=True,
+        status_tip=None,
+        whats_this=None,
+        parent=None,
+    ):
         """Add a toolbar icon to the toolbar.
 
         :param icon_path: Path to the icon for this action. Can be a resource
@@ -182,9 +186,7 @@ class QMapa:
             self.toolbar.addAction(action)
 
         if add_to_menu:
-            self.iface.addPluginToMenu(
-                self.menu,
-                action)
+            self.iface.addPluginToMenu(self.menu, action)
 
         self.actions.append(action)
 
@@ -197,7 +199,6 @@ class QMapa:
             QgsExpression.registerFunction(func)
 
         self.initExpandToolbar()
-
 
     def initExpandToolbar(self):
         """Stworzenie rozwijanego toolbuttona"""
@@ -230,47 +231,69 @@ class QMapa:
         tool_button.setMenu(main_menu)
 
         # 1.1
-        self.toolbarAction(menu=main_menu, icon_path=icon_fill_directory_path,
-                           text=self.tr(u'Paleta kolorów wypełnień'),
-                           callback=lambda: openFillXlsmLoc(path=FILL_PARAMETERS_DIR))
+        self.toolbarAction(
+            menu=main_menu,
+            icon_path=icon_fill_directory_path,
+            text=self.tr(u'Paleta kolorów wypełnień'),
+            callback=lambda: openFillXlsmLoc(path=FILL_PARAMETERS_DIR),
+        )
 
         # 1.2
-        self.toolbarAction(menu=main_menu, icon_path=raster_icon,
-                           text=self.tr(u'Dodaj serwis Open Street Map'),
-                           callback=lambda: ChangeAppearance().addOrtoOsm('OSM'))
+        self.toolbarAction(
+            menu=main_menu,
+            icon_path=raster_icon,
+            text=self.tr(u'Dodaj serwis Open Street Map'),
+            callback=lambda: ChangeAppearance().addOrtoOsm('OSM'),
+        )
 
         # 1.3
         orto_submenu = QMenu(self.tr(u'Dodaj serwis Geoportal ORTO'), main_menu)
         orto_submenu.setIcon(QIcon(raster_icon))
-        main_menu.addMenu(orto_submenu) # Wpinamy podmenu do głównego menu
+        main_menu.addMenu(orto_submenu)  # Wpinamy podmenu do głównego menu
 
         # 1.3.1
-        self.toolbarAction(menu=orto_submenu, icon_path=raster_icon,
-                           text=self.tr(u'Ortofotomapa Standardowej Rozdzielczości (WMTS)'),
-                           callback=lambda: ChangeAppearance().addOrtoOsm('ORTO_STANDARD', 'WMTS'))
-        
+        self.toolbarAction(
+            menu=orto_submenu,
+            icon_path=raster_icon,
+            text=self.tr(u'Ortofotomapa Standardowej Rozdzielczości (WMTS)'),
+            callback=lambda: ChangeAppearance().addOrtoOsm('ORTO_STANDARD', 'WMTS'),
+        )
+
         # 1.3.2
-        self.toolbarAction(menu=orto_submenu, icon_path=raster_icon,
-                           text=self.tr(u'Ortofotomapa Wysokiej Rozdzielczości (WMTS)'),
-                           callback=lambda: ChangeAppearance().addOrtoOsm('ORTO_HIGH', 'WMTS'))
-        
+        self.toolbarAction(
+            menu=orto_submenu,
+            icon_path=raster_icon,
+            text=self.tr(u'Ortofotomapa Wysokiej Rozdzielczości (WMTS)'),
+            callback=lambda: ChangeAppearance().addOrtoOsm('ORTO_HIGH', 'WMTS'),
+        )
+
         # 1.3.3
-        self.toolbarAction(menu=orto_submenu, icon_path=raster_icon,
-                           text=self.tr(u'Ortofotomapa Standardowej Rozdzielczości (WMS)'),
-                           callback=lambda: ChangeAppearance().addOrtoOsm('ORTO_STANDARD', 'WMS'))
-        
+        self.toolbarAction(
+            menu=orto_submenu,
+            icon_path=raster_icon,
+            text=self.tr(u'Ortofotomapa Standardowej Rozdzielczości (WMS)'),
+            callback=lambda: ChangeAppearance().addOrtoOsm('ORTO_STANDARD', 'WMS'),
+        )
+
         # 1.3.4
-        self.toolbarAction(menu=orto_submenu, icon_path=raster_icon,
-                           text=self.tr(u'Ortofotomapa Wysokiej Rozdzielczości (WMS)'),
-                           callback=lambda: ChangeAppearance().addOrtoOsm('ORTO_HIGH', 'WMS'))
-        
+        self.toolbarAction(
+            menu=orto_submenu,
+            icon_path=raster_icon,
+            text=self.tr(u'Ortofotomapa Wysokiej Rozdzielczości (WMS)'),
+            callback=lambda: ChangeAppearance().addOrtoOsm('ORTO_HIGH', 'WMS'),
+        )
+
         # 1.4 - ukryte
         '''self.toolbarAction(menu=main_menu, icon_path=icon_stats_info_path,
                            text=self.tr(u'Statystyki'), callback=self.termsInfo)'''
 
         # 1.4
-        self.toolbarAction(menu=main_menu, icon_path=icon_help_path,
-                           text=self.tr(u'Informacje o wtyczce'), callback=self.help)
+        self.toolbarAction(
+            menu=main_menu,
+            icon_path=icon_help_path,
+            text=self.tr(u'Informacje o wtyczce'),
+            callback=self.help,
+        )
 
         # dodanie toolbutton do toolbara
         self.toolbar.addWidget(tool_button)
@@ -278,11 +301,10 @@ class QMapa:
     def toolbarAction(self, menu, icon_path, text, callback):
         """Utworzenie akcji i dodanie jej do wskazanego menu"""
         # utworzenie akcji
-        action = QAction(icon=QIcon(icon_path),
-                         text=text, parent=self.iface.mainWindow())
+        action = QAction(icon=QIcon(icon_path), text=text, parent=self.iface.mainWindow())
         action.triggered.connect(callback)
         self.actions.append(action)
-        
+
         # dodanie akcji do wskazanego menu
         menu.addAction(action)
 
@@ -314,9 +336,7 @@ class QMapa:
                 print(f'Nie udało się wyrejestrować funkcji {func_name}: {e}')
 
         for action in self.actions:
-            self.iface.removePluginMenu(
-                self.tr(u'&QMapa GML 2021'),
-                action)
+            self.iface.removePluginMenu(self.tr(u'&QMapa GML 2021'), action)
             self.iface.removeToolBarIcon(action)
 
         # remove the toolbar
@@ -340,7 +360,7 @@ class QMapa:
                 # dockwidget may not exist if:
                 #    first run of plugin
                 #    removed on close (see self.onClosePlugin method)
-                if self.dockwidget == None:
+                if self.dockwidget is None:
                     # Create the dockwidget (after translation) and keep reference
                     self.dockwidget = QMapaDockWidget()
 

@@ -1,4 +1,5 @@
 import os
+
 # PyQt5
 from qgis.PyQt import uic
 from .scrap_version import getLocalText, regVer, regDate
@@ -12,7 +13,7 @@ class Help(wnd, cls):
         self.setupUi(self)
 
         # nadanie wersji z metadanych w okno help
-        metadata_path = (os.path.join(os.path.dirname(os.path.dirname(__file__)), 'metadata.txt'))
+        metadata_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'metadata.txt')
         ver = regVer(getLocalText(metadata_path))
         self.lb_ver.setText(ver)
 
@@ -20,9 +21,19 @@ class Help(wnd, cls):
         date = regDate(getLocalText(metadata_path))
         self.lb_date.setText(date)
 
-        instr_file = (os.path.join(os.path.dirname(__file__), '..', 'instrukcje', 'Instrukcja_uzytkowania_QMapa_GML_2021.pdf'))
+        instr_file = os.path.join(
+            os.path.dirname(__file__),
+            '..',
+            'instrukcje',
+            'Instrukcja_uzytkowania_QMapa_GML_2021.pdf',
+        )
 
-        html_text = '<html><head/><body><p><a href="' + 'file:///' + instr_file + '"><span style=" text-decoration: underline; color:#0000ff;">Instrukcja użytkowania</span></a></p></body></html>'
+        html_text = (
+            '<html><head/><body><p><a href="'
+            + 'file:///'
+            + instr_file
+            + '"><span style=" text-decoration: underline; color:#0000ff;">Instrukcja użytkowania</span></a></p></body></html>'
+        )
         self.label_15.setText(html_text)
 
     def set_terms_agreed_info(self, is_accepted, time_accepted):

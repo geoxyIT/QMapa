@@ -2,11 +2,25 @@ from qgis.PyQt.QtCore import QDateTime
 from qgis.utils import qgsfunction
 from ast import literal_eval
 
+
 @qgsfunction(args='auto', group='Custom', referenced_columns=[])
-def kolor_wersji(date_compare, sett_pierwsze, sett_modyfikowane, sett_archiwalne, sett_zamkniete, sett_wczesniejsze, start_obiekt, start_wersja, koniec_obiekt, koniec_wersja, feature, parent):
-    #start_obiekt, start_wersja, koniec_obiekt, koniec_wersja,
-    
-    #obi = feature.attribute('koniecWersjaObiekt')
+def kolor_wersji(
+    date_compare,
+    sett_pierwsze,
+    sett_modyfikowane,
+    sett_archiwalne,
+    sett_zamkniete,
+    sett_wczesniejsze,
+    start_obiekt,
+    start_wersja,
+    koniec_obiekt,
+    koniec_wersja,
+    feature,
+    parent,
+):
+    # start_obiekt, start_wersja, koniec_obiekt, koniec_wersja,
+
+    # obi = feature.attribute('koniecWersjaObiekt')
     sett_pierwsze = literal_eval(sett_pierwsze)
     sett_modyfikowane = literal_eval(sett_modyfikowane)
     sett_archiwalne = literal_eval(sett_archiwalne)
@@ -16,36 +30,47 @@ def kolor_wersji(date_compare, sett_pierwsze, sett_modyfikowane, sett_archiwalne
     color = False
 
     if type(start_obiekt) is str:
-        if '.' in start_obiekt: format = "yyyy-MM-dd'T'hh:mm:ss.z" 
-        else: format = "yyyy-MM-dd'T'hh:mm:ss"
+        if '.' in start_obiekt:
+            format = "yyyy-MM-dd'T'hh:mm:ss.z"
+        else:
+            format = "yyyy-MM-dd'T'hh:mm:ss"
         start_obiekt = QDateTime.fromString(start_obiekt, format)
     if type(start_wersja) is str:
-        if '.' in start_wersja: format = "yyyy-MM-dd'T'hh:mm:ss.z" 
-        else: format = "yyyy-MM-dd'T'hh:mm:ss"
+        if '.' in start_wersja:
+            format = "yyyy-MM-dd'T'hh:mm:ss.z"
+        else:
+            format = "yyyy-MM-dd'T'hh:mm:ss"
         start_wersja = QDateTime.fromString(start_wersja, format)
     if type(koniec_obiekt) is str:
-        if '.' in koniec_obiekt: format = "yyyy-MM-dd'T'hh:mm:ss.z" 
-        else: format = "yyyy-MM-dd'T'hh:mm:ss"
+        if '.' in koniec_obiekt:
+            format = "yyyy-MM-dd'T'hh:mm:ss.z"
+        else:
+            format = "yyyy-MM-dd'T'hh:mm:ss"
         koniec_obiekt = QDateTime.fromString(koniec_obiekt, format)
     if type(koniec_wersja) is str:
-        if '.' in koniec_wersja: format = "yyyy-MM-dd'T'hh:mm:ss.z" 
-        else: format = "yyyy-MM-dd'T'hh:mm:ss"
+        if '.' in koniec_wersja:
+            format = "yyyy-MM-dd'T'hh:mm:ss.z"
+        else:
+            format = "yyyy-MM-dd'T'hh:mm:ss"
         koniec_wersja = QDateTime.fromString(koniec_wersja, format)
-    
-    
+
     if koniec_wersja.isNull() and koniec_obiekt.isNull() and start_wersja == start_obiekt:
-        if sett_pierwsze[1]: color = sett_pierwsze[2]
+        if sett_pierwsze[1]:
+            color = sett_pierwsze[2]
         wers = 'pierwsze'
     elif koniec_wersja.isNull() and koniec_obiekt.isNull() and start_wersja > start_obiekt:
-        if sett_modyfikowane[1]: color = sett_modyfikowane[2]
+        if sett_modyfikowane[1]:
+            color = sett_modyfikowane[2]
         wers = 'modyfikowane'
     elif koniec_wersja.isNull() is False and koniec_obiekt.isNull():
-        if sett_archiwalne[1]: color = sett_archiwalne[2]
+        if sett_archiwalne[1]:
+            color = sett_archiwalne[2]
         wers = 'archiwalne'
     elif koniec_obiekt.isNull() is False:
-        if sett_zamkniete[1]: color = sett_zamkniete[2]
+        if sett_zamkniete[1]:
+            color = sett_zamkniete[2]
         wers = 'zamkniete'
-        
+
     if date_compare != '0':
         if wers == 'pierwsze' and start_obiekt <= date_compare:
             color = sett_wczesniejsze[2]
@@ -55,5 +80,5 @@ def kolor_wersji(date_compare, sett_pierwsze, sett_modyfikowane, sett_archiwalne
             color = sett_wczesniejsze[2]
         elif wers == 'zamkniete' and koniec_obiekt <= date_compare:
             color = sett_wczesniejsze[2]
-            
+
     return color

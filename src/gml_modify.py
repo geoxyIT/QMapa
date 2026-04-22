@@ -7,18 +7,23 @@ from qgis.PyQt.QtWidgets import QMessageBox
 from qgis.utils import iface
 from collections import defaultdict
 
-class GMLIncorrect(Exception):
-    """Exception raised when gml is incorrect.
-    """
 
-    def __init__(self, namespace_xmlns, message = "\n Unrecognized xmlns in namespace-> \n Podany GML jest nieprawidlowy (niezgodny z modelem danych 2021)"):
-        #message = "\n Incorrect xmlns in namespace \n Podany GML jest nieprawidlowy"
+class GMLIncorrect(Exception):
+    """Exception raised when gml is incorrect."""
+
+    def __init__(
+        self,
+        namespace_xmlns,
+        message="\n Unrecognized xmlns in namespace-> \n Podany GML jest nieprawidlowy (niezgodny z modelem danych 2021)",
+    ):
+        # message = "\n Incorrect xmlns in namespace \n Podany GML jest nieprawidlowy"
         self.namespace_xmlns = namespace_xmlns
         self.message = message
         super().__init__(self.message)
 
     def __str__(self):
         return f'\n{self.namespace_xmlns} -> {self.message}'
+
 
 class GmlModify:
     """Klasa sluzaca do modyfikacji wejsciowych plikow GML
@@ -29,9 +34,14 @@ class GmlModify:
     wyciaganie wieloetykiet z pojedynczych plikow prezentacji graficznej"""
 
     def __init__(self, file_path, output_path):
-        #podane tagi sa rozpoznawane jako zgodne z rozporzadzeniem, slownik mowi dodatkowo jaki przedrostek dopisywac gdy wystapi dany tag (np dopisze OT_ do poczatekGorySkarpy)
-        self.pref_tag_dict = {'{ewidencjaGruntowIBudynkow:1.0}': 'EGB_', '{bazaDanychObiektowTopograficznych500:1.0}': 'OT_',
-                         '{geodezyjnaEwidencjaSieciUzbrojeniaTerenu:1.0}': 'GES_'}
+        # podane tagi sa rozpoznawane jako zgodne z rozporzadzeniem, 
+        # slownik mowi dodatkowo jaki przedrostek dopisywac gdy wystapi dany tag 
+        # np dopisze OT_ do poczatekGorySkarpy
+        self.pref_tag_dict = {
+            '{ewidencjaGruntowIBudynkow:1.0}': 'EGB_',
+            '{bazaDanychObiektowTopograficznych500:1.0}': 'OT_',
+            '{geodezyjnaEwidencjaSieciUzbrojeniaTerenu:1.0}': 'GES_',
+        }
 
         # sciezka do pliku gml
         self.file_path = file_path
@@ -107,7 +117,6 @@ class GmlModify:
 
         self.pref_name_list = list(set(self.pref_name_list))
 
-
     def getRelations(self, pref_name):
         """Iteracja po pliku i wyciagniecie relacji do slownika typu
         {'id':[a,b,c...] gdzie [a,b,c] to lista z id rzednaObiektu"""
@@ -126,8 +135,7 @@ class GmlModify:
                                 lokalny_iip = wartosci.text
                                 # relations[lokalny_iip] = None
 
-                for idx, relacja in enumerate(
-                        feature.findall(pref_name + 'rzednaObiektu')):
+                for idx, relacja in enumerate(feature.findall(pref_name + 'rzednaObiektu')):
                     # print(idx, relacja)
                     if idx == 0:
                         self.relations[lokalny_iip] = None
@@ -137,7 +145,8 @@ class GmlModify:
                     if value.startswith('#'):
                         value = value[1:]
                     relation_list.append(value)
-                    # usuniecie duplikatow z listy - przypadek gdy przewod zawieral dwie te same rzedneObiektu
+                    # usuniecie duplikatow z listy - 
+                    # przypadek gdy przewod zawieral dwie te same rzedneObiektu
                     relation_list_set = set(relation_list)
                     relation_list = list(relation_list_set)
                     self.relations[lokalny_iip] = relation_list
@@ -155,8 +164,7 @@ class GmlModify:
                             add_relation_attr = ET.SubElement(add, pref_name + 'relacja')
                             add_relation_attr.text = iip
                             add_relation_attr.tail = '\n'
-                    break # dodaje tylko pierwszy trafiony obiekt z relacji
-
+                    break  # dodaje tylko pierwszy trafiony obiekt z relacji
 
     def labelRelations(self, pref_name, pref_tag):
         """Iteracja po pliku, wyciagniecie relacji z etykiet do obiektow, oraz wstawienie w te obiekty
@@ -165,7 +173,8 @@ class GmlModify:
         for feature_member in self.root.iter(pref_name + pref_tag + 'opisyKARTO'):
             for feature in feature_member.findall(pref_name + 'obiektPrzedstawiany'):
                 gml_id_list.append(feature.text)
-                # text_do_wstawienia = './/{ges}GES_Rzedna[@{xd}id="{f_t}"]'.format(ges=gml_namespace_val, xd = gml, f_t = feature.text)
+                # text_do_wstawienia = './/{ges}GES_Rzedna[@{xd}id="{f_t}"]'.format(
+                    # ges=gml_namespace_val, xd = gml, f_t = feature.text)
         for main_child in self.root:
             for feature in main_child:
                 if feature.attrib[f'{{{self.gml_namespace_val}}}id'] in gml_id_list:
@@ -193,7 +202,8 @@ class GmlModify:
                     self.err_number += 1
 
     def getCrsEpsg(self):
-        """rozpoznanie ukladu wspolrzednych danych. Jezeli jest kilka, to bierze pierwszy jaki znajdzie"""
+        """rozpoznanie ukladu wspolrzednych danych. 
+        Jezeli jest kilka, to bierze pierwszy jaki znajdzie"""
         crs = None
         for feature_member in self.root:
             geometry_with_srs = feature_member.find('.//*[@srsName]')
@@ -206,25 +216,25 @@ class GmlModify:
         pref = pref_name
         list_appending = []
 
-        #sprawdzenie czy gml ma poprawne namespaces
+        # sprawdzenie czy gml ma poprawne namespaces
         try:
             pref_tag = pref_tag_dict[pref]
-        except:
+        except Exception:
             pref_tag = '_'
-            #raise GMLIncorrect(pref)
+            # raise GMLIncorrect(pref)
 
         split_pref_0 = pref + 'geometria'
 
         split_pref_list = []
         for spl in split_list:
             split_pref_list.append(pref + spl)
-        #print(split_pref_list)
+        # print(split_pref_list)
 
         # wyjatek dla prezentacji graficznej - dodawanie pustej geometrii gdy nie ma zadnej
         for main_child in root:
-            #print('tag', main_child[0].tag)
+            # print('tag', main_child[0].tag)
             prezentacje = main_child.findall(pref + 'PrezentacjaGraficzna')
-            #print(main_child[0].tag)
+            # print(main_child[0].tag)
 
             for feat in prezentacje:
                 feat.tag = pref + pref_tag + 'PrezentacjaGraficzna'
@@ -246,14 +256,18 @@ class GmlModify:
             objs_to_del = [x for i, x in enumerate(split_pref_list) if i != ind]
             list_main_feat = []
 
-            # odnajdywanie obiektow zawierajacych wybrane atrybuty i zapisywanie tych obiektów do listy
+            # odnajdywanie obiektow zawierajacych wybrane atrybuty 
+            # i zapisywanie tych obiektów do listy
             for main_child in root:
                 for feat in main_child:
                     is_found = feat.find(obj_to_save)
                     element = is_found
                     if is_found is not None:
-                        if len(element) == 0 and (element.text is None or element.text.strip() == ""):
-                            #print(f"Element '{element.tag}' is empty")
+                        if (
+                            len(element) == 0 
+                            and (element.text is None or element.text.strip() == "")
+                        ):
+                            # print(f"Element '{element.tag}' is empty")
                             pass
                         else:
                             list_main_feat.append(copy.deepcopy(main_child))
@@ -270,30 +284,43 @@ class GmlModify:
 
                     # zmiana nazwy (tagu)
                     if 'etykieta' in obj_to_save:
-                        #zmiana nazwy 'etykieta' na 'opisyKARTO'
-                        new_tag = obj_to_save.split('}')[0] + '}' + pref_tag + obj_to_save.split('}')[1].replace('etykieta', 'opisyKARTO')
+                        # zmiana nazwy 'etykieta' na 'opisyKARTO'
+                        new_tag = (
+                            obj_to_save.split('}')[0]
+                            + '}'
+                            + pref_tag
+                            + obj_to_save.split('}')[1].replace('etykieta', 'opisyKARTO')
+                        )
                     else:
-                        new_tag = obj_to_save.split('}')[0] + '}' + pref_tag + obj_to_save.split('}')[1]
+                        new_tag = (
+                            obj_to_save.split('}')[0] + '}' + pref_tag + obj_to_save.split('}')[1]
+                        )
                     copy_feat[0].tag = new_tag
 
-                    # dla etykiet usuwanie pierwszej justyfikacji (tej oryginalnie w atrybucie prezentacji graficznej)
+                    # dla etykiet usuwanie pierwszej justyfikacji 
+                    # (tej oryginalnie w atrybucie prezentacji graficznej)
                     if 'opisyKARTO' in new_tag:
                         for katObr in copy_feat[0].findall(pref + 'katObrotu'):
                             copy_feat[0].remove(katObr)
 
                     # usuwanie glownej geometrii
-                    # (tak zeby zostala tylko ta co jest w w podklasie typu polilinia, odnosnik itp.)
+                    # (tak zeby zostala tylko ta co jest w w podklasie typu polilinia, odnosnik itp)
                     geom_main_obj = copy_feat[0].find(pref + 'geometria')
                     if geom_main_obj is not None:
                         copy_feat[0].remove(geom_main_obj)
 
                     i_ins = 0
-                    # usuwanie powtarzajacych sie (usuwanie wszystkich znalezionych poza jednym, po kolei)
+                    # usuwanie powtarzajacych sie 
+                    # (usuwanie wszystkich znalezionych poza jednym, po kolei)
                     for found in copy_feat[0].findall(obj_to_save):
                         if i_ins != i:
                             copy_feat[0].remove(found)
                         elif 'opisyKARTO' in new_tag:
-                            gml_id = copy_feat[0].attrib[f'{{{self.gml_namespace_val}}}id'] + '_pos_' + str(i_ins)
+                            gml_id = (
+                                copy_feat[0].attrib[f'{{{self.gml_namespace_val}}}id']
+                                + '_pos_'
+                                + str(i_ins)
+                            )
                             copy_feat[0].attrib[f'{{{self.gml_namespace_val}}}id'] = gml_id
                         i_ins += 1
                     i += 1
@@ -305,7 +332,8 @@ class GmlModify:
                     ch_nr = 0
                     for child in copy_feat[0]:
                         for inside_child in child:
-                            for odn in inside_child.findall(pref + 'odnosnik'):  # (tu bedzie 0 albo 1 raz)
+                            # (tu bedzie 0 albo 1 raz)
+                            for odn in inside_child.findall(pref + 'odnosnik'):
                                 copy_feat2 = copy.deepcopy(copy_feat)
 
                                 # usuwanie odnosnika z etykiety
@@ -345,7 +373,7 @@ class GmlModify:
                                 name_of_base = self.namespaces_dict[pref_name[1:-1]]
                             else:
                                 name_of_base = 'NotRecognized'
-                            main_child[0].tag = pref_name + incompatible_pref + name_of_base + '_' + class_name
+                            main_child[0].tag = (pref_name + incompatible_pref + name_of_base + '_' + class_name)
             except Exception as e:
                 print(f'checkIsCorrect error: {e}')
 
@@ -364,21 +392,30 @@ class GmlModify:
         print('GMLMOD czytanie, czas:', datetime.datetime.now() - st)
 
         st = datetime.datetime.now()
-        #wynikiem ponizszego teoretycznie moze byc none, wtedy warto by bylo dac domyslna wartosc crs taka zeby byla dobra a nie ''
+        # wynikiem ponizszego teoretycznie moze byc none, 
+        # wtedy warto by bylo dac domyslna wartosc crs taka zeby byla dobra a nie ''
         self.found_crs = self.getCrsEpsg()
         if self.found_crs is None:
             self.found_crs = ''
 
-        #pref_list = ['{ewidencjaGruntowIBudynkow:1.0}', '{bazaDanychObiektowTopograficznych500:1.0}',
-                     #'{geodezyjnaEwidencjaSieciUzbrojeniaTerenu:1.0}']
+        # pref_list = [
+            # '{ewidencjaGruntowIBudynkow:1.0}', 
+            # '{bazaDanychObiektowTopograficznych500:1.0}',
+            # '{geodezyjnaEwidencjaSieciUzbrojeniaTerenu:1.0}']
 
-        split_list = ['poliliniaKierunkowa', 'poczatekGorySkarpy', 'koniecGorySkarpy', 'etykieta', 'poczatekGoryKolejnejSkarpy', 'koniecGoryKolejnejSkarpy']
+        split_list = [
+            'poliliniaKierunkowa',
+            'poczatekGorySkarpy',
+            'koniecGorySkarpy',
+            'etykieta',
+            'poczatekGoryKolejnejSkarpy',
+            'koniecGoryKolejnejSkarpy',
+        ]
 
         self.err_number = 0
         for pref_name in self.pref_name_list:
             # relacja dla obiekt przedstawiany
-            self.attrToText(pref_name + 'PrezentacjaGraficzna',
-                            pref_name + 'obiektPrzedstawiany')
+            self.attrToText(pref_name + 'PrezentacjaGraficzna', pref_name + 'obiektPrzedstawiany')
 
             self.getRelations(pref_name)
 
@@ -386,24 +423,35 @@ class GmlModify:
             self.relations = dict()
 
             for nm in ["OT_Rzedna", "GES_Rzedna"]:
-                #self.iterateAndAdd(pref_name, pref_name + nm)
+                # self.iterateAndAdd(pref_name, pref_name + nm)
                 self.iterateAndAdd(pref_name, pref_name + nm)
 
             self.reversed_relations = dict()
 
             self.extractAll(self.root, pref_name, self.pref_tag_dict, split_list)
 
-
         print('GMLMOD wyciaganie, czas:', datetime.datetime.now() - st)
 
         if self.err_number > 0:
-            print("Błąd: Nie wszystkie obiekty zostaną zaimportowane, lub zostaną zaimportowanie niepoprawnie - błąd w relacjach w pliku GML, liczba błędow: " + str(self.err_number))
-            iface.messageBar().pushMessage("Błąd importu: ",
-                                           "Nie wszystkie obiekty zostaną zaimportowane, lub zostaną zaimportowanie niepoprawnie - błąd w relacjach w pliku GML, liczba błędow: " + str(self.err_number),
-                                           level=1, duration=0)
-            QMessageBox.warning(iface.mainWindow(), 'Błąd importu',
-                                 'Niepoprawny plik GML - \nnie wszystkie obiekty zostaną zaimportowane',
-                                 buttons=QMessageBox.StandardButton.Ok)
+            print(
+                "Błąd: Nie wszystkie obiekty zostaną zaimportowane, lub zostaną "
+                "zaimportowanie niepoprawnie - błąd w relacjach w pliku GML, liczba błędow: "
+                + str(self.err_number)
+            )
+            iface.messageBar().pushMessage(
+                "Błąd importu:",
+                "Nie wszystkie obiekty zostaną zaimportowane, lub zostaną zaimportowanie "
+                "niepoprawnie - błąd w relacjach w pliku GML, liczba błędow: "
+                + str(self.err_number),
+                level=1,
+                duration=0,
+            )
+            QMessageBox.warning(
+                iface.mainWindow(),
+                'Błąd importu',
+                'Niepoprawny plik GML - \nnie wszystkie obiekty zostaną zaimportowane',
+                buttons=QMessageBox.StandardButton.Ok,
+            )
 
         st = datetime.datetime.now()
         self.checkIsCorrect(self.root, self.pref_name_list, self.pref_tag_dict)
@@ -415,6 +463,12 @@ class GmlModify:
         if self.incompatible_found is True:
             print("Wykryto obiekty niezgodne z modelem 2021")
 
-            QMessageBox.warning(iface.mainWindow(), 'W czasie importu wykryto obiekty niestandardowe',
-                                'Wykryto obiekty niezgodne z modelami aplikacyjnymi GML 2021 dla baz: EGiB, GESUT, BDOT500. \n\nNiezgodne obiekty zostaną zaimportowane z przedrostkiem NIESTANDARDOWE, szczegóły w raporcie importu.',
-                                buttons=QMessageBox.StandardButton.Ok)
+            QMessageBox.warning(
+                iface.mainWindow(),
+                "W czasie importu wykryto obiekty niestandardowe",
+                "Wykryto obiekty niezgodne z modelami aplikacyjnymi GML 2021 dla baz: "
+                "EGiB, GESUT, BDOT500. "
+                "\n\nNiezgodne obiekty zostaną zaimportowane z przedrostkiem NIESTANDARDOWE, "
+                "szczegóły w raporcie importu.",
+                buttons=QMessageBox.StandardButton.Ok,
+            )

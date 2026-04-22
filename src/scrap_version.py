@@ -13,11 +13,13 @@ def getHubText(url):
         text = ''
     return text
 
+
 def getLocalText(path):
     """Funkcja do pobierania tekstu wersji lokalnej w pliku"""
     with open(path, 'r') as f:
         text = f.read()
     return text
+
 
 def regVer(text):
     """Regex dla wyszukania wersji w pliku metadata"""
@@ -26,19 +28,27 @@ def regVer(text):
     ver = results.group().lstrip('version=')
     return ver
 
+
 def regDate(text):
     """Regex dla wyszukiwania daty opublikowanej wersji w pliku metadanych"""
     version = regVer(text)
-    pattern = version+".+\n"
+    pattern = version + ".+\n"
     results = re.search(pattern, text)
     date = results.group().lstrip(version).lstrip()
     return date
+
 
 def compareVersions(label, git_ver, loc_ver):
     """Porownywanie ze soba wersji github i lokalnej"""
     if git_ver > loc_ver:
         print('Twoja wersja jest nieaktualna!')
-        text_of_version = "Twoja wersja jest nieaktualna! Dostępna jest wersja: " + str(git_ver) + "\n" + getHubText("https://raw.githubusercontent.com/geoxyIT/QMapa/main/additional_version_info.txt")
+        text_of_version = (
+            "Twoja wersja jest nieaktualna! Dostępna jest wersja: "
+            + str(git_ver) + "\n"
+            + getHubText(
+                "https://raw.githubusercontent.com/geoxyIT/QMapa/main/additional_version_info.txt"
+            )
+        )
         label.setText(text_of_version)
         pal = label.palette()
         pal.setColor(QPalette.ColorRole.Window, QColor("#FF0000"))

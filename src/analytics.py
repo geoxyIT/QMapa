@@ -5,6 +5,7 @@ from QMapa import read_uid
 import re
 from qgis.core import Qgis
 
+
 def getNumericVersion(version_str):
     match = re.search(r'(\d+)\.(\d+)\.(\d+)', version_str)
     if match:
@@ -30,7 +31,10 @@ def checkQgisVersion(current_version):
 
     if isVersionAtLeast(current_version, required_version_1):
         return True
-    if current_version.startswith("3.34.") and isVersionAtLeast(current_version, required_version_2):
+    if (
+        current_version.startswith("3.34.") 
+        and isVersionAtLeast(current_version, required_version_2)
+    ):
         return True
 
     return False
@@ -40,7 +44,7 @@ def isVersionAtLeast(current_version, required_version):
     return compareQgisVersions(current_version, required_version) >= 0
 
 
-def runAnalytics(analysis_code, analysis_info = '') -> int:
+def runAnalytics(analysis_code, analysis_info='') -> int:
     """analysis code: int
     analysis_info: string"""
     # otwarcie: 1
@@ -71,10 +75,14 @@ def runAnalytics(analysis_code, analysis_info = '') -> int:
     else:
         return 0
 
-    if (UID == '?'): analysis_uid = read_uid(CONSENTS_FILE)
-    else: analysis_uid = UID
+    if UID == '?':
+        analysis_uid = read_uid(CONSENTS_FILE)
+    else:
+        analysis_uid = UID
 
     lib.sendStatisticsExt.argtypes = [ctypes.c_char_p, ctypes.c_int, ctypes.c_char_p]
     lib.sendStatisticsExt.restype = ctypes.c_int
-    status = lib.sendStatisticsExt(analysis_uid.encode('cp1250'), analysis_code, analysis_info.encode('cp1250'))
+    status = lib.sendStatisticsExt(
+        analysis_uid.encode('cp1250'), analysis_code, analysis_info.encode('cp1250')
+    )
     return status

@@ -1,12 +1,13 @@
 from qgis.core import QgsExpression, QgsExpressionContext
 from qgis.utils import qgsfunction
 
+
 @qgsfunction(args='auto', group='Custom')
 def get_half_line(geometry, side, feature, parent):
     context = QgsExpressionContext()
     context.setFeature(feature)
     geom_wkt = geometry.asWkt()
-    
+
     orig_geom_lines_exp = QgsExpression("segments_to_lines(geom_from_wkt('" + geom_wkt + "'))")
     orig_geom_lines = orig_geom_lines_exp.evaluate(context)
     orig_geom_list = orig_geom_lines.asGeometryCollection()
@@ -25,7 +26,7 @@ def get_half_line(geometry, side, feature, parent):
             reversed_expr = QgsExpression("reverse(geom_from_wkt('" + line_wkt + "'))")
             reversed = reversed_expr.evaluate(context)'''
             new_geom_list.append(list_parts[-1])
-    
+
     new_geom = denser_parts.collectGeometry(new_geom_list)
-    
+
     return new_geom

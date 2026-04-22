@@ -12,8 +12,8 @@
                              -------------------
         begin                : 2022-04-07
         git sha              : $Format:%H$
-        copyright            : (C) 2022 by  
-        email                :  
+        copyright            : (C) 2022 by
+        email                :
  ***************************************************************************/
 
 /***************************************************************************
@@ -48,8 +48,9 @@ from .src.analytics import runAnalytics
 
 from QMapa import FILL_PARAMETERS
 
-FORM_CLASS, _ = uic.loadUiType(os.path.join(
-    os.path.dirname(__file__), 'ui', 'qmapa_dockwidget_base.ui'))
+FORM_CLASS, _ = uic.loadUiType(
+    os.path.join(os.path.dirname(__file__), 'ui', 'qmapa_dockwidget_base.ui')
+)
 
 
 class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
@@ -82,7 +83,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         # aktywne zbiory dla fillowania
         self.active_sets = []
 
-
         # Dodanie aktualnej informacji
         self._appearance.checkAdditionalInfo(self.lbAdditionalInfo)
 
@@ -94,7 +94,9 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         iface.mapCanvas().refreshAllLayers()
         iface.mapCanvas().scaleChanged.connect(self.on_scale_changed)
-        self._appearance.setLegendScale(self._appearance.getSelectedScale(self.cmbStylization.currentText()))
+        self._appearance.setLegendScale(
+            self._appearance.getSelectedScale(self.cmbStylization.currentText())
+        )
 
     def on_scale_changed(self):
         self._appearance.setLegendScale(
@@ -116,12 +118,15 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         gc.collect()
         runAnalytics(2, 1)
         dial = QFileDialog(self)
-        name, ext = dial.getOpenFileName(self, caption='Wybierz wejściowy plik GML',
-                                                filter='gml (*.gml)')
+        name, ext = dial.getOpenFileName(
+            self, caption='Wybierz wejściowy plik GML', filter='gml (*.gml)'
+        )
 
         # zaimportowanie pliku gml
         if name:
-            vec_lays_list = SimpleGmlImport().runImport(name, self.progressBar, self.cmbStylization.currentText())
+            vec_lays_list = SimpleGmlImport().runImport(
+                name, self.progressBar, self.cmbStylization.currentText()
+            )
 
             self._appearance.setRedLabels(self.cmbReda.currentText())
             self.dispSettings()
@@ -131,14 +136,18 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 self.dispVers(vec_lays_list)  # sprawdzenie i nadanie wyswietlania wersji
             if self.gbFill.isChecked():
                 self.fillSelectSet(vec_lays_list)  # sprawdzenie i nadanie fillowania
-            self._appearance.setLegendScale(self._appearance.getSelectedScale(self.cmbStylization.currentText()))
+            self._appearance.setLegendScale(
+                self._appearance.getSelectedScale(self.cmbStylization.currentText())
+            )
             QCoreApplication.processEvents()
         vec_lays_list = None
 
     def on_cmbStylization_currentTextChanged(self):
         """ustaw stylizację wybraną w comboboxie"""
         runAnalytics(3, 1)
-        self._appearance.backToQmlSymb(self.cmbStylization.currentText(), self._appearance.getLayers())
+        self._appearance.backToQmlSymb(
+            self.cmbStylization.currentText(), self._appearance.getLayers()
+        )
         if self.gbShowWers.isChecked():
             self.dispVers(self._appearance.getLayers())  # sprawdzenie i nadanie wyswietlania wersji
         if self.gbFill.isChecked():
@@ -214,13 +223,14 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def on_dteZnacznik_valueChanged(self):
         self.dispSettings()
 
-    def on_gbShowWers_toggled(self,state):
+    def on_gbShowWers_toggled(self, state):
         runAnalytics(3, 4)
         self.gbShowWers.setEnabled(False)
         QCoreApplication.processEvents()
         self.dispVers(self._appearance.getLayers())
         if state:
-            # uncheck dla wersji, dodanie zeby nie wracalo wtedy do poprzedniego qml przy uncheck (bo inaczej robi sie 2 razy)
+            # uncheck dla wersji, dodanie zeby nie wracalo wtedy do poprzedniego 
+            # qml przy uncheck (bo inaczej robi sie 2 razy)
             self.back_fill = False
             self.gbFill.setChecked(False)
             self.gbFill.setCollapsed(True)
@@ -234,7 +244,8 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         QCoreApplication.processEvents()
         self.fillSelectSet(self._appearance.getLayers())
         if state is True:
-            # uncheck dla wersji, dodanie zeby nie wracalo wtedy do poprzedniego gml przy uncheck (bo inaczej robi sie 2 razy)
+            # uncheck dla wersji, dodanie zeby nie wracalo wtedy do poprzedniego 
+            # gml przy uncheck (bo inaczej robi sie 2 razy)
             self.back_wers = False
             self.gbShowWers.setChecked(False)
             self.gbShowWers.setCollapsed(True)
@@ -285,7 +296,9 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             if self.chbColorModyfikowane.isChecked() is True:
                 self.colModyfikowane.setEnabled(True)
                 # color_Modyfikowane = "'" + ','.join([str(x) for x in self.colModyfikowane.color().getRgb()]) + "'"
-                color_Modyfikowane = ','.join([str(x) for x in self.colModyfikowane.color().getRgb()])
+                color_Modyfikowane = ','.join(
+                    [str(x) for x in self.colModyfikowane.color().getRgb()]
+                )
                 set_color_Modyfikowane = True
             else:
                 self.colModyfikowane.setEnabled(False)
@@ -351,7 +364,9 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 if self.chbColorWczesniejsze.isChecked() is True:
                     self.colWczesniejsze.setEnabled(True)
                     # color_Wczesniejsze = "'" + ','.join([str(x) for x in self.colWczesniejsze.color().getRgb()]) + "'"
-                    color_Wczesniejsze = ','.join([str(x) for x in self.colWczesniejsze.color().getRgb()])
+                    color_Wczesniejsze = ','.join(
+                        [str(x) for x in self.colWczesniejsze.color().getRgb()]
+                    )
                     set_color_Wczesniejsze = True
                 else:
                     self.colWczesniejsze.setEnabled(False)
@@ -377,18 +392,35 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             self.colWczesniejsze.setEnabled(False)
 
         # dodanie zmiennych do projektu
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Pierwsze',
-                                                     str([vis_Pierwsze, set_color_Pierwsze, color_Pierwsze]))
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Modyfikowane',
-                                                     str([vis_Modyfikowane, set_color_Modyfikowane, color_Modyfikowane]))
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Archiwalne',
-                                                     str([vis_Archiwalne, set_color_Archiwalne, color_Archiwalne]))
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Zamkniete',
-                                                     str([vis_Zamkniete, set_color_Zamkniete, color_Zamkniete]))
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'Wczesniejsze',
-                                                     str([vis_Wczesniejsze, set_color_Wczesniejsze, color_Wczesniejsze]))
+        QgsExpressionContextUtils.setProjectVariable(
+            QgsProject.instance(),
+            'Pierwsze',
+            str([vis_Pierwsze, set_color_Pierwsze, color_Pierwsze]),
+        )
+        QgsExpressionContextUtils.setProjectVariable(
+            QgsProject.instance(),
+            'Modyfikowane',
+            str([vis_Modyfikowane, set_color_Modyfikowane, color_Modyfikowane]),
+        )
+        QgsExpressionContextUtils.setProjectVariable(
+            QgsProject.instance(),
+            'Archiwalne',
+            str([vis_Archiwalne, set_color_Archiwalne, color_Archiwalne]),
+        )
+        QgsExpressionContextUtils.setProjectVariable(
+            QgsProject.instance(),
+            'Zamkniete',
+            str([vis_Zamkniete, set_color_Zamkniete, color_Zamkniete]),
+        )
+        QgsExpressionContextUtils.setProjectVariable(
+            QgsProject.instance(),
+            'Wczesniejsze',
+            str([vis_Wczesniejsze, set_color_Wczesniejsze, color_Wczesniejsze]),
+        )
 
-        QgsExpressionContextUtils.setProjectVariable(QgsProject.instance(), 'DateCompare', date_to_compare)
+        QgsExpressionContextUtils.setProjectVariable(
+            QgsProject.instance(), 'DateCompare', date_to_compare
+        )
 
         iface.mapCanvas().refreshAllLayers()
 
@@ -420,9 +452,11 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
             # przejscie po zaznaczonych zbiorach i nadanie wypelnien
             for set in self.active_sets:
-                fill(excel_path=FILL_PARAMETERS, scale=current_scale, set=set, layers = layers_list)
+                fill(excel_path=FILL_PARAMETERS, scale=current_scale, set=set, layers=layers_list)
 
-            self._appearance.setLegendScale(self._appearance.getSelectedScale(self.cmbStylization.currentText()))
+            self._appearance.setLegendScale(
+                self._appearance.getSelectedScale(self.cmbStylization.currentText())
+            )
 
     def dispVers(self, layers_list):
         """ustawienie wyswietlania/niewyswietlania po wersjach"""
@@ -435,15 +469,40 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
         if on:
             self.dispSettings()
-            expr_show = " with_variable( 'show', pokaz_wersje(if (@DateCompare is '0', @DateCompare, to_datetime(@DateCompare)), @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(" + '"startObiekt"' + ", ''),concat(" + '"startWersjaObiekt"' + ", ''),concat(" + '"koniecObiekt"' + ", ''),concat(" + '"koniecWersjaObiekt"' + ", '')),  if( var('show'), 1111, var('show')))"
-            expr_color = " with_variable( 'color', kolor_wersji(if (@DateCompare is '0', @DateCompare, to_datetime(@DateCompare)), @Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, concat(" + '"startObiekt"' + ", ''),concat(" + '"startWersjaObiekt"' + ", ''),concat(" + '"koniecObiekt"' + ", ''),concat(" + '"koniecWersjaObiekt"' + ", '')),  if( var('color'), var('color'), 1111))"
-
+            expr_show = (
+                "with_variable('show', "
+                "pokaz_wersje("
+                "if(@DateCompare is '0', @DateCompare, to_datetime(@DateCompare)), "
+                "@Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, "
+                "concat('startObiekt', ''), "
+                "concat('startWersjaObiekt', ''), "
+                "concat('koniecObiekt', ''), "
+                "concat('koniecWersjaObiekt', '')"
+                "), "
+                "if(var('show'), 1111, var('show'))"
+                ")"
+            )
+            expr_color = (
+                "with_variable('color', "
+                "kolor_wersji("
+                "if(@DateCompare is '0', @DateCompare, to_datetime(@DateCompare)), "
+                "@Pierwsze, @Modyfikowane, @Archiwalne, @Zamkniete, @Wczesniejsze, "
+                "concat('startObiekt', ''), "
+                "concat('startWersjaObiekt', ''), "
+                "concat('koniecObiekt', ''), "
+                "concat('koniecWersjaObiekt', '')"
+                "), "
+                "if(var('color'), var('color'), 1111)"
+                ")"
+            )
             expression = ExpressYourself(expr_color, expr_show)
             expression.setSymbolExpression(layers_list)
             expression.setLabelExpression(layers_list)
 
-            self._appearance.setLegendScale(self._appearance.getSelectedScale(self.cmbStylization.currentText()))
+            self._appearance.setLegendScale(
+                self._appearance.getSelectedScale(self.cmbStylization.currentText())
+            )
         else:
             # powrot do pierwotnej stylizacji z QML
-            #self.back_to_qml_symb()
+            # self.back_to_qml_symb()
             pass

@@ -1,4 +1,5 @@
-import os, sys
+import os
+import sys
 import subprocess
 from qgis.PyQt.QtCore import QVariant, QDateTime
 from qgis.utils import iface
@@ -10,12 +11,17 @@ from qgis.core import (
     QgsMapLayerType,
     QgsNullSymbolRenderer,
     QgsProject,
-    QgsVectorLayer
+    QgsVectorLayer,
 )
 from osgeo import ogr
 
-from .config import correct_layers, additional_layers, incompatible_pref, \
-    incompatible_pref_friendly_name, prefix_of_bases
+from .config import (
+    correct_layers,
+    additional_layers,
+    incompatible_pref,
+    incompatible_pref_friendly_name,
+    prefix_of_bases,
+)
 
 # profiler
 from io import StringIO
@@ -23,6 +29,7 @@ import cProfile
 import pstats
 
 import gc
+
 
 class Main:
     def __init__(self):
@@ -49,7 +56,8 @@ class Main:
             layer.removeJoin(join.joinLayerId())
 
     def addObligatoryFields(self, layer, fields_list):
-        """jesli pole z podanej listy pol obowiazkowych (fields_list) nie istnieje na warstwie, to jest dodawane"""
+        """jesli pole z podanej listy pol obowiazkowych (fields_list) 
+        nie istnieje na warstwie, to jest dodawane"""
         for field_name in fields_list:
             field_index = layer.fields().indexFromName(field_name)
             if field_index == -1:
@@ -65,14 +73,14 @@ class Main:
         sty_path = os.path.join(dir_path, '..', 'stylization')
         stylization_dir = os.path.join(sty_path, str(style_name))
         for layer in layers:
-            #layer.setRenderer(None)
+            # layer.setRenderer(None)
             if layer.type() == QgsMapLayerType.VectorLayer:
                 if layer.geometryType() == 0:
-                    geom_type = ('point')
+                    geom_type = 'point'
                 elif layer.geometryType() == 1:
-                    geom_type = ('line')
+                    geom_type = 'line'
                 elif layer.geometryType() == 2:
-                    geom_type = ('polygon')
+                    geom_type = 'polygon'
                 else:
                     geom_type = ''
 
@@ -89,7 +97,6 @@ class Main:
                     # todo: zrobic zeby probowalo pobierac takze pliki dla wartw z koncowka geometrii (_0, _1, _2)
                     categories = QgsMapLayer.StyleCategory.Labeling | QgsMapLayer.StyleCategory.Symbology
                     layer.loadNamedStyle(style_file_path, categories)
-
 
                     '''layer.styleManager().reset()
                     layer = self.reset_layer_renderer(layer)'''
@@ -118,67 +125,69 @@ class Main:
         all_layers_list = []
 
         # slownik typow geometri w libie ogr
-        geom_type_name = {-2147483647: 'Point25D',
-                          -2147483646: 'LineString25D',
-                          -2147483645: 'Polygon25D',
-                          -2147483644: 'MultiPoint25D',
-                          -2147483643: 'MultiLineString25D',
-                          -2147483642: 'MultiPolygon25D',
-                          0: 'Geometry',
-                          1: 'Point',
-                          2: 'LineString',
-                          3: 'Polygon',
-                          4: 'MultiPoint',
-                          5: 'MultiLineString',
-                          6: 'MultiPolygon',
-                          9: 'CompoundCurve',
-                          10: 'CurvePolygon',
-                          11: 'MultiCurve',
-                          12: 'MultiSurface',
-                          13: 'Curve',
-                          100: 'No Geometry',
-                          1001: 'PointZ',
-                          1002: 'LineStringZ',
-                          1003: 'PolygonZ',
-                          1017: 'TriangleZ',
-                          1004: 'MultiPointZ',
-                          1005: 'MultiLineStringZ',
-                          1006: 'MultiPolygonZ',
-                          1007: 'GeometryCollectionZ',
-                          1008: 'CircularStringZ',
-                          1009: 'CompoundCurveZ',
-                          1010: 'CurvePolygonZ',
-                          1011: 'MultiCurveZ',
-                          1012: 'MultiSurfaceZ',
-                          2001: 'PointM',
-                          2002: 'LineStringM',
-                          2003: 'PolygonM',
-                          2017: 'TriangleM',
-                          2004: 'MultiPointM',
-                          2005: 'MultiLineStringM',
-                          2006: 'MultiPolygonM',
-                          2007: 'GeometryCollectionM',
-                          2008: 'CircularStringM',
-                          2009: 'CompoundCurveM',
-                          2010: 'CurvePolygonM',
-                          2011: 'MultiCurveM',
-                          2012: 'MultiSurfaceM',
-                          3001: 'PointZM',
-                          3002: 'LineStringZM',
-                          3003: 'PolygonZM',
-                          3004: 'MultiPointZM',
-                          3005: 'MultiLineStringZM',
-                          3006: 'MultiPolygonZM',
-                          3007: 'GeometryCollectionZM',
-                          3008: 'CircularStringZM',
-                          3009: 'CompoundCurveZM',
-                          3010: 'CurvePolygonZM',
-                          3011: 'MultiCurveZM',
-                          3012: 'MultiSurfaceZM',
-                          3017: 'TriangleZM'}
+        geom_type_name = {
+            -2147483647: 'Point25D',
+            -2147483646: 'LineString25D',
+            -2147483645: 'Polygon25D',
+            -2147483644: 'MultiPoint25D',
+            -2147483643: 'MultiLineString25D',
+            -2147483642: 'MultiPolygon25D',
+            0: 'Geometry',
+            1: 'Point',
+            2: 'LineString',
+            3: 'Polygon',
+            4: 'MultiPoint',
+            5: 'MultiLineString',
+            6: 'MultiPolygon',
+            9: 'CompoundCurve',
+            10: 'CurvePolygon',
+            11: 'MultiCurve',
+            12: 'MultiSurface',
+            13: 'Curve',
+            100: 'No Geometry',
+            1001: 'PointZ',
+            1002: 'LineStringZ',
+            1003: 'PolygonZ',
+            1017: 'TriangleZ',
+            1004: 'MultiPointZ',
+            1005: 'MultiLineStringZ',
+            1006: 'MultiPolygonZ',
+            1007: 'GeometryCollectionZ',
+            1008: 'CircularStringZ',
+            1009: 'CompoundCurveZ',
+            1010: 'CurvePolygonZ',
+            1011: 'MultiCurveZ',
+            1012: 'MultiSurfaceZ',
+            2001: 'PointM',
+            2002: 'LineStringM',
+            2003: 'PolygonM',
+            2017: 'TriangleM',
+            2004: 'MultiPointM',
+            2005: 'MultiLineStringM',
+            2006: 'MultiPolygonM',
+            2007: 'GeometryCollectionM',
+            2008: 'CircularStringM',
+            2009: 'CompoundCurveM',
+            2010: 'CurvePolygonM',
+            2011: 'MultiCurveM',
+            2012: 'MultiSurfaceM',
+            3001: 'PointZM',
+            3002: 'LineStringZM',
+            3003: 'PolygonZM',
+            3004: 'MultiPointZM',
+            3005: 'MultiLineStringZM',
+            3006: 'MultiPolygonZM',
+            3007: 'GeometryCollectionZM',
+            3008: 'CircularStringZM',
+            3009: 'CompoundCurveZM',
+            3010: 'CurvePolygonZM',
+            3011: 'MultiCurveZM',
+            3012: 'MultiSurfaceZM',
+            3017: 'TriangleZM',
+        }
 
         layers = [l.GetName() for l in ogr.Open(layer_path)]  # pobranie nazw warstw z ogra
-        layers_geom = [l.GetGeomType() for l in ogr.Open(layer_path)]  # pobranie geometrii z ogra
+        layers_geom = [j.GetGeomType() for j in ogr.Open(layer_path)]  # pobranie geometrii z ogra
         vec_layers_list = []
 
         # wstepne dodawanie warstw do roota z odpowiednimi typami geometrii jako QgsVectorLayer
@@ -192,7 +201,9 @@ class Main:
                 vec_layers_list.append(vec)
             else:
                 geom = geom_type_name[feature_geom]
-                vec = QgsVectorLayer(layer_path + "|layername=" + my_layer + "|geometrytype=" + geom, my_layer, 'ogr')
+                vec = QgsVectorLayer(
+                    layer_path + "|layername=" + my_layer + "|geometrytype=" + geom, my_layer, 'ogr'
+                )
 
                 feat_count = vec.featureCount()
                 if feat_count != 0:
@@ -203,7 +214,8 @@ class Main:
                 vec_layers_list.append(vec)
         # kolejnosc z jaka maja byc ukladane warstwy w projekcie
 
-        order_list = correct_layers  # lista warstw zgodna z rozpo i w dobrej kolejnosci prezentowania
+        # lista warstw zgodna z rozpo i w dobrej kolejnosci prezentowania
+        order_list = correct_layers
 
         def mygen(lst):
             """generator do tworzenia dodatkowych nazw warstw z sufixem"""
@@ -221,8 +233,9 @@ class Main:
         order_list = list(mygen(order_list))
 
         # rozpoznanie z jakiej bazy pochodzi warstwa zeby przyporzadkowac ja do wlasciwej grupy
-        #recognized_bases = ['EGiB', 'GESUT', 'BDOT500']
+        # recognized_bases = ['EGiB', 'GESUT', 'BDOT500']
         recognized_bases = [v for k, v in prefix_of_bases.items()]
+
         def sortByBaseType(layers_list):
             type_groups_dict = {}
             for layy in layers_list:
@@ -303,7 +316,8 @@ class Main:
                 if incompatible_pref in layer[1].name():
                     replaced_2 = '_'.join(layer[1].name().split('_')[3:])
                     layer[1].setName(replaced_2)
-                # jezeli warstwa nalezy do grupy elementow redakcyjnych to ją tam dodaj a jak nie to do glownej
+                # jezeli warstwa nalezy do grupy elementow redakcyjnych to ją tam dodaj
+                # a jak nie to do glownej
                 if layer[1].sourceName() in additional_layers and group_is_recognized:
                     additional_group.insertChildNode(idx, QgsLayerTreeLayer(layer[1]))
                     root.removeLayer(layer[1])
@@ -340,11 +354,16 @@ class Main:
         return vec_layers_list, gr_dict, editorial_groups_list
 
     def getStylizations(self, omit_special=False):
-        """Pobieranie stylizacji z folderu we wtyczce, omit_special oznacza pomijanie stylizacji zapisanych w [ ]"""
+        """Pobieranie stylizacji z folderu we wtyczce, 
+        omit_special oznacza pomijanie stylizacji zapisanych w [ ]"""
         # sty_path = self.current_dir + r'\stylization'
         sty_path = os.path.join(self.current_dir, '..', r'stylization')
-        stylizations = [f for f in os.listdir(sty_path) if os.path.isdir(os.path.join(sty_path, f)) and not (
-                '[' in f and ']' in f and omit_special == True)]
+        stylizations = [
+            f
+            for f in os.listdir(sty_path)
+            if os.path.isdir(os.path.join(sty_path, f))
+            and not ('[' in f and ']' in f and omit_special)
+        ]
         stylizations.sort(key=self.styleSortFunc)
         return stylizations
 
@@ -416,9 +435,18 @@ class Main:
         obj_nd = 0
 
         counting_dict = {'EGiB': {}, 'GESUT': {}, 'BDOT500': {}}
-        techn_layers = ['EGB_poliliniaKierunkowa', 'OT_poliliniaKierunkowa', 'OT_opisyKARTO', 'GES_opisyKARTO',
-                        'EGB_opisyKARTO', 'OT_poczatekGorySkarpy', 'OT_koniecGorySkarpy', 'EGB_odnosnik', 'OT_odnosnik',
-                        'GES_odnosnik']
+        techn_layers = [
+            'EGB_poliliniaKierunkowa',
+            'OT_poliliniaKierunkowa',
+            'OT_opisyKARTO',
+            'GES_opisyKARTO',
+            'EGB_opisyKARTO',
+            'OT_poczatekGorySkarpy',
+            'OT_koniecGorySkarpy',
+            'EGB_odnosnik',
+            'OT_odnosnik',
+            'GES_odnosnik',
+        ]
         for group_name, group_items in type_groups_dict.items():
             for item in group_items:
                 layer = item[1]
@@ -449,12 +477,17 @@ class Main:
                             is_prezentacjaGraficzna = True
 
                         for feature in layer.getFeatures():
-                            if not is_prezentacjaGraficzna: # jesli dotyczy to warstwy prezentacji graficznej to i tak nie bedzie atrybutow wersji
+                            # jesli dotyczy to warstwy prezentacji graficznej to i tak nie bedzie atrybutow wersji
+                            if not is_prezentacjaGraficzna:
                                 try:
                                     iip = feature.attribute("przestrzenNazw") + feature.attribute("lokalnyId")
                                     uniq_iip.add(iip)
                                 except Exception as e:
-                                    print(f'generateRaport ({group_name}) layer: {layer.name()}, feature {feature}: {e}')
+                                    print(
+                                        f'generateRaport error({group_name}) '
+                                        f'layer: {layer.name()}, '
+                                        f'feature {feature}: {e}'
+                                    )
                             try:
                                 start_ob = feature.attribute("startObiekt")
                             except:
@@ -472,9 +505,12 @@ class Main:
                             except:
                                 end_vers = ''
 
-                            feature_version = self.getVersion(start_object=start_ob, start_version=start_vers,
-                                                              end_object=end_ob,
-                                                              end_version=end_vers)
+                            feature_version = self.getVersion(
+                                start_object=start_ob,
+                                start_version=start_vers,
+                                end_object=end_ob,
+                                end_version=end_vers,
+                            )
 
                             if feature_version == 'first':
                                 lay_obj_first += 1
@@ -485,9 +521,14 @@ class Main:
                             elif feature_version == 'closed':
                                 lay_obj_closed += 1
 
-                            counting_dict[group_name][layer_simple_name] = [lay_obj_first, lay_obj_modified,
-                                                                            lay_obj_archival,
-                                                                            lay_obj_closed, len(uniq_iip), uniq_iip]
+                            counting_dict[group_name][layer_simple_name] = [
+                                lay_obj_first,
+                                lay_obj_modified,
+                                lay_obj_archival,
+                                lay_obj_closed,
+                                len(uniq_iip),
+                                uniq_iip,
+                            ]
 
                         # print(layer.GetName(), lay_obj_open, lay_obj_closed, lay_obj_archival)
                         obj_first += lay_obj_first
@@ -513,7 +554,8 @@ class Main:
         return counting_dict
 
     def osOpen(self, path):
-        """Wykrywanie aktualnie uzywanego systemu operacyjnego i otwieranie path w odpowiedni sposób"""
+        """Wykrywanie aktualnie uzywanego systemu operacyjnego
+        i otwieranie path w odpowiedni sposób"""
         try:
             if sys.platform == 'win32':
                 os.startfile(path)
