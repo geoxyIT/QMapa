@@ -8,7 +8,7 @@ white_color = QColor(255, 255, 255, 255)
 
 
 class ExpressYourself:
-    def __init__(self, color_expression = '', enable_expression = ''):
+    def __init__(self, color_expression='', enable_expression=''):
         self.color_expression = color_expression
         self.temp_color_expression = color_expression
         self.enable_expression = enable_expression
@@ -43,22 +43,25 @@ class ExpressYourself:
 
     def symbolProperties(self, symbol):
         """Tworzenie wlasciwosci ktore zostana nadane dla symboli"""
-        if (symbol.color().getRgb() != white_color.getRgb() and
-                symbol.color().alpha() != 0):
+        if symbol.color().getRgb() != white_color.getRgb() and symbol.color().alpha() != 0:
             if type(symbol) is QgsSimpleLineSymbolLayer:
                 color_index = 4
             else:
                 color_index = 3
             self.createProperty(symbol, color_index, self.color_expression)  # PropertyFillColor
-        if (symbol.strokeColor().getRgb() != white_color.getRgb() and
-                symbol.strokeColor().alpha() != 0) and type(symbol) is not QgsSimpleLineSymbolLayer:
+        if (
+            symbol.strokeColor().getRgb() != white_color.getRgb()
+            and symbol.strokeColor().alpha() != 0
+        ) and type(symbol) is not QgsSimpleLineSymbolLayer:
             self.createProperty(symbol, 4, self.color_expression)  # PropertyStrokeColor
         self.createProperty(symbol, 44, self.enable_expression)  # enable symbol layer
 
     def labelProperties(self, label_settings):
         """Tworzenie wlasciwosci dla etykiet"""
-        if (label_settings.format().color().getRgb() != white_color.getRgb() and
-                label_settings.format().color().alpha() != 0):
+        if (
+            label_settings.format().color().getRgb() != white_color.getRgb()
+            and label_settings.format().color().alpha() != 0
+        ):
             self.createProperty(label_settings, 4, self.color_expression)
         self.createProperty(label_settings, 15, self.enable_expression)
 
@@ -92,7 +95,7 @@ class ExpressYourself:
             try:
                 # nadanie wyrazen dla warstw, ktore maja jeden symbol
                 renderer = layer.renderer()
-                if renderer != None:
+                if renderer is not None:
                     if renderer.type() == 'singleSymbol':
                         # print('single', layer.name())
                         symbols = layer.renderer().symbol().symbolLayers()
@@ -133,16 +136,23 @@ class ExpressYourself:
             # odswiezenie layer tree
             iface.layerTreeView().refreshLayerSymbology(layer.id())
 
-    def setLabelExpression(self, layers, set_colors = True):
+    def setLabelExpression(self, layers, set_colors=True):
         """Nadanie wyrazenia etykietom na warstwie"""
         for layer in layers:
             labeling = layer.labeling()
-            if labeling != None and 'goryskarpy' not in layer.name().lower() and 'poliliniakierunkowa' not in layer.name().lower() and 'odnosnik' not in layer.name().lower():
+            if (
+                labeling is not None
+                and 'goryskarpy' not in layer.name().lower()
+                and 'poliliniakierunkowa' not in layer.name().lower()
+                and 'odnosnik' not in layer.name().lower()
+            ):
                 if labeling.type() == 'simple':
                     settings = labeling.settings()
 
                     if set_colors:
-                        self.enable_expression = 'case when 1111 then ' + self.enable_expression + ' else 0 end'
+                        self.enable_expression = (
+                            'case when 1111 then ' + self.enable_expression + ' else 0 end'
+                        )
 
                         # wyrazenia
                         self.labelProperties(settings)
@@ -161,7 +171,6 @@ class ExpressYourself:
                         self.createProperty(settings, 15, self.enable_expression)
                         labeling.setSettings(settings)
 
-
                 elif labeling.type() == 'rule-based':
                     root = labeling.rootRule()
                     for label in root.children():
@@ -176,15 +185,21 @@ class ExpressYourself:
                             try:
                                 if set_colors:
                                     filter_prefix = self.extractPrefix(filter_exp)
-                                    new_color_expression = self.changeLabelExpression(expression=self.color_expression,
-                                                                                      prefix=filter_prefix)
-                                    new_enable_expression = self.changeLabelExpression(expression=self.enable_expression,
-                                                                                       prefix=filter_prefix)
+                                    new_color_expression = self.changeLabelExpression(
+                                        expression=self.color_expression, prefix=filter_prefix
+                                    )
+                                    new_enable_expression = self.changeLabelExpression(
+                                        expression=self.enable_expression, prefix=filter_prefix
+                                    )
                                     self.color_expression = new_color_expression
                                     self.enable_expression = new_enable_expression
 
-                                    #self.enable_expression = 'case when @Karto then ' + self.enable_expression + ' else 0 end'
-                                    self.enable_expression = 'case when 1111 then ' + self.enable_expression + ' else 0 end'
+                                    # self.enable_expression = 'case when @Karto then ' + self.enable_expression + ' else 0 end'
+                                    self.enable_expression = (
+                                        'case when 1111 then '
+                                        + self.enable_expression
+                                        + ' else 0 end'
+                                    )
                                 else:
                                     self.enable_expression = '@Karto'
 
@@ -192,7 +207,9 @@ class ExpressYourself:
                                 print(f'setLabelExpression error, layer: {layer.name()}: {e}')
                         else:
                             if set_colors:
-                                self.enable_expression = 'case when 1111 then ' + self.enable_expression + ' else 0 end'
+                                self.enable_expression = (
+                                    'case when 1111 then ' + self.enable_expression + ' else 0 end'
+                                )
                             else:
                                 self.enable_expression = '@Auto'
                         if set_colors:
@@ -236,6 +253,6 @@ class ExpressYourself:
         """Metoda do wyciagania nazwy warstwy z filtra"""
         text = text.lower()
         idx = [m.start() for m in re.finditer('"', text)]
-        to_cut = text[idx[0] + 1:idx[1]]
+        to_cut = text[idx[0] + 1 : idx[1]]
         to_cut = '_'.join(to_cut.split('_')[0:3])
         return to_cut

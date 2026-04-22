@@ -10,7 +10,7 @@ from qgis.core import (
     QgsMultiLineString,
     QgsPointXY,
     QgsProject,
-    QgsSpatialIndex
+    QgsSpatialIndex,
 )
 from .config import ges_colors, sewer_colors
 import math
@@ -22,7 +22,16 @@ import cProfile
 import pstats
 
 no_time = datetime.datetime.now() - datetime.datetime.now()
-times_profiling = {'buffer_limit': no_time, 'bisections1': no_time, 'preparing2': no_time, 'preparing3': no_time, 'parts1': no_time, 'parts2': no_time, 'hatch1': no_time, 'end': no_time}
+times_profiling = {
+    'buffer_limit': no_time,
+    'bisections1': no_time,
+    'preparing2': no_time,
+    'preparing3': no_time,
+    'parts1': no_time,
+    'parts2': no_time,
+    'hatch1': no_time,
+    'end': no_time,
+}
 
 
 def profil(fnc, path):
@@ -40,14 +49,15 @@ def profil(fnc, path):
     s.close()
 
 
-def getPolylineFromStartEnd(geometry, top_start_point, top_end_point, side = 'top'):
+def getPolylineFromStartEnd(geometry, top_start_point, top_end_point, side='top'):
     """
     obliczenie polilini bedacej gora lub dolem skarpy (do wyboru)
 
     :param geometry: geometria poligonowa skarpy,
     :param top_start_point: punkt poczatku gory skarpy,
     :param top_end_point: punkt konca gory skarpy,
-    :param side: ('top' lub 'bottom') czy ma byc zwracana linia przedstawiajaca gore czy dol skarpy."""
+    :param side: ('top' lub 'bottom') czy ma byc zwracana linia przedstawiajaca gore czy dol skarpy.
+    """
 
     orig_geom_list = geometry.asGeometryCollection()
     lines_list = []
@@ -71,7 +81,11 @@ def getPolylineFromStartEnd(geometry, top_start_point, top_end_point, side = 'to
             top_start_point_nearest = top_start_point.nearestPoint(geom)
             top_end_point_nearest = top_end_point.nearestPoint(geom)
 
-            if top_start_point.distance(top_start_point_nearest) < 0.01 and top_end_point.distance(top_end_point_nearest) < 0.01 and side.lower() in ['top', 'bottom']:
+            if (
+                top_start_point.distance(top_start_point_nearest) < 0.01
+                and top_end_point.distance(top_end_point_nearest) < 0.01
+                and side.lower() in ['top', 'bottom']
+            ):
                 coord_top_start = top_start_point_nearest.vertexAt(0)
                 coord_top_end = top_end_point_nearest.vertexAt(0)
 
@@ -98,9 +112,14 @@ def getPolylineFromStartEnd(geometry, top_start_point, top_end_point, side = 'to
                     point_x = round(coord_point.x(), 3)
                     point_y = round(coord_point.y(), 3)
 
-                    # sprawdzenie czy poligon jest "obwarzankiem" (ma wiecej niz jeden ring) i dodatkowo
-                    # poczatek i koniec jest taki sam i sa w wierzcholku ringu, wtedy bierz wszystkie z tego ringu
-                    if num_of_int_rings > 0 and (end_x, end_y) == (start_x, start_y) and (point_x, point_y) == (start_x, start_y):
+                    # sprawdzenie czy poligon jest "obwarzankiem" (ma wiecej niz jeden ring)
+                    # i dodatkowo poczatek i koniec jest taki sam i sa w wierzcholku ringu,
+                    # wtedy bierz wszystkie z tego ringu
+                    if (
+                        num_of_int_rings > 0
+                        and (end_x, end_y) == (start_x, start_y)
+                        and (point_x, point_y) == (start_x, start_y)
+                    ):
                         pocz_nr = nr
                         kon_nr = nr
 
@@ -130,6 +149,7 @@ def getPolylineFromStartEnd(geometry, top_start_point, top_end_point, side = 'to
                         lines_list.append(line)
 
     return QgsGeometry.collectGeometry(lines_list)
+
 
 # Generate list of QgsPoints from input geometry ( can be point, line, or polygon )
 def extractPoints(geom):
@@ -172,7 +192,16 @@ def lineToMultiSegments(multi_line_geometry):
     return multi_segments
 
 
-def hatching(polyline_geometry, geometry_limit, spacing, distance, rotate_angle=90, offset=0, multiply=1, fix_short=True):
+def hatching(
+    polyline_geometry,
+    geometry_limit,
+    spacing,
+    distance,
+    rotate_angle=90,
+    offset=0,
+    multiply=1,
+    fix_short=True,
+):
     """
     funkcja oblicza geometrie kreskowania na podstawie zadanych parametrow
 
@@ -180,7 +209,8 @@ def hatching(polyline_geometry, geometry_limit, spacing, distance, rotate_angle=
     :param geometry_limit: geometria poligonowa ograniczajaca zasieg,
     :param spacing: odleglosci w ktorych rysowane beda linie,
     :param distance: maksymalna dlugosc rysowanych kresek
-    :param rotate_angle: kat obrotu rysowanych linii wzgledem polilinii kierunkowej w stopniach (90 - prostopadle),
+    :param rotate_angle: kat obrotu rysowanych linii 
+    wzgledem polilinii kierunkowej w stopniach (90 - prostopadle),
     :param offset: odleglosc rozpoczecia rysowania,
     :param multiply: mnozenie dlugosci wynikowych linii (na razie w zakresie 0-1)(gdy jest np 0.5 to linia bedzie miala polowe dlugosci).
     """
@@ -191,10 +221,11 @@ def hatching(polyline_geometry, geometry_limit, spacing, distance, rotate_angle=
     orig_geom_lines = lineToMultiSegments(polyline_geometry)
     orig_geom_list = QgsGeometry(orig_geom_lines).asGeometryCollection()
 
-    #if len(orig_geom_list) > 50: print('_!!DLUGIE!!_ ', len(orig_geom_list))
+    # if len(orig_geom_list) > 50: print('_!!DLUGIE!!_ ', len(orig_geom_list))
 
     start_hat = datetime.datetime.now()
-    # TODO: UWAGA podaje się jedna wartosc spacing i offset, wiec w przypadku multipowierchni obie maja takie same odstepy kreskowania mimo ze powinno miec osobne
+    # TODO: UWAGA podaje się jedna wartosc spacing i offset, wiec w przypadku multipowierchni
+    # obie maja takie same odstepy kreskowania mimo ze powinno miec osobne
     geometry_limit = geometry_limit.buffer(0.005, 1)
 
     bis_list = []
@@ -208,9 +239,12 @@ def hatching(polyline_geometry, geometry_limit, spacing, distance, rotate_angle=
         points_num = len([pt for pt in part_from_multi.vertices()])
         # iteracja po kazdym punkcie w polilinii - liczenie w nim azymutu i rysowanie dwusiecznej:
         for ind in range(points_num):
-            if ind != 0 and points_num > 1 and ind == points_num - 1 and part_from_multi.vertexAt(
-                    points_num - 1) == part_from_multi.vertexAt(
-                    0):
+            if (
+                ind != 0
+                and points_num > 1
+                and ind == points_num - 1
+                and part_from_multi.vertexAt(points_num - 1) == part_from_multi.vertexAt(0)
+            ):
                 ind_next = 1
             elif ind != 0 and ind != points_num - 1:
                 ind_next = ind + 1
@@ -256,12 +290,12 @@ def hatching(polyline_geometry, geometry_limit, spacing, distance, rotate_angle=
         bisections = None
 
     new_geom_list = []
-    #prev_residue = offset
+    # prev_residue = offset
 
     length_top = polyline_geometry.length()
     # poprawka gdy spacing jest dluzszy niz polilinia (dziala jak jest dane na True)
     if spacing > length_top and fix_short:
-        too_short = length_top/2
+        too_short = length_top / 2
     else:
         too_short = offset
 
@@ -293,7 +327,7 @@ def hatching(polyline_geometry, geometry_limit, spacing, distance, rotate_angle=
 
     for part in orig_geom_list:
         st2 = datetime.datetime.now()
-        #parts_list = []
+        # parts_list = []
 
         candidate_ids = index.intersects(part.boundingBox())  # Pobranie kandydatów do przecięcia
         intersecting_polygons = [polygon_map[i] for i in candidate_ids if polygon_map[i].intersects(part)]
@@ -301,7 +335,7 @@ def hatching(polyline_geometry, geometry_limit, spacing, distance, rotate_angle=
         parts_geom = QgsGeometry.collectGeometry(intersecting_polygons)
 
         part_length = part.length()
-        #spacing_sum = spacing - prev_residue
+        # spacing_sum = spacing - prev_residue
         spacing_sum = too_short
 
         times_profiling['parts1'] = times_profiling['parts1'] + datetime.datetime.now() - st2
@@ -311,11 +345,13 @@ def hatching(polyline_geometry, geometry_limit, spacing, distance, rotate_angle=
             azym = part.interpolateAngle(spacing_sum)
             interp_vertex = QgsPointXY(point_interp.vertexAt(0))
 
-            azym_deg = (azym * (180 / math.pi))
+            azym_deg = azym * (180 / math.pi)
             point_proj1 = interp_vertex.project(distance, azym_deg - rotate_angle)
             point_proj2 = interp_vertex.project(distance, azym_deg + (180 - rotate_angle))
 
-            step = QgsGeometry.fromMultiPolylineXY([[interp_vertex, point_proj1], [interp_vertex, point_proj2]])
+            step = QgsGeometry.fromMultiPolylineXY(
+                [[interp_vertex, point_proj1], [interp_vertex, point_proj2]]
+            )
 
             '''step_lines = step.asGeometryCollection()
             for step_line in step_lines:
@@ -324,14 +360,17 @@ def hatching(polyline_geometry, geometry_limit, spacing, distance, rotate_angle=
                     new_geom_list.append(step_cut)'''
 
             step_cut = step.intersection(parts_geom)
-            if step_cut is not None and not step_cut.isEmpty() and next(step_cut.vertices(), None): # czy nie puste
+            if (
+                step_cut is not None 
+                and not step_cut.isEmpty() 
+                and next(step_cut.vertices(), None)
+            ):  # czy nie puste
                 new_geom_list.append(step_cut)
             spacing_sum += spacing
-        #prev_residue = part_length - (spacing_sum - spacing)
+        # prev_residue = part_length - (spacing_sum - spacing)
         too_short = spacing_sum - part_length
 
         times_profiling['parts2'] = times_profiling['parts2'] + datetime.datetime.now() - st2
-
 
     hatch_geom = QgsGeometry.collectGeometry(new_geom_list)
 
@@ -351,53 +390,80 @@ def hatching(polyline_geometry, geometry_limit, spacing, distance, rotate_angle=
 
     times_profiling['end'] = times_profiling['end'] + datetime.datetime.now() - start_hat
 
-
     return hatch_geom
 
+
 def getFeaturesToHatch(layer, calc_geom_field):
-    """W zaleznosci od nazwy warstwy (layer) funkcja pobiera z niej obiekty, dla ktorych ma byc liczone kreskowanie.
-    Atrybut calc_geom_column wskazuje nazwe kolumny, w ktorej bedzie zapisywana geometria - nalezy ja podac poniewaz
+    """W zaleznosci od nazwy warstwy (layer) funkcja pobiera z niej obiekty, dla ktorych ma byc
+    liczone kreskowanie. Atrybut calc_geom_column wskazuje nazwe kolumny, w ktorej bedzie
+    zapisywana geometria - nalezy ja podac poniewaz 
     funkcja nie zwraca wszystkich atrybutow obiektu tylko te niezbedne"""
     features_list = []
     if 'egb_obiekttrwale' in layer.name().lower():
         # pobiera tylko obiekty typu schody
-        features_list = (feat for feat in layer.getFeatures(
-            QgsFeatureRequest().setSubsetOfAttributes(
-                ['gml_id', 'rodzajobiektuzwiazanegozbudynkiem', calc_geom_field],
-                layer.fields()).setFilterExpression(
-                '"rodzajobiektuzwiazanegozbudynkiem"=\'s\'')))
+        features_list = (
+            feat
+            for feat in layer.getFeatures(
+                QgsFeatureRequest()
+                .setSubsetOfAttributes(
+                    ['gml_id', 'rodzajobiektuzwiazanegozbudynkiem', calc_geom_field],
+                    layer.fields()
+                ).setFilterExpression('"rodzajobiektuzwiazanegozbudynkiem"=\'s\'')
+            )
+        )
     elif 'ot_obiekttrwale' in layer.name().lower():
         # pobiera tylko obiekty typu schody
-        features_list = (feat for feat in layer.getFeatures(
-            QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajobiektu', calc_geom_field],
-                                                      layer.fields()).setFilterExpression(
-                '"rodzajobiektu"=\'s\'')))
+        features_list = (
+            feat
+            for feat in layer.getFeatures(
+                QgsFeatureRequest()
+                .setSubsetOfAttributes(['gml_id', 'rodzajobiektu', calc_geom_field], layer.fields())
+                .setFilterExpression('"rodzajobiektu"=\'s\'')
+            )
+        )
     elif 'ot_komunikacja' in layer.name().lower():
         # pobiera tylko obiekty typu schody
-        features_list = (feat for feat in layer.getFeatures(
-            QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajobiektu', calc_geom_field],
-                                                      layer.fields()).setFilterExpression(
-                '"rodzajobiektu"=\'s\'')))
+        features_list = (
+            feat
+            for feat in layer.getFeatures(
+                QgsFeatureRequest()
+                .setSubsetOfAttributes(['gml_id', 'rodzajobiektu', calc_geom_field], layer.fields())
+                .setFilterExpression('"rodzajobiektu"=\'s\'')
+            )
+        )
     elif 'ot_skarpa' in layer.name().lower():
         # pobiera wszystkie obiekty
-        features_list = (feat for feat in layer.getFeatures(
-            QgsFeatureRequest().setSubsetOfAttributes(['gml_id', calc_geom_field],
-                                                      layer.fields())))
+        features_list = (
+            feat
+            for feat in layer.getFeatures(
+                QgsFeatureRequest().setSubsetOfAttributes(['gml_id', calc_geom_field], layer.fields())
+            )
+        )
     elif 'ot_budowle' in layer.name().lower():
         # pobiera tylko sciany oporowe
-        features_list = (feat for feat in layer.getFeatures(
-            QgsFeatureRequest().setSubsetOfAttributes(['gml_id', 'rodzajbudowli', calc_geom_field],
-                                                      layer.fields()).setFilterExpression(
-                '"rodzajbudowli"=\'n\'')))
+        features_list = (
+            feat
+            for feat in layer.getFeatures(
+                QgsFeatureRequest()
+                .setSubsetOfAttributes(['gml_id', 'rodzajbudowli', calc_geom_field], layer.fields())
+                .setFilterExpression('"rodzajbudowli"=\'n\'')
+            )
+        )
     elif 'ot_wody' in layer.name().lower():
         # pobiera tylko groble i waly
-        features_list = (feat for feat in layer.getFeatures(
-            QgsFeatureRequest().setSubsetOfAttributes(
-                ['gml_id', 'rodzajobiektu', 'rodzajobiektu', calc_geom_field],
-                layer.fields()).setFilterExpression(
-                '"rodzajobiektu"=\'w\' or "rodzajobiektu"=\'g\'')))
+        features_list = (
+            feat
+            for feat in layer.getFeatures(
+                QgsFeatureRequest()
+                .setSubsetOfAttributes(
+                    ['gml_id', 'rodzajobiektu', 'rodzajobiektu', calc_geom_field], layer.fields()
+                )
+                .setFilterExpression('"rodzajobiektu"=\'w\' or "rodzajobiektu"=\'g\'')
+            )
+        )
 
     return features_list
+
 
 def calculateHatching(layer, object_type, scale, ref_lay_ids):
     """
@@ -427,10 +493,11 @@ def calculateHatching(layer, object_type, scale, ref_lay_ids):
         field_index = layer.fields().indexFromName(calc_geom_field)
         attribute_map = {}
         if field_index >= 0:
-            #features_to_calc = getFeaturesToHatch(layer, calc_geom_field)  # tutaj jest pobierany iterator poniewaz gdy jest wczesniej to nie zawsze dobrze dziala
+            # features_to_calc = getFeaturesToHatch(layer, calc_geom_field)  
+            # tutaj jest pobierany iterator poniewaz gdy jest wczesniej to nie zawsze dobrze dziala
             start_t = datetime.datetime.now()
             features_to_calc = list(getFeaturesToHatch(layer, calc_geom_field))
-            print('get features:', datetime.datetime.now() - start_t )
+            print('get features:', datetime.datetime.now() - start_t)
             if object_type.lower() == 'skarpa' or object_type.lower() == 'wody':
                 print(object_type.lower())
                 # obliczanie kreskowania dla skarp, grobli, walow
@@ -459,7 +526,13 @@ def calculateHatching(layer, object_type, scale, ref_lay_ids):
                     print('points0', datetime.datetime.now() - st0)
 
                     no_time = datetime.datetime.now() - datetime.datetime.now()
-                    times_feature = {'points1':no_time, 'points':no_time, 'polyline':no_time, 'hatching':no_time, 'hatching1':no_time}
+                    times_feature = {
+                        'points1': no_time,
+                        'points': no_time,
+                        'polyline': no_time,
+                        'hatching': no_time,
+                        'hatching1': no_time,
+                    }
                     for feature in features_to_calc:
                         time_feature_start = datetime.datetime.now()
                         feature_geom = feature.geometry()
@@ -485,25 +558,37 @@ def calculateHatching(layer, object_type, scale, ref_lay_ids):
                             del list_fit_start_features
                             del list_fit_end_features"""
 
-                            start_points = start_dict.get(ref_key_field_value, [])  # Lista geometrii dla danego gml_id
+                            # Lista geometrii dla danego gml_id
+                            start_points = start_dict.get(ref_key_field_value, [])
                             end_points = end_dict.get(ref_key_field_value, [])
 
                             start_points_geom = QgsGeometry().collectGeometry(start_points)
                             end_points_geom = QgsGeometry().collectGeometry(end_points)
 
-                            times_feature['points'] = times_feature['points'] + datetime.datetime.now() - time_feature_start
+                            times_feature['points'] = (
+                                times_feature['points']
+                                + datetime.datetime.now()
+                                - time_feature_start
+                            )
 
                             # obliczenie polilini bedacej gora skarpy
-                            top_polyline = getPolylineFromStartEnd(feature_geom, top_start_point=start_points_geom,
-                                                  top_end_point=end_points_geom, side='top')
+                            top_polyline = getPolylineFromStartEnd(
+                                feature_geom,
+                                top_start_point=start_points_geom,
+                                top_end_point=end_points_geom,
+                                side='top',
+                            )
 
-                            times_feature['polyline'] = times_feature['polyline'] + datetime.datetime.now() - time_feature_start
+                            times_feature['polyline'] = (
+                                times_feature['polyline']
+                                + datetime.datetime.now()
+                                - time_feature_start
+                            )
                         except Exception as e:
                             print('blad', e)
                             # print('brak polilini dla', attrib, layer.name())
                             calculated_hatching_wkt = ''
                             continue
-
 
                         if top_polyline.isNull() is False:
                             area = feature_geom.area()
@@ -513,17 +598,27 @@ def calculateHatching(layer, object_type, scale, ref_lay_ids):
                                 if spacing < 0.72:
                                     spacing = 0.72
                                 # dlugie kreski w karpie
-                                first_hatching = hatching(top_polyline, feature_geom, spacing, 50, 90,
-                                                          spacing, 1, False)
-                                times_feature['hatching1'] = times_feature[
-                                                                'hatching1'] + datetime.datetime.now() - time_feature_start
+                                first_hatching = hatching(
+                                    top_polyline, feature_geom, spacing, 50, 90, spacing, 1, False
+                                )
+                                times_feature['hatching1'] = (
+                                    times_feature['hatching1']
+                                    + datetime.datetime.now()
+                                    - time_feature_start
+                                )
                                 # krotkie kreski w skarpie
-                                second_hatching = hatching(top_polyline, feature_geom, spacing, 50, 90,
-                                                           spacing/2, 0.5)
+                                second_hatching = hatching(
+                                    top_polyline, feature_geom, spacing, 50, 90, spacing / 2, 0.5
+                                )
                                 calculated_hatching_wkt = QgsGeometry.collectGeometry(
-                                    [first_hatching, second_hatching]).asWkt(3)
+                                    [first_hatching, second_hatching]
+                                ).asWkt(3)
 
-                            times_feature['hatching'] = times_feature['hatching'] + datetime.datetime.now() - time_feature_start
+                            times_feature['hatching'] = (
+                                times_feature['hatching']
+                                + datetime.datetime.now()
+                                - time_feature_start
+                            )
 
                         else:
                             calculated_hatching_wkt = ''
@@ -551,16 +646,16 @@ def calculateHatching(layer, object_type, scale, ref_lay_ids):
                         ref_key_field_name = 'gml_id'
                         ref_key_field_value = feature.attribute('gml_id')
 
-
                         # zapytanie do pobrania polilini kierunkowej
                         request = QgsFeatureRequest().setFilterExpression(
-                            f"{ref_key_field_name} = '{ref_key_field_value}'")
+                            f"{ref_key_field_name} = '{ref_key_field_value}'"
+                        )
 
                         try:
                             # pobranie polilini i jej geometrii
                             list_fit_polyline_features = list(polyline_layer.getFeatures(request))
                             polyline = [f for f in list_fit_polyline_features][0]
-                            del(list_fit_polyline_features)
+                            del list_fit_polyline_features
                             polyline_geom = polyline.geometry()
 
                             if object_type.lower() == 'sciana':
@@ -577,20 +672,22 @@ def calculateHatching(layer, object_type, scale, ref_lay_ids):
 
                                 # obliczenie kreskowania
                                 # w scianie oporowej dwie kreski obok siebie
-                                first_hatching = hatching(polyline_geom, feature_geom, spacing, 100, 45,
-                                                          offset1, 1, False)
-                                second_hatching = hatching(polyline_geom, feature_geom, spacing, 100, 45,
-                                                           offset2, 1, False)
+                                first_hatching = hatching(
+                                    polyline_geom, feature_geom, spacing, 100, 45, offset1, 1, False)
+                                second_hatching = hatching(
+                                    polyline_geom, feature_geom, spacing, 100, 45, offset2, 1, False)
                                 calculated_hatching_wkt = QgsGeometry.collectGeometry(
-                                    [first_hatching, second_hatching]).asWkt(3)
-                            else: # schody
+                                    [first_hatching, second_hatching]
+                                ).asWkt(3)
+                            else:  # schody
                                 # obliczenie kreskowania dla schodow
                                 if scale == '500':
                                     spacing = 0.5
                                 else:
                                     spacing = 0.75
-                                calculated_hatching_wkt = hatching(polyline_geom, feature_geom, spacing, 100, 90,
-                                                                   0, 1, False).asWkt(3)
+                                calculated_hatching_wkt = hatching(
+                                    polyline_geom, feature_geom, spacing, 100, 90, 0, 1, False
+                                ).asWkt(3)
                         except:
                             # print('brak polilini dla', attrib, layer.name())
                             calculated_hatching_wkt = ''
@@ -598,7 +695,7 @@ def calculateHatching(layer, object_type, scale, ref_lay_ids):
                         attribute_map.update({feature.id(): {field_index: calculated_hatching_wkt}})
 
             print('oblicz:', datetime.datetime.now() - start_t)
-            #attribute_map.update({feature.id(): {field_index: calculated_hatching_wkt}})
+            # attribute_map.update({feature.id(): {field_index: calculated_hatching_wkt}})
             features_to_calc = None
             # zapisanie atrybutow warstwy
             layer.dataProvider().changeAttributeValues(attribute_map)
@@ -607,13 +704,14 @@ def calculateHatching(layer, object_type, scale, ref_lay_ids):
 
 def calculateColors(main_layer, field_name):
     """
-    Fukncja odpowiada za obliczenie kolorow dla rzednych w zaleznosci od rodzaju sieci dla ktorej jest rzedna
+    Fukncja odpowiada za obliczenie kolorow dla
+    rzednych w zaleznosci od rodzaju sieci dla ktorej jest rzedna
 
     :param main_layer: warstwa ges rzedna
     :param field_name: nazwa kolumny wyjsciowej do ktorej wstawiane sa kolory
     """
     # pobranie dostępnych warstw
-    #layers = iface.mapCanvas().layers()
+    # layers = iface.mapCanvas().layers()
 
     # dodanie kolumny w ktorej bedzie zapisana obliczona geometria
     field_index = main_layer.fields().indexFromName(field_name)
@@ -625,7 +723,6 @@ def calculateColors(main_layer, field_name):
     # pobranie kolumny
     cum_sum_index = main_layer.fields().indexFromName(field_name)
     attribute_map_python = {}
-
 
     # utowrzenie slownika lokalneId: kolor, poprzez iteracje po warstwach
     dict_of_colors = {}

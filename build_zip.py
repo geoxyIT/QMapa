@@ -31,6 +31,7 @@ EXCLUDE_FILES = {
     "build_zip.py",
 }
 
+
 def read_version():
     metadata = os.path.join(PLUGIN_DIR, "metadata.txt")
 
@@ -61,7 +62,7 @@ def build_zip():
                 full_path = os.path.join(root, file)
                 rel_path = os.path.relpath(full_path, os.path.dirname(PLUGIN_DIR))
                 z.write(full_path, rel_path)
-                
+
     print("Plugin spakowany")
     print(zip_path)
 

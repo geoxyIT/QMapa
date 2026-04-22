@@ -16,7 +16,8 @@ def setNewOrder(layer_new_order: List):
 
     for layer in current_order:
         if layer.name() in layer_new_order:
-            index = layer_new_order.index(layer.name())  # pobranie indeksu nowej kolejnosci na podstawie warstwy
+            # pobranie indeksu nowej kolejnosci na podstawie warstwy
+            index = layer_new_order.index(layer.name())
             new_order_index.append(index)
         else:
             # niezgodne
@@ -33,7 +34,11 @@ def setNewOrder(layer_new_order: List):
     for layer in new_order:
         # warstwa musi byc zgodna punktowa - wtedy rzuca na gore
         if layer.type() == QgsMapLayerType.VectorLayer and layer.name() in layer_new_order:
-            if layer.geometryType() == 0 and 'goryskarpy' not in layer.name().lower() and 'prezentacjagraficzna' not in layer.name().lower() :
+            if (
+                layer.geometryType() == 0
+                and 'goryskarpy' not in layer.name().lower()
+                and 'prezentacjagraficzna' not in layer.name().lower()
+            ):
                 new_order.insert(0, new_order.pop(new_order.index(layer)))
         else:
             pass

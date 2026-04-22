@@ -9,10 +9,12 @@ from uuid import uuid1
 
 from QMapa import CONSENTS_FILE
 
-#from QMapa import PLUGIN_DIRECTORY
-#CONSENTS_FILE = os.path.join(PLUGIN_DIRECTORY, 'terms_consents.json')
+# from QMapa import PLUGIN_DIRECTORY
+# CONSENTS_FILE = os.path.join(PLUGIN_DIRECTORY, 'terms_consents.json')
 
 cls, wnd = uic.loadUiType(os.path.join(os.path.dirname(__file__), '..', 'ui', 'terms.ui'))
+
+
 class TermsDialog(wnd, cls):
     def __init__(self):
         super().__init__()
@@ -26,6 +28,7 @@ class TermsDialog(wnd, cls):
         self.buttonBox.addButton(button_cancel, QDialogButtonBox.ButtonRole.RejectRole)
         self.adjustSize()
         self.show()
+
 
 '''cls_info, wnd_info = uic.loadUiType(os.path.join(os.path.dirname(__file__), '..', 'ui', 'terms_info.ui'))
 class TermsInfo(wnd_info, cls_info):
@@ -42,6 +45,7 @@ class TermsInfo(wnd_info, cls_info):
         else:
             self.label_2.setText('Nie wyrażono zgody')'''
 
+
 class Terms:
     def __init__(self, dialogs):
         self.consents = False
@@ -55,9 +59,9 @@ class Terms:
             with open(CONSENTS_FILE, 'r', encoding='utf-8') as fi:
                 consents = json.load(fi)
             if 'stats_accepted' in consents and consents['stats_accepted']:
-                self.consents =  True
+                self.consents = True
             else:
-                self.consents =  False
+                self.consents = False
 
             if 'stats_accepted_time' in consents and consents['stats_accepted_time']:
                 self.time_consents = consents['stats_accepted_time']
@@ -79,7 +83,7 @@ class Terms:
         self.dialogs.append(dial)
         dial.exec_()'''
 
-    def checkCanRun(self, show_message = True):
+    def checkCanRun(self, show_message=True):
         self.checkTermsConsentsInFile()
         if not self.consents and show_message:
             self.showTermsMessage()
@@ -87,8 +91,10 @@ class Terms:
         return self.consents
 
     def saveConsents(self):
-        consent = {'uid_value': str(uuid1()),
-                   'stats_accepted': True,
-                   'stats_accepted_time': datetime.now().strftime("%Y.%m.%d %H:%M:%S")}
+        consent = {
+            'uid_value': str(uuid1()),
+            'stats_accepted': True,
+            'stats_accepted_time': datetime.now().strftime("%Y.%m.%d %H:%M:%S"),
+        }
         with open(CONSENTS_FILE, 'w', encoding='utf-8') as fi:
             json.dump(consent, fi)

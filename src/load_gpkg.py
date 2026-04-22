@@ -1,5 +1,6 @@
 from osgeo import ogr
 
+
 def loadGpkg(gpkg_path):
     """funkcja odpowiadaja za edycje warstw z geometria UNKNOW - typ wg. wkb = 0
     jezeli taka geometria istnieje, jest rozbijana i sortowana na 3 rodzaje geometrii
@@ -7,10 +8,67 @@ def loadGpkg(gpkg_path):
     file_data = ogr.Open(r'%s' % gpkg_path, 1)
 
     pts_list = [1, 4, 2001, 2004, 3001, 3004, -2147483647, -2147483644]
-    line_list = [2, 5, 8, 9, 11, 13, 101, 1008, 1009, 1011, 1013, 2002, 2005, 2008, 2009, 2011, 2013, 3002, 3005, 3008,
-                 3009, 3011, 3013, -2147483646, -2147483643]
-    polygon_list = [3, 6, 10, 12, 14, 15, 16, 17, 1010, 1012, 1014, 1015, 1016, 1017, 2003, 2006, 2010, 2012, 2014, 2015, 2016, 2017,
-                 3003, 3006, 3010, 3012, 3014, 3015, 3016, 3017, -2147483645, -2147483642]
+    line_list = [
+        2,
+        5,
+        8,
+        9,
+        11,
+        13,
+        101,
+        1008,
+        1009,
+        1011,
+        1013,
+        2002,
+        2005,
+        2008,
+        2009,
+        2011,
+        2013,
+        3002,
+        3005,
+        3008,
+        3009,
+        3011,
+        3013,
+        -2147483646,
+        -2147483643,
+    ]
+    polygon_list = [
+        3,
+        6,
+        10,
+        12,
+        14,
+        15,
+        16,
+        17,
+        1010,
+        1012,
+        1014,
+        1015,
+        1016,
+        1017,
+        2003,
+        2006,
+        2010,
+        2012,
+        2014,
+        2015,
+        2016,
+        2017,
+        3003,
+        3006,
+        3010,
+        3012,
+        3014,
+        3015,
+        3016,
+        3017,
+        -2147483645,
+        -2147483642,
+    ]
 
     layers_to_delete = []
 
@@ -25,19 +83,35 @@ def loadGpkg(gpkg_path):
             lyr_def = main_layer.GetLayerDefn()
 
             # pobranie warstw, jezeli juz istnieja
-            layer_0 = file_data.GetLayer(layer.GetName()+'_0')
-            layer_1 = file_data.GetLayer(layer.GetName()+'_1')
-            layer_2 = file_data.GetLayer(layer.GetName()+'_2')
+            layer_0 = file_data.GetLayer(layer.GetName() + '_0')
+            layer_1 = file_data.GetLayer(layer.GetName() + '_1')
+            layer_2 = file_data.GetLayer(layer.GetName() + '_2')
 
             # jezeli tych warstw nie ma, utworz je
-            # pobranie nazwy pola z geometria (bo jak jest w gml jako 'geometria' to taka sie da, a nie domyslna 'geom'
+            # pobranie nazwy pola z geometria 
+            # (bo jak jest w gml jako 'geometria' to taka sie da, a nie domyslna 'geom'
             geom_field_name = lyr_def.GetGeomFieldDefn(0).GetName()
-            if layer_0 == None:
-                layer_0 = file_data.CreateLayer(layer.GetName()+'_0', srs=spatial_ref, geom_type=ogr.wkbMultiPoint, options=[f"GEOMETRY_NAME={geom_field_name}"])
-            if layer_1 == None:
-                layer_1 = file_data.CreateLayer(layer.GetName()+'_1', srs=spatial_ref, geom_type=ogr.wkbMultiCurve, options=[f"GEOMETRY_NAME={geom_field_name}"])
-            if layer_2 == None:
-                layer_2 = file_data.CreateLayer(layer.GetName()+'_2', srs=spatial_ref, geom_type=ogr.wkbMultiSurface, options=[f"GEOMETRY_NAME={geom_field_name}"])
+            if layer_0 is None:
+                layer_0 = file_data.CreateLayer(
+                    layer.GetName() + '_0',
+                    srs=spatial_ref,
+                    geom_type=ogr.wkbMultiPoint,
+                    options=[f"GEOMETRY_NAME={geom_field_name}"],
+                )
+            if layer_1 is None:
+                layer_1 = file_data.CreateLayer(
+                    layer.GetName() + '_1',
+                    srs=spatial_ref,
+                    geom_type=ogr.wkbMultiCurve,
+                    options=[f"GEOMETRY_NAME={geom_field_name}"],
+                )
+            if layer_2 is None:
+                layer_2 = file_data.CreateLayer(
+                    layer.GetName() + '_2',
+                    srs=spatial_ref,
+                    geom_type=ogr.wkbMultiSurface,
+                    options=[f"GEOMETRY_NAME={geom_field_name}"],
+                )
 
             # utworzenie kolumn (pola) w nowych warstwach
             for i in range(lyr_def.GetFieldCount()):
@@ -81,25 +155,33 @@ def loadGpkg(gpkg_path):
                 layer_2.CreateFeature(feat)
             layer_2.CommitTransaction()
 
-            # dodanie warstwy glownej (tej z kilkoma rodzajami geometrii w sobie) do listy warstw do usuniecia
+            # dodanie warstwy glownej (tej z kilkoma rodzajami geometrii w sobie)
+            # do listy warstw do usuniecia
             layers_to_delete.append(main_layer.GetName())
 
         elif layer.GetGeomType() in pts_list:
             main_layer = file_data.GetLayer(layer.GetName())
-            file_data.ExecuteSQL(f'ALTER TABLE {main_layer.GetName()} RENAME TO {main_layer.GetName() + "_0"}')
+            file_data.ExecuteSQL(
+                f'ALTER TABLE {main_layer.GetName()} RENAME TO {main_layer.GetName() + "_0"}'
+            )
 
         elif layer.GetGeomType() in line_list:
             main_layer = file_data.GetLayer(layer.GetName())
-            file_data.ExecuteSQL(f'ALTER TABLE {main_layer.GetName()} RENAME TO {main_layer.GetName() + "_1"}')
+            file_data.ExecuteSQL(
+                f'ALTER TABLE {main_layer.GetName()} RENAME TO {main_layer.GetName() + "_1"}'
+            )
 
         elif layer.GetGeomType() in polygon_list:
             main_layer = file_data.GetLayer(layer.GetName())
-            file_data.ExecuteSQL(f'ALTER TABLE {main_layer.GetName()} RENAME TO {main_layer.GetName() + "_2"}')
+            file_data.ExecuteSQL(
+                f'ALTER TABLE {main_layer.GetName()} RENAME TO {main_layer.GetName() + "_2"}'
+            )
 
         else:
             main_layer = file_data.GetLayer(layer.GetName())
-            file_data.ExecuteSQL(f'ALTER TABLE {main_layer.GetName()} RENAME TO {main_layer.GetName() + "_9"}')
-
+            file_data.ExecuteSQL(
+                f'ALTER TABLE {main_layer.GetName()} RENAME TO {main_layer.GetName() + "_9"}'
+            )
 
     # usuniecie warstw glownych
     [file_data.DeleteLayer(layer_name) for layer_name in layers_to_delete]
