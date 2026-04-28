@@ -1,6 +1,6 @@
 import os
 import sys
-import subprocess
+import subprocess   # nosec B404
 from qgis.PyQt.QtCore import QVariant, QDateTime
 from qgis.utils import iface
 from qgis.core import (
@@ -56,7 +56,7 @@ class Main:
             layer.removeJoin(join.joinLayerId())
 
     def addObligatoryFields(self, layer, fields_list):
-        """jesli pole z podanej listy pol obowiazkowych (fields_list) 
+        """jesli pole z podanej listy pol obowiazkowych (fields_list)
         nie istnieje na warstwie, to jest dodawane"""
         for field_name in fields_list:
             field_index = layer.fields().indexFromName(field_name)
@@ -93,9 +93,14 @@ class Main:
                 iface.layerTreeView().refreshLayerSymbology(layer.id())
 
                 try:
-                    style_file_path = os.path.join(stylization_dir, geom_type, layer.name() + '.qml')
-                    # todo: zrobic zeby probowalo pobierac takze pliki dla wartw z koncowka geometrii (_0, _1, _2)
-                    categories = QgsMapLayer.StyleCategory.Labeling | QgsMapLayer.StyleCategory.Symbology
+                    style_file_path = os.path.join(
+                        stylization_dir, geom_type, layer.name() + '.qml')
+                    # todo: zrobic zeby probowalo pobierac takze pliki dla
+                    # wartw z koncowka geometrii (_0, _1, _2)
+                    categories = (
+                        QgsMapLayer.StyleCategory.Labeling
+                        | QgsMapLayer.StyleCategory.Symbology
+                    )
                     layer.loadNamedStyle(style_file_path, categories)
 
                     '''layer.styleManager().reset()
@@ -186,7 +191,7 @@ class Main:
             3017: 'TriangleZM',
         }
 
-        layers = [l.GetName() for l in ogr.Open(layer_path)]  # pobranie nazw warstw z ogra
+        layers = [lyr.GetName() for lyr in ogr.Open(layer_path)]  # pobranie nazw warstw z ogra
         layers_geom = [j.GetGeomType() for j in ogr.Open(layer_path)]  # pobranie geometrii z ogra
         vec_layers_list = []
 
@@ -276,7 +281,7 @@ class Main:
                 # dodanie prefixu OT_Pomocnicze elementy...
                 try:
                     prefix = [k for k, v in prefix_of_bases.items() if v == group_name][0]
-                except:
+                except Exception:
                     prefix = ''
 
                 editorial_elements = prefix + '_' + 'pomocniczeElementyKARTO'
@@ -296,7 +301,8 @@ class Main:
                 specified_group = main_group.findGroup(group_name)
                 group_is_recognized = False
 
-            # posortowanie listy warstw z typami na podstawie listy z kolejnoscia oraz jej nadmienienie
+            # posortowanie listy warstw z typami na podstawie listy
+            # z kolejnoscia oraz jej nadmienienie
             for idx, layer in enumerate(group_layers_with_type):
                 if layer[0] in order_list:
                     index = order_list.index(layer[0])
@@ -354,7 +360,7 @@ class Main:
         return vec_layers_list, gr_dict, editorial_groups_list
 
     def getStylizations(self, omit_special=False):
-        """Pobieranie stylizacji z folderu we wtyczce, 
+        """Pobieranie stylizacji z folderu we wtyczce,
         omit_special oznacza pomijanie stylizacji zapisanych w [ ]"""
         # sty_path = self.current_dir + r'\stylization'
         sty_path = os.path.join(self.current_dir, '..', r'stylization')
@@ -477,10 +483,14 @@ class Main:
                             is_prezentacjaGraficzna = True
 
                         for feature in layer.getFeatures():
-                            # jesli dotyczy to warstwy prezentacji graficznej to i tak nie bedzie atrybutow wersji
+                            # jesli dotyczy to warstwy prezentacji graficznej
+                            # to i tak nie bedzie atrybutow wersji
                             if not is_prezentacjaGraficzna:
                                 try:
-                                    iip = feature.attribute("przestrzenNazw") + feature.attribute("lokalnyId")
+                                    iip = (
+                                        feature.attribute("przestrzenNazw")
+                                        + feature.attribute("lokalnyId")
+                                    )
                                     uniq_iip.add(iip)
                                 except Exception as e:
                                     print(
@@ -490,19 +500,19 @@ class Main:
                                     )
                             try:
                                 start_ob = feature.attribute("startObiekt")
-                            except:
+                            except Exception:
                                 start_ob = ''
                             try:
                                 start_vers = feature.attribute("startWersjaObiekt")
-                            except:
+                            except Exception:
                                 start_vers = ''
                             try:
                                 end_ob = feature.attribute("koniecObiekt")
-                            except:
+                            except Exception:
                                 end_ob = ''
                             try:
                                 end_vers = feature.attribute("koniecWersjaObiekt")
-                            except:
+                            except Exception:
                                 end_vers = ''
 
                             feature_version = self.getVersion(
@@ -558,10 +568,10 @@ class Main:
         i otwieranie path w odpowiedni sposób"""
         try:
             if sys.platform == 'win32':
-                os.startfile(path)
+                os.startfile(path)  # nosec B606
             elif sys.platform == 'linux':
-                subprocess.run(['xdg-open', path], check=True)
+                subprocess.run(['xdg-open', path], check=True)  # nosec B603 B607
             else:
-                subprocess.run(['open', path], check=True)
+                subprocess.run(['open', path], check=True)  # nosec B603 B607
         except Exception as err:
             print(f'Nie udało się otworzyć pliku na tym systemie: {err}')

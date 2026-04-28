@@ -32,7 +32,8 @@ class Help(wnd, cls):
             '<html><head/><body><p><a href="'
             + 'file:///'
             + instr_file
-            + '"><span style=" text-decoration: underline; color:#0000ff;">Instrukcja użytkowania</span></a></p></body></html>'
+            + '"><span style=" text-decoration: underline; color:#0000ff;">'
+            'Instrukcja użytkowania</span></a></p></body></html>'
         )
         self.label_15.setText(html_text)
 

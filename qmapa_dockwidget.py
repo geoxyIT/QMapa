@@ -229,7 +229,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         QCoreApplication.processEvents()
         self.dispVers(self._appearance.getLayers())
         if state:
-            # uncheck dla wersji, dodanie zeby nie wracalo wtedy do poprzedniego 
+            # uncheck dla wersji, dodanie zeby nie wracalo wtedy do poprzedniego
             # qml przy uncheck (bo inaczej robi sie 2 razy)
             self.back_fill = False
             self.gbFill.setChecked(False)
@@ -244,7 +244,7 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         QCoreApplication.processEvents()
         self.fillSelectSet(self._appearance.getLayers())
         if state is True:
-            # uncheck dla wersji, dodanie zeby nie wracalo wtedy do poprzedniego 
+            # uncheck dla wersji, dodanie zeby nie wracalo wtedy do poprzedniego
             # gml przy uncheck (bo inaczej robi sie 2 razy)
             self.back_wers = False
             self.gbShowWers.setChecked(False)
@@ -275,7 +275,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             vis_Pierwsze = True
             if self.chbColorPierwsze.isChecked() is True:
                 self.colPierwsze.setEnabled(True)
-                # color_Pierwsze = "'" + ','.join([str(x) for x in self.colPierwsze.color().getRgb()]) + "'"
                 color_Pierwsze = ','.join([str(x) for x in self.colPierwsze.color().getRgb()])
                 set_color_Pierwsze = True
             else:
@@ -295,7 +294,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             vis_Modyfikowane = True
             if self.chbColorModyfikowane.isChecked() is True:
                 self.colModyfikowane.setEnabled(True)
-                # color_Modyfikowane = "'" + ','.join([str(x) for x in self.colModyfikowane.color().getRgb()]) + "'"
                 color_Modyfikowane = ','.join(
                     [str(x) for x in self.colModyfikowane.color().getRgb()]
                 )
@@ -317,7 +315,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             vis_Archiwalne = True
             if self.chbColorArchiwalne.isChecked() is True:
                 self.colArchiwalne.setEnabled(True)
-                # color_Archiwalne = "'" + ','.join([str(x) for x in self.colArchiwalne.color().getRgb()]) + "'"
                 color_Archiwalne = ','.join([str(x) for x in self.colArchiwalne.color().getRgb()])
                 set_color_Archiwalne = True
             else:
@@ -337,7 +334,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             vis_Zamkniete = True
             if self.chbColorZamkniete.isChecked() is True:
                 self.colZamkniete.setEnabled(True)
-                # color_Zamkniete = "'" + ','.join([str(x) for x in self.colZamkniete.color().getRgb()]) + "'"
                 color_Zamkniete = ','.join([str(x) for x in self.colZamkniete.color().getRgb()])
                 set_color_Zamkniete = True
             else:
@@ -363,7 +359,6 @@ class QMapaDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 vis_Wczesniejsze = True
                 if self.chbColorWczesniejsze.isChecked() is True:
                     self.colWczesniejsze.setEnabled(True)
-                    # color_Wczesniejsze = "'" + ','.join([str(x) for x in self.colWczesniejsze.color().getRgb()]) + "'"
                     color_Wczesniejsze = ','.join(
                         [str(x) for x in self.colWczesniejsze.color().getRgb()]
                     )

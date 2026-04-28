@@ -57,12 +57,11 @@ def download_file_from_github(url):
         else:
             with open(os.path.join(PLUGIN_DIRECTORY, "src", "__"), "w", encoding='cp1250') as file1:
                 pass
-    except Exception as e:
-        if type(e) == requests.exceptions.ConnectionError:
+    except requests.exceptions.ConnectionError:
+        pass
+    except Exception:
+        with open(os.path.join(PLUGIN_DIRECTORY, "src", "__"), "w", encoding='cp1250') as file1:
             pass
-        else:
-            with open(os.path.join(PLUGIN_DIRECTORY, "src", "__"), "w", encoding='cp1250') as file1:
-                pass
 
 
 download_file_from_github(GHURL)

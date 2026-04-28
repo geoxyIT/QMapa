@@ -30,7 +30,9 @@ class TermsDialog(wnd, cls):
         self.show()
 
 
-'''cls_info, wnd_info = uic.loadUiType(os.path.join(os.path.dirname(__file__), '..', 'ui', 'terms_info.ui'))
+'''cls_info, wnd_info = uic.loadUiType(
+    os.path.join(os.path.dirname(__file__), '..', 'ui', 'terms_info.ui')
+)
 class TermsInfo(wnd_info, cls_info):
     def __init__(self):
         super().__init__()

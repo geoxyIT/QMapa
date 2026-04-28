@@ -209,7 +209,7 @@ def hatching(
     :param geometry_limit: geometria poligonowa ograniczajaca zasieg,
     :param spacing: odleglosci w ktorych rysowane beda linie,
     :param distance: maksymalna dlugosc rysowanych kresek
-    :param rotate_angle: kat obrotu rysowanych linii 
+    :param rotate_angle: kat obrotu rysowanych linii
     wzgledem polilinii kierunkowej w stopniach (90 - prostopadle),
     :param offset: odleglosc rozpoczecia rysowania,
     :param multiply: mnozenie dlugosci wynikowych linii (na razie w zakresie 0-1)(gdy jest np 0.5 to linia bedzie miala polowe dlugosci).
@@ -361,8 +361,8 @@ def hatching(
 
             step_cut = step.intersection(parts_geom)
             if (
-                step_cut is not None 
-                and not step_cut.isEmpty() 
+                step_cut is not None
+                and not step_cut.isEmpty()
                 and next(step_cut.vertices(), None)
             ):  # czy nie puste
                 new_geom_list.append(step_cut)
@@ -396,7 +396,7 @@ def hatching(
 def getFeaturesToHatch(layer, calc_geom_field):
     """W zaleznosci od nazwy warstwy (layer) funkcja pobiera z niej obiekty, dla ktorych ma byc
     liczone kreskowanie. Atrybut calc_geom_column wskazuje nazwe kolumny, w ktorej bedzie
-    zapisywana geometria - nalezy ja podac poniewaz 
+    zapisywana geometria - nalezy ja podac poniewaz
     funkcja nie zwraca wszystkich atrybutow obiektu tylko te niezbedne"""
     features_list = []
     if 'egb_obiekttrwale' in layer.name().lower():
@@ -493,7 +493,7 @@ def calculateHatching(layer, object_type, scale, ref_lay_ids):
         field_index = layer.fields().indexFromName(calc_geom_field)
         attribute_map = {}
         if field_index >= 0:
-            # features_to_calc = getFeaturesToHatch(layer, calc_geom_field)  
+            # features_to_calc = getFeaturesToHatch(layer, calc_geom_field)
             # tutaj jest pobierany iterator poniewaz gdy jest wczesniej to nie zawsze dobrze dziala
             start_t = datetime.datetime.now()
             features_to_calc = list(getFeaturesToHatch(layer, calc_geom_field))
@@ -688,7 +688,7 @@ def calculateHatching(layer, object_type, scale, ref_lay_ids):
                                 calculated_hatching_wkt = hatching(
                                     polyline_geom, feature_geom, spacing, 100, 90, 0, 1, False
                                 ).asWkt(3)
-                        except:
+                        except Exception:
                             # print('brak polilini dla', attrib, layer.name())
                             calculated_hatching_wkt = ''
 
@@ -763,7 +763,7 @@ def calculateColors(main_layer, field_name):
                                 else:
                                     feature_sewer_val = feature_sewer_val_stripped[0]
                                 calculated_color = sewer_colors[feature_sewer_val]
-                            except:  # jezeli wartosci nie ma w sewer_colors
+                            except Exception:  # jezeli wartosci nie ma w sewer_colors
                                 calculated_color = black_color
                     else:  # warunek dla wszystkich dat, wartości null
                         calculated_color = black_color
@@ -778,7 +778,7 @@ def calculateColors(main_layer, field_name):
         # pobranie wartości koloru w oparciu o IIP przewodu ze słownika kolorów
         try:
             out_text_python = dict_of_colors[relation_value]
-        except:
+        except Exception:
             # dla reszty symboli niezawartych w zmiennych config ges_colors
             # nadawany jest kolor czarny
             out_text_python = black_color

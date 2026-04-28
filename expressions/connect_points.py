@@ -8,7 +8,11 @@ def connect_points(geometry, feature, parent):
     context.setFeature(feature)
     orig_geom_list = geometry.asGeometryCollection()
     line_points_list = []
-    line_points_list = [(a, b) for idx, a in enumerate(orig_geom_list) for b in orig_geom_list[idx + 1 :]]
+    line_points_list = [
+        (a, b)
+        for idx, a in enumerate(orig_geom_list)
+        for b in orig_geom_list[idx + 1 :]
+    ]
 
     line_list = []
     for comb in line_points_list:
