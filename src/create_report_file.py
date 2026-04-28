@@ -108,7 +108,7 @@ class report:
                 try:
                     # paste style to sheet receiving
                     if (
-                        include_value 
+                        include_value
                         and not isinstance(cell, MergedCell)
                     ):  # nie wklejanie do scalonych komórek (wrzuca tylko do "głównej")
                         cell.value = copiedData[countRow][countCol]
@@ -294,7 +294,7 @@ class report:
                         sheet.cell(column=1, row=start_paste_row).value = i
 
                         if key_frame == "other" and incompatible_pref in layer_name:
-                            # zmiana wstawianej warstwy poprzez usuniecie 
+                            # zmiana wstawianej warstwy poprzez usuniecie
                             # przedrostka z informacja o niezgodnosci i nazawa bazy
                             name_of_layer = '_'.join(layer_name.split('_')[3:])
                         else:

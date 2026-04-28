@@ -160,16 +160,17 @@ polygon_list = [
     -2147483642,
 ]
 
-incompatible_pref = (
-    '_' + 'NIESTANDARDOWE' + '_'
-)  # mozna zmienic tylko srodkowy argument, musza pozostac znaki "_" na zewnatrz i nie moga byc w srodku
+# mozna zmienic tylko srodkowy argument, musza zostac znaki "_" na zewnatrz i nie moga byc w srodku
+incompatible_pref = '_' + 'NIESTANDARDOWE' + '_'
+
 incompatible_pref_friendly_name = 'NIESTANDARDOWE: '
 
 # parametry dla kolorowania klasy GES_Rzedna
 # {a: [b, c, d, e]}
 # a - nazwa warstwy, b - nazwa kolumny w warstwie GES_RZEDNA, atrybut tej kolumny jest wyszukiwany
 # w "c", c - nazwa kolumny w warstwie szukanej "a"
-# d - nazwa kolumny w warstwie "a", której wartość wpływa na wstawiany kolor do kolumny "color" w GES_Rzedna
+# d - nazwa kolumny w warstwie "a", której wartość
+# wpływa na wstawiany kolor do kolumny "color" w GES_Rzedna
 # w oparciu o kolor w "e"
 
 ges_colors = {
@@ -201,5 +202,6 @@ sewer_colors = {
 
 # URL do ortofotomapy WMS lub WMTS
 # na końcu jest dodawane WMTS/HighResolution lub WMTS/StandardResolution
-# czyli pełny link wygląda np https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMTS/StandardResolution
+# czyli pełny link wygląda np
+# https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMTS/StandardResolution
 geoportal_orto_url = "https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/"

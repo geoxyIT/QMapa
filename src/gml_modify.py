@@ -1,5 +1,5 @@
 import datetime
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as ET  # nosec B40
 import copy
 import re
 from .config import correct_layers, incompatible_pref
@@ -14,7 +14,10 @@ class GMLIncorrect(Exception):
     def __init__(
         self,
         namespace_xmlns,
-        message="\n Unrecognized xmlns in namespace-> \n Podany GML jest nieprawidlowy (niezgodny z modelem danych 2021)",
+        message=(
+            "\n Unrecognized xmlns in namespace-> \n "
+            "Podany GML jest nieprawidlowy (niezgodny z modelem danych 2021)"
+        ),
     ):
         # message = "\n Incorrect xmlns in namespace \n Podany GML jest nieprawidlowy"
         self.namespace_xmlns = namespace_xmlns
@@ -34,8 +37,8 @@ class GmlModify:
     wyciaganie wieloetykiet z pojedynczych plikow prezentacji graficznej"""
 
     def __init__(self, file_path, output_path):
-        # podane tagi sa rozpoznawane jako zgodne z rozporzadzeniem, 
-        # slownik mowi dodatkowo jaki przedrostek dopisywac gdy wystapi dany tag 
+        # podane tagi sa rozpoznawane jako zgodne z rozporzadzeniem,
+        # slownik mowi dodatkowo jaki przedrostek dopisywac gdy wystapi dany tag
         # np dopisze OT_ do poczatekGorySkarpy
         self.pref_tag_dict = {
             '{ewidencjaGruntowIBudynkow:1.0}': 'EGB_',
@@ -145,7 +148,7 @@ class GmlModify:
                     if value.startswith('#'):
                         value = value[1:]
                     relation_list.append(value)
-                    # usuniecie duplikatow z listy - 
+                    # usuniecie duplikatow z listy -
                     # przypadek gdy przewod zawieral dwie te same rzedneObiektu
                     relation_list_set = set(relation_list)
                     relation_list = list(relation_list_set)
@@ -167,14 +170,15 @@ class GmlModify:
                     break  # dodaje tylko pierwszy trafiony obiekt z relacji
 
     def labelRelations(self, pref_name, pref_tag):
-        """Iteracja po pliku, wyciagniecie relacji z etykiet do obiektow, oraz wstawienie w te obiekty
+        """Iteracja po pliku, wyciagniecie relacji
+        z etykiet do obiektow, oraz wstawienie w te obiekty
         id etykiet"""
         gml_id_list = list()
         for feature_member in self.root.iter(pref_name + pref_tag + 'opisyKARTO'):
             for feature in feature_member.findall(pref_name + 'obiektPrzedstawiany'):
                 gml_id_list.append(feature.text)
                 # text_do_wstawienia = './/{ges}GES_Rzedna[@{xd}id="{f_t}"]'.format(
-                    # ges=gml_namespace_val, xd = gml, f_t = feature.text)
+                # ges=gml_namespace_val, xd = gml, f_t = feature.text)
         for main_child in self.root:
             for feature in main_child:
                 if feature.attrib[f'{{{self.gml_namespace_val}}}id'] in gml_id_list:
@@ -202,7 +206,7 @@ class GmlModify:
                     self.err_number += 1
 
     def getCrsEpsg(self):
-        """rozpoznanie ukladu wspolrzednych danych. 
+        """rozpoznanie ukladu wspolrzednych danych.
         Jezeli jest kilka, to bierze pierwszy jaki znajdzie"""
         crs = None
         for feature_member in self.root:
@@ -256,7 +260,7 @@ class GmlModify:
             objs_to_del = [x for i, x in enumerate(split_pref_list) if i != ind]
             list_main_feat = []
 
-            # odnajdywanie obiektow zawierajacych wybrane atrybuty 
+            # odnajdywanie obiektow zawierajacych wybrane atrybuty
             # i zapisywanie tych obiektów do listy
             for main_child in root:
                 for feat in main_child:
@@ -264,7 +268,7 @@ class GmlModify:
                     element = is_found
                     if is_found is not None:
                         if (
-                            len(element) == 0 
+                            len(element) == 0
                             and (element.text is None or element.text.strip() == "")
                         ):
                             # print(f"Element '{element.tag}' is empty")
@@ -297,7 +301,7 @@ class GmlModify:
                         )
                     copy_feat[0].tag = new_tag
 
-                    # dla etykiet usuwanie pierwszej justyfikacji 
+                    # dla etykiet usuwanie pierwszej justyfikacji
                     # (tej oryginalnie w atrybucie prezentacji graficznej)
                     if 'opisyKARTO' in new_tag:
                         for katObr in copy_feat[0].findall(pref + 'katObrotu'):
@@ -310,7 +314,7 @@ class GmlModify:
                         copy_feat[0].remove(geom_main_obj)
 
                     i_ins = 0
-                    # usuwanie powtarzajacych sie 
+                    # usuwanie powtarzajacych sie
                     # (usuwanie wszystkich znalezionych poza jednym, po kolei)
                     for found in copy_feat[0].findall(obj_to_save):
                         if i_ins != i:
@@ -373,7 +377,9 @@ class GmlModify:
                                 name_of_base = self.namespaces_dict[pref_name[1:-1]]
                             else:
                                 name_of_base = 'NotRecognized'
-                            main_child[0].tag = (pref_name + incompatible_pref + name_of_base + '_' + class_name)
+                            main_child[0].tag = (
+                                pref_name + incompatible_pref + name_of_base + '_' + class_name
+                            )
             except Exception as e:
                 print(f'checkIsCorrect error: {e}')
 
@@ -387,19 +393,19 @@ class GmlModify:
 
         # zmienna z root
         st = datetime.datetime.now()
-        self.tree = ET.parse(self.file_path)
+        self.tree = ET.parse(self.file_path)    # nosec B314
         self.root = self.tree.getroot()
         print('GMLMOD czytanie, czas:', datetime.datetime.now() - st)
 
         st = datetime.datetime.now()
-        # wynikiem ponizszego teoretycznie moze byc none, 
+        # wynikiem ponizszego teoretycznie moze byc none,
         # wtedy warto by bylo dac domyslna wartosc crs taka zeby byla dobra a nie ''
         self.found_crs = self.getCrsEpsg()
         if self.found_crs is None:
             self.found_crs = ''
 
         # pref_list = [
-            # '{ewidencjaGruntowIBudynkow:1.0}', 
+            # '{ewidencjaGruntowIBudynkow:1.0}',
             # '{bazaDanychObiektowTopograficznych500:1.0}',
             # '{geodezyjnaEwidencjaSieciUzbrojeniaTerenu:1.0}']
 

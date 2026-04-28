@@ -1,0 +1,19 @@
+[flake8]
+# Ustawienie długości linii
+max-line-length = 100
+exclude = 
+    .git,
+    __pycache__,
+    external_packages,
+    ./src/resources.py
+
+# błędy sprzeczne z nowoczesnym stylem i Blackiem
+ignore = 
+    E203,
+    W503
+
+# ignorowane bledy w konkretnych plikach
+per-file-ignores = 
+    src\area_symbol_fill.py: E501
+    src\hatch_and_color_calc.py: E501
+    src\create_report_file.py: E501

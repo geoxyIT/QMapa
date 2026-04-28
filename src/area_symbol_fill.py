@@ -63,7 +63,7 @@ def patternFill(
     # nadanie symbolu oraz wejscie w subsymbol dla symboli single oraz rule
     if single is True and layer is not None:
         layer.renderer().symbol().insertSymbolLayer(1, line_pattern)
-        internal_pattern_line = (layer.renderer().symbol().symbolLayers()[-1].subSymbol().symbolLayers()[0])  # subsymbol
+        internal_pattern_line = layer.renderer().symbol().symbolLayers()[-1].subSymbol().symbolLayers()[0]  # subsymbol
         # dla width konieczne jest ustawienie szerokosci w odpowiedniej skali
         internal_pattern_line.dataDefinedProperties().property(5).setExpressionString(width_formula)
         internal_pattern_line.setWidthUnit(map_unit_type)  # map units
@@ -99,7 +99,7 @@ def patternFillOnlyValues(rotation, spacing, width, color_formula, layer=None, c
     # nadanie symbolu oraz wejscie w subsymbol dla symboli single oraz rule
     if single is True and layer is not None:
         layer.renderer().symbol().insertSymbolLayer(1, line_pattern)
-        internal_pattern_line = (layer.renderer().symbol().symbolLayers()[-1].subSymbol().symbolLayers()[0])
+        internal_pattern_line = layer.renderer().symbol().symbolLayers()[-1].subSymbol().symbolLayers()[0]
 
         # width
         internal_pattern_line.setWidth(width)
@@ -142,7 +142,7 @@ def fill_with_color(fill_dict: Dict, scale: int, set: str, layers):
     # layers = list(QgsProject.instance().mapLayers().values())
     for layer in layers:
         if (
-            layer.type() == QgsMapLayerType.VectorLayer 
+            layer.type() == QgsMapLayerType.VectorLayer
             and layer.geometryType() == 2
         ):  # warstwa poligonowa
             renderer = layer.renderer()
@@ -236,12 +236,12 @@ def fill_with_color(fill_dict: Dict, scale: int, set: str, layers):
                             if len(fill_no_color) == 0:
                                 h_color = f"{int(R)},{int(G)},{int(B)},{int(T)}"
                             else:
-                                h_color = f"0, 0, 0, 0"
+                                h_color = "0, 0, 0, 0"
                             formula += (
-                                    f'when "{basic_atr}" is \'{ap_value}\' '
-                                    f'then \'{h_color}\' '
-                                )
-                            
+                                f'when "{basic_atr}" is \'{ap_value}\' '
+                                f'then \'{h_color}\' '
+                            )
+
                             # wyjatek - blad w kolorze, brak ktorejs ze skladowych dla kreskowan
                             pattern_fill_no_color = [el for el in [hR, hG, hB, hT] if math.isnan(el) is True]
                             if len(pattern_fill_no_color) == 0:
@@ -317,7 +317,7 @@ def fill_with_color(fill_dict: Dict, scale: int, set: str, layers):
                     for single_dict in fill_dict:
                         # czy dany symbol jest do zastosowania - w oparciu o plik xlsm
                         if (
-                            single_dict['Zastosuj'] == 'TAK' 
+                            single_dict['Zastosuj'] == 'TAK'
                             and single_dict['KlasaObiektu'].startswith(set)
                         ):
                             # warunek jezeli nie ma atrybutow podstawowych
@@ -422,7 +422,7 @@ def fill_with_color(fill_dict: Dict, scale: int, set: str, layers):
                                     hR, hG, hB, hT = 0, 0, 0, 0
                                     pattern_fill_color_formula += f'when \"{basic_atr}\" is \'{ap_value}\' then \'{int(hR)},{int(hG)},{int(hB)},{int(hT)}\' '
                                 # jezeli ma kolumne dotyczaca kresowania to przechodzi dalej
-                                if len(pattern_fill_list) > 0:  
+                                if len(pattern_fill_list) > 0:
                                     step = 0  # interwal dla ilosci parametrow w kolumnnach kreskowania
                                     # zaleznie od ilosci kolumn kreskowania
                                     for i in range(int(len(pattern_fill_list) / 3)):

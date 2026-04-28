@@ -88,7 +88,7 @@ def loadGpkg(gpkg_path):
             layer_2 = file_data.GetLayer(layer.GetName() + '_2')
 
             # jezeli tych warstw nie ma, utworz je
-            # pobranie nazwy pola z geometria 
+            # pobranie nazwy pola z geometria
             # (bo jak jest w gml jako 'geometria' to taka sie da, a nie domyslna 'geom'
             geom_field_name = lyr_def.GetGeomFieldDefn(0).GetName()
             if layer_0 is None:

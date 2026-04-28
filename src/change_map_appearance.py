@@ -35,8 +35,6 @@ class ChangeAppearance:
         try:
             URL = 'https://raw.githubusercontent.com/geoxyIT/QMapa/main/additional_info.txt'
             text_info = getHubText(URL)
-            '''with open((os.path.join(os.path.dirname(__file__), '..', 'additional_info.txt'))) as ff:
-                text_info= ff.read()'''
             lbAdditionalInfo.setText(text_info)
         except Exception as e:
             print('Błąd pobierania dodatkowych informacji:', e)
@@ -68,7 +66,7 @@ class ChangeAppearance:
             res_label = "Wysoka Rozdzielczość" if is_high else "Standardowa Rozdzielczość"
 
             # Baza URL Geoportalu
-            # przykładowy url: https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMTS/HighResolution
+            # przykładowy url:https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMTS/HighResolution  # noqa E501
             base_url = f"{geoportal_orto_url}{protocol}/{res_path}"
             layer_name = f'Geoportal ORTO {res_label} ({protocol})'
 

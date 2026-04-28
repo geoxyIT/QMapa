@@ -1,6 +1,6 @@
 import os
 import sys
-import subprocess
+import subprocess   # nosec B404
 from osgeo import gdal
 from datetime import datetime
 from packaging import version
@@ -77,7 +77,7 @@ class SimpleGmlImport:
                     # sprawdzenie dostepu poprzez probe usuniecia pliku
                     try:
                         os.remove(path)
-                    except:
+                    except Exception:
                         iface.messageBar().pushMessage(
                             "Import nie został wykonany: ",
                             "brak dostępu do pliku " + path,
@@ -87,7 +87,8 @@ class SimpleGmlImport:
                         QMessageBox.critical(
                             iface.mainWindow(),
                             'Błąd: brak dostępu do pliku',
-                            'Brak dostępu do pliku, sprawdż czy plik nie jest używany przez inny program. \n'
+                            'Brak dostępu do pliku, sprawdź czy plik nie '
+                            'jest używany przez inny program. \n'
                             + path,
                             buttons=QMessageBox.StandardButton.Ok,
                         )
@@ -275,10 +276,12 @@ class SimpleGmlImport:
         ]'''
 
         # Perform vector translation using GDAL's VectorTranslate
-        # TODO: poszukac czy sa inne listy lub inne pola ktore trzeba by bylo przekonwertowac - raczej nie ma.
+        # TODO: poszukac czy sa inne listy lub inne pola ktore trzeba
+        # by bylo przekonwertowac - raczej nie ma.
         my_env = os.environ.copy()
         my_env["PYDEVD_DISABLE_FILE_VALIDATION"] = "1"
-        # parametr mapFieldType został dodany od wersji 3.5 gdala, wtedy tez chyba zostala dodana osluga list
+        # parametr mapFieldType został dodany od wersji 3.5 gdala,
+        # wtedy tez chyba zostala dodana osluga list
         gdal_vers = gdal.__version__
         if version.parse(gdal_vers) < version.parse("3.7.0"):
             pyth_command = (
@@ -293,25 +296,26 @@ class SimpleGmlImport:
                 "from osgeo import gdal; "
                 "gdal.DontUseExceptions(); "
                 "gdal.SetConfigOption('GML_SKIP_CORRUPTED_FEATURES', 'YES');"
-                "gdal_options = gdal.VectorTranslateOptions(format='GPKG', mapFieldType=['StringList=String', 'IntegerList=String' , 'RealList=String']); "
+                "gdal_options = gdal.VectorTranslateOptions(format='GPKG', "
+                "mapFieldType=['StringList=String', 'IntegerList=String' , 'RealList=String']); "
                 f"gdal.VectorTranslate(r'{output_gpkg}', r'{input_gml}', options=gdal_options)"
             )
         if sys.platform == 'win32':
-            process = subprocess.run(
+            process = subprocess.run(   # nosec B607
                 ["python", "-c", pyth_command],
                 stderr=subprocess.PIPE,
                 text=True,
                 env=my_env,
-                shell=False,
+                shell=False,    # nosec B603
                 creationflags=subprocess.CREATE_NO_WINDOW,
             )
         elif sys.platform == 'linux':
-            process = subprocess.run(
+            process = subprocess.run(   # nosec B607
                 ["python3", "-c", pyth_command],
                 stderr=subprocess.PIPE,
                 text=True,
                 env=my_env,
-                shell=False,
+                shell=False,    # nosec B603
             )
         error_output = process.stderr
         if error_output:
@@ -426,7 +430,8 @@ class SimpleGmlImport:
                 vec_layers_list, gr_dict, editorial_grups = Main().createGroups(gpkg_path)
                 vec_layers_list = Main().checkLayers(vec_layers_list)
 
-                order_list_new = correct_layers  # lista warstw zgodna z rozpo i w dobrej kolejnosci prezentowania
+                # lista warstw zgodna z rozpo i w dobrej kolejnosci prezentowania
+                order_list_new = correct_layers
 
                 # ustalenie nowej kolejnosci
                 setNewOrder(order_list_new)
@@ -449,7 +454,7 @@ class SimpleGmlImport:
                 # usuniecie pliku
                 try:
                     os.remove(mod_gml_path)
-                except:
+                except Exception:
                     print("Problem z usunięciem pliku modyfikowanego gml")
                 progressBar.setValue(60)
                 print('Czas 60%:', datetime.now() - start_time)
@@ -461,7 +466,8 @@ class SimpleGmlImport:
                 print('Czas 70%:', datetime.now() - start_time)
                 QCoreApplication.processEvents()
 
-                # obliczenie kreskowania dla skarp, sciany, schodow i wstawienie geometrii do atrybutow
+                # obliczenie kreskowania dla skarp, sciany,
+                # schodow i wstawienie geometrii do atrybutow
                 scales = ['500', '1000']
                 # scales = []
                 nr = 0
@@ -489,7 +495,7 @@ class SimpleGmlImport:
                         ):
                             calculateHatching(lay, 'schody', sc, egb_polyline_layer_id)
                         elif (
-                            'ot_obiekttrwalezwiazany' in lay.name().lower() 
+                            'ot_obiekttrwalezwiazany' in lay.name().lower()
                             and ot_polyline_layer_id
                         ):
                             calculateHatching(lay, 'schody', sc, ot_polyline_layer_id)
@@ -535,7 +541,8 @@ class SimpleGmlImport:
                                     ],
                                 )
 
-                            # tutaj dowawane sa pola ktore moga nie wystapic w pliku gml a sa uzywane w etykietach (opisykarto)-
+                            # tutaj dowawane sa pola ktore moga nie wystapic w
+                            # pliku gml a sa uzywane w etykietach (opisykarto)-
                             # dzieki temu szybciej sie rendreruja
                             if 'ges_opisykarto' in lay.name().lower():
                                 fields_list_ges = [
@@ -675,12 +682,17 @@ class SimpleGmlImport:
                     for ed_group in editorial_grups:
                         ed_group.setItemVisibilityChecked(True)
                         ed_group.setExpanded(True)
-                    print('Wybrany plik jest niekompletny - zawiera tylko prezentacje graficzne bez obiektow')
+                    print(
+                        'Wybrany plik jest niekompletny - zawiera '
+                        'tylko prezentacje graficzne bez obiektow'
+                    )
                     QMessageBox.warning(
                         iface.mainWindow(),
                         'Wybrany plik jest niekompletny',
-                        'Wybrany plik nie zawiera danych obiektowych a jedynie prezentację graficzną obiektów. '
-                        'Uniemożliwia to poprawną wizualizację, w szczególności wygenerowanie etykiet.',
+                        'Wybrany plik nie zawiera danych obiektowych '
+                        'a jedynie prezentację graficzną obiektów. '
+                        'Uniemożliwia to poprawną wizualizację, '
+                        'w szczególności wygenerowanie etykiet.',
                         buttons=QMessageBox.StandardButton.Ok,
                     )
 

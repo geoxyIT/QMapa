@@ -4,7 +4,8 @@ from qgis.utils import iface
 
 
 def saveStylization(layers, sty_name):
-    """Zapisywanie stylizacji o podanej nazwie ,warstw w plikach qml w folderze wtyczki stylization"""
+    """Zapisywanie stylizacji o podanej nazwie,
+    warstw w plikach qml w folderze wtyczki stylization"""
     dir_path = os.path.dirname(os.path.realpath(__file__))
     sty_path = os.path.join(dir_path, '..', 'stylization')
     # pobranie nazw istniejących stylizacji
@@ -24,7 +25,7 @@ def saveStylization(layers, sty_name):
         os.mkdir(stylization_dir + r'\polygon')
 
     for layer in layers:
-        """zapis stylizacji wybranych warstw w folderze stylizacji do plików 
+        """zapis stylizacji wybranych warstw w folderze stylizacji do plików
         qml podzielonych na foldery w zaleznosci od geometrii warstwy"""
         layerType = layer.type()
         if layerType == QgsMapLayerType.VectorLayer:

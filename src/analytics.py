@@ -32,7 +32,7 @@ def checkQgisVersion(current_version):
     if isVersionAtLeast(current_version, required_version_1):
         return True
     if (
-        current_version.startswith("3.34.") 
+        current_version.startswith("3.34.")
         and isVersionAtLeast(current_version, required_version_2)
     ):
         return True

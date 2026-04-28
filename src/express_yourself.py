@@ -194,7 +194,6 @@ class ExpressYourself:
                                     self.color_expression = new_color_expression
                                     self.enable_expression = new_enable_expression
 
-                                    # self.enable_expression = 'case when @Karto then ' + self.enable_expression + ' else 0 end'
                                     self.enable_expression = (
                                         'case when 1111 then '
                                         + self.enable_expression
@@ -242,7 +241,8 @@ class ExpressYourself:
     # DODAC WARUNEK DLA LABELEK I SYMBOLI Z WHITE I BLANK
 
     def changeLabelExpression(self, expression, prefix):
-        """Zmiana wyrazenia dla etykiet  - dodanie przedrostka w kolumnach startobiekt, koniecobiekt..."""
+        """Zmiana wyrazenia dla etykiet -
+        dodanie przedrostka w kolumnach startobiekt, koniecobiekt..."""
         val_to_replace = ['koniecWersjaObiekt', 'koniecObiekt', 'startObiekt', 'startWersjaObiekt']
         for val in val_to_replace:
             with_prefix = '_'.join([prefix, val])
