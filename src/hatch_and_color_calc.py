@@ -225,8 +225,8 @@ def hatching(
 
     start_hat = datetime.datetime.now()
     # TODO: UWAGA podaje się jedna wartosc spacing i offset, wiec w przypadku multipowierchni
-    # obie maja takie same odstepy kreskowania mimo ze powinno miec osobne
-    geometry_limit = geometry_limit.buffer(0.005, 1)
+    #  obie maja takie same odstepy kreskowania mimo ze powinno miec osobne
+    #geometry_limit = geometry_limit.buffer(0.005, 1)
 
     bis_list = []
     bisection = None
@@ -253,13 +253,12 @@ def hatching(
             if ind_next:
                 ind_prev = ind - 1
 
-                first_point = extracted_points[ind]
-                second_point = extracted_points[ind_prev]
-                first_azimuth = first_point.azimuth(second_point)
+                current_point = extracted_points[ind]
+                prev_point = extracted_points[ind_prev]
+                first_azimuth = current_point.azimuth(prev_point)
 
-                third_point = extracted_points[ind]
-                fourth_point = extracted_points[ind_next]
-                second_azimuth = third_point.azimuth(fourth_point)
+                next_point = extracted_points[ind_next]
+                second_azimuth = current_point.azimuth(next_point)
 
                 angle = (first_azimuth + second_azimuth) / 2
 
@@ -273,12 +272,10 @@ def hatching(
 
                 geom_num = bis_int_lines.numGeometries()
 
-                point_buff = QgsGeometry().fromPointXY(extracted_points[ind]).buffer(0.01, 4)
-
                 for b_i in range(geom_num):
                     bisection = bis_int_lines.geometryN(b_i)
                     bisection = QgsGeometry().fromPolyline(bisection)
-                    if bisection.intersects(point_buff):
+                    if bisection.distance(QgsGeometry.fromPointXY(extracted_points[ind])) < 0.1:
                         bis_list.append(bisection)
         extracted_points = []
 
@@ -329,8 +326,12 @@ def hatching(
         st2 = datetime.datetime.now()
         # parts_list = []
 
-        candidate_ids = index.intersects(part.boundingBox())  # Pobranie kandydatów do przecięcia
-        intersecting_polygons = [polygon_map[i] for i in candidate_ids if polygon_map[i].intersects(part)]
+        # to jest po to jak polilinia jest na krawedzi i czasem z intersects wychodzi ze przecina a czasem nie,
+        # a teraz jest pewnosc - mozna pomyslec o czyms szybszym
+        part_buff = part.buffer(0.005, 1)
+
+        candidate_ids = index.intersects(part_buff.boundingBox())  # Pobranie kandydatów do przecięcia
+        intersecting_polygons = [polygon_map[i] for i in candidate_ids if polygon_map[i].intersects(part_buff)]
 
         parts_geom = QgsGeometry.collectGeometry(intersecting_polygons)
 
@@ -353,11 +354,10 @@ def hatching(
                 [[interp_vertex, point_proj1], [interp_vertex, point_proj2]]
             )
 
-            '''step_lines = step.asGeometryCollection()
-            for step_line in step_lines:
-                step_cut = step_line.clipping(parts_geom)
-                if step_cut and not step_cut.isEmpty():
-                    new_geom_list.append(step_cut)'''
+            # to ponizej fajne bo proste, ale wtedy nie zadziala dobrze to dzielenie
+            # (bo chce dzielic np na pol ale liczac od punktu na polilinii do zewnatrz)
+            # bo moze zadzialac w zla strone - moze zamiana punktow miejscami pomoze? tylko pytanie czy zawsze:
+            # step = QgsGeometry.fromMultiPolylineXY([[point_proj1, point_proj2]])
 
             step_cut = step.intersection(parts_geom)
             if (
@@ -365,7 +365,8 @@ def hatching(
                 and not step_cut.isEmpty()
                 and next(step_cut.vertices(), None)
             ):  # czy nie puste
-                new_geom_list.append(step_cut)
+                if step.length() >= 0.01:  # pozbywamy sie krociutkich kawalkow
+                    new_geom_list.append(step_cut)
             spacing_sum += spacing
         # prev_residue = part_length - (spacing_sum - spacing)
         too_short = spacing_sum - part_length
